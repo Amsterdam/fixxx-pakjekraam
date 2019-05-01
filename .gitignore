@@ -7,6 +7,7 @@ components/
 .settings/
 .idea
 .idea/*
+.vscode/
 
 # OS
 .DS_Store
@@ -19,6 +20,17 @@ composer.phar
 # Docker
 docker-compose.override.yml
 docker-compose-dev.override.yml
+
+# Node.js
+.config/
+.npm/
+node_modules/
+
+# Node.js development
+*.err
+*.log
+dist/
+tmp/
 
 ###> symfony/framework-bundle ###
 .env

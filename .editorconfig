@@ -1,0 +1,242 @@
+# EditorConfig is awesome: http://EditorConfig.org
+root = true
+
+[_default_]
+charset = UTF-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+tab_width = 4
+insert_final_newline = true
+max_line_length = off
+trim_trailing_whitespace = true
+
+## Scripting
+# .groovy = Apache Groovy
+# .js     = JavaScript
+# .jsx    = JavaScript/React templates
+# .php    = PHP
+# .ts     = TypeScript
+# .vcl    = Vagrant
+# .xqy    = XQuery
+[*.{groovy,js,jsx,php,ts,vcl,xqy}]
+charset = UTF-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+max_line_length = 120
+
+
+## Other scripting
+# .py  = Python
+# .rb  = Ruby
+[*.{py,rb}]
+charset = UTF-8
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+indent_size = 2
+max_line_length = 120
+
+## Styling
+# .css  = CSS
+# .less = LESS
+# .scss = SASS
+[*.{css,less,scss}]
+charset = UTF-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+max_line_length = 120
+
+## Markup and markup templates
+# .htm   = HTML
+# .html  = HTML
+# .rdf   = XML with RDF
+# .svg   = XML with SVG
+# .twig  = Twig HTML templates
+# .wsdl  = XML with WSDL
+# .xhtml = XML with HTML
+# .xliff = XML with XLIFF translations
+# .xml   = XML
+# .xsd   = XML with XML Schema
+# .xsl   = XML with XSLT
+# .xslt  = XML with XSLT
+[*.{htm,html,rdf,svg,twig,wsdl,xhtml,xliff,xml,xsd,xsl,xslt}]
+charset = UTF-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+max_line_length = off
+trim_trailing_whitespace = true
+
+## Bash scripting
+[*{Dockerfile,Jenkinsfile,Makefile}]
+charset = UTF-8
+end_of_line = lf
+tab_width = 4
+insert_final_newline = true
+max_line_length = 120
+trim_trailing_whitespace = true
+
+[*{Makefile}]
+# Makefile = Use tabs to prevent a syntax error
+indent_style = tab
+
+[*{Dockerfile}]
+indent_style = space
+
+[*.{sh}]
+charset = UTF-8
+end_of_line = lf
+indent_style = space
+tab_width = 4
+insert_final_newline = true
+max_line_length = 120
+trim_trailing_whitespace = true
+
+## Data: JSON, YAML
+# .eslintrc    = Configuration file for ESLint <http://eslint.org>
+# .json        = JSON
+# .lock        = sometimes JSON, sometimes YAML
+# .stylelintrc = Configuration file for stylelint <https://stylelint.io>
+# .yml         = YAML
+[*.{eslintrc,json,stylelintrc,yml}]
+charset = UTF-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+max_line_length = 120
+trim_trailing_whitespace = true
+
+## Query files
+# .rq  = SPARQL <https://www.w3.org/TR/sparql11-query/>
+# .sql = SQL
+[*.{rq,sql}]
+charset = UTF-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+max_line_length = 120
+trim_trailing_whitespace = true
+
+## UNIX Configuration files
+[*.{dockerignore,eslintignore,gitignore}]
+charset = ASCII
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+max_line_length = off
+trim_trailing_whitespace = true
+
+## Environment variables
+# .env    = Docker envfile <https://docs.docker.com/compose/env-file/>
+# .params = varnish.params
+[*.{env,params}]
+charset = ASCII
+end_of_line = lf
+indent_size = 4
+indent_style = space
+tab_width = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+## Configuration files
+# .conf    = INI file <https://en.wikipedia.org/wiki/INI_file>
+# .cfg     = INI file <https://en.wikipedia.org/wiki/INI_file>
+# .cnf     = INI file <https://en.wikipedia.org/wiki/INI_file>
+# .conf    = INI file <https://en.wikipedia.org/wiki/INI_file>
+# .ini     = INI file <https://en.wikipedia.org/wiki/INI_file>
+# .spec    = RPM package SPEC file
+# .service = supervisord.service <http://supervisord.org>
+[*.{cfg,cnf,conf,ini,service,spec}]
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+charset = ASCII
+max_line_length = off
+
+[*.{editorconfig,gitattributes}]
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+charset = ASCII
+max_line_length = off
+
+## Text files:
+# .feature  = Gherkin
+# .markdown = Markdown
+# .md       = Markdown
+# .txt      = Plain text
+[*.{feature,markdown,md,txt}]
+charset = UTF-8
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+max_line_length = 120
+
+# CONTRIBUTORS = https://help.github.com/articles/setting-guidelines-for-repository-contributors/
+# LICENSE      = https://help.github.com/articles/adding-a-license-to-a-repository/
+[*{AUTHORS,CONTRIBUTORS,LICENSE,README}]
+charset = UTF-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+max_line_length = 120
+
+## Database
+# .csv = Comma-separated values (CSV)
+# Essential not to an have empty last line
+[*.csv]
+charset = UTF-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+trim_trailing_whitespace = true
+
+max_line_length = off
+insert_final_newline = false
+
+## Certificates for SSH / SSL
+[*.{crt,key,pem,rsa,srl}]
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+charset = ASCII
+max_line_length = 64
+
+[*.{pub}]
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+charset = ASCII
+max_line_length = off

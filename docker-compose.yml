@@ -1,4 +1,4 @@
-version: '3.0'
+version: "3.0"
 services:
   database:
     image: postgres:9.5.11-alpine
@@ -10,8 +10,8 @@ services:
       POSTGRES_DB: pakjekraam
   web:
     build:
-        context: .
-        dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile
     links:
       - database
     environment:
