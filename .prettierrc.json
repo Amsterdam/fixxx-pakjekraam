@@ -1,0 +1,13 @@
+{
+  "overrides": [
+    {
+      "files": "*.js",
+      "options": {
+        "parser": "flow",
+        "trailingComma": "all",
+        "tabWidth": 4,
+        "singleQuote": true
+      }
+    }
+  ]
+}
