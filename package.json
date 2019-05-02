@@ -2,6 +2,7 @@
   "name": "@fixxx/pakjekraam",
   "version": "0.0.0",
   "description": "",
+  "repository": "https://github.com/Amsterdam/fixxx-pakjekraam.git",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -10,7 +11,7 @@
     "build": "exit 0",
     "start": "node src/index.js",
     "dev": "node-dev src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "deploy": "concurrently 'npm:deploy:*'",
     "deploy:connect-pg": "echo 'TODO: Run node_modules/connect-pg-simple/table.sql' && exit 1",
     "precommit": "npm run lint",
@@ -22,10 +23,10 @@
   "license": "MPL-2.0",
   "devDependencies": {
     "concurrently": "4.1.0",
-    "husky": "^2.1.0",
-    "jest": "^24.7.1",
-    "lint-staged": "^8.1.5",
-    "lintspaces-cli": "^0.7.1",
+    "husky": "2.1.0",
+    "jest": "24.7.1",
+    "lint-staged": "8.1.5",
+    "lintspaces-cli": "0.7.1",
     "node-dev": "3.1.3"
   },
   "dependencies": {
