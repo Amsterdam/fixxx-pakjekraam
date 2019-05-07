@@ -1,5 +1,11 @@
+'use strict';
+
 const express = require('express');
-const packageJSON = require('../package.json');
+const session = require('express-session');
+const passport = require('passport');
+const bodyParser = require('body-parser');
+const { ensureLoggedIn } = require('connect-ensure-login');
+const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
 const { login, getMarkten } = require('./makkelijkemarkt-api.js');
 
 const HTTP_INTERNAL_SERVER_ERROR = 500;
@@ -8,36 +14,56 @@ const HTTP_DEFAULT_PORT = 8080;
 const port = process.env.PORT || HTTP_DEFAULT_PORT;
 const app = express();
 
-login({
-    username: process.env.API_USER,
-    password: process.env.API_PASS,
-    url: process.env.API_URL,
-    appKey: process.env.API_MMAPPKEY,
-    clientApp: packageJSON.name,
-    clientVersion: packageJSON.version,
+// Required for Passport login form
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(session({ secret: process.env.APP_SECRET, resave: false, saveUninitialized: false }));
+
+// Initialize Passport and restore authentication state the session.
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.post('/login.html', passport.authenticate('local', { failureRedirect: '/login-error' }), function(req, res) {
+    /*
+     * TODO: Redirect to URL specified in URL query parameter,
+     * so you go back to the page you intended to visit.
+     */
+    res.redirect('/api/1.0.0/markt/');
 });
 
-app.get('/api/1.0.0/markt/', (req, res) => {
-    getMarkten().then(
-        (markten) => {
+app.get('/login', function(req, res) {
+    res.redirect('/login.html');
+});
+
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
+
+app.get('/api/1.0.0/markt/', ensureLoggedIn(), (req, res) => {
+    getMarkten(req.user.token).then(
+        markten => {
             res.set({
-                'Content-Type': 'application/json; charset=UTF-8'
+                'Content-Type': 'application/json; charset=UTF-8',
             });
             res.send(JSON.stringify(markten));
         },
-        (err) => {
+        err => {
             res.exit(HTTP_INTERNAL_SERVER_ERROR);
         },
     );
 });
 
-app.use(express.static('./src/www/'));
+// Static files that are public (robots.txt, favicon.ico)
+app.use(express.static('./src/public/'));
 
-app.listen(port, (err) => {
+// Static files that require authorization (business logic scripts for example)
+app.use(ensureLoggedIn(), express.static('./src/www/'));
+
+app.listen(port, err => {
     if (err) {
         console.error(err);
-    }
-    else {
+    } else {
         console.log(`Listening on port ${port}`);
     }
 });

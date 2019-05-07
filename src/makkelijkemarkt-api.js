@@ -4,46 +4,45 @@ const axios = require('axios');
 
 let makkelijkeMarktAPI, loginResponse, token;
 
+const trace = arg => {
+    console.log(arg);
+    return arg;
+};
+
 const login = data => {
     // FIXME: Use RxJS for these asynchronous dependencies
     makkelijkeMarktAPI = axios.create({
         baseURL: data.url,
         headers: {
-            MmAppKey: data.appKey
+            MmAppKey: data.appKey,
         },
     });
 
-    loginResponse = makkelijkeMarktAPI.post('login/basicUsername/', {
-        username: data.username,
-        password: data.password,
-        clientApp: data.clientApp,
-        clientVersion: data.clientVersion,
-    }).then(response => response.data);
-
-    token = loginResponse.then(data => data.uuid);
-};
-
-const getMarktondernemers = () => {
-    return token
-        .then(tokenUUID =>
-            makkelijkeMarktAPI.get('koopman/', {
-                headers: {
-                    Authorization: `Bearer ${tokenUUID}`,
-                },
-            }),
-        )
+    return makkelijkeMarktAPI
+        .post('login/basicUsername/', {
+            username: data.username,
+            password: data.password,
+            clientApp: data.clientApp,
+            clientVersion: data.clientVersion,
+        })
         .then(response => response.data);
 };
 
-const getMarkten = () => {
-    return token
-        .then(tokenUUID =>
-            makkelijkeMarktAPI.get('markt/', {
-                headers: {
-                    Authorization: `Bearer ${tokenUUID}`,
-                },
-            }),
-        )
+const getMarktondernemers = token => {
+    return makkelijkeMarktAPI.get('koopman/', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+const getMarkten = token => {
+    return makkelijkeMarktAPI
+        .get('markt/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
         .then(response => response.data);
 };
 

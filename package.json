@@ -11,6 +11,8 @@
     "start": "node src/index.js",
     "dev": "node-dev src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "concurrently 'npm:deploy:*'",
+    "deploy:connect-pg": "echo 'TODO: Run node_modules/connect-pg-simple/table.sql' && exit 1",
     "precommit": "npm run lint",
     "lint": "concurrently 'npm:lint:*'",
     "lint:editorconfig": "git ls-files '*.cfg' '*.cnf' '*.conf' '*.crt' '*.css' '*.csv' '*.dockerignore' '*.editorconfig' '*.env' '*.eslintignore' '*.eslintrc' '*.feature' '*.gitattributes' '*.gitignore' '*.groovy' '*.htm' '*.html' '*.ini' '*.js' '*.json' '*.jsx' '*.key' '*.less' '*.markdown' '*.md' '*.params' '*.pem' '*.php' '*.pub' '*.py' '*.rb' '*.rdf' '*.rq' '*.rsa' '*.scss' '*.service' '*.sh' '*.spec' '*.sql' '*.srl' '*.stylelintrc' '*.svg' '*.ts' '*.twig' '*.txt' '*.vcl' '*.wsdl' '*.xhtml' '*.xliff' '*.xml' '*.xqy' '*.xsd' '*.xsl' '*.xslt' '*.yml' '*AUTHORS' '*CONTRIBUTORS' '*Dockerfile' '*LICENSE' '*Makefile' '*README' '*Jenkinsfile' | xargs lintspaces --matchdotfiles --newline --editorconfig .editorconfig --ignores js-comments",
@@ -28,6 +30,12 @@
   },
   "dependencies": {
     "axios": "0.18.0",
-    "express": "4.16.3"
+    "body-parser": "1.18.3",
+    "connect-ensure-login": "0.1.1",
+    "cookie-parser": "1.4.3",
+    "express": "4.16.3",
+    "express-session": "1.15.6",
+    "passport": "0.4.0",
+    "passport-local": "1.0.0"
   }
 }
