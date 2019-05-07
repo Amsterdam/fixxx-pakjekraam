@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const reactViews = require('express-react-views');
 const session = require('express-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
@@ -23,12 +24,24 @@ app.use(session({ secret: process.env.APP_SECRET, resave: false, saveUninitializ
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jsx');
+app.engine('jsx', reactViews.createEngine({ beautify: true }));
+
 app.post('/login.html', passport.authenticate('local', { failureRedirect: '/login-error' }), function(req, res) {
     /*
      * TODO: Redirect to URL specified in URL query parameter,
      * so you go back to the page you intended to visit.
      */
     res.redirect('/api/1.0.0/markt/');
+});
+
+app.get('/', function(req, res) {
+    res.render('HelloWorld', {});
+});
+
+app.get('/status/health', function(req, res) {
+    res.end('OK!');
 });
 
 app.get('/login', function(req, res) {
