@@ -1,0 +1,10 @@
+*.err
+*.log
+*.tmp
+.DS_Store
+.env
+.npm/
+.vscode/
+dist/
+node_modules/
+tmp/

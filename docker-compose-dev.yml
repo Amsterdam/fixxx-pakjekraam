@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.0"
 services:
   database_dev:
     image: postgres:9.5.11-alpine
@@ -10,44 +10,34 @@ services:
       POSTGRES_DB: pakjekraam
   web_dev:
     build:
-        context: .
-        dockerfile: Dockerfile-dev
-    restart: always
-    volumes:
-      - type: bind
-        source: ./config
-        target: /srv/app/config
-        volume:
-          consistency: cached
-      - type: bind
-        source: ./public
-        target: /srv/app/public
-      - type: bind
-        source: ./src
-        target: /srv/app/src
-        volume:
-          consistency: cached
-      - type: bind
-        source: ./templates
-        target: /srv/app/templates
-    ports:
-      - "80:80"
-      - "443:443"
-    links:
-      - database_dev
+      args:
+        - NODE_ENV=development
+      context: .
+      dockerfile: Dockerfile
+    command: dev
     environment:
+      - API_MMAPPKEY
+      - API_URL
       - APP_ENV=dev
+      - APP_NOTIFICATIE_FROM=tester@test.com
       - APP_SECRET=secret
       - DATABASE_URL=pgsql://pakjekraam:insecure@database_dev:5432/pakjekraam
+      - NODE_ENV=development
       - SWIFT_AUTH_URL=
-      - SWIFT_REGION=
-      - SWIFT_USER_NAME=
-      - SWIFT_USER_DOMAIN_ID=
-      - SWIFT_USER_PASSWORD=
-      - SWIFT_PROJECT_ID=
       - SWIFT_CONTAINER_PREFIX=
-      - SWIFT_TEMP_URL_KEY=
       - SWIFT_EXTERNAL_DOMAIN=
-      - APP_NOTIFICATIE_FROM=tester@test.com
+      - SWIFT_PROJECT_ID=
+      - SWIFT_REGION=
+      - SWIFT_TEMP_URL_KEY=
+      - SWIFT_USER_DOMAIN_ID=
+      - SWIFT_USER_NAME=
+      - SWIFT_USER_PASSWORD=
       - THUMBNAILSERVICE_URL=https://thumbnail.service/
-
+    links:
+      - database_dev
+    ports:
+      - "8080:8080"
+    restart: always
+    volumes:
+      - ./:/srv
+      - /srv/node_modules
