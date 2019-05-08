@@ -2,6 +2,15 @@ const axios = require('axios');
 
 let makkelijkeMarktAPI;
 
+const init = config => {
+    makkelijkeMarktAPI = axios.create({
+        baseURL: config.url,
+        headers: {
+            MmAppKey: config.appKey,
+        },
+    });
+};
+
 const trace = arg => {
     console.log(arg);
 
@@ -10,12 +19,6 @@ const trace = arg => {
 
 const login = data => {
     // FIXME: Use RxJS for these asynchronous dependencies
-    makkelijkeMarktAPI = axios.create({
-        baseURL: data.url,
-        headers: {
-            MmAppKey: data.appKey,
-        },
-    });
 
     return makkelijkeMarktAPI
         .post('login/basicUsername/', {
@@ -46,6 +49,7 @@ const getMarkten = token => {
 };
 
 module.exports = {
+    init,
     login,
     getMarkten,
     getMarktondernemers,

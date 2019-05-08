@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const packageJSON = require('../package.json');
-const { login } = require('./makkelijkemarkt-api.js');
+const { init, login } = require('./makkelijkemarkt-api.js');
 
 const MILLISECONDS_IN_SECOND = 1000;
 
@@ -11,6 +11,8 @@ const loginSettings = {
     clientApp: packageJSON.name,
     clientVersion: packageJSON.version,
 };
+
+init(loginSettings);
 
 passport.use(
     new LocalStrategy(
@@ -37,23 +39,12 @@ passport.use(
     ),
 );
 
-const sessions = {};
-
 passport.serializeUser(function(user, cb) {
-    // FIXME: Replace in-memory user storage with a sustainable solution
-    sessions[user.username] = user;
-    cb(null, user.username);
+    cb(null, user);
 });
 
-passport.deserializeUser(function(id, cb) {
-    // FIXME: Replace in-memory user storage with a sustainable solution
-    const user = sessions[id];
-
-    if (user) {
-        cb(null, user);
-    } else {
-        cb(new Error('User not found'));
-    }
+passport.deserializeUser(function(user, cb) {
+    cb(null, user);
 });
 
 const requireAuthorization = passport.authenticate('local', { failureRedirect: '/login.html', session: true });
