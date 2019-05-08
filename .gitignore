@@ -1,6 +1,3 @@
-# Components
-components/
-
 # IDE
 .buildpath
 .project
@@ -14,10 +11,8 @@ components/
 Thumbs.db
 __MACOSX
 
-# Composer
-composer.phar
-
 # Docker
+.env
 docker-compose.override.yml
 docker-compose-dev.override.yml
 
@@ -31,16 +26,3 @@ node_modules/
 *.log
 dist/
 tmp/
-
-###> symfony/framework-bundle ###
-.env
-/public/bundles/
-/var/
-/vendor/
-/public/vendor/
-###< symfony/framework-bundle ###
-
-###> symfony/web-server-bundle ###
-.web-server-pid
-###< symfony/web-server-bundle ###
-/public/scss/.sass-cache

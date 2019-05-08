@@ -9,7 +9,7 @@ class Page extends React.Component {
 
     render() {
         return (
-            <html lang="en">
+            <html lang="nl">
                 <head>
                     <meta charSet="UTF-8" />
                     <title>{this.props.title || 'Fixxx: Pak Je Kraam'}</title>

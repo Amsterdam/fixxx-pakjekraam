@@ -43,28 +43,30 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// This health check page is required for Docker deployments
+app.get('/status/health', function(req, res) {
+    res.end('OK!');
+});
+
+// Initialize React JSX templates for server-side rendering
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'jsx');
 app.engine('jsx', reactViews.createEngine({ beautify: true }));
 
-app.post('/login.html', passport.authenticate('local', { failureRedirect: '/login-error' }), function(req, res) {
+app.get('/', function(req, res) {
+    res.render('HomePage', {});
+});
+
+app.get('/login', function(req, res) {
+    res.render('LoginPage', {});
+});
+
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login-error' }), function(req, res) {
     /*
      * TODO: Redirect to URL specified in URL query parameter,
      * so you go back to the page you intended to visit.
      */
     res.redirect('/api/1.0.0/markt/');
-});
-
-app.get('/', function(req, res) {
-    res.render('HelloWorld', {});
-});
-
-app.get('/status/health', function(req, res) {
-    res.end('OK!');
-});
-
-app.get('/login', function(req, res) {
-    res.redirect('/login.html');
 });
 
 app.get('/logout', function(req, res) {
