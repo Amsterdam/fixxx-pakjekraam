@@ -1,7 +1,7 @@
 {
   "overrides": [
     {
-      "files": "*.js",
+      "files": ["*.js", "*.jsx"],
       "options": {
         "parser": "flow",
         "trailingComma": "all",

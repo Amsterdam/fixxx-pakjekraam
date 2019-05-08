@@ -17,18 +17,20 @@
     "precommit": "npm run lint",
     "lint": "concurrently 'npm:lint:*'",
     "lint:editorconfig": "git ls-files '*.cfg' '*.cnf' '*.conf' '*.crt' '*.css' '*.csv' '*.dockerignore' '*.editorconfig' '*.env' '*.eslintignore' '*.eslintrc' '*.feature' '*.gitattributes' '*.gitignore' '*.groovy' '*.htm' '*.html' '*.ini' '*.json' '*.jsx' '*.key' '*.less' '*.markdown' '*.md' '*.params' '*.pem' '*.php' '*.pub' '*.py' '*.rb' '*.rdf' '*.rq' '*.rsa' '*.scss' '*.service' '*.sh' '*.spec' '*.sql' '*.srl' '*.stylelintrc' '*.svg' '*.ts' '*.twig' '*.txt' '*.vcl' '*.wsdl' '*.xhtml' '*.xliff' '*.xml' '*.xqy' '*.xsd' '*.xsl' '*.xslt' '*.yml' '*AUTHORS' '*CONTRIBUTORS' '*Dockerfile' '*LICENSE' '*Makefile' '*README' '*Jenkinsfile' | xargs lintspaces --matchdotfiles --newline --editorconfig .editorconfig --ignores js-comments",
-    "lint:eslint": "eslint './src/**/*.js'",
+    "lint:eslint": "eslint './src/**/*.js' './src/**/*.jsx'",
     "lint-fix": "concurrently 'npm:lint-fix:*'",
     "lint-fix:eslint": "npm run lint:eslint -- --fix",
-    "lint-fix:prettier": "prettier --write '**/*.js' '**/*.json'",
+    "lint-fix:prettier": "prettier --write '**/*.js' '**/*.json' '**/*.jsx' '*.yml'",
     "lint-non-npm": "git ls-files '*.yml' | tr '\n' '\\0' | xargs -0 yamllint"
   },
   "author": "",
   "license": "MPL-2.0",
   "devDependencies": {
+    "babel-eslint": "10.0.1",
     "concurrently": "4.1.0",
     "eslint": "5.6.1",
     "eslint-config-prettier": "4.2.0",
+    "eslint-plugin-react": "7.13.0",
     "husky": "2.1.0",
     "jest": "24.7.1",
     "lint-staged": "8.1.5",
@@ -37,6 +39,7 @@
     "prettier": "1.17.0"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "7.4.4",
     "axios": "0.18.0",
     "body-parser": "1.18.3",
     "connect-ensure-login": "0.1.1",
@@ -46,6 +49,7 @@
     "express-session": "1.15.6",
     "passport": "0.4.0",
     "passport-local": "1.0.0",
+    "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6"
   }

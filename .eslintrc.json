@@ -6,9 +6,11 @@
     "jest": true,
     "shared-node-browser": true
   },
-  "extends": ["eslint:recommended", "prettier"],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
+  "parser": "babel-eslint",
   "parserOptions": {
-    "ecmaVersion": 2019
+    "ecmaVersion": 2019,
+    "jsx": true
   },
   "rules": {
     "accessor-pairs": ["error"],
@@ -36,7 +38,7 @@
     "consistent-return": ["error"],
     "consistent-this": ["error"],
     "constructor-super": ["error"],
-    "class-methods-use-this": ["error"],
+    "class-methods-use-this": ["error", { "exceptMethods": ["render"] }],
     "default-case": ["error"],
     "dot-location": ["error", "property"],
     "dot-notation": ["error"],
@@ -254,7 +256,7 @@
         "ignoreCase": true
       }
     ],
-    "space-before-function-paren": ["error", { "anonymous": "always", "named": "never" }],
+    "space-before-function-paren": ["off", { "anonymous": "always", "named": "never" }],
     "space-in-parens": ["off", "never"],
     "space-infix-ops": ["off"],
     "space-unary-ops": [
@@ -274,5 +276,10 @@
     "yield-star-spacing": ["error"],
     "yoda": ["error", "never"],
     "valid-typeof": ["error"]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
