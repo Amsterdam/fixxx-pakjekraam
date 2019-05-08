@@ -12,7 +12,7 @@ Om de database op te starten tijdens development draai je:
 docker-compose -f docker-compose-dev.yml up -d database_dev
 ```
 
-Draai `npm run dev` tijdens development (code wijzigen zorgt voor reload), of `npm run start` voor de echte versie. Gebruik `Control+C` om af te sluiten.
+Draai `( . .env && npm run dev)` tijdens development (code wijzigen zorgt voor reload), of `npm run start` voor de echte versie. Gebruik `Control+C` om af te sluiten.
 
 ### Installatie via Docker (development)
 
