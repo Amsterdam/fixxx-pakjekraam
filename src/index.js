@@ -57,6 +57,10 @@ app.get('/', function(req, res) {
     res.render('HomePage', {});
 });
 
+app.get('/markt/', ensureLoggedIn(), function(req, res) {
+    getMarkten(req.user.token).then(markten => res.render('MarktenPage', { markten }));
+});
+
 app.get('/login', function(req, res) {
     res.render('LoginPage', {});
 });

@@ -6,6 +6,7 @@ class MainNavigation extends React.Component {
         return (
             <nav>
                 <a href="/login">Login</a>
+                <a href="/markt/">Markten</a>
             </nav>
         );
     }
