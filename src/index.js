@@ -1,9 +1,8 @@
-'use strict';
-
 const express = require('express');
 const reactViews = require('express-react-views');
 const session = require('express-session');
 const passport = require('passport');
+const path = require('path');
 const bodyParser = require('body-parser');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
@@ -24,7 +23,7 @@ app.use(session({ secret: process.env.APP_SECRET, resave: false, saveUninitializ
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.set('views', __dirname + '/views');
+app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'jsx');
 app.engine('jsx', reactViews.createEngine({ beautify: true }));
 

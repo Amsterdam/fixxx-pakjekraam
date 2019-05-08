@@ -1,11 +1,10 @@
-'use strict';
-
 const axios = require('axios');
 
-let makkelijkeMarktAPI, loginResponse, token;
+let makkelijkeMarktAPI;
 
 const trace = arg => {
     console.log(arg);
+
     return arg;
 };
 

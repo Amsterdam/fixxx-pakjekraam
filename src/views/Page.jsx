@@ -1,6 +1,12 @@
-var React = require('react');
+const PropTypes = require('prop-types');
+const React = require('react');
 
 class Page extends React.Component {
+    propTypes = {
+        children: PropTypes.optionalNode,
+        title: PropTypes.string,
+    };
+
     render() {
         return (
             <html lang="en">

@@ -1,5 +1,5 @@
-const React = require("react");
-const Page = require("./Page.jsx");
+const React = require('react');
+const Page = require('./Page.jsx');
 
 class HelloWorld extends React.Component {
     render() {
