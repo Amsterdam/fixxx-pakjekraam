@@ -1,0 +1,524 @@
+{
+  "obstakels": [
+    {
+      "kraamA": 3,
+      "kraamB": 5,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 9,
+      "kraamB": 11,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 13,
+      "kraamB": 15,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 12,
+      "kraamB": 13,
+      "obstakel": "lantaarnpaal"
+    },
+    {
+      "kraamA": 4,
+      "kraamB": 6,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 8,
+      "kraamB": 10,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 12,
+      "kraamB": 14,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 14,
+      "kraamB": 16,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 16,
+      "kraamB": 18,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 26,
+      "kraamB": 28,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 30,
+      "kraamB": 32,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 38,
+      "kraamB": 40,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 46,
+      "kraamB": 48,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 50,
+      "kraamB": 52,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 25,
+      "kraamB": 27,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 27,
+      "kraamB": 29,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 31,
+      "kraamB": 33,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 33,
+      "kraamB": 35,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 35,
+      "kraamB": 37,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 39,
+      "kraamB": 41,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 41,
+      "kraamB": 43,
+      "obstakel": "bankje"
+    },
+    {
+      "kraamA": 43,
+      "kraamB": 45,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 47,
+      "kraamB": 49,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 58,
+      "kraamB": 60,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 62,
+      "kraamB": 64,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 66,
+      "kraamB": 68,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 70,
+      "kraamB": 72,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 74,
+      "kraamB": 76,
+      "obstakel": "bankje"
+    },
+    {
+      "kraamA": 78,
+      "kraamB": 80,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 57,
+      "kraamB": 59,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 59,
+      "kraamB": 61,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 63,
+      "kraamB": 65,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 67,
+      "kraamB": 69,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 69,
+      "kraamB": 71,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 71,
+      "kraamB": 73,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 75,
+      "kraamB": 77,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 79,
+      "kraamB": 81,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 88,
+      "kraamB": 90,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 90,
+      "kraamB": 92,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 94,
+      "kraamB": 96,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 98,
+      "kraamB": 100,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 102,
+      "kraamB": 104,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 104,
+      "kraamB": 106,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 106,
+      "kraamB": 108,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 110,
+      "kraamB": 112,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 114,
+      "kraamB": 116,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 87,
+      "kraamB": 89,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 91,
+      "kraamB": 93,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 93,
+      "kraamB": 95,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 97,
+      "kraamB": 99,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 101,
+      "kraamB": 103,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 103,
+      "kraamB": 105,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 105,
+      "kraamB": 107,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 109,
+      "kraamB": 111,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 113,
+      "kraamB": 115,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 124,
+      "kraamB": 126,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 128,
+      "kraamB": 130,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 132,
+      "kraamB": 134,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 136,
+      "kraamB": 138,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 140,
+      "kraamB": 142,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 144,
+      "kraamB": 146,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 119,
+      "kraamB": 121,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 133,
+      "kraamB": 135,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 137,
+      "kraamB": 139,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 150,
+      "kraamB": 152,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 154,
+      "kraamB": 156,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 158,
+      "kraamB": 160,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 162,
+      "kraamB": 164,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 166,
+      "kraamB": 168,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 168,
+      "kraamB": 182,
+      "obstakel": "Zijstraat"
+    },
+    {
+      "kraamA": 188,
+      "kraamB": 190,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 192,
+      "kraamB": 194,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 196,
+      "kraamB": 198,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 200,
+      "kraamB": 202,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 149,
+      "kraamB": 151,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 153,
+      "kraamB": 155,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 157,
+      "kraamB": 159,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 161,
+      "kraamB": 163,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 165,
+      "kraamB": 167,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 169,
+      "kraamB": 183,
+      "obstakel": "Zijstraat"
+    },
+    {
+      "kraamA": 191,
+      "kraamB": 193,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 197,
+      "kraamB": 199,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 201,
+      "kraamB": 203,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 208,
+      "kraamB": 210,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 212,
+      "kraamB": 214,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 216,
+      "kraamB": 218,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 218,
+      "kraamB": 220,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 222,
+      "kraamB": 224,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 226,
+      "kraamB": 228,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 230,
+      "kraamB": 232,
+      "obstakel": "Reinwardtstraat"
+    },
+    {
+      "kraamA": 234,
+      "kraamB": 236,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 242,
+      "kraamB": 244,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 209,
+      "kraamB": 211,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 213,
+      "kraamB": 215,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 217,
+      "kraamB": 219,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 221,
+      "kraamB": 223,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 223,
+      "kraamB": 225,
+      "obstakel": "loopjediedichtmag"
+    },
+    {
+      "kraamA": 227,
+      "kraamB": 229,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 231,
+      "kraamB": 233,
+      "obstakel": "Reinwardtstraat"
+    },
+    {
+      "kraamA": 235,
+      "kraamB": 237,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 237,
+      "kraamB": 239,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 241,
+      "kraamB": 243,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 243,
+      "kraamB": 245,
+      "obstakel": "boom"
+    },
+    {
+      "kraamA": 245,
+      "kraamB": 247,
+      "obstakel": "loopje"
+    }
+  ]
+}

@@ -8,7 +8,8 @@ const bodyParser = require('body-parser');
 const models = require('./model/index.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
-const { login, getMarkten } = require('./makkelijkemarkt-api.js');
+const { login, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
+const { getLooplijstInput, getMarkten } = require('./pakjekraam-api.js');
 
 const HTTP_INTERNAL_SERVER_ERROR = 500;
 const HTTP_DEFAULT_PORT = 8080;
@@ -61,6 +62,10 @@ app.get('/markt/', ensureLoggedIn(), function(req, res) {
     getMarkten(req.user.token).then(markten => res.render('MarktenPage', { markten }));
 });
 
+app.get('/markt/:marktId/', ensureLoggedIn(), function(req, res) {
+    getMarkten(req.user.token).then(markten => res.render('MarktenPage', { markten }));
+});
+
 app.get('/login', function(req, res) {
     res.render('LoginPage', {});
 });
@@ -70,7 +75,7 @@ app.post('/login', passport.authenticate('local', { failureRedirect: '/login-err
      * TODO: Redirect to URL specified in URL query parameter,
      * so you go back to the page you intended to visit.
      */
-    res.redirect('/api/1.0.0/markt/');
+    res.redirect('/markt/');
 });
 
 app.get('/logout', function(req, res) {
@@ -78,7 +83,11 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-app.get('/api/1.0.0/markt/', ensureLoggedIn(), (req, res) => {
+app.get('/markt-indeling/:marktId/:datum/', ensureLoggedIn(), (req, res) => {
+    res.render('MarktIndelingPage', {});
+});
+
+app.get('/api/1.1.0/markt/', ensureLoggedIn(), (req, res) => {
     getMarkten(req.user.token).then(
         markten => {
             res.set({
@@ -87,9 +96,41 @@ app.get('/api/1.0.0/markt/', ensureLoggedIn(), (req, res) => {
             res.send(JSON.stringify(markten));
         },
         err => {
-            res.exit(HTTP_INTERNAL_SERVER_ERROR);
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
         },
     );
+});
+
+app.get('/api/1.1.0/lijst/week/:marktId', ensureLoggedIn(), (req, res) => {
+    getMarktondernemersByMarkt(req.user.token, req.params.marktId).then(
+        markten => {
+            res.set({
+                'Content-Type': 'application/json; charset=UTF-8',
+            });
+            res.send(JSON.stringify(markten));
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+        },
+    );
+});
+
+app.get('/markt-indeling/:marktId/data.json', ensureLoggedIn(), (req, res) => {
+    getLooplijstInput(req.user.token, req.params.marktId).then(
+        data => {
+            res.set({
+                'Content-Type': 'application/json; charset=UTF-8',
+            });
+            res.send(JSON.stringify(data, null, '  '));
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
+        },
+    );
+});
+
+app.get('/markt-indeling/:marktId/:datum/', ensureLoggedIn(), (req, res) => {
+    res.render('MarktIndelingPage', {});
 });
 
 // Static files that are public (robots.txt, favicon.ico)

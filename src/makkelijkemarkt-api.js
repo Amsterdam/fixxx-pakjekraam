@@ -31,11 +31,22 @@ const login = data => {
 };
 
 const getMarktondernemers = token => {
-    return makkelijkeMarktAPI.get('koopman/', {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+    return makkelijkeMarktAPI
+        .get('koopman/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(response => response.data);
+};
+const getMarktondernemersByMarkt = (token, marktId) => {
+    return makkelijkeMarktAPI
+        .get(`lijst/week/${marktId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(response => response.data);
 };
 
 const getMarkten = token => {
@@ -53,4 +64,5 @@ module.exports = {
     login,
     getMarkten,
     getMarktondernemers,
+    getMarktondernemersByMarkt,
 };

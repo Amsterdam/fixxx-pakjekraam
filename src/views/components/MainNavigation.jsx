@@ -5,8 +5,14 @@ class MainNavigation extends React.Component {
     render() {
         return (
             <nav>
-                <a href="/login">Login</a>
-                <a href="/markt/">Markten</a>
+                <ul>
+                    <li>
+                        <a href="/login">Login</a>
+                    </li>
+                    <li>
+                        <a href="/markt/">Markten</a>
+                    </li>
+                </ul>
             </nav>
         );
     }

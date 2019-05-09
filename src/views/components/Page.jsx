@@ -13,7 +13,7 @@ class Page extends React.Component {
                 <head>
                     <meta charSet="UTF-8" />
                     <title>{this.props.title || 'Fixxx: Pak Je Kraam'}</title>
-                    <link rel="stylesheet" type="text/css" href="style/screen.css" />
+                    <link rel="stylesheet" type="text/css" href="/style/screen.css" />
                 </head>
                 <body>{this.props.children}</body>
             </html>

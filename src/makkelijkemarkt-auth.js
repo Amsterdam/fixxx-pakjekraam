@@ -47,7 +47,7 @@ passport.deserializeUser(function(user, cb) {
     cb(null, user);
 });
 
-const requireAuthorization = passport.authenticate('local', { failureRedirect: '/login.html', session: true });
+const requireAuthorization = passport.authenticate('local', { failureRedirect: '/login', session: true });
 
 module.exports = {
     requireAuthorization,

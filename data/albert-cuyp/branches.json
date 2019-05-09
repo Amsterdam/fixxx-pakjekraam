@@ -1,0 +1,46 @@
+[
+  {
+    "id": "bak",
+    "verplicht": true
+  },
+  {
+    "id": "vis",
+    "verplicht": true
+  },
+  {
+    "id": "noten",
+    "verplicht": false
+  },
+  {
+    "id": "kaas",
+    "verplicht": false
+  },
+  {
+    "id": "bakker",
+    "verplicht": false
+  },
+  {
+    "id": "natte-vis",
+    "verplicht": true
+  },
+  {
+    "id": "gebakken-vis",
+    "verplicht": true
+  },
+  {
+    "id": "agf",
+    "verplicht": false
+  },
+  {
+    "id": "kip",
+    "verplicht": false
+  },
+  {
+    "id": "churros",
+    "verplicht": false
+  },
+  {
+    "id": "humus-olijven",
+    "verplicht": false
+  }
+]

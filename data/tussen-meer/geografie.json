@@ -1,0 +1,24 @@
+{
+  "obstakels": [
+    {
+      "kraamA": 13,
+      "kraamB": 14,
+      "obstakel": "doorloop"
+    },
+    {
+      "kraamA": 19,
+      "kraamB": 20,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 50,
+      "kraamB": 51,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 56,
+      "kraamB": 57,
+      "obstakel": "doorloop"
+    }
+  ]
+}
