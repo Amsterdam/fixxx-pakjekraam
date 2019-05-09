@@ -87,12 +87,7 @@
       }
     ],
     "newline-before-return": ["error"],
-    "newline-per-chained-call": [
-      "error",
-      {
-        "ignoreChainWithDepth": 2
-      }
-    ],
+    "newline-per-chained-call": ["off"],
     "no-alert": ["error"],
     "no-array-constructor": ["error"],
     "no-async-promise-executor": ["error"],
