@@ -1,5 +1,6 @@
 const { login, getMarkt, getMarkten: getMakkelijkeMarkten, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
 const { ALBERT_CUYP_ID, slugifyMarkt } = require('./domain-knowledge.js');
+const { rsvp } = require('./model/index.js');
 const fs = require('fs');
 
 const loadJSON = (path, defaultValue = null) =>
@@ -18,7 +19,11 @@ const loadJSON = (path, defaultValue = null) =>
         });
     });
 
-const getAanmeldingen = (marktId, date) => loadJSON(`./data/${slugifyMarkt(marktId)}/locaties.json`, []);
+const getAanmeldingen = (marktId, marktDate) => {
+    return rsvp.findAll({
+        where: { marktId, marktDate },
+    });
+};
 
 const getVoorkeuren = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/voorkeuren.json`, []);
 

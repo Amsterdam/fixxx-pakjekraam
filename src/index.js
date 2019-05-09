@@ -21,6 +21,7 @@ const {
 } = require('./pakjekraam-api.js');
 const { calcToewijzingen, simulateAanmeldingen } = require('./www/script/controller.js');
 
+const HTTP_CREATED_SUCCESS = 201;
 const HTTP_INTERNAL_SERVER_ERROR = 500;
 const HTTP_DEFAULT_PORT = 8080;
 
@@ -197,6 +198,35 @@ app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', ensureLoggedIn(), (req, res
             res.status(HTTP_INTERNAL_SERVER_ERROR).end();
         },
     );
+});
+
+app.get('/afmelden/', ensureLoggedIn(), (req, res) => {
+    res.render('AfmeldPage', {});
+});
+
+app.post('/afmelden/', ensureLoggedIn(), (req, res) => {
+    console.log(req.body);
+    res.end('TODO');
+});
+
+app.get('/aanmelden/', ensureLoggedIn(), (req, res) => {
+    res.render('AanmeldPage', {});
+});
+
+const aanmeldFormDataToRSVP = formData => ({
+    marktId: parseInt(formData.marktId, 10),
+    marktDate: formData.aanmelding,
+    erkenningsNummer: parseInt(formData.erkenningsNummer, 10),
+    attending: true,
+});
+
+app.post('/aanmelden/', ensureLoggedIn(), (req, res) => {
+    models.rsvp
+        .create(aanmeldFormDataToRSVP(req.body))
+        .then(
+            () => res.status(HTTP_CREATED_SUCCESS).redirect('/'),
+            error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
+        );
 });
 
 app.get('/markt-indeling/:marktId/data.json', ensureLoggedIn(), (req, res) => {

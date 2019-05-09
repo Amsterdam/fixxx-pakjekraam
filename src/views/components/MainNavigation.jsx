@@ -12,6 +12,12 @@ class MainNavigation extends React.Component {
                     <li>
                         <a href="/markt/">Markten</a>
                     </li>
+                    <li>
+                        <a href="/afmelden/">Afmelden vasteplekhouders</a>
+                    </li>
+                    <li>
+                        <a href="/aanmelden/">Aanmelden sollicitanten</a>
+                    </li>
                 </ul>
             </nav>
         );
