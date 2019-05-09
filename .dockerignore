@@ -4,6 +4,7 @@
 .DS_Store
 .env
 .npm/
+.npmrc
 .vscode/
 dist/
 node_modules/
