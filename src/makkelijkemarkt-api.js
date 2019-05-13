@@ -1,4 +1,14 @@
 const axios = require('axios');
+const { setupCache } = require('axios-cache-adapter');
+
+const MILLISECONDS_IN_SECOND = 1000;
+const SECONDS_IN_MINUTE = 60;
+const MINUTES_IN_HOUR = 60;
+const CACHE_MAXAGE = MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND;
+
+const cache = setupCache({
+    maxAge: CACHE_MAXAGE,
+});
 
 let makkelijkeMarktAPI;
 
@@ -8,6 +18,7 @@ const init = config => {
         headers: {
             MmAppKey: config.appKey,
         },
+        adapter: process.env.NODE_ENV === 'development' ? cache.adapter : undefined,
     });
 };
 
