@@ -9,7 +9,15 @@ const models = require('./model/index.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
 const { login, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
-const { getLooplijstInput, getMarkten } = require('./pakjekraam-api.js');
+const {
+    getLooplijstInput,
+    getAanmeldingen,
+    getVoorkeuren,
+    getBranches,
+    getMarktplaatsen,
+    getMarkten,
+} = require('./pakjekraam-api.js');
+const { calcToewijzingen, simulateAanmeldingen } = require('./www/script/controller.js');
 
 const HTTP_INTERNAL_SERVER_ERROR = 500;
 const HTTP_DEFAULT_PORT = 8080;
@@ -83,7 +91,7 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-app.get('/api/1.1.0/markt/', ensureLoggedIn(), (req, res) => {
+app.get('/makkelijkemarkt/api/1.1.0/markt/', ensureLoggedIn(), (req, res) => {
     getMarkten(req.user.token).then(
         markten => {
             res.set({
@@ -97,13 +105,55 @@ app.get('/api/1.1.0/markt/', ensureLoggedIn(), (req, res) => {
     );
 });
 
-app.get('/api/1.1.0/lijst/week/:marktId', ensureLoggedIn(), (req, res) => {
+app.get('/makkelijkemarkt/api/1.1.0/lijst/week/:marktId', ensureLoggedIn(), (req, res) => {
     getMarktondernemersByMarkt(req.user.token, req.params.marktId).then(
         markten => {
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8',
             });
             res.send(JSON.stringify(markten));
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+        },
+    );
+});
+
+app.get('/api/0.0.1/markt/:marktId/branches.json', ensureLoggedIn(), (req, res) => {
+    getBranches(req.params.marktId).then(
+        branches => {
+            res.set({
+                'Content-Type': 'application/json; charset=UTF-8',
+            });
+            res.send(JSON.stringify(branches));
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+        },
+    );
+});
+
+app.get('/api/0.0.1/markt/:marktId/:date/aanmeldingen.json', ensureLoggedIn(), (req, res) => {
+    getAanmeldingen(req.params.marktId, req.params.date).then(
+        branches => {
+            res.set({
+                'Content-Type': 'application/json; charset=UTF-8',
+            });
+            res.send(JSON.stringify(branches));
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+        },
+    );
+});
+
+app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', ensureLoggedIn(), (req, res) => {
+    getVoorkeuren(req.params.marktId).then(
+        branches => {
+            res.set({
+                'Content-Type': 'application/json; charset=UTF-8',
+            });
+            res.send(JSON.stringify(branches));
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end();
@@ -118,6 +168,26 @@ app.get('/markt-indeling/:marktId/data.json', ensureLoggedIn(), (req, res) => {
                 'Content-Type': 'application/json; charset=UTF-8',
             });
             res.send(JSON.stringify(data, null, '  '));
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
+        },
+    );
+});
+
+app.get('/markt-indeling/:marktId/:datum/concept-indeling.json', ensureLoggedIn(), (req, res) => {
+    getLooplijstInput(req.user.token, req.params.marktId).then(
+        markt => {
+            markt = simulateAanmeldingen(markt);
+
+            console.time(`Berekenen looplijst`);
+            markt.toewijzingen = calcToewijzingen(markt);
+            console.timeEnd(`Berekenen looplijst`);
+
+            res.set({
+                'Content-Type': 'application/json; charset=UTF-8',
+            });
+            res.send(JSON.stringify(markt.toewijzingen, null, '  '));
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);

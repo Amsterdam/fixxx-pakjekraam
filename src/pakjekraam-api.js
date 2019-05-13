@@ -2,19 +2,33 @@ const { login, getMarkten: getMakkelijkeMarkten, getMarktondernemersByMarkt } = 
 const { ALBERT_CUYP_ID, slugifyMarkt } = require('./domain-knowledge.js');
 const fs = require('fs');
 
-const loadJSON = path => {
-    console.log(`Load ${path}`);
-    try {
-        return JSON.parse(fs.readFileSync(path));
-    } catch (e) {
-        return null;
-    }
-};
+const loadJSON = (path, defaultValue = null) =>
+    new Promise((resolve, reject) => {
+        console.log(`Load ${path}`);
+        fs.readFile(path, (err, data) => {
+            if (err) {
+                resolve(defaultValue);
+            } else {
+                try {
+                    resolve(JSON.parse(data));
+                } catch (e) {
+                    reject(e);
+                }
+            }
+        });
+    });
 
-const getLooplijstInput = (token, marktId) =>
-    // new Promise(resolve => resolve(loadJSON(`tmp/lijst/week/${marktId}/index.json`)))
-    getMarktondernemersByMarkt(token, marktId)
-        .then(ondernemers =>
+const getAanmeldingen = (marktId, date) => loadJSON(`./data/${slugifyMarkt(marktId)}/locaties.json`, []);
+
+const getVoorkeuren = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/voorkeuren.json`, []);
+
+const getBranches = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/branches.json`, []);
+
+const getMarktplaatsen = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/locaties.json`, []);
+
+const getLooplijstInput = (token, marktId, date) =>
+    Promise.all([
+        getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
             ondernemers
                 .filter(ondernemer => !ondernemer.doorgehaald)
                 .map(data => {
@@ -29,18 +43,22 @@ const getLooplijstInput = (token, marktId) =>
                         status,
                     };
                 }),
-        )
-        .then(ondernemers => {
-            const slug = slugifyMarkt(marktId);
+        ),
+        getMarktplaatsen(marktId),
+        getAanmeldingen(marktId, date),
+        getVoorkeuren(marktId),
+        getBranches(marktId),
+    ]).then(args => {
+        const [ondernemers, locaties, aanmeldingen, voorkeuren, branches] = args;
 
-            return {
-                locaties: loadJSON(`./data/${slug}/locaties.json`) || [],
-                aanmeldingen: loadJSON(`./data/${slug}/aanmeldingen.json`) || [],
-                voorkeuren: loadJSON(`./data/${slug}/voorkeuren.json`) || [],
-                branches: loadJSON(`./data/${slug}/branches.json`) || [],
-                ondernemers,
-            };
-        });
+        return {
+            locaties,
+            aanmeldingen,
+            voorkeuren,
+            branches,
+            ondernemers,
+        };
+    });
 
 const getMarkten = token =>
     getMakkelijkeMarkten(token)
@@ -48,6 +66,10 @@ const getMarkten = token =>
         .then(markten => markten.filter(markt => fs.existsSync(`data/${slugifyMarkt(markt.id)}/locaties.json`)));
 
 module.exports = {
+    getAanmeldingen,
+    getVoorkeuren,
+    getBranches,
+    getMarktplaatsen,
     getLooplijstInput,
     getMarkten,
 };

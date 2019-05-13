@@ -169,3 +169,10 @@ const simulateAanmeldingen = markt => {
         aanmeldingen,
     };
 };
+
+if (typeof module !== 'undefined' && module && module.exports) {
+    module.exports = {
+        calcToewijzingen,
+        simulateAanmeldingen,
+    };
+}
