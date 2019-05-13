@@ -83,10 +83,6 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-app.get('/markt-indeling/:marktId/:datum/', ensureLoggedIn(), (req, res) => {
-    res.render('MarktIndelingPage', {});
-});
-
 app.get('/api/1.1.0/markt/', ensureLoggedIn(), (req, res) => {
     getMarkten(req.user.token).then(
         markten => {
