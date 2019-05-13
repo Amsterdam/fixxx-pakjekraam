@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    font-family: $ff-regular;
+    @include p1;
+
+    &.page-markt-detail {
+        background-color: $neutral-grey2;
+    }
+}

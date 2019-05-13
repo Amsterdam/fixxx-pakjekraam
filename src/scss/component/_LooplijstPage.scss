@@ -1,0 +1,134 @@
+@import "../global/variables";
+@import "../global/designSystem";
+
+.looplijst-page {
+
+}
+
+
+.looplijst__h {
+    width: 100%;
+}
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+@media print {
+
+    .LooplijstPage,
+    .looplijst-page {
+        padding-top: 0;
+        display: flex !important;
+        //justify-content: space-around;
+        //flex-wrap: wrap;
+        min-width: 0 !important;
+        margin: 0;
+        background-color: #fff;
+        width: 100vw;
+        height: 100vh;
+        page-break-after: always;
+        &__wrapper {
+            margin: 0;
+            padding: 0;
+        }
+
+    }
+}
+
+table {
+    width: 100%;
+    //border: 1px solid;
+}
+
+.street-bundel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.looplijst__list {
+    width: 40%;
+    table {
+        //border-right: 1px solid;
+
+    }
+
+}
+
+.LooplijstPage {
+    background-color: $primary-white;
+    //border-bottom: 2px solid $neutral-grey5;
+    //border-right: 2px solid $neutral-grey5;
+    box-shadow: $boxShadowDefault;
+    margin-bottom: 30px;
+    &__ratio {
+
+        position: relative;
+        height: 0;
+        width: 100%;
+        &[data-ratio="210:297"] {
+            padding-top: (297 / 210) * 100%;
+        }
+    }
+    &__wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(100% - 40px);
+        height: 100%;
+
+        display: block;
+        flex-wrap: wrap;
+        flex-direction: row;
+        padding: 50px 20px 20px;
+    }
+    &__list-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    &__index {
+        position: absolute;
+        right: 0;
+        //transform: translateX(-50%);
+        font-size: 30px;
+        line-height: 40px;
+        text-align: center;
+        display: block;
+        width: 40px;
+        height: 40px;
+        border: 2px solid #000;
+        border-radius: 50%;
+        top: -10px;
+    }
+    &__heading {
+        display: inline-block;
+        margin: 0;
+        position: relative;
+        padding-right: 60px;
+        margin-bottom: 20px;
+    }
+    &__street {
+        width: 100%;
+        height: 40px;
+        margin-top: 60px;
+        text-align: center;
+    }
+
+}
+
+//.albert-cuypstraat {
+//  &__straat-3b,
+//  &__straat-3a,
+//  &__straat-2a,
+//  &__straat-2b,
+//  &__straat-1b,
+//  &__straat-1a {
+//    width: 40%;
+//    border: 1px solid;
+//  }
+//}

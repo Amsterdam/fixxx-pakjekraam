@@ -1,0 +1,33 @@
+@import "../global/designSystem";
+
+tr {
+
+    th,
+    td {
+        padding: 1px 5px;
+    }
+    th {
+        line-height: 30px;
+        @include p1;
+    }
+}
+.LooplijstList {
+    width: 48%;
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+    &__header {
+        width: 33.333%;
+        border: none;
+    }
+    &__header-row {
+        display: flex;
+    }
+    &__header-plaats {
+        width: 10%;
+    }
+    &__header-properties {
+        width: 12px;
+    }
+}

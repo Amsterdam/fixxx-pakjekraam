@@ -1,5 +1,6 @@
 const albertCuyp = fetch('../data.json').then(response => response.json());
 
+
 Promise.all([albertCuyp]).then(args => {
     let [markt] = args;
 

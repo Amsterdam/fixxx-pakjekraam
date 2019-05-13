@@ -1,0 +1,21 @@
+@import "../global/designSystem";
+@import "../global/variables";
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+    max-width: $maxWidth;
+    &__content {
+        margin: 0 $containerMarginMobile;
+    }
+  @media screen and (min-width: $screenMedium) {
+    &__content {
+        margin: 0 $containerMarginDesktop;
+    }
+  }
+  @media screen and (min-width: $screenLarge) {
+    &__content {
+        margin: 0 $containerMarginDesktopPlus;
+    }
+  }
+}

@@ -1,0 +1,55 @@
+$screenMedium: 540px;
+$screenLarge: 1024px;
+
+$columnWidth: 60px;
+$gutterWidth: 20px;
+$maxWidth: 1000px;
+$containerMarginMobile: 15px;
+$containerMarginDesktop: 20px;
+$containerMarginDesktopPlus: 30px;
+
+$colorListBranch: (
+    stn  : #000000,
+    agf  : #2aff00,
+    blm  : #ff0084,
+    vis  : #5aacff,
+    kip  : #ffeaad,
+    kas  : #ffca28,
+    bak  : #ff0000,
+    baks1  : #000022,
+    baks2  : #000033,
+    baks3  : #000044,
+    baks4  : #000055,
+    baks5  : #000066,
+    baks6 : #000077,
+);
+
+$iconListPlaats: (
+    loopje,
+    loopjediedichtmag,
+    lantaarnpaal,
+    bankje,
+    boom,
+    electra,
+);
+
+
+$ff-regular: "Avenir Next LT W01 Regular", verdana, sans-serif;
+$ff-bold: "Avenir Next LT W01 Demi", verdana, sans-serif;
+
+$fs-100: 30px;
+$fs-90: 24px;
+$fs-80: 20px;
+$fs-70: 18px;
+$fs-60: 16px;
+$fs-50: 14px;
+
+$lh-100: 38px;
+$lh-90: 30px;
+$lh-80: 28px;
+$lh-70: 25px;
+$lh-60: 22px;
+$lh-50: 18px;
+
+
+$boxShadowDefault: 2px 3px 4px 0 rgba(0,0,0,0.2);

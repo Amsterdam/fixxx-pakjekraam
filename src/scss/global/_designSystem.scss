@@ -1,0 +1,1007 @@
+/**** Colors ****/
+$neutral-grey1: #f5f5f5;
+$neutral-grey2: #e6e6e6;
+$neutral-grey3: #b4b4b4;
+$neutral-grey4: #767676;
+$neutral-grey5: #323232;
+$overlay-black50: rgba(0, 0, 0, 0.5);
+$primary-black: #000000;
+$primary-darkblue: #004699;
+$primary-red: #ec0000;
+$primary-white: #ffffff;
+$supplement-darkgreen: #00a03c;
+$supplement-lightblue: #009dec;
+$supplement-lightgreen: #bed200;
+$supplement-orange: #ff9100;
+$supplement-pink: #e50082;
+$supplement-purple: #a00078;
+$supplement-yellow: #ffe600;
+$support-focus: #fec813;
+$support-invalid: #ec0000;
+$support-valid: #00a03c;
+
+/**** Fonts ****/
+/** breadcrumb **/
+$breadcrumb-font-size: 14px;
+$breadcrumb-color: #767676;
+$breadcrumb-line-height: 22px;
+$breadcrumb-font-family: Avenir Next;
+$breadcrumb-font-weight: 400;
+$breadcrumb-text-align: left;
+
+@mixin breadcrumb() {
+  font-size: $breadcrumb-font-size;
+  color: $breadcrumb-color;
+  line-height: $breadcrumb-line-height;
+  font-family: $breadcrumb-font-family;
+  font-weight: $breadcrumb-font-weight;
+  text-align: $breadcrumb-text-align;
+}
+/** breadcrumb-hovered **/
+$breadcrumb-hovered-font-size: 14px;
+$breadcrumb-hovered-color: #EC0000;
+$breadcrumb-hovered-line-height: 22px;
+$breadcrumb-hovered-font-family: Avenir Next;
+$breadcrumb-hovered-font-weight: 400;
+$breadcrumb-hovered-text-decoration: underline;
+$breadcrumb-hovered-text-align: left;
+
+@mixin breadcrumb-hovered() {
+  font-size: $breadcrumb-hovered-font-size;
+  color: $breadcrumb-hovered-color;
+  line-height: $breadcrumb-hovered-line-height;
+  font-family: $breadcrumb-hovered-font-family;
+  font-weight: $breadcrumb-hovered-font-weight;
+  text-decoration: $breadcrumb-hovered-text-decoration;
+  text-align: $breadcrumb-hovered-text-align;
+}
+/** buttonlabel-disabled **/
+$buttonlabel-disabled-font-size: 16px;
+$buttonlabel-disabled-color: #B4B4B4;
+$buttonlabel-disabled-font-family: Avenir Next LT Pro;
+$buttonlabel-disabled-font-weight: 500;
+$buttonlabel-disabled-text-align: left;
+
+@mixin buttonlabel-disabled() {
+  font-size: $buttonlabel-disabled-font-size;
+  color: $buttonlabel-disabled-color;
+  font-family: $buttonlabel-disabled-font-family;
+  font-weight: $buttonlabel-disabled-font-weight;
+  text-align: $buttonlabel-disabled-text-align;
+}
+/** buttonlabel-primary **/
+$buttonlabel-primary-font-size: 16px;
+$buttonlabel-primary-color: #FFFFFF;
+$buttonlabel-primary-font-family: Avenir Next LT Pro;
+$buttonlabel-primary-font-weight: 500;
+$buttonlabel-primary-text-align: left;
+
+@mixin buttonlabel-primary() {
+  font-size: $buttonlabel-primary-font-size;
+  color: $buttonlabel-primary-color;
+  font-family: $buttonlabel-primary-font-family;
+  font-weight: $buttonlabel-primary-font-weight;
+  text-align: $buttonlabel-primary-text-align;
+}
+/** buttonlabel-secondary **/
+$buttonlabel-secondary-font-size: 16px;
+$buttonlabel-secondary-color: #004699;
+$buttonlabel-secondary-font-family: Avenir Next LT Pro;
+$buttonlabel-secondary-font-weight: 500;
+$buttonlabel-secondary-text-align: left;
+
+@mixin buttonlabel-secondary() {
+  font-size: $buttonlabel-secondary-font-size;
+  color: $buttonlabel-secondary-color;
+  font-family: $buttonlabel-secondary-font-family;
+  font-weight: $buttonlabel-secondary-font-weight;
+  text-align: $buttonlabel-secondary-text-align;
+}
+/** buttonlabel-tertiary **/
+$buttonlabel-tertiary-font-size: 16px;
+$buttonlabel-tertiary-color: #000000;
+$buttonlabel-tertiary-font-family: Avenir Next LT Pro;
+$buttonlabel-tertiary-font-weight: 500;
+$buttonlabel-tertiary-text-align: left;
+
+@mixin buttonlabel-tertiary() {
+  font-size: $buttonlabel-tertiary-font-size;
+  color: $buttonlabel-tertiary-color;
+  font-family: $buttonlabel-tertiary-font-family;
+  font-weight: $buttonlabel-tertiary-font-weight;
+  text-align: $buttonlabel-tertiary-text-align;
+}
+/** character-count **/
+$character-count-font-size: 16px;
+$character-count-color: #767676;
+$character-count-line-height: 22px;
+$character-count-font-family: Avenir Next LT Pro;
+$character-count-font-weight: 400;
+$character-count-text-align: left;
+
+@mixin character-count() {
+  font-size: $character-count-font-size;
+  color: $character-count-color;
+  line-height: $character-count-line-height;
+  font-family: $character-count-font-family;
+  font-weight: $character-count-font-weight;
+  text-align: $character-count-text-align;
+}
+/** default **/
+$default-font-size: 16px;
+$default-color: #000000;
+$default-line-height: 22px;
+$default-font-family: Avenir Next LT Pro;
+$default-font-weight: 500;
+$default-text-align: left;
+
+@mixin default() {
+  font-size: $default-font-size;
+  color: $default-color;
+  line-height: $default-line-height;
+  font-family: $default-font-family;
+  font-weight: $default-font-weight;
+  text-align: $default-text-align;
+}
+/** formfield-label **/
+$formfield-label-font-size: 18px;
+$formfield-label-color: #000000;
+$formfield-label-line-height: 25px;
+$formfield-label-font-family: Avenir Next LT Pro;
+$formfield-label-font-weight: 500;
+$formfield-label-text-align: left;
+
+@mixin formfield-label() {
+  font-size: $formfield-label-font-size;
+  color: $formfield-label-color;
+  line-height: $formfield-label-line-height;
+  font-family: $formfield-label-font-family;
+  font-weight: $formfield-label-font-weight;
+  text-align: $formfield-label-text-align;
+}
+/** h1 **/
+$h1-font-size: 30px;
+$h1-color: #000000;
+$h1-line-height: 38px;
+$h1-font-family: Avenir Next LT Pro;
+$h1-font-weight: 500;
+$h1-text-align: left;
+
+@mixin h1() {
+  font-size: $h1-font-size;
+  color: $h1-color;
+  line-height: $h1-line-height;
+  font-family: $h1-font-family;
+  font-weight: $h1-font-weight;
+  text-align: $h1-text-align;
+}
+/** h1 **/
+$h1-font-size: 30px;
+$h1-color: #FFFFFF;
+$h1-line-height: 38px;
+$h1-font-family: Avenir Next LT Pro;
+$h1-font-weight: 500;
+$h1-text-align: left;
+
+@mixin h1() {
+  font-size: $h1-font-size;
+  color: $h1-color;
+  line-height: $h1-line-height;
+  font-family: $h1-font-family;
+  font-weight: $h1-font-weight;
+  text-align: $h1-text-align;
+}
+/** h1 **/
+$h1-font-size: 24px;
+$h1-color: #FFFFFF;
+$h1-line-height: 30px;
+$h1-font-family: Avenir Next LT Pro;
+$h1-font-weight: 500;
+$h1-text-align: left;
+
+@mixin h1() {
+  font-size: $h1-font-size;
+  color: $h1-color;
+  line-height: $h1-line-height;
+  font-family: $h1-font-family;
+  font-weight: $h1-font-weight;
+  text-align: $h1-text-align;
+}
+/** h1 **/
+$h1-font-size: 24px;
+$h1-color: #000000;
+$h1-line-height: 30px;
+$h1-font-family: Avenir Next LT Pro;
+$h1-font-weight: 500;
+$h1-text-align: left;
+
+@mixin h1() {
+  font-size: $h1-font-size;
+  color: $h1-color;
+  line-height: $h1-line-height;
+  font-family: $h1-font-family;
+  font-weight: $h1-font-weight;
+  text-align: $h1-text-align;
+}
+/** h2 **/
+$h2-font-size: 24px;
+$h2-color: #000000;
+$h2-line-height: 30px;
+$h2-font-family: Avenir Next LT Pro;
+$h2-font-weight: 500;
+$h2-text-align: left;
+
+@mixin h2() {
+  font-size: $h2-font-size;
+  color: $h2-color;
+  line-height: $h2-line-height;
+  font-family: $h2-font-family;
+  font-weight: $h2-font-weight;
+  text-align: $h2-text-align;
+}
+/** h2 **/
+$h2-font-size: 24px;
+$h2-color: #FFFFFF;
+$h2-line-height: 30px;
+$h2-font-family: Avenir Next LT Pro;
+$h2-font-weight: 500;
+$h2-text-align: left;
+
+@mixin h2() {
+  font-size: $h2-font-size;
+  color: $h2-color;
+  line-height: $h2-line-height;
+  font-family: $h2-font-family;
+  font-weight: $h2-font-weight;
+  text-align: $h2-text-align;
+}
+/** h2 **/
+$h2-font-size: 20px;
+$h2-color: #FFFFFF;
+$h2-line-height: 28px;
+$h2-font-family: Avenir Next LT Pro;
+$h2-font-weight: 500;
+$h2-text-align: left;
+
+@mixin h2() {
+  font-size: $h2-font-size;
+  color: $h2-color;
+  line-height: $h2-line-height;
+  font-family: $h2-font-family;
+  font-weight: $h2-font-weight;
+  text-align: $h2-text-align;
+}
+/** h2 **/
+$h2-font-size: 20px;
+$h2-color: #000000;
+$h2-line-height: 28px;
+$h2-font-family: Avenir Next LT Pro;
+$h2-font-weight: 500;
+$h2-text-align: left;
+
+@mixin h2() {
+  font-size: $h2-font-size;
+  color: $h2-color;
+  line-height: $h2-line-height;
+  font-family: $h2-font-family;
+  font-weight: $h2-font-weight;
+  text-align: $h2-text-align;
+}
+/** h3 **/
+$h3-font-size: 20px;
+$h3-color: #000000;
+$h3-line-height: 28px;
+$h3-font-family: Avenir Next LT Pro;
+$h3-font-weight: 500;
+$h3-text-align: left;
+
+@mixin h3() {
+  font-size: $h3-font-size;
+  color: $h3-color;
+  line-height: $h3-line-height;
+  font-family: $h3-font-family;
+  font-weight: $h3-font-weight;
+  text-align: $h3-text-align;
+}
+/** h3 **/
+$h3-font-size: 20px;
+$h3-color: #FFFFFF;
+$h3-line-height: 28px;
+$h3-font-family: Avenir Next LT Pro;
+$h3-font-weight: 500;
+$h3-text-align: left;
+
+@mixin h3() {
+  font-size: $h3-font-size;
+  color: $h3-color;
+  line-height: $h3-line-height;
+  font-family: $h3-font-family;
+  font-weight: $h3-font-weight;
+  text-align: $h3-text-align;
+}
+/** h3 **/
+$h3-font-size: 20px;
+$h3-color: #FFFFFF;
+$h3-line-height: 28px;
+$h3-font-family: Avenir Next LT Pro;
+$h3-font-weight: 500;
+$h3-text-align: left;
+
+@mixin h3() {
+  font-size: $h3-font-size;
+  color: $h3-color;
+  line-height: $h3-line-height;
+  font-family: $h3-font-family;
+  font-weight: $h3-font-weight;
+  text-align: $h3-text-align;
+}
+/** h3 **/
+$h3-font-size: 20px;
+$h3-color: #000000;
+$h3-line-height: 28px;
+$h3-font-family: Avenir Next LT Pro;
+$h3-font-weight: 500;
+$h3-text-align: left;
+
+@mixin h3() {
+  font-size: $h3-font-size;
+  color: $h3-color;
+  line-height: $h3-line-height;
+  font-family: $h3-font-family;
+  font-weight: $h3-font-weight;
+  text-align: $h3-text-align;
+}
+/** h4 **/
+$h4-font-size: 18px;
+$h4-color: #000000;
+$h4-line-height: 25px;
+$h4-font-family: Avenir Next LT Pro;
+$h4-font-weight: 500;
+$h4-text-align: left;
+
+@mixin h4() {
+  font-size: $h4-font-size;
+  color: $h4-color;
+  line-height: $h4-line-height;
+  font-family: $h4-font-family;
+  font-weight: $h4-font-weight;
+  text-align: $h4-text-align;
+}
+/** h4 **/
+$h4-font-size: 18px;
+$h4-color: #FFFFFF;
+$h4-line-height: 25px;
+$h4-font-family: Avenir Next LT Pro;
+$h4-font-weight: 500;
+$h4-text-align: left;
+
+@mixin h4() {
+  font-size: $h4-font-size;
+  color: $h4-color;
+  line-height: $h4-line-height;
+  font-family: $h4-font-family;
+  font-weight: $h4-font-weight;
+  text-align: $h4-text-align;
+}
+/** h4 **/
+$h4-font-size: 18px;
+$h4-color: #FFFFFF;
+$h4-line-height: 25px;
+$h4-font-family: Avenir Next LT Pro;
+$h4-font-weight: 500;
+$h4-text-align: left;
+
+@mixin h4() {
+  font-size: $h4-font-size;
+  color: $h4-color;
+  line-height: $h4-line-height;
+  font-family: $h4-font-family;
+  font-weight: $h4-font-weight;
+  text-align: $h4-text-align;
+}
+/** h4 **/
+$h4-font-size: 18px;
+$h4-color: #000000;
+$h4-line-height: 25px;
+$h4-font-family: Avenir Next LT Pro;
+$h4-font-weight: 500;
+$h4-text-align: left;
+
+@mixin h4() {
+  font-size: $h4-font-size;
+  color: $h4-color;
+  line-height: $h4-line-height;
+  font-family: $h4-font-family;
+  font-weight: $h4-font-weight;
+  text-align: $h4-text-align;
+}
+/** hint-text **/
+$hint-text-font-size: 16px;
+$hint-text-color: #767676;
+$hint-text-line-height: 22px;
+$hint-text-font-family: Avenir Next LT Pro;
+$hint-text-font-weight: 400;
+$hint-text-text-align: left;
+
+@mixin hint-text() {
+  font-size: $hint-text-font-size;
+  color: $hint-text-color;
+  line-height: $hint-text-line-height;
+  font-family: $hint-text-font-family;
+  font-weight: $hint-text-font-weight;
+  text-align: $hint-text-text-align;
+}
+/** hover **/
+$hover-font-size: 16px;
+$hover-color: #EC0000;
+$hover-line-height: 22px;
+$hover-font-family: Avenir Next LT Pro;
+$hover-font-weight: 500;
+$hover-text-decoration: underline;
+$hover-text-align: left;
+
+@mixin hover() {
+  font-size: $hover-font-size;
+  color: $hover-color;
+  line-height: $hover-line-height;
+  font-family: $hover-font-family;
+  font-weight: $hover-font-weight;
+  text-decoration: $hover-text-decoration;
+  text-align: $hover-text-align;
+}
+/** intro **/
+$intro-font-size: 18px;
+$intro-color: #000000;
+$intro-line-height: 25px;
+$intro-font-family: Avenir Next LT Pro;
+$intro-font-weight: 500;
+$intro-text-align: left;
+
+@mixin intro() {
+  font-size: $intro-font-size;
+  color: $intro-color;
+  line-height: $intro-line-height;
+  font-family: $intro-font-family;
+  font-weight: $intro-font-weight;
+  text-align: $intro-text-align;
+}
+/** intro **/
+$intro-font-size: 18px;
+$intro-color: #FFFFFF;
+$intro-line-height: 25px;
+$intro-font-family: Avenir Next LT Pro;
+$intro-font-weight: 500;
+$intro-text-align: left;
+
+@mixin intro() {
+  font-size: $intro-font-size;
+  color: $intro-color;
+  line-height: $intro-line-height;
+  font-family: $intro-font-family;
+  font-weight: $intro-font-weight;
+  text-align: $intro-text-align;
+}
+/** intro **/
+$intro-font-size: 16px;
+$intro-color: #FFFFFF;
+$intro-line-height: 22px;
+$intro-font-family: Avenir Next LT Pro;
+$intro-font-weight: 500;
+$intro-text-align: left;
+
+@mixin intro() {
+  font-size: $intro-font-size;
+  color: $intro-color;
+  line-height: $intro-line-height;
+  font-family: $intro-font-family;
+  font-weight: $intro-font-weight;
+  text-align: $intro-text-align;
+}
+/** intro **/
+$intro-font-size: 16px;
+$intro-color: #000000;
+$intro-line-height: 22px;
+$intro-font-family: Avenir Next LT Pro;
+$intro-font-weight: 500;
+$intro-text-align: left;
+
+@mixin intro() {
+  font-size: $intro-font-size;
+  color: $intro-color;
+  line-height: $intro-line-height;
+  font-family: $intro-font-family;
+  font-weight: $intro-font-weight;
+  text-align: $intro-text-align;
+}
+/** link **/
+$link-font-size: 16px;
+$link-color: #004699;
+$link-line-height: 22px;
+$link-font-family: Avenir Next LT Pro;
+$link-font-weight: 400;
+$link-text-decoration: underline;
+$link-text-align: left;
+
+@mixin link() {
+  font-size: $link-font-size;
+  color: $link-color;
+  line-height: $link-line-height;
+  font-family: $link-font-family;
+  font-weight: $link-font-weight;
+  text-decoration: $link-text-decoration;
+  text-align: $link-text-align;
+}
+/** link-hovered **/
+$link-hovered-font-size: 16px;
+$link-hovered-color: #EC0000;
+$link-hovered-line-height: 22px;
+$link-hovered-font-family: Avenir Next LT Pro;
+$link-hovered-font-weight: 400;
+$link-hovered-text-decoration: underline;
+$link-hovered-text-align: left;
+
+@mixin link-hovered() {
+  font-size: $link-hovered-font-size;
+  color: $link-hovered-color;
+  line-height: $link-hovered-line-height;
+  font-family: $link-hovered-font-family;
+  font-weight: $link-hovered-font-weight;
+  text-decoration: $link-hovered-text-decoration;
+  text-align: $link-hovered-text-align;
+}
+/** link-visited **/
+$link-visited-font-size: 16px;
+$link-visited-color: #A00078;
+$link-visited-line-height: 22px;
+$link-visited-font-family: Avenir Next LT Pro;
+$link-visited-font-weight: 400;
+$link-visited-text-decoration: underline;
+$link-visited-text-align: left;
+
+@mixin link-visited() {
+  font-size: $link-visited-font-size;
+  color: $link-visited-color;
+  line-height: $link-visited-line-height;
+  font-family: $link-visited-font-family;
+  font-weight: $link-visited-font-weight;
+  text-decoration: $link-visited-text-decoration;
+  text-align: $link-visited-text-align;
+}
+/** linkinverted **/
+$linkinverted-font-size: 16px;
+$linkinverted-color: #FFFFFF;
+$linkinverted-line-height: 22px;
+$linkinverted-font-family: Avenir Next LT Pro;
+$linkinverted-font-weight: 400;
+$linkinverted-text-decoration: underline;
+$linkinverted-text-align: left;
+
+@mixin linkinverted() {
+  font-size: $linkinverted-font-size;
+  color: $linkinverted-color;
+  line-height: $linkinverted-line-height;
+  font-family: $linkinverted-font-family;
+  font-weight: $linkinverted-font-weight;
+  text-decoration: $linkinverted-text-decoration;
+  text-align: $linkinverted-text-align;
+}
+/** linkinverted-hovered **/
+$linkinverted-hovered-font-size: 16px;
+$linkinverted-hovered-color: #FFFFFF;
+$linkinverted-hovered-line-height: 22px;
+$linkinverted-hovered-font-family: Avenir Next LT Pro;
+$linkinverted-hovered-font-weight: 400;
+$linkinverted-hovered-text-decoration: underline;
+$linkinverted-hovered-text-align: left;
+
+@mixin linkinverted-hovered() {
+  font-size: $linkinverted-hovered-font-size;
+  color: $linkinverted-hovered-color;
+  line-height: $linkinverted-hovered-line-height;
+  font-family: $linkinverted-hovered-font-family;
+  font-weight: $linkinverted-hovered-font-weight;
+  text-decoration: $linkinverted-hovered-text-decoration;
+  text-align: $linkinverted-hovered-text-align;
+}
+/** linkinverted-visited-style **/
+$linkinverted-visited-style-font-size: 16px;
+$linkinverted-visited-style-color: #FFFFFF;
+$linkinverted-visited-style-line-height: 22px;
+$linkinverted-visited-style-font-family: Avenir Next LT Pro;
+$linkinverted-visited-style-font-weight: 400;
+$linkinverted-visited-style-text-decoration: underline;
+$linkinverted-visited-style-text-align: left;
+
+@mixin linkinverted-visited-style() {
+  font-size: $linkinverted-visited-style-font-size;
+  color: $linkinverted-visited-style-color;
+  line-height: $linkinverted-visited-style-line-height;
+  font-family: $linkinverted-visited-style-font-family;
+  font-weight: $linkinverted-visited-style-font-weight;
+  text-decoration: $linkinverted-visited-style-text-decoration;
+  text-align: $linkinverted-visited-style-text-align;
+}
+/** linklist **/
+$linklist-font-size: 16px;
+$linklist-color: #000000;
+$linklist-line-height: 22px;
+$linklist-font-family: Avenir Next LT Pro;
+$linklist-font-weight: 500;
+$linklist-text-align: left;
+
+@mixin linklist() {
+  font-size: $linklist-font-size;
+  color: $linklist-color;
+  line-height: $linklist-line-height;
+  font-family: $linklist-font-family;
+  font-weight: $linklist-font-weight;
+  text-align: $linklist-text-align;
+}
+/** linklist-hovered **/
+$linklist-hovered-font-size: 16px;
+$linklist-hovered-color: #EC0000;
+$linklist-hovered-line-height: 22px;
+$linklist-hovered-font-family: Avenir Next;
+$linklist-hovered-font-weight: 600;
+$linklist-hovered-text-decoration: underline;
+$linklist-hovered-text-align: left;
+
+@mixin linklist-hovered() {
+  font-size: $linklist-hovered-font-size;
+  color: $linklist-hovered-color;
+  line-height: $linklist-hovered-line-height;
+  font-family: $linklist-hovered-font-family;
+  font-weight: $linklist-hovered-font-weight;
+  text-decoration: $linklist-hovered-text-decoration;
+  text-align: $linklist-hovered-text-align;
+}
+/** linklist-visited **/
+$linklist-visited-font-size: 16px;
+$linklist-visited-color: #000000;
+$linklist-visited-line-height: 22px;
+$linklist-visited-font-family: Avenir Next;
+$linklist-visited-font-weight: 600;
+$linklist-visited-text-align: left;
+
+@mixin linklist-visited() {
+  font-size: $linklist-visited-font-size;
+  color: $linklist-visited-color;
+  line-height: $linklist-visited-line-height;
+  font-family: $linklist-visited-font-family;
+  font-weight: $linklist-visited-font-weight;
+  text-align: $linklist-visited-text-align;
+}
+/** o-list **/
+$o-list-font-size: 16px;
+$o-list-color: #000000;
+$o-list-line-height: 25px;
+$o-list-font-family: Avenir Next LT Pro;
+$o-list-font-weight: 400;
+$o-list-text-align: left;
+
+@mixin o-list() {
+  font-size: $o-list-font-size;
+  color: $o-list-color;
+  line-height: $o-list-line-height;
+  font-family: $o-list-font-family;
+  font-weight: $o-list-font-weight;
+  text-align: $o-list-text-align;
+}
+/** o-list **/
+$o-list-font-size: 16px;
+$o-list-color: #FFFFFF;
+$o-list-font-family: Avenir Next LT Pro;
+$o-list-font-weight: 400;
+$o-list-text-align: left;
+
+@mixin o-list() {
+  font-size: $o-list-font-size;
+  color: $o-list-color;
+  font-family: $o-list-font-family;
+  font-weight: $o-list-font-weight;
+  text-align: $o-list-text-align;
+}
+/** o-list **/
+$o-list-font-size: 16px;
+$o-list-color: #000000;
+$o-list-font-family: Avenir Next LT Pro;
+$o-list-font-weight: 400;
+$o-list-text-align: left;
+
+@mixin o-list() {
+  font-size: $o-list-font-size;
+  color: $o-list-color;
+  font-family: $o-list-font-family;
+  font-weight: $o-list-font-weight;
+  text-align: $o-list-text-align;
+}
+/** p1 **/
+$p1-font-size: 16px;
+$p1-color: #000000;
+$p1-line-height: 22px;
+$p1-font-family: Avenir Next LT Pro;
+$p1-font-weight: 400;
+$p1-text-align: left;
+
+@mixin p1() {
+  font-size: $p1-font-size;
+  color: $p1-color;
+  line-height: $p1-line-height;
+  font-family: $p1-font-family;
+  font-weight: $p1-font-weight;
+  text-align: $p1-text-align;
+}
+/** p1 **/
+$p1-font-size: 16px;
+$p1-color: #FFFFFF;
+$p1-line-height: 22px;
+$p1-font-family: Avenir Next LT Pro;
+$p1-font-weight: 400;
+$p1-text-align: left;
+
+@mixin p1() {
+  font-size: $p1-font-size;
+  color: $p1-color;
+  line-height: $p1-line-height;
+  font-family: $p1-font-family;
+  font-weight: $p1-font-weight;
+  text-align: $p1-text-align;
+}
+/** p1 **/
+$p1-font-size: 16px;
+$p1-color: #FFFFFF;
+$p1-line-height: 22px;
+$p1-font-family: Avenir Next LT Pro;
+$p1-font-weight: 400;
+$p1-text-align: left;
+
+@mixin p1() {
+  font-size: $p1-font-size;
+  color: $p1-color;
+  line-height: $p1-line-height;
+  font-family: $p1-font-family;
+  font-weight: $p1-font-weight;
+  text-align: $p1-text-align;
+}
+/** p1 **/
+$p1-font-size: 16px;
+$p1-color: #000000;
+$p1-line-height: 22px;
+$p1-font-family: Avenir Next LT Pro;
+$p1-font-weight: 400;
+$p1-text-align: left;
+
+@mixin p1() {
+  font-size: $p1-font-size;
+  color: $p1-color;
+  line-height: $p1-line-height;
+  font-family: $p1-font-family;
+  font-weight: $p1-font-weight;
+  text-align: $p1-text-align;
+}
+/** p2 **/
+$p2-font-size: 18px;
+$p2-color: #323232;
+$p2-line-height: 25px;
+$p2-font-family: Avenir Next LT Pro;
+$p2-font-weight: 400;
+$p2-text-align: left;
+
+@mixin p2() {
+  font-size: $p2-font-size;
+  color: $p2-color;
+  line-height: $p2-line-height;
+  font-family: $p2-font-family;
+  font-weight: $p2-font-weight;
+  text-align: $p2-text-align;
+}
+/** p2 **/
+$p2-font-size: 18px;
+$p2-color: #FFFFFF;
+$p2-line-height: 25px;
+$p2-font-family: Avenir Next LT Pro;
+$p2-font-weight: 400;
+$p2-text-align: left;
+
+@mixin p2() {
+  font-size: $p2-font-size;
+  color: $p2-color;
+  line-height: $p2-line-height;
+  font-family: $p2-font-family;
+  font-weight: $p2-font-weight;
+  text-align: $p2-text-align;
+}
+/** p2 **/
+$p2-font-size: 16px;
+$p2-color: #FFFFFF;
+$p2-line-height: 22px;
+$p2-font-family: Avenir Next LT Pro;
+$p2-font-weight: 400;
+$p2-text-align: left;
+
+@mixin p2() {
+  font-size: $p2-font-size;
+  color: $p2-color;
+  line-height: $p2-line-height;
+  font-family: $p2-font-family;
+  font-weight: $p2-font-weight;
+  text-align: $p2-text-align;
+}
+/** p2 **/
+$p2-font-size: 16px;
+$p2-color: #323232;
+$p2-line-height: 22px;
+$p2-font-family: Avenir Next LT Pro;
+$p2-font-weight: 400;
+$p2-text-align: left;
+
+@mixin p2() {
+  font-size: $p2-font-size;
+  color: $p2-color;
+  line-height: $p2-line-height;
+  font-family: $p2-font-family;
+  font-weight: $p2-font-weight;
+  text-align: $p2-text-align;
+}
+/** sitenavitem-default **/
+$sitenavitem-default-font-size: 18px;
+$sitenavitem-default-color: #323232;
+$sitenavitem-default-line-height: 24px;
+$sitenavitem-default-font-family: Avenir Next LT Pro;
+$sitenavitem-default-font-weight: 500;
+$sitenavitem-default-text-align: left;
+
+@mixin sitenavitem-default() {
+  font-size: $sitenavitem-default-font-size;
+  color: $sitenavitem-default-color;
+  line-height: $sitenavitem-default-line-height;
+  font-family: $sitenavitem-default-font-family;
+  font-weight: $sitenavitem-default-font-weight;
+  text-align: $sitenavitem-default-text-align;
+}
+/** sitenavitem-hover **/
+$sitenavitem-hover-font-size: 18px;
+$sitenavitem-hover-color: #EC0000;
+$sitenavitem-hover-line-height: 24px;
+$sitenavitem-hover-font-family: Avenir Next LT Pro;
+$sitenavitem-hover-font-weight: 500;
+$sitenavitem-hover-text-align: left;
+
+@mixin sitenavitem-hover() {
+  font-size: $sitenavitem-hover-font-size;
+  color: $sitenavitem-hover-color;
+  line-height: $sitenavitem-hover-line-height;
+  font-family: $sitenavitem-hover-font-family;
+  font-weight: $sitenavitem-hover-font-weight;
+  text-align: $sitenavitem-hover-text-align;
+}
+/** t1 **/
+$t1-font-size: 14px;
+$t1-color: #000000;
+$t1-line-height: 18px;
+$t1-font-family: Avenir Next LT Pro;
+$t1-font-weight: 400;
+$t1-text-align: left;
+
+@mixin t1() {
+  font-size: $t1-font-size;
+  color: $t1-color;
+  line-height: $t1-line-height;
+  font-family: $t1-font-family;
+  font-weight: $t1-font-weight;
+  text-align: $t1-text-align;
+}
+/** t1 **/
+$t1-font-size: 14px;
+$t1-color: #FFFFFF;
+$t1-line-height: 18px;
+$t1-font-family: Avenir Next LT Pro;
+$t1-font-weight: 400;
+$t1-text-align: left;
+
+@mixin t1() {
+  font-size: $t1-font-size;
+  color: $t1-color;
+  line-height: $t1-line-height;
+  font-family: $t1-font-family;
+  font-weight: $t1-font-weight;
+  text-align: $t1-text-align;
+}
+/** t1 **/
+$t1-font-size: 14px;
+$t1-color: #FFFFFF;
+$t1-line-height: 18px;
+$t1-font-family: Avenir Next LT Pro;
+$t1-font-weight: 400;
+$t1-text-align: left;
+
+@mixin t1() {
+  font-size: $t1-font-size;
+  color: $t1-color;
+  line-height: $t1-line-height;
+  font-family: $t1-font-family;
+  font-weight: $t1-font-weight;
+  text-align: $t1-text-align;
+}
+/** t1 **/
+$t1-font-size: 14px;
+$t1-color: #000000;
+$t1-line-height: 18px;
+$t1-font-family: Avenir Next LT Pro;
+$t1-font-weight: 400;
+$t1-text-align: left;
+
+@mixin t1() {
+  font-size: $t1-font-size;
+  color: $t1-color;
+  line-height: $t1-line-height;
+  font-family: $t1-font-family;
+  font-weight: $t1-font-weight;
+  text-align: $t1-text-align;
+}
+/** textbuttonlabel-default **/
+$textbuttonlabel-default-font-size: 16px;
+$textbuttonlabel-default-color: #004699;
+$textbuttonlabel-default-line-height: 22px;
+$textbuttonlabel-default-font-family: Avenir Next LT Pro;
+$textbuttonlabel-default-font-weight: 500;
+$textbuttonlabel-default-text-align: left;
+
+@mixin textbuttonlabel-default() {
+  font-size: $textbuttonlabel-default-font-size;
+  color: $textbuttonlabel-default-color;
+  line-height: $textbuttonlabel-default-line-height;
+  font-family: $textbuttonlabel-default-font-family;
+  font-weight: $textbuttonlabel-default-font-weight;
+  text-align: $textbuttonlabel-default-text-align;
+}
+/** textbuttonlabel-hover **/
+$textbuttonlabel-hover-font-size: 16px;
+$textbuttonlabel-hover-color: #EC0000;
+$textbuttonlabel-hover-line-height: 22px;
+$textbuttonlabel-hover-font-family: Avenir Next LT Pro;
+$textbuttonlabel-hover-font-weight: 500;
+$textbuttonlabel-hover-text-align: left;
+
+@mixin textbuttonlabel-hover() {
+  font-size: $textbuttonlabel-hover-font-size;
+  color: $textbuttonlabel-hover-color;
+  line-height: $textbuttonlabel-hover-line-height;
+  font-family: $textbuttonlabel-hover-font-family;
+  font-weight: $textbuttonlabel-hover-font-weight;
+  text-align: $textbuttonlabel-hover-text-align;
+}
+/** textbuttonongreylabel-default **/
+$textbuttonongreylabel-default-font-size: 16px;
+$textbuttonongreylabel-default-color: #004699;
+$textbuttonongreylabel-default-line-height: 22px;
+$textbuttonongreylabel-default-font-family: Avenir Next LT Pro;
+$textbuttonongreylabel-default-font-weight: 500;
+$textbuttonongreylabel-default-text-align: left;
+
+@mixin textbuttonongreylabel-default() {
+  font-size: $textbuttonongreylabel-default-font-size;
+  color: $textbuttonongreylabel-default-color;
+  line-height: $textbuttonongreylabel-default-line-height;
+  font-family: $textbuttonongreylabel-default-font-family;
+  font-weight: $textbuttonongreylabel-default-font-weight;
+  text-align: $textbuttonongreylabel-default-text-align;
+}
+/** textbuttonongreylabel-hover **/
+$textbuttonongreylabel-hover-font-size: 16px;
+$textbuttonongreylabel-hover-color: #004699;
+$textbuttonongreylabel-hover-line-height: 22px;
+$textbuttonongreylabel-hover-font-family: Avenir Next LT Pro;
+$textbuttonongreylabel-hover-font-weight: 500;
+$textbuttonongreylabel-hover-text-decoration: underline;
+$textbuttonongreylabel-hover-text-align: left;
+
+@mixin textbuttonongreylabel-hover() {
+  font-size: $textbuttonongreylabel-hover-font-size;
+  color: $textbuttonongreylabel-hover-color;
+  line-height: $textbuttonongreylabel-hover-line-height;
+  font-family: $textbuttonongreylabel-hover-font-family;
+  font-weight: $textbuttonongreylabel-hover-font-weight;
+  text-decoration: $textbuttonongreylabel-hover-text-decoration;
+  text-align: $textbuttonongreylabel-hover-text-align;
+}

@@ -1,0 +1,112 @@
+@import "../global/designSystem";
+@import "../global/variables";
+@import "../global/icons";
+
+.table-cell--left {
+    text-align: left;
+}
+
+.Plaats {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    align-content: stretch;
+    margin-top: -1px;
+
+    &__prop {
+        flex-grow: 1;
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+        border-right: 1px solid #000;
+        @include p1;
+        font-size: 14px;
+        line-height: 20px;
+
+    }
+    &__prop-plaats-nr {
+        width: 5%;
+        color: $primary-black;
+        background-color: $neutral-grey2;
+        text-align: center;
+        border-right: none;
+        //border: none;
+
+        .roze & {
+            background-color: #FF99CC;
+        }
+        .licht-blauw & {
+            background-color: #CCFFFF;
+        }
+        .oranje & {
+            background-color: #FF9900;
+        }
+        .blauw & {
+            color: white;
+            background-color: #333399;
+        }
+        .grijs & {
+            background-color: #C0C0C0;
+        }
+        .groen & {
+            background-color: #1FB714;
+        }
+        .licht-groen & {
+            background-color: #99CC00;
+        }
+        .rood & {
+            background-color: #FF0000;
+        }
+        .prom & {
+            background-color: #FCF305;
+        }
+        .exp & {
+            background-color: #99CCFF;
+        }
+        @each $key, $color in $colorListBranch {
+            .#{$key} & {
+                background-color: $color;
+            }
+        }
+    }
+    &__prop-vph {
+        width: 40%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    &__prop-properties {
+        border-right: none;
+        width: 10px;
+        .icon {
+            display: block;
+            width: 100%;
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        @each $icon in $iconListPlaats {
+            .icon-#{$icon} {
+                @extend .icon-black-#{$icon};
+            }
+        }
+    }
+    &__prop-empty-fields {
+        width: 30%;
+        border-left: none;
+        margin-left: 10px;
+        border-right: none;
+        border-top: none;
+
+        position: relative;
+        &:before {
+            //content: '';
+            height: 70%;
+            width: 1px;
+            background-color: #000;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+        }
+    }
+}

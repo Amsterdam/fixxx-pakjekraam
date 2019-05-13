@@ -1,5 +1,7 @@
 const connectPg = require('connect-pg-simple');
 const express = require('express');
+const sass = require('node-sass');
+const sassMiddleware = require('node-sass-middleware');
 const reactViews = require('express-react-views');
 const session = require('express-session');
 const passport = require('passport');
@@ -200,10 +202,20 @@ app.get('/markt-indeling/:marktId/:datum/', ensureLoggedIn(), (req, res) => {
 });
 
 // Static files that are public (robots.txt, favicon.ico)
-app.use(express.static('./src/public/'));
+app.use(
+    express.static('./src/public/')
+);
 
 // Static files that require authorization (business logic scripts for example)
 app.use(ensureLoggedIn(), express.static('./src/www/'));
+
+app.use(
+     sassMiddleware({
+      src: path.join('./src/scss'),
+      dest: path.join('./src/public/style'),
+      debug: true
+     })
+);
 
 app.listen(port, err => {
     if (err) {

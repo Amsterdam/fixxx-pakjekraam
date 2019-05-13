@@ -1,0 +1,24 @@
+.Street {
+    width: 100%;
+    padding: 5px 0;
+    text-align: center;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    background-color: #ddd;
+    position: relative;
+    &:before {
+        content: '';
+        left: 0;
+        border-bottom: 1px dashed #fff;
+        width: 100%;
+        height: 1px;
+        position: absolute;
+        top: 50%;
+    }
+    &__title {
+        position: relative;
+        background-color: #ddd;
+        padding: 0 10px;
+        z-index: 1;
+    }
+}
