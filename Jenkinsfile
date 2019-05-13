@@ -61,7 +61,7 @@ node {
 String BRANCH = "${env.BRANCH_NAME}"
 
 String HAS_RELEASE_TAGS = sh (
-    script: "git tag --points-at HEAD | grep --extended-regexp --regexp='^v\\d+' -q"
+    script: "git tag --points-at HEAD | grep --extended-regexp --regexp='^v\\d+' -q",
     returnStatus: true
 ) == 0
 
