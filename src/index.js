@@ -10,7 +10,7 @@ const morgan = require('morgan');
 const { slugifyMarkt } = require('./domain-knowledge.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
-const { login, getMarkt, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
+const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
 const {
     getIndelingslijstInput,
     getAanmeldingen,
@@ -108,7 +108,7 @@ app.post('/login', passport.authenticate('local', { failureRedirect: '/login-err
      * TODO: Redirect to URL specified in URL query parameter,
      * so you go back to the page you intended to visit.
      */
-    res.redirect('/markt/');
+    res.redirect('/profile');
 });
 
 app.get('/logout', function(req, res) {
@@ -137,6 +137,20 @@ app.get('/makkelijkemarkt/api/1.1.0/markt/', ensureLoggedIn(), (req, res) => {
                 'Content-Type': 'application/json; charset=UTF-8',
             });
             res.send(JSON.stringify(markten));
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+        },
+    );
+});
+
+app.get('/makkelijkemarkt/api/1.1.0/marktondernemer/erkenningsnummer/:id', ensureLoggedIn(), (req, res) => {
+    getMarktondernemer(req.user.token, req.params.id).then(
+        ondernemer => {
+            res.set({
+                'Content-Type': 'application/json; charset=UTF-8',
+            });
+            res.send(JSON.stringify(ondernemer));
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end();
@@ -210,7 +224,9 @@ app.post('/afmelden/', ensureLoggedIn(), (req, res) => {
 });
 
 app.get('/aanmelden/', ensureLoggedIn(), (req, res) => {
-    res.render('AanmeldPage', {});
+    getMarktondernemer(req.user.token, req.user.erkenningsNummer).then(ondernemer => {
+        res.render('AanmeldPage', { ondernemer });
+    });
 });
 
 const aanmeldFormDataToRSVP = formData => ({
@@ -227,6 +243,16 @@ app.post('/aanmelden/', ensureLoggedIn(), (req, res) => {
             () => res.status(HTTP_CREATED_SUCCESS).redirect('/'),
             error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
         );
+});
+
+app.get('/profile', ensureLoggedIn(), (req, res) => {
+    if (req.user.userType === 'ondernemer') {
+        getMarktondernemer(req.user.token, req.user.erkenningsNummer).then(ondernemer => {
+            res.render('ProfilePage', { user: req.user, ondernemer });
+        });
+    } else {
+        res.render('ProfilePage', { user: req.user });
+    }
 });
 
 app.get('/markt-indeling/:marktId/data.json', ensureLoggedIn(), (req, res) => {

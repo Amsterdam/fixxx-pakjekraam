@@ -1,5 +1,6 @@
 const React = require('react');
 const Page = require('./Page.jsx');
+const PropTypes = require('prop-types');
 const { formatDayOfWeek } = require('../../util.js');
 
 const tomorrow = () => {
@@ -11,18 +12,30 @@ const tomorrow = () => {
 };
 
 class AanmeldForm extends React.Component {
+    propTypes = {
+        ondernemer: PropTypes.object.isRequired,
+    };
+
     render() {
         return (
             <form method="POST" action="/aanmelden/">
                 <h1>Aanmelden voor sollicitanten</h1>
                 <p>
                     <label htmlFor="erkenningsnummer">Erkenningsnummer:</label>
-                    <input id="erkenningsnummer" name="erkenningsNummer" />
+                    <input
+                        id="erkenningsnummer"
+                        name="erkenningsNummer"
+                        value={this.props.ondernemer.erkenningsnummer}
+                    />
                 </p>
                 <p>
                     <label htmlFor="marktId">Markt:</label>
                     <select name="marktId" id="marktId">
-                        <option value="19">Albert Cuyp</option>
+                        {this.props.ondernemer.sollicitaties.map(sollicitatie => (
+                            <option key={sollicitatie.markt.id} value={`${sollicitatie.markt.id}`}>
+                                {sollicitatie.markt.naam}
+                            </option>
+                        ))}
                     </select>
                 </p>
                 <p>

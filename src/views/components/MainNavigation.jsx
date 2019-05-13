@@ -18,6 +18,9 @@ class MainNavigation extends React.Component {
                     <li>
                         <a href="/aanmelden/">Aanmelden sollicitanten</a>
                     </li>
+                    <li>
+                        <a href="/profile">Mijn gegevens</a>
+                    </li>
                 </ul>
             </nav>
         );
