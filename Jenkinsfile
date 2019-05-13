@@ -85,15 +85,15 @@ if (BRANCH == "master" || BRANCH == "acceptance") {
         }
     }
 
+}
+
+if (BRANCH == "master") {
 
     stage('Waiting for approval') {
         slackSend channel: '#ci-channel-app', color: 'warning', message: 'pakjekraam is waiting for Production Release - please confirm'
         input "Deploy to Production?"
     }
 
-}
-
-if (BRANCH == "master") {
     node {
         stage('Push production image') {
             tryStep "image tagging", {
