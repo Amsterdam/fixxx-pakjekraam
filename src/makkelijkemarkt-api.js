@@ -60,6 +60,16 @@ const getMarktondernemersByMarkt = (token, marktId) => {
         .then(response => response.data);
 };
 
+const getMarkt = (token, marktId) => {
+    return makkelijkeMarktAPI
+        .get(`markt/${marktId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        .then(response => response.data);
+};
+
 const getMarkten = token => {
     return makkelijkeMarktAPI
         .get('markt/', {
@@ -73,6 +83,7 @@ const getMarkten = token => {
 module.exports = {
     init,
     login,
+    getMarkt,
     getMarkten,
     getMarktondernemers,
     getMarktondernemersByMarkt,

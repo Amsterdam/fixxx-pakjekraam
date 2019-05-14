@@ -10,7 +10,7 @@ const morgan = require('morgan');
 const { slugifyMarkt } = require('./domain-knowledge.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
-const { login, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
+const { login, getMarkt, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
 const {
     getIndelingslijstInput,
     getAanmeldingen,
@@ -115,6 +115,20 @@ app.post('/login', passport.authenticate('local', { failureRedirect: '/login-err
 app.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
+});
+
+app.get('/makkelijkemarkt/api/1.1.0/markt/:marktId', ensureLoggedIn(), (req, res) => {
+    getMarkt(req.user.token, req.params.marktId).then(
+        markt => {
+            res.set({
+                'Content-Type': 'application/json; charset=UTF-8',
+            });
+            res.send(JSON.stringify(markt));
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+        },
+    );
 });
 
 app.get('/makkelijkemarkt/api/1.1.0/markt/', ensureLoggedIn(), (req, res) => {
