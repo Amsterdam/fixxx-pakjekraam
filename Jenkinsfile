@@ -29,18 +29,6 @@ node {
 //
 //    }
 
-    stage("Install") {
-        sh 'npm install'
-    }
-
-    stage("Lint") {
-        sh 'npm run lint'
-    }
-
-    stage("Test") {
-        sh 'npm run test'
-    }
-
     stage("Build image") {
         tryStep "build", {
             echo 'start git version'
