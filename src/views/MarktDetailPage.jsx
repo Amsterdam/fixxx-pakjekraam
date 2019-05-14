@@ -7,17 +7,67 @@ const Content = require('./components/Content');
 const Looplijst = require('./components/Looplijst');
 
 class MarktenPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: {
+                aanmeldingen: [],
+                branches: [],
+                locaties: [],
+                geografie: {
+                    obstakels: []
+                },
+                ondernemers: [],
+                paginas: [],
+                voorkeuren: []
+            }
+        };
+    }
+
     propTypes = {
-        markten: PropTypes.array,
+        data: PropTypes.array,
     };
 
     render() {
+        const { aanmeldingen, branches, geografie, locaties, ondernemers, paginas, voorkeuren } = this.props.data;
+
+        let pl = {},
+            vphl = {},
+            i = 0,
+            obstakels = {};
+
+
+        for (i = 0; i < locaties.length; i++) {
+            pl[locaties[i].locatie] = locaties[i];
+        }
+        for (i = 0; i < ondernemers.length; i++) {
+            if (ondernemers.locatie !== null && ondernemers[i].status === 'vpl') {
+                vphl[ondernemers[i].locatie] = ondernemers[i];
+            }
+        }
+        for (i = 0; i < geografie.obstakels.length; i++) {
+            const plaats = geografie.obstakels[i].kraamA;
+            if (!(obstakels[plaats] instanceof Array)) {
+                obstakels[plaats] = [];
+            }
+            obstakels[plaats].push(obstakellList[i].obstakel);
+        }
+        let obj = {
+            aanmeldingen: aanmeldingen,
+            branches: branches,
+            locaties: pl,
+            obstakels: obstakels,
+            ondernemers: vphl,
+            paginas: paginas,
+            voorkeuren: voorkeuren
+        }
+
         return (
             <Page>
                 <Header/>
                 <Content>
                     <h2>Looplijsten</h2>
-                    <Looplijst markten={this.props.markten}/>
+                    <Looplijst data={obj}/>
                 </Content>
             </Page>
         );

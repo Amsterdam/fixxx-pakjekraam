@@ -1,31 +1,23 @@
+import PropTypes from "prop-types";
 import React from 'react';
+import LooplijstPage from './LooplijstPage';
 
-const Looplijst = () => {
+const Looplijst = ({ data }) => {
     return (
-        <header className="Header">
-
-            <div className="Header__top">
-                <div className="container">
-                    <div className="container__content">
-                    <div className="Header__top-container">
-                        <img className="Header__logo" src="/images/logo.svg"/>
-                        <h1 className="Header__heading">Pak je kraam</h1>
-                    </div>
-                    </div>
-                </div>
-            </div>
-            <div className="Header__bottom">
-                <div className="container">
-                    <div className="container__content">
-                        <div className="Header__bottom-container">
-                            <a className="Header__nav-item" href="/markt/">Markten</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </header>
+        <div className="Looplijst">
+            {
+                data.paginas.map((p, i) => {
+                    return (
+                        <LooplijstPage key={i} page={p} index={i} data={data}/>
+                    );
+                })
+            }
+        </div>
     );
+};
+
+Looplijst.propTypes = {
+  data: PropTypes.object
 };
 
 module.exports = Looplijst;

@@ -1,7 +1,5 @@
 const connectPg = require('connect-pg-simple');
 const express = require('express');
-const sass = require('node-sass');
-const sassMiddleware = require('node-sass-middleware');
 const reactViews = require('express-react-views');
 const session = require('express-session');
 const passport = require('passport');
@@ -74,6 +72,16 @@ app.get('/markt/', ensureLoggedIn(), function(req, res) {
 
 app.get('/markt/:marktId/', ensureLoggedIn(), function(req, res) {
     getMarkten(req.user.token).then(markten => res.render('MarktenPage', { markten }));
+});
+app.get('/markt-indeling/:marktId/:datum/looplijst/', ensureLoggedIn(), (req, res) => {
+    getLooplijstInput(req.user.token, req.params.marktId).then(
+        (data, marktId) => {
+            res.render('MarktDetailPage', { data, marktId });
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
+        },
+    );
 });
 
 app.get('/login', function(req, res) {
@@ -208,14 +216,6 @@ app.use(
 
 // Static files that require authorization (business logic scripts for example)
 app.use(ensureLoggedIn(), express.static('./src/www/'));
-
-app.use(
-     sassMiddleware({
-      src: path.join('./src/scss'),
-      dest: path.join('./src/public/style'),
-      debug: true
-     })
-);
 
 app.listen(port, err => {
     if (err) {

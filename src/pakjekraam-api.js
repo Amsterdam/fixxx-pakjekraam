@@ -26,6 +26,10 @@ const getBranches = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/branche
 
 const getMarktplaatsen = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/locaties.json`, []);
 
+const getMarktPaginas = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/paginas.json`, []);
+
+const getMarktGeografie = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/geografie.json`, []);
+
 const getLooplijstInput = (token, marktId, date) =>
     Promise.all([
         getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
@@ -48,8 +52,10 @@ const getLooplijstInput = (token, marktId, date) =>
         getAanmeldingen(marktId, date),
         getVoorkeuren(marktId),
         getBranches(marktId),
+        getMarktPaginas(marktId),
+        getMarktGeografie(marktId),
     ]).then(args => {
-        const [ondernemers, locaties, aanmeldingen, voorkeuren, branches] = args;
+        const [ondernemers, locaties, aanmeldingen, voorkeuren, branches, paginas, geografie] = args;
 
         return {
             locaties,
@@ -57,6 +63,8 @@ const getLooplijstInput = (token, marktId, date) =>
             voorkeuren,
             branches,
             ondernemers,
+            paginas,
+            geografie,
         };
     });
 
