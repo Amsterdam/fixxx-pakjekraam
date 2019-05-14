@@ -63,7 +63,7 @@ class MarktenPage extends React.Component {
         }
 
         return (
-            <Page>
+            <Page bodyClass="page-markt-detail">
                 <Header/>
                 <Content>
                     <h2>Looplijsten</h2>
