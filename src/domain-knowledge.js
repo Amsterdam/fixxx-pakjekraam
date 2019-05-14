@@ -2,7 +2,7 @@ const DAPPERMARKT_ID = 16;
 const ALBERT_CUYP_ID = 19;
 const PLEIN_40_45_ID = 20;
 const WESTERSTRAAT_ID = 37;
-const REIGERSBOS_ID = 20;
+const REIGERSBOS_ID = 33;
 const TUSSEN_MEER_ID = 38;
 
 const slugs = {

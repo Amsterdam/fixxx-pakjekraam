@@ -1,0 +1,1252 @@
+[
+  {
+    "locatie": 1,
+    "branch": "exp",
+    "properties": "boom"
+  },
+  {
+    "locatie": 2,
+    "branch": "bak",
+    "properties": "boom"
+  },
+  {
+    "locatie": 3,
+    "branch": "exp",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 4,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 5,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 6,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 7,
+    "branch": "",
+    "properties": "boom,dubbel"
+  },
+  {
+    "locatie": 8,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 9,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 10,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 11,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 12,
+    "branch": "exp",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 13,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 14,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 15,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 16,
+    "branch": "",
+    "properties": "boom,dubbel"
+  },
+  {
+    "locatie": 17,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 18,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 19,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 20,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 21,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 22,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 23,
+    "branch": "bak",
+    "properties": ""
+  },
+  {
+    "locatie": 24,
+    "branch": "blm",
+    "properties": ""
+  },
+  {
+    "locatie": 25,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 26,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 27,
+    "branch": "stn",
+    "properties": ""
+  },
+  {
+    "locatie": 28,
+    "branch": "agf",
+    "properties": "boom"
+  },
+  {
+    "locatie": 29,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 30,
+    "branch": "",
+    "properties": "electra,dubbel"
+  },
+  {
+    "locatie": 31,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 32,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 33,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 34,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 35,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 36,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 37,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 38,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 39,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 40,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 41,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 42,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 43,
+    "branch": "",
+    "properties": "electra,dubbel"
+  },
+  {
+    "locatie": 44,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 45,
+    "branch": "exp",
+    "properties": ""
+  },
+  {
+    "locatie": 46,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 47,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 48,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 49,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 50,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 51,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 52,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 53,
+    "branch": "bak",
+    "properties": ""
+  },
+  {
+    "locatie": 54,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 55,
+    "branch": "",
+    "properties": "bankje"
+  },
+  {
+    "locatie": 56,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 57,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 58,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 59,
+    "branch": "",
+    "properties": "bankje"
+  },
+  {
+    "locatie": 60,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 61,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 62,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 63,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 64,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 65,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 66,
+    "branch": "",
+    "properties": "boom,dubbel"
+  },
+  {
+    "locatie": 67,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 68,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 69,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 70,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 71,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 72,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 73,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 74,
+    "branch": "exp",
+    "properties": "dubbel,bankje,boom"
+  },
+  {
+    "locatie": 75,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 76,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 77,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 78,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 79,
+    "branch": "kas",
+    "properties": ""
+  },
+  {
+    "locatie": 80,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 81,
+    "branch": "baks7",
+    "properties": ""
+  },
+  {
+    "locatie": 82,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 83,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 84,
+    "branch": "",
+    "properties": "electra,dubbel"
+  },
+  {
+    "locatie": 85,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 86,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 87,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 88,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 89,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 90,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 91,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 92,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 93,
+    "branch": "stn",
+    "properties": ""
+  },
+  {
+    "locatie": 94,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 95,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 96,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 97,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 98,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 99,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 100,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 101,
+    "branch": "",
+    "properties": "electra,dubbel"
+  },
+  {
+    "locatie": 102,
+    "branch": "agf",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 103,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 104,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 105,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 106,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 107,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 108,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 109,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 110,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 111,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 112,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 113,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 114,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 115,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 116,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 117,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 118,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 119,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 120,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 121,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 122,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 123,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 124,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 125,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 126,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 127,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 128,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 129,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 130,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 131,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 132,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 133,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 134,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 135,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 136,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 137,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 138,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 139,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 140,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 141,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 142,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 143,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 144,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 145,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 146,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 147,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 148,
+    "branch": "blm",
+    "properties": ""
+  },
+  {
+    "locatie": 149,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 150,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 151,
+    "branch": "exp",
+    "properties": ""
+  },
+  {
+    "locatie": 152,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 153,
+    "branch": "exp",
+    "properties": ""
+  },
+  {
+    "locatie": 154,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 155,
+    "branch": "exp",
+    "properties": "electra"
+  },
+  {
+    "locatie": 156,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 157,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 158,
+    "branch": "",
+    "properties": "electra,dubbel"
+  },
+  {
+    "locatie": 159,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 160,
+    "branch": "zui",
+    "properties": ""
+  },
+  {
+    "locatie": 161,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 162,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 163,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 164,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 165,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 166,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 167,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 168,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 169,
+    "branch": "",
+    "properties": "electra,dubbel"
+  },
+  {
+    "locatie": 170,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 171,
+    "branch": "bak",
+    "properties": ""
+  },
+  {
+    "locatie": 172,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 173,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 174,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 175,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 176,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 177,
+    "branch": "brc",
+    "properties": ""
+  },
+  {
+    "locatie": 178,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 179,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 180,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 181,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 182,
+    "branch": "vis",
+    "properties": ""
+  },
+  {
+    "locatie": 183,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 184,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 185,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 186,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 187,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 188,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 189,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 190,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 191,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 192,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 193,
+    "branch": "olv",
+    "properties": ""
+  },
+  {
+    "locatie": 194,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 195,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 196,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 197,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 198,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 199,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 200,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 201,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 202,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 203,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 204,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 205,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 206,
+    "branch": "",
+    "properties": "electra"
+  },
+  {
+    "locatie": 207,
+    "branch": "bak",
+    "properties": ""
+  },
+  {
+    "locatie": 208,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 209,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 210,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 211,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 212,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 213,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 214,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 215,
+    "branch": "zui",
+    "properties": ""
+  },
+  {
+    "locatie": 216,
+    "branch": "",
+    "properties": "electra,dubbel"
+  },
+  {
+    "locatie": 217,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 218,
+    "branch": "stn",
+    "properties": ""
+  },
+  {
+    "locatie": 219,
+    "branch": "baks6",
+    "properties": "electra"
+  },
+  {
+    "locatie": 220,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 221,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 222,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 223,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 224,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 225,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 226,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 227,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 228,
+    "branch": "",
+    "properties": "boom"
+  },
+  {
+    "locatie": 229,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 230,
+    "branch": "",
+    "properties": "electra,dubbel"
+  },
+  {
+    "locatie": 231,
+    "branch": "",
+    "properties": "electra,dubbel"
+  },
+  {
+    "locatie": 232,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 233,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 234,
+    "branch": "",
+    "properties": "dubbel,boom"
+  },
+  {
+    "locatie": 235,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 236,
+    "branch": "exp",
+    "properties": ""
+  },
+  {
+    "locatie": 237,
+    "branch": "baks5",
+    "properties": ""
+  },
+  {
+    "locatie": 238,
+    "branch": "exp",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 239,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 240,
+    "branch": "",
+    "properties": "bankje"
+  },
+  {
+    "locatie": 241,
+    "branch": "",
+    "properties": "electra,dubbel"
+  },
+  {
+    "locatie": 242,
+    "branch": "",
+    "properties": "boom,dubbel"
+  },
+  {
+    "locatie": 243,
+    "branch": "",
+    "properties": "bankje"
+  },
+  {
+    "locatie": 244,
+    "branch": "exp",
+    "properties": ""
+  },
+  {
+    "locatie": 245,
+    "branch": "",
+    "properties": "dubbel"
+  },
+  {
+    "locatie": 246,
+    "branch": "",
+    "properties": ""
+  },
+  {
+    "locatie": 247,
+    "branch": "exp",
+    "properties": "electra"
+  },
+  {
+    "locatie": 248,
+    "branch": "",
+    "properties": "electra,dubbel"
+  },
+  {
+    "locatie": 249,
+    "branch": "exp",
+    "properties": ""
+  },
+  {
+    "locatie": 250,
+    "branch": "",
+    "properties": ""
+  }
+]

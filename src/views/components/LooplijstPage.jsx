@@ -8,15 +8,14 @@ const LooplijstPage = ({ page, index, data }) => {
             <div className="LooplijstPage looplijst-page">
                 <div className="LooplijstPage__ratio" data-ratio="210:297">
                     <div className="LooplijstPage__wrapper">
-                        <h3 className="LooplijstPage__heading">TODO: MarktNaam<span className="LooplijstPage__index">{index}</span></h3>
+                        <h3 className="LooplijstPage__heading">TODO: MarktNaam<span className="LooplijstPage__index">{index + 1}</span></h3>
                         <div className="LooplijstPage__list-wrapper">
                         {
 
                             page.looplijstList.map((pageItem, i) => {
-                                //console.log(pageItem.type);
                                 if (pageItem.type && pageItem.type === 'street') {
                                     return (
-                                        <Street title={page.title}/>
+                                        <Street title={pageItem.title}/>
                                     );
                                 } else {
                                     return (

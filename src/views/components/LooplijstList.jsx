@@ -21,24 +21,28 @@ const LooplijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => {
                     <tbody className="LooplijstList__wrapper">
                     {
                         page.plaatsList.map((plaatsNr,  i) => {
-                            if (obstakelList[plaatsNr] && obstakelList[plaatsNr].length > 0) {
-                                return (
-                                    <React.Fragment key={i}>
-                                    <Plaats vph={vphl[String(plaatsNr)]}
-                                            plaats={plaatsList[plaatsNr]}
-                                            obstakels={obstakelList}
-                                    />
-                                        <ObstakelList obstakelList={obstakelList[plaatsNr]}/>
-                                    </React.Fragment>
-                                );
+                            if (plaatsList[String(plaatsNr)]) {
+                                if (obstakelList[String(plaatsNr)] && obstakelList[String(plaatsNr)].length > 0) {
+                                    return (
+                                        <React.Fragment key={i}>
+                                            <Plaats vph={vphl[String(plaatsNr)]}
+                                                    plaats={plaatsList[String(plaatsNr)]}
+                                                    obstakels={obstakelList}
+                                            />
+                                            <ObstakelList obstakelList={obstakelList[String(plaatsNr)]}/>
+                                        </React.Fragment>
+                                    );
+                                } else {
+                                    return (
+                                        <Plaats key={i}
+                                                vph={vphl[String(plaatsNr)]}
+                                                plaats={plaatsList[String(plaatsNr)]}
+                                                obstakels={obstakelList}
+                                        />
+                                    );
+                                }
                             } else {
-                                return (
-                                    <Plaats key={i}
-                                            vph={vphl[String(plaatsNr)]}
-                                            plaats={plaatsList[plaatsNr]}
-                                            obstakels={obstakelList}
-                                    />
-                                );
+                                <Plaats key={i} />
                             }
                         })
 

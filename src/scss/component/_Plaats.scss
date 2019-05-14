@@ -69,14 +69,14 @@
         }
     }
     &__prop-vph {
-        width: 10%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        width: 7%;
 
         border-right: none;
     }
     &__prop-vph-description {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         width: 30%;
         border-left: none;
     }

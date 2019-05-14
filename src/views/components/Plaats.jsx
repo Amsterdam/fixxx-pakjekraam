@@ -5,7 +5,6 @@ const Plaats = ({ plaats, vph }) => {
     let props = plaats.properties ? plaats.properties.split(',') : [];
     props = props.filter(word => !(['dubble'].includes(word)));
     props.reverse();
-    console.log(vph);
     return (
         <tr className={"Plaats " + plaats.branche}>
             <td className="Plaats__prop Plaats__prop-properties"><span className={"icon icon-" + (props ? props[0] : '')}></span></td>
