@@ -6,11 +6,11 @@ class MarktIndelingPage extends React.Component {
     render() {
         return (
             <Page>
-                <h1>Looplijst</h1>
+                <h1>Indelingslijst</h1>
                 <script src="/script/controller.js" />
                 <script src="/script/view.js" />
                 <script src="/script/index.js" />
-                <link rel="stylesheet" type="text/css" href="/style/looplijst.css" />
+                <link rel="stylesheet" type="text/css" href="/style/indelingslijst.css" />
             </Page>
         );
     }

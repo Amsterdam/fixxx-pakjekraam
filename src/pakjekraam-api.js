@@ -30,7 +30,7 @@ const getMarktPaginas = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/pag
 
 const getMarktGeografie = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/geografie.json`, []);
 
-const getLooplijstInput = (token, marktId, date) =>
+const getIndelingslijstInput = (token, marktId, date) =>
     Promise.all([
         getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
             ondernemers
@@ -78,6 +78,6 @@ module.exports = {
     getVoorkeuren,
     getBranches,
     getMarktplaatsen,
-    getLooplijstInput,
+    getIndelingslijstInput,
     getMarkten,
 };

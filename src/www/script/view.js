@@ -1,4 +1,4 @@
-const renderLooplijst = markt => {
+const renderIndelingslijst = markt => {
     document.title = markt.title;
     document.querySelector('h1').textContent = markt.title;
 

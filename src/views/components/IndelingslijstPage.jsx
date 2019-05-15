@@ -1,24 +1,24 @@
-import LooplijstList from './LooplijstList';
+import IndelingslijstList from './IndelingslijstList';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Street from './Street';
 
-const LooplijstPage = ({ page, index, data, markt }) => {
+const IndelingslijstPage = ({ page, index, data, markt }) => {
     return (
-        <div className="LooplijstPage looplijst-page">
-            <div className="LooplijstPage__ratio" data-ratio="210:297">
-                <div className="LooplijstPage__wrapper">
-                    <h3 className="LooplijstPage__heading">
+        <div className="IndelingslijstPage indelingslijst-page">
+            <div className="IndelingslijstPage__ratio" data-ratio="210:297">
+                <div className="IndelingslijstPage__wrapper">
+                    <h3 className="IndelingslijstPage__heading">
                         {markt.slug}
-                        <span className="LooplijstPage__index">{index + 1}</span>
+                        <span className="IndelingslijstPage__index">{index + 1}</span>
                     </h3>
-                    <div className="LooplijstPage__list-wrapper">
-                        {page.looplijstList.map((pageItem, i) => {
+                    <div className="IndelingslijstPage__list-wrapper">
+                        {page.indelingslijstList.map((pageItem, i) => {
                             if (pageItem.type && pageItem.type === 'street') {
                                 return <Street title={pageItem.title} />;
                             } else {
                                 return (
-                                    <LooplijstList
+                                    <IndelingslijstList
                                         key={i}
                                         page={pageItem}
                                         plaatsList={data.locaties}
@@ -35,11 +35,11 @@ const LooplijstPage = ({ page, index, data, markt }) => {
     );
 };
 
-LooplijstPage.propTypes = {
+IndelingslijstPage.propTypes = {
     page: PropTypes.object,
     index: PropTypes.number,
     data: PropTypes.object,
     markt: PropTypes.object,
 };
 
-module.exports = LooplijstPage;
+module.exports = IndelingslijstPage;

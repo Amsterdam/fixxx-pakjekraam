@@ -11,7 +11,7 @@ const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
 const { login, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
 const {
-    getLooplijstInput,
+    getIndelingslijstInput,
     getAanmeldingen,
     getVoorkeuren,
     getBranches,
@@ -74,8 +74,8 @@ app.get('/markt/', ensureLoggedIn(), function(req, res) {
 app.get('/markt/:marktId/', ensureLoggedIn(), function(req, res) {
     getMarkten(req.user.token).then(markten => res.render('MarktenPage', { markten }));
 });
-app.get('/markt-indeling/:marktId/:datum/looplijst/', ensureLoggedIn(), (req, res) => {
-    getLooplijstInput(req.user.token, req.params.marktId).then(
+app.get('/markt-indeling/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) => {
+    getIndelingslijstInput(req.user.token, req.params.marktId).then(
         (data, marktId) => {
             const marktSlug = slugifyMarkt(marktId);
 
@@ -175,7 +175,7 @@ app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', ensureLoggedIn(), (req, res
 });
 
 app.get('/markt-indeling/:marktId/data.json', ensureLoggedIn(), (req, res) => {
-    getLooplijstInput(req.user.token, req.params.marktId).then(
+    getIndelingslijstInput(req.user.token, req.params.marktId).then(
         data => {
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -189,13 +189,13 @@ app.get('/markt-indeling/:marktId/data.json', ensureLoggedIn(), (req, res) => {
 });
 
 app.get('/markt-indeling/:marktId/:datum/concept-indeling.json', ensureLoggedIn(), (req, res) => {
-    getLooplijstInput(req.user.token, req.params.marktId).then(
+    getIndelingslijstInput(req.user.token, req.params.marktId).then(
         markt => {
             markt = simulateAanmeldingen(markt);
 
-            console.time(`Berekenen looplijst`);
+            console.time(`Berekenen indelingslijst`);
             markt.toewijzingen = calcToewijzingen(markt);
-            console.timeEnd(`Berekenen looplijst`);
+            console.timeEnd(`Berekenen indelingslijst`);
 
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8',

@@ -16,7 +16,7 @@ class MarktenPage extends React.Component {
             <Page>
                 <Header />
                 <Content>
-                    <h2>Looplijsten</h2>
+                    <h2>Indelingslijsten</h2>
                     <MarktList markten={this.props.markten} />
                 </Content>
             </Page>

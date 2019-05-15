@@ -4,7 +4,7 @@ const PropTypes = require('prop-types');
 const MainNavigation = require('./components/MainNavigation.jsx');
 const Header = require('./components/Header');
 const Content = require('./components/Content');
-const Looplijst = require('./components/Looplijst');
+const Indelingslijst = require('./components/Indelingslijst');
 
 class MarktenPage extends React.Component {
     constructor(props) {
@@ -77,8 +77,8 @@ class MarktenPage extends React.Component {
             <Page bodyClass="page-markt-detail">
                 <Header />
                 <Content>
-                    <h2>Looplijsten</h2>
-                    <Looplijst data={obj} markt={markt} />
+                    <h2>Indelingslijsten</h2>
+                    <Indelingslijst data={obj} markt={markt} />
                 </Content>
             </Page>
         );

@@ -5,11 +5,11 @@ Promise.all([albertCuyp]).then(args => {
 
     markt = simulateAanmeldingen(markt);
 
-    console.time(`Berekenen looplijst`);
+    console.time(`Berekenen indelingslijst`);
     markt.toewijzingen = calcToewijzingen(markt);
-    console.timeEnd(`Berekenen looplijst`);
+    console.timeEnd(`Berekenen indelingslijst`);
 
-    renderLooplijst(markt);
+    renderIndelingslijst(markt);
 
     renderSollicitanten(markt);
 });

@@ -3,21 +3,21 @@ import Plaats from './Plaats';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const LooplijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => {
+const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => {
     return (
-        <div className={'LooplijstList looplijst__list ' + markt + '__' + page.class}>
+        <div className={'IndelingslijstList indelingslijst__list ' + markt + '__' + page.class}>
             <h4>{page.title}</h4>
 
             <table cellPadding="0" cellSpacing="0">
-                <thead className="LooplijstList__wrapper">
-                    <tr className="LooplijstList__header-row">
-                        <th className="LooplijstList__header LooplijstList__header-properties" />
-                        <th className="LooplijstList__header LooplijstList__header-plaats">Nr.</th>
-                        <th className="LooplijstList__header LooplijstList__vph">VPH</th>
-                        <th className="LooplijstList__header LooplijstList__empty-field" />
+                <thead className="IndelingslijstList__wrapper">
+                    <tr className="IndelingslijstList__header-row">
+                        <th className="IndelingslijstList__header IndelingslijstList__header-properties" />
+                        <th className="IndelingslijstList__header IndelingslijstList__header-plaats">Nr.</th>
+                        <th className="IndelingslijstList__header IndelingslijstList__vph">VPH</th>
+                        <th className="IndelingslijstList__header IndelingslijstList__empty-field" />
                     </tr>
                 </thead>
-                <tbody className="LooplijstList__wrapper">
+                <tbody className="IndelingslijstList__wrapper">
                     {page.plaatsList.map((plaatsNr, i) => {
                         if (plaatsList[String(plaatsNr)]) {
                             console.log('found: ' + plaatsNr);
@@ -54,7 +54,7 @@ const LooplijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => {
     );
 };
 
-LooplijstList.propTypes = {
+IndelingslijstList.propTypes = {
     page: PropTypes.object,
     plaatsList: PropTypes.object,
     vphl: PropTypes.object,
@@ -62,4 +62,4 @@ LooplijstList.propTypes = {
     markt: PropTypes.string,
 };
 
-module.exports = LooplijstList;
+module.exports = IndelingslijstList;

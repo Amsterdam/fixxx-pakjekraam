@@ -1,10 +1,10 @@
 @import "../global/variables";
 @import "../global/designSystem";
 
-.looplijst-page {
+.indelingslijst-page {
 }
 
-.looplijst__h {
+.indelingslijst__h {
     width: 100%;
 }
 
@@ -14,8 +14,8 @@
 }
 
 @media print {
-    .LooplijstPage,
-    .looplijst-page {
+    .IndelingslijstPage,
+    .indelingslijst-page {
         padding-top: 0;
         display: flex !important;
         //justify-content: space-around;
@@ -44,14 +44,14 @@ table {
     justify-content: space-around;
 }
 
-.looplijst__list {
+.indelingslijst__list {
     width: 40%;
     table {
         //border-right: 1px solid;
     }
 }
 
-.LooplijstPage {
+.IndelingslijstPage {
     background-color: $primary-white;
     //border-bottom: 2px solid $neutral-grey5;
     //border-right: 2px solid $neutral-grey5;

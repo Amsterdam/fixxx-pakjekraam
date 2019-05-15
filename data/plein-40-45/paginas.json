@@ -1,7 +1,7 @@
 [
   {
     "title": "Plein 40-45",
-    "looplijstList": [
+    "indelingslijstList": [
       {
         "type": "street",
         "title": "Winkelcentrum / Tanger"
@@ -32,7 +32,7 @@
     ]
   },
   {
-    "looplijstList": [
+    "indelingslijstList": [
       {
         "class": "rechterzijde",
         "title": "",
@@ -64,7 +64,7 @@
     ]
   },
   {
-    "looplijstList": [
+    "indelingslijstList": [
       {
         "type": "street",
         "title": "Winkelcentrum / Jumbo"
