@@ -58,6 +58,16 @@ app.get('/status/health', function(req, res) {
     res.end('OK!');
 });
 
+app.use((req, res, next) => {
+    if (req.user && req.user.expiry && Date.now() > Date.parse(req.user.expiry)) {
+        console.log('Token is expired, logout user');
+        req.logout();
+        res.redirect('/login');
+    } else {
+        next();
+    }
+});
+
 // Initialize React JSX templates for server-side rendering
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'jsx');
