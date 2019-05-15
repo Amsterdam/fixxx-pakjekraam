@@ -8,7 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "build": "exit 0",
+    "build": "gulp build",
+    "clean": "rm -rf dist/*",
     "start": "node src/index.js",
     "dev": "node-dev src/index.js",
     "test": "jest",
@@ -20,7 +21,9 @@
     "lint-fix": "concurrently 'npm:lint-fix:*'",
     "lint-fix:eslint": "npm run lint:eslint -- --fix",
     "lint-fix:prettier": "prettier --write '**/*.js' '**/*.css' '**/*.scss' '**/*.json' '**/*.jsx' '*.yml'",
-    "lint-non-npm": "git ls-files '*.yml' | tr '\n' '\\0' | xargs -0 yamllint"
+    "lint-non-npm": "git ls-files '*.yml' | tr '\n' '\\0' | xargs -0 yamllint",
+    "prewatch": "npm run clean && npm run build",
+    "watch": "gulp watch"
   },
   "author": "",
   "license": "MPL-2.0",

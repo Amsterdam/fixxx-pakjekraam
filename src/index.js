@@ -214,6 +214,7 @@ app.get('/markt-indeling/:marktId/:datum/', ensureLoggedIn(), (req, res) => {
 
 // Static files that are public (robots.txt, favicon.ico)
 app.use(express.static('./src/public/'));
+app.use(express.static('./dist/public/'));
 
 // Static files that require authorization (business logic scripts for example)
 app.use(ensureLoggedIn(), express.static('./src/www/'));
