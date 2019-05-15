@@ -6,6 +6,7 @@ const passport = require('passport');
 const path = require('path');
 const bodyParser = require('body-parser');
 const models = require('./model/index.js');
+const { slugifyMarkt } = require('./domain-knowledge.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
 const { login, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
@@ -76,7 +77,8 @@ app.get('/markt/:marktId/', ensureLoggedIn(), function(req, res) {
 app.get('/markt-indeling/:marktId/:datum/looplijst/', ensureLoggedIn(), (req, res) => {
     getLooplijstInput(req.user.token, req.params.marktId).then(
         (data, marktId) => {
-            res.render('MarktDetailPage', { data, marktId });
+            const marktSlug = slugifyMarkt(marktId);
+            res.render('MarktDetailPage', { data, marktId, marktSlug });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);

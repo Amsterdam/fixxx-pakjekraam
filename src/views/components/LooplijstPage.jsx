@@ -3,12 +3,12 @@ import React from 'react';
 import Street from './Street';
 import LooplijstList from './LooplijstList';
 
-const LooplijstPage = ({ page, index, data }) => {
+const LooplijstPage = ({ page, index, data, markt }) => {
     return (
             <div className="LooplijstPage looplijst-page">
                 <div className="LooplijstPage__ratio" data-ratio="210:297">
                     <div className="LooplijstPage__wrapper">
-                        <h3 className="LooplijstPage__heading">TODO: MarktNaam<span className="LooplijstPage__index">{index + 1}</span></h3>
+                        <h3 className="LooplijstPage__heading">{markt.slug}<span className="LooplijstPage__index">{index + 1}</span></h3>
                         <div className="LooplijstPage__list-wrapper">
                         {
 
@@ -40,7 +40,8 @@ const LooplijstPage = ({ page, index, data }) => {
 LooplijstPage.propTypes = {
   page: PropTypes.object,
   index: PropTypes.number,
-  data: PropTypes.object
+  data: PropTypes.object,
+  markt: PropTypes.object
 };
 
 module.exports = LooplijstPage;

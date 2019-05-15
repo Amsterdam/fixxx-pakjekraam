@@ -26,6 +26,8 @@ class MarktenPage extends React.Component {
 
     propTypes = {
         data: PropTypes.array,
+        marktSlug: PropTypes.string,
+        marktId: PropTypes.string,
     };
 
     render() {
@@ -65,13 +67,17 @@ class MarktenPage extends React.Component {
             paginas: paginas,
             voorkeuren: voorkeuren
         }
+        const markt = {
+            slug: this.props.marktSlug,
+            id: this.props.marktId,
+        }
 
         return (
             <Page bodyClass="page-markt-detail">
                 <Header/>
                 <Content>
                     <h2>Looplijsten</h2>
-                    <Looplijst data={obj}/>
+                    <Looplijst data={obj} markt={markt}/>
                 </Content>
             </Page>
         );

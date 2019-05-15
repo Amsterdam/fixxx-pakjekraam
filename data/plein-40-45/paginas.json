@@ -4,7 +4,7 @@
     "looplijstList": [
       {
         "type": "street",
-        "title": "Winkelcentrum / Tanger"
+        "title": "Winkelcentrum \/ Tanger"
       },
       {
         "class": "linkerzijde",
@@ -31,7 +31,7 @@
       },
       {
         "type": "street",
-        "title": "Winkelcentrum / Tanger"
+        "title": "Winkelcentrum \/ Tanger"
       },
       {
         "class": "rechterzijde",
@@ -81,11 +81,10 @@
           35
         ]
       },
-      // hier begint pagina 3
       {
         "type": "street",
-        "title": "Winkelcentrum / Jumbo"
-      },
+        "title": "Winkelcentrum \/ Jumbo"
+      }]},{"looplijstList":[
       {
         "class": "rechterzijde",
         "title": "",
@@ -133,10 +132,9 @@
           71
         ]
       },
-      // hier begint pagina 4
       {
         "type": "street",
-        "title": "Winkelcentrum / Jumbo"
+        "title": "Winkelcentrum \/ Jumbo"
       },
       {
         "class": "rechterzijde",
@@ -188,9 +186,14 @@
       },
       {
         "type": "street",
-        "title": "Winkelcentrum / Jumbo"
-      },
+        "title": "Winkelcentrum \/ Jumbo"
+      }]},{"looplijstList": [
+
       {
+        "type": "street",
+        "title": "Winkelcentrum \/ Jumbo"
+      },
+  {
         "class": "rechterzijde",
         "title": "",
         "plaatsList": [

@@ -22,6 +22,7 @@ const LooplijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => {
                     {
                         page.plaatsList.map((plaatsNr,  i) => {
                             if (plaatsList[String(plaatsNr)]) {
+                                console.log('found: ' + plaatsNr);
                                 if (obstakelList[String(plaatsNr)] && obstakelList[String(plaatsNr)].length > 0) {
                                     return (
                                         <React.Fragment key={i}>
@@ -42,6 +43,7 @@ const LooplijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => {
                                     );
                                 }
                             } else {
+                                console.log('not found: ' + plaatsNr);
                                 <Plaats key={i} />
                             }
                         })

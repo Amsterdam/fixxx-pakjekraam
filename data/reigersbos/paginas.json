@@ -1,4 +1,4 @@
-{
+[{
   "title": "Reigersbos kerkplein links",
   "looplijstList": [
     {
@@ -46,19 +46,7 @@
         "14",
         "13",
         "12",
-        "11",
-        "10",
-        "9",
-        "8",
-        "7",
-        "6",
-        "5",
-        "4",
-        "3",
-        "2",
-        "1",
-        "B38",
-        "B36"
+        "11"
       ]
     },
     {
@@ -100,7 +88,35 @@
         "26",
         "25",
         "24",
-        "23",
+        "23"
+      ]
+    }
+
+  ]},{
+  "title": "Vervolg van markt 1",
+  "looplijstList":[
+    {
+      "class": "linkerzijde-vervolg",
+      "title": "",
+      "plaatsList": [
+        "10",
+        "9",
+        "8",
+        "7",
+        "6",
+        "5",
+        "4",
+        "3",
+        "2",
+        "1",
+        "B38",
+        "B36"
+      ]
+    },
+    {
+      "class": "rechterzijde-vervolg",
+      "title": "",
+      "plaatsList": [
         "B5",
         "B3",
         "B2",
@@ -114,17 +130,17 @@
     },
     {
       "class": "Azijde rechts",
-      "title": "",
+      "title": "Kerkplein",
       "plaatsList": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"]
     },
     {
       "class": "Azijde rechts",
-      "title": "",
+      "title": "Kerkplein",
       "plaatsList": ["A10", "A11", "A12", "A13", "A14", "A15", "A16", "A17"]
     },
     {
       "class": "gracht",
-      "title": "",
+      "title": "Gracht",
       "plaatsList": [
             "77",
             "78",
@@ -140,3 +156,4 @@
     }
   ]
 }
+]
