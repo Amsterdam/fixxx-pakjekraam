@@ -14,10 +14,10 @@ class MarktenPage extends React.Component {
     render() {
         return (
             <Page>
-                <Header/>
+                <Header />
                 <Content>
                     <h2>Looplijsten</h2>
-                    <MarktList markten={this.props.markten}/>
+                    <MarktList markten={this.props.markten} />
                 </Content>
             </Page>
         );

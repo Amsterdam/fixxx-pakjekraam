@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="512px" height="304px" viewBox="0 0 512 304" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+<svg width="512px" height="304px" viewBox="0 0 512 304" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <title>picnic</title>
     <desc>Created with Sketch.</desc>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="picnic" fill="#FFFFFF" fill-rule="nonzero">
             <rect id="Rectangle" x="416" y="96" width="96" height="32"></rect>
             <rect id="Rectangle" x="0" y="96" width="96" height="32"></rect>
-            <path d="M324.8,32 L416,32 L416,0 L96,0 L96,32 L187.2,32 L148.8,144 L0,144 L0,176 L137.6,176 L94.4,304 L128,304 L171.2,176 L340.8,176 L384,304 L417.6,304 L374.4,176 L512,176 L512,144 L363.2,144 L324.8,32 Z M219.2,32 L292.8,32 L329.6,144 L182.4,144 L219.2,32 Z" id="Shape"></path>
+            <path
+                d="M324.8,32 L416,32 L416,0 L96,0 L96,32 L187.2,32 L148.8,144 L0,144 L0,176 L137.6,176 L94.4,304 L128,304 L171.2,176 L340.8,176 L384,304 L417.6,304 L374.4,176 L512,176 L512,144 L363.2,144 L324.8,32 Z M219.2,32 L292.8,32 L329.6,144 L182.4,144 L219.2,32 Z"
+                id="Shape"></path>
         </g>
     </g>
 </svg>

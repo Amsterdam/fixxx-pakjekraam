@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="92px" height="45px" viewBox="0 0 92 45" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+<svg width="92px" height="45px" viewBox="0 0 92 45" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <title>rectangle-with-broken-line-in-the-middle-and-two-arrows-pointing-to-sides</title>
     <desc>Created with Sketch.</desc>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="rectangle-with-broken-line-in-the-middle-and-two-arrows-pointing-to-sides" transform="translate(46.000000, 22.500000) rotate(90.000000) translate(-46.000000, -22.500000) translate(23.500000, -23.500000)" fill="#000000" fill-rule="nonzero">
             <rect id="Rectangle" x="20.185" y="51.853" width="4.928" height="14.734"></rect>
             <rect id="Rectangle" x="20.185" y="24.712" width="4.928" height="14.734"></rect>
-            <path d="M0.971,91.099 L44.326,91.099 L44.326,0.199 L0.971,0.199 L0.971,91.099 Z M4.913,4.141 L20.185,4.141 L20.185,12.304 L25.113,12.304 L25.113,4.141 L40.385,4.141 L40.385,87.157 L25.113,87.157 L25.113,78.994 L20.185,78.994 L20.185,87.157 L4.913,87.157 L4.913,4.141 Z" id="Shape"></path>
+            <path
+                d="M0.971,91.099 L44.326,91.099 L44.326,0.199 L0.971,0.199 L0.971,91.099 Z M4.913,4.141 L20.185,4.141 L20.185,12.304 L25.113,12.304 L25.113,4.141 L40.385,4.141 L40.385,87.157 L25.113,87.157 L25.113,78.994 L20.185,78.994 L20.185,87.157 L4.913,87.157 L4.913,4.141 Z"
+                id="Shape"></path>
         </g>
     </g>
 </svg>

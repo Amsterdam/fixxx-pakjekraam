@@ -5,7 +5,7 @@ class Page extends React.Component {
     propTypes = {
         children: PropTypes.optionalNode,
         title: PropTypes.string,
-        bodyClass: PropTypes.string
+        bodyClass: PropTypes.string,
     };
 
     render() {

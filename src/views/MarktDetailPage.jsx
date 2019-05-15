@@ -15,12 +15,12 @@ class MarktenPage extends React.Component {
                 branches: [],
                 locaties: [],
                 geografie: {
-                    obstakels: []
+                    obstakels: [],
                 },
                 ondernemers: [],
                 paginas: [],
-                voorkeuren: []
-            }
+                voorkeuren: [],
+            },
         };
     }
 
@@ -33,15 +33,15 @@ class MarktenPage extends React.Component {
     render() {
         const { aanmeldingen, branches, geografie, locaties, ondernemers, paginas, voorkeuren } = this.props.data;
 
-        let pl = {},
+        const pl = {},
             vphl = {},
-            i,
-            j,
             obstakels = {};
 
+        let i, j;
 
         for (i = 0; i < locaties.length; i++) {
             let l = locaties[i].locatie;
+
             l = l.toString();
             pl[locaties[i].locatie] = locaties[i];
         }
@@ -52,32 +52,33 @@ class MarktenPage extends React.Component {
         }
         for (i = 0; i < geografie.obstakels.length; i++) {
             const plaats = String(geografie.obstakels[i].kraamA);
+
             if (!(obstakels[plaats] instanceof Array)) {
                 obstakels[plaats] = [];
             }
             obstakels[String(plaats)].push(geografie.obstakels[i].obstakel);
         }
 
-        let obj = {
-            aanmeldingen: aanmeldingen,
-            branches: branches,
+        const obj = {
+            aanmeldingen,
+            branches,
             locaties: pl,
-            obstakels: obstakels,
+            obstakels,
             ondernemers: vphl,
-            paginas: paginas,
-            voorkeuren: voorkeuren
-        }
+            paginas,
+            voorkeuren,
+        };
         const markt = {
             slug: this.props.marktSlug,
             id: this.props.marktId,
-        }
+        };
 
         return (
             <Page bodyClass="page-markt-detail">
-                <Header/>
+                <Header />
                 <Content>
                     <h2>Looplijsten</h2>
-                    <Looplijst data={obj} markt={markt}/>
+                    <Looplijst data={obj} markt={markt} />
                 </Content>
             </Page>
         );

@@ -8,14 +8,14 @@
     &__content {
         margin: 0 $containerMarginMobile;
     }
-  @media screen and (min-width: $screenMedium) {
-    &__content {
-        margin: 0 $containerMarginDesktop;
+    @media screen and (min-width: $screenMedium) {
+        &__content {
+            margin: 0 $containerMarginDesktop;
+        }
     }
-  }
-  @media screen and (min-width: $screenLarge) {
-    &__content {
-        margin: 0 $containerMarginDesktopPlus;
+    @media screen and (min-width: $screenLarge) {
+        &__content {
+            margin: 0 $containerMarginDesktopPlus;
+        }
     }
-  }
 }

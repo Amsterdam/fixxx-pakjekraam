@@ -78,6 +78,7 @@ app.get('/markt-indeling/:marktId/:datum/looplijst/', ensureLoggedIn(), (req, re
     getLooplijstInput(req.user.token, req.params.marktId).then(
         (data, marktId) => {
             const marktSlug = slugifyMarkt(marktId);
+
             res.render('MarktDetailPage', { data, marktId, marktSlug });
         },
         err => {
@@ -212,9 +213,7 @@ app.get('/markt-indeling/:marktId/:datum/', ensureLoggedIn(), (req, res) => {
 });
 
 // Static files that are public (robots.txt, favicon.ico)
-app.use(
-    express.static('./src/public/')
-);
+app.use(express.static('./src/public/'));
 
 // Static files that require authorization (business logic scripts for example)
 app.use(ensureLoggedIn(), express.static('./src/www/'));

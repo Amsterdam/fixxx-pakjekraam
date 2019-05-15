@@ -1,66 +1,65 @@
-import PropTypes from "prop-types";
-import React from 'react';
-import Plaats from './Plaats';
 import ObstakelList from './ObstakelList';
-
+import Plaats from './Plaats';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const LooplijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => {
     return (
-            <div className={'LooplijstList looplijst__list ' + markt + '__' + page.class}>
-                <h4>{page.title}</h4>
+        <div className={'LooplijstList looplijst__list ' + markt + '__' + page.class}>
+            <h4>{page.title}</h4>
 
-                <table cellPadding="0" cellSpacing="0">
-                    <thead className="LooplijstList__wrapper">
+            <table cellPadding="0" cellSpacing="0">
+                <thead className="LooplijstList__wrapper">
                     <tr className="LooplijstList__header-row">
-                        <th className="LooplijstList__header LooplijstList__header-properties"></th>
+                        <th className="LooplijstList__header LooplijstList__header-properties" />
                         <th className="LooplijstList__header LooplijstList__header-plaats">Nr.</th>
                         <th className="LooplijstList__header LooplijstList__vph">VPH</th>
-                        <th className="LooplijstList__header LooplijstList__empty-field"></th>
+                        <th className="LooplijstList__header LooplijstList__empty-field" />
                     </tr>
-                    </thead>
-                    <tbody className="LooplijstList__wrapper">
-                    {
-                        page.plaatsList.map((plaatsNr,  i) => {
-                            if (plaatsList[String(plaatsNr)]) {
-                                console.log('found: ' + plaatsNr);
-                                if (obstakelList[String(plaatsNr)] && obstakelList[String(plaatsNr)].length > 0) {
-                                    return (
-                                        <React.Fragment key={i}>
-                                            <Plaats vph={vphl[String(plaatsNr)]}
-                                                    plaats={plaatsList[String(plaatsNr)]}
-                                                    obstakels={obstakelList}
-                                            />
-                                            <ObstakelList obstakelList={obstakelList[String(plaatsNr)]}/>
-                                        </React.Fragment>
-                                    );
-                                } else {
-                                    return (
-                                        <Plaats key={i}
-                                                vph={vphl[String(plaatsNr)]}
-                                                plaats={plaatsList[String(plaatsNr)]}
-                                                obstakels={obstakelList}
+                </thead>
+                <tbody className="LooplijstList__wrapper">
+                    {page.plaatsList.map((plaatsNr, i) => {
+                        if (plaatsList[String(plaatsNr)]) {
+                            console.log('found: ' + plaatsNr);
+                            if (obstakelList[String(plaatsNr)] && obstakelList[String(plaatsNr)].length > 0) {
+                                return (
+                                    <React.Fragment key={i}>
+                                        <Plaats
+                                            vph={vphl[String(plaatsNr)]}
+                                            plaats={plaatsList[String(plaatsNr)]}
+                                            obstakels={obstakelList}
                                         />
-                                    );
-                                }
+                                        <ObstakelList obstakelList={obstakelList[String(plaatsNr)]} />
+                                    </React.Fragment>
+                                );
                             } else {
-                                console.log('not found: ' + plaatsNr);
-                                <Plaats key={i} />
+                                return (
+                                    <Plaats
+                                        key={i}
+                                        vph={vphl[String(plaatsNr)]}
+                                        plaats={plaatsList[String(plaatsNr)]}
+                                        obstakels={obstakelList}
+                                    />
+                                );
                             }
-                        })
+                        } else {
+                            console.log('not found: ' + plaatsNr);
 
-                    }
-                    </tbody>
-                </table>
-            </div>
+                            return <Plaats key={i} />;
+                        }
+                    })}
+                </tbody>
+            </table>
+        </div>
     );
-}
+};
 
 LooplijstList.propTypes = {
-  page: PropTypes.object,
-  plaatsList: PropTypes.object,
-  vphl: PropTypes.object,
-  obstakelList: PropTypes.object,
-  markt: PropTypes.string,
+    page: PropTypes.object,
+    plaatsList: PropTypes.object,
+    vphl: PropTypes.object,
+    obstakelList: PropTypes.object,
+    markt: PropTypes.string,
 };
 
 module.exports = LooplijstList;

@@ -19,7 +19,7 @@
     "lint:eslint": "eslint './src/**/*.js' './src/**/*.jsx'",
     "lint-fix": "concurrently 'npm:lint-fix:*'",
     "lint-fix:eslint": "npm run lint:eslint -- --fix",
-    "lint-fix:prettier": "prettier --write '**/*.js' '**/*.json' '**/*.jsx' '*.yml'",
+    "lint-fix:prettier": "prettier --write '**/*.js' '**/*.css' '**/*.scss' '**/*.json' '**/*.jsx' '*.yml'",
     "lint-non-npm": "git ls-files '*.yml' | tr '\n' '\\0' | xargs -0 yamllint"
   },
   "author": "",

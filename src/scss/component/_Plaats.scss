@@ -21,7 +21,6 @@
         @include p1;
         font-size: 14px;
         line-height: 20px;
-
     }
     &__prop-plaats-nr {
         width: 5%;
@@ -32,35 +31,35 @@
         //border: none;
 
         .roze & {
-            background-color: #FF99CC;
+            background-color: #ff99cc;
         }
         .licht-blauw & {
-            background-color: #CCFFFF;
+            background-color: #ccffff;
         }
         .oranje & {
-            background-color: #FF9900;
+            background-color: #ff9900;
         }
         .blauw & {
             color: white;
             background-color: #333399;
         }
         .grijs & {
-            background-color: #C0C0C0;
+            background-color: #c0c0c0;
         }
         .groen & {
-            background-color: #1FB714;
+            background-color: #1fb714;
         }
         .licht-groen & {
-            background-color: #99CC00;
+            background-color: #99cc00;
         }
         .rood & {
-            background-color: #FF0000;
+            background-color: #ff0000;
         }
         .prom & {
-            background-color: #FCF305;
+            background-color: #fcf305;
         }
         .exp & {
-            background-color: #99CCFF;
+            background-color: #99ccff;
         }
         @each $key, $color in $colorListBranch {
             .#{$key} & {

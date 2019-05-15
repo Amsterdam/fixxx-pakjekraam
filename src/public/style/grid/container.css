@@ -1,1 +1,81 @@
-.container{width:100%;margin:0 auto;max-width:1000px}.container__content{margin:0 15px}@media screen and (min-width:540px){.container__content{margin:0 20px}}@media screen and (min-width:1024px){.container__content{margin:0 30px}}
+/**** Colors ****/
+/**** Fonts ****/
+/** breadcrumb **/
+/** breadcrumb-hovered **/
+/** buttonlabel-disabled **/
+/** buttonlabel-primary **/
+/** buttonlabel-secondary **/
+/** buttonlabel-tertiary **/
+/** character-count **/
+/** default **/
+/** formfield-label **/
+/** h1 **/
+/** h1 **/
+/** h1 **/
+/** h1 **/
+/** h2 **/
+/** h2 **/
+/** h2 **/
+/** h2 **/
+/** h3 **/
+/** h3 **/
+/** h3 **/
+/** h3 **/
+/** h4 **/
+/** h4 **/
+/** h4 **/
+/** h4 **/
+/** hint-text **/
+/** hover **/
+/** intro **/
+/** intro **/
+/** intro **/
+/** intro **/
+/** link **/
+/** link-hovered **/
+/** link-visited **/
+/** linkinverted **/
+/** linkinverted-hovered **/
+/** linkinverted-visited-style **/
+/** linklist **/
+/** linklist-hovered **/
+/** linklist-visited **/
+/** o-list **/
+/** o-list **/
+/** o-list **/
+/** p1 **/
+/** p1 **/
+/** p1 **/
+/** p1 **/
+/** p2 **/
+/** p2 **/
+/** p2 **/
+/** p2 **/
+/** sitenavitem-default **/
+/** sitenavitem-hover **/
+/** t1 **/
+/** t1 **/
+/** t1 **/
+/** t1 **/
+/** textbuttonlabel-default **/
+/** textbuttonlabel-hover **/
+/** textbuttonongreylabel-default **/
+/** textbuttonongreylabel-hover **/
+.container {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1000px;
+}
+.container__content {
+    margin: 0 15px;
+}
+@media screen and (min-width: 540px) {
+    .container__content {
+        margin: 0 20px;
+    }
+}
+@media screen and (min-width: 1024px) {
+    .container__content {
+        margin: 0 30px;
+    }
+}

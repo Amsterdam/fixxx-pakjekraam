@@ -39,8 +39,8 @@ $headerHeightTop__540: 108px;
         text-decoration: none;
         margin-right: 30px;
         &:hover {
-        @include sitenavitem-hover;
-        text-decoration: underline;
+            @include sitenavitem-hover;
+            text-decoration: underline;
         }
     }
     @media screen and (min-width: $screenMedium) {

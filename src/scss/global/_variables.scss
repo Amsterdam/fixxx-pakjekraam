@@ -9,30 +9,22 @@ $containerMarginDesktop: 20px;
 $containerMarginDesktopPlus: 30px;
 
 $colorListBranch: (
-    stn  : #000000,
-    agf  : #2aff00,
-    blm  : #ff0084,
-    vis  : #5aacff,
-    kip  : #ffeaad,
-    kas  : #ffca28,
-    bak  : #ff0000,
-    baks1  : #000022,
-    baks2  : #000033,
-    baks3  : #000044,
-    baks4  : #000055,
-    baks5  : #000066,
-    baks6 : #000077,
+    stn: #000000,
+    agf: #2aff00,
+    blm: #ff0084,
+    vis: #5aacff,
+    kip: #ffeaad,
+    kas: #ffca28,
+    bak: #ff0000,
+    baks1: #000022,
+    baks2: #000033,
+    baks3: #000044,
+    baks4: #000055,
+    baks5: #000066,
+    baks6: #000077
 );
 
-$iconListPlaats: (
-    loopje,
-    loopjediedichtmag,
-    lantaarnpaal,
-    bankje,
-    boom,
-    electra,
-);
-
+$iconListPlaats: (loopje, loopjediedichtmag, lantaarnpaal, bankje, boom, electra);
 
 $ff-regular: "Avenir Next LT W01 Regular", verdana, sans-serif;
 $ff-bold: "Avenir Next LT W01 Demi", verdana, sans-serif;
@@ -51,5 +43,4 @@ $lh-70: 25px;
 $lh-60: 22px;
 $lh-50: 18px;
 
-
-$boxShadowDefault: 2px 3px 4px 0 rgba(0,0,0,0.2);
+$boxShadowDefault: 2px 3px 4px 0 rgba(0, 0, 0, 0.2);

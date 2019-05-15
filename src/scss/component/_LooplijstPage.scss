@@ -2,9 +2,7 @@
 @import "../global/designSystem";
 
 .looplijst-page {
-
 }
-
 
 .looplijst__h {
     width: 100%;
@@ -16,7 +14,6 @@
 }
 
 @media print {
-
     .LooplijstPage,
     .looplijst-page {
         padding-top: 0;
@@ -33,7 +30,6 @@
             margin: 0;
             padding: 0;
         }
-
     }
 }
 
@@ -52,9 +48,7 @@ table {
     width: 40%;
     table {
         //border-right: 1px solid;
-
     }
-
 }
 
 .LooplijstPage {
@@ -64,7 +58,6 @@ table {
     box-shadow: $boxShadowDefault;
     margin-bottom: 30px;
     &__ratio {
-
         position: relative;
         height: 0;
         width: 100%;
@@ -118,7 +111,6 @@ table {
         margin-top: 60px;
         text-align: center;
     }
-
 }
 
 //.albert-cuypstraat {

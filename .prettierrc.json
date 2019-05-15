@@ -8,6 +8,13 @@
         "tabWidth": 4,
         "singleQuote": true
       }
+    },
+    {
+      "files": ["*.css", "*.scss"],
+      "options": {
+        "parser": "css",
+        "tabWidth": 4
+      }
     }
   ]
 }
