@@ -9,7 +9,7 @@ const IndelingslijstPage = ({ page, index, data, markt }) => {
             <div className="IndelingslijstPage__ratio" data-ratio="210:297">
                 <div className="IndelingslijstPage__wrapper">
                     <h3 className="IndelingslijstPage__heading">
-                        {markt.slug}
+                        {markt.naam}
                         <span className="IndelingslijstPage__index">{index + 1}</span>
                     </h3>
                     <div className="IndelingslijstPage__list-wrapper">

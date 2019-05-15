@@ -1,4 +1,4 @@
-const { login, getMarkten: getMakkelijkeMarkten, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
+const { login, getMarkt, getMarkten: getMakkelijkeMarkten, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
 const { ALBERT_CUYP_ID, slugifyMarkt } = require('./domain-knowledge.js');
 const fs = require('fs');
 
@@ -54,8 +54,9 @@ const getIndelingslijstInput = (token, marktId, date) =>
         getBranches(marktId),
         getMarktPaginas(marktId),
         getMarktGeografie(marktId),
+        getMarkt(token, marktId),
     ]).then(args => {
-        const [ondernemers, locaties, aanmeldingen, voorkeuren, branches, paginas, geografie] = args;
+        const [ondernemers, locaties, aanmeldingen, voorkeuren, branches, paginas, geografie, markt] = args;
 
         return {
             locaties,
@@ -65,6 +66,7 @@ const getIndelingslijstInput = (token, marktId, date) =>
             ondernemers,
             paginas,
             geografie,
+            markt,
         };
     });
 

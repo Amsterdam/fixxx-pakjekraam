@@ -85,14 +85,12 @@ app.get('/markt/', ensureLoggedIn(), function(req, res) {
 });
 
 app.get('/markt/:marktId/', ensureLoggedIn(), function(req, res) {
-    getMarkten(req.user.token).then(markten => res.render('MarktenPage', { markten }));
+    getMarkt(req.user.token).then(markten => res.render('MarktenPage', { markten }));
 });
 app.get('/markt-indeling/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) => {
     getIndelingslijstInput(req.user.token, req.params.marktId).then(
-        (data, marktId) => {
-            const marktSlug = slugifyMarkt(marktId);
-
-            res.render('MarktDetailPage', { data, marktId, marktSlug });
+        data => {
+            res.render('MarktDetailPage', { data });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);

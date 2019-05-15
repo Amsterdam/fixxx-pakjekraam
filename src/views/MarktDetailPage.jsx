@@ -21,6 +21,7 @@ class MarktenPage extends React.Component {
                 ondernemers: [],
                 paginas: [],
                 voorkeuren: [],
+                markt: {},
             },
         };
     }
@@ -32,7 +33,7 @@ class MarktenPage extends React.Component {
     };
 
     render() {
-        const { aanmeldingen, branches, geografie, locaties, ondernemers, paginas, voorkeuren } = this.props.data;
+        const { aanmeldingen, branches, geografie, locaties, ondernemers, paginas, voorkeuren, markt } = this.props.data;
 
         const pl = {},
             vphl = {},
@@ -68,10 +69,6 @@ class MarktenPage extends React.Component {
             ondernemers: vphl,
             paginas,
             voorkeuren,
-        };
-        const markt = {
-            slug: this.props.marktSlug,
-            id: this.props.marktId,
         };
 
         return (
