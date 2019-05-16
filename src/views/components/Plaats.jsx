@@ -2,13 +2,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const Plaats = ({ plaats, vph }) => {
-    let plaatsProps = plaats.properties ? plaats.properties.split(',') : [];
+    let plaatsProps = plaats.properties ? plaats.properties.split(',') : [],
+        tags = plaats.tags || [];
 
     plaatsProps = plaatsProps.filter(word => !['dubble'].includes(word));
     plaatsProps.reverse();
+    tags = tags.join(' ');
 
     return (
-        <tr className={'Plaats ' + plaats.branche}>
+        <tr className={'Plaats ' + (plaats.branche ? plaats.branche : '') + ' ' + tags }>
             <td className="Plaats__prop Plaats__prop-properties">
                 <span className={'icon icon-' + (plaatsProps ? plaatsProps[0] : '')} />
             </td>
