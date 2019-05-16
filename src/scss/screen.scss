@@ -2,6 +2,7 @@
 @import "global/icons";
 @import "global/designSystem";
 @import "global/variables";
+@import "global/mixins";
 
 @import "grid/container";
 
@@ -12,6 +13,7 @@
 @import "component/Content";
 @import "component/Header";
 @import "component/Home";
+@import "component/MarktDetailPage";
 @import "component/IndelingslijstPage";
 @import "component/IndelingslijstList";
 @import "component/MarktList";
@@ -20,3 +22,4 @@
 @import "component/Obstakel";
 @import "component/Plaats";
 @import "component/Street";
+@import "component/PrintButton";

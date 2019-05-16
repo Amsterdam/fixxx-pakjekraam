@@ -1,0 +1,14 @@
+.MarktDetailPage {
+    h2 {
+        display: inline-block;
+
+    }
+    .PrintButton {
+        float: right;
+    }
+    h2,
+    .PrintButton {
+        min-height: $buttonMinHeight;
+        margin-top: $vm5;
+    }
+}

@@ -1,0 +1,53 @@
+@mixin button($bgColor) {
+    display: inline-block;
+    padding: 0 15px;
+    min-width: 90px;
+    line-height: 44px;
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+    border: none;
+    cursor: pointer;
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: $bgColor;
+        z-index: -1;
+    }
+    &:after {
+        content: '';
+        transition: background-color .4s;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0);
+        z-index: -1;
+    }
+    &:hover:after {
+        background-color: rgba(0, 0, 0, 0.2);
+
+    }
+    &[disabled="disabled"] {
+        color: $neutral-grey3;
+        background-color: $neutral-grey2;
+        &:before,
+        &:after {
+            display: none;
+        }
+    }
+    &:focus {
+        outline: $support-focus 4px solid;
+
+    }
+}
+
+@mixin button-primary() {
+    @include buttonlabel-primary;
+    @include button($primary-red);
+}

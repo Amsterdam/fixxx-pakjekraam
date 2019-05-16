@@ -5,6 +5,7 @@ const MainNavigation = require('./components/MainNavigation.jsx');
 const Header = require('./components/Header');
 const Content = require('./components/Content');
 const Indelingslijst = require('./components/Indelingslijst');
+const PrintButton = require('./components/PrintButton');
 
 class MarktenPage extends React.Component {
     constructor(props) {
@@ -77,8 +78,11 @@ class MarktenPage extends React.Component {
             <Page bodyClass="page-markt-detail">
                 <Header />
                 <Content>
-                    <h2>Indelingslijsten</h2>
-                    <Indelingslijst data={obj} markt={markt} />
+                    <div className="MarktDetailPage">
+                        <h2>Indelingslijst</h2>
+                        <PrintButton title="Print indelingslijst"/>
+                        <Indelingslijst data={obj} markt={markt} />
+                    </div>
                 </Content>
             </Page>
         );

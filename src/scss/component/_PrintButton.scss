@@ -1,0 +1,6 @@
+.PrintButton {
+    display: inline-block;
+    &__btn {
+        @include button-primary;
+    }
+}
