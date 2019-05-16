@@ -235,7 +235,7 @@
     "prefer-rest-params": ["off"],
     "prefer-spread": ["off"],
     "prefer-template": ["off"],
-    "quote-props": ["error", "consistent"],
+    "quote-props": ["off"],
     "radix": ["error", "always"],
     "require-atomic-updates": ["error"],
     "require-await": ["error"],
