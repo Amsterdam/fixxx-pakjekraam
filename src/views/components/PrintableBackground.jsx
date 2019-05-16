@@ -4,7 +4,7 @@ import React from 'react';
 const PrintableBackground = ({ color }) => {
     return (
         <svg className="PrintableBackground">
-            <rect fill={color} x="0" y="0" width="100%" height="100%"/>
+            <rect fill={color} x="0" y="0" width="100%" height="100%" />
         </svg>
     );
 };

@@ -80,7 +80,7 @@ class MarktenPage extends React.Component {
                 <Content>
                     <div className="MarktDetailPage">
                         <h2>Indelingslijst</h2>
-                        <PrintButton title="Print indelingslijst"/>
+                        <PrintButton title="Print indelingslijst" />
                         <Indelingslijst data={obj} markt={markt} />
                     </div>
                 </Content>

@@ -9,7 +9,7 @@
     border: none;
     cursor: pointer;
     &:before {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         right: 0;
@@ -19,8 +19,8 @@
         z-index: -1;
     }
     &:after {
-        content: '';
-        transition: background-color .4s;
+        content: "";
+        transition: background-color 0.4s;
         position: absolute;
         left: 0;
         right: 0;
@@ -31,7 +31,6 @@
     }
     &:hover:after {
         background-color: rgba(0, 0, 0, 0.2);
-
     }
     &[disabled="disabled"] {
         color: $neutral-grey3;
@@ -43,7 +42,6 @@
     }
     &:focus {
         outline: $support-focus 4px solid;
-
     }
 }
 
