@@ -34,5 +34,3 @@ services:
       - THUMBNAILSERVICE_URL=https://thumbnail.service/
     links:
       - database
-    ports:
-      - "80:8080"
