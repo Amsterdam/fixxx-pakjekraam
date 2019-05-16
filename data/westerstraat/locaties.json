@@ -402,7 +402,8 @@
     "locatie": "134"
   },
   {
-    "locatie": "135"
+    "locatie": "135",
+    "branche": "promo"
   },
   {
     "locatie": "136"
@@ -423,7 +424,8 @@
     "locatie": "141"
   },
   {
-    "locatie": "142"
+    "locatie": "142",
+    "branche": "standwerkersplaats"
   },
   {
     "locatie": "143"
@@ -747,7 +749,8 @@
     "locatie": "249"
   },
   {
-    "locatie": "250"
+    "locatie": "250",
+    "branche": "promo"
   },
   {
     "locatie": "251"
@@ -948,7 +951,8 @@
     "locatie": "316"
   },
   {
-    "locatie": "317"
+    "locatie": "317",
+    "branche": "standwerkersplaats"
   },
   {
     "locatie": "318"
@@ -990,7 +994,8 @@
     "locatie": "330"
   },
   {
-    "locatie": "331"
+    "locatie": "331",
+    "branche": "standwerkersplaats"
   },
   {
     "locatie": "332"
