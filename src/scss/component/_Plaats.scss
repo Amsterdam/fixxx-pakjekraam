@@ -27,7 +27,8 @@
         color: $primary-black;
         text-align: center;
         border-right: none;
-        //border: none;
+        position: relative;
+        z-index: 1;
 
         .roze & {
             background-color: #ff99cc;
