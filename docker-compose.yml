@@ -1,6 +1,6 @@
 version: "3.0"
 services:
-  database:
+  database_dev:
     image: postgres:9.5.11-alpine
     ports:
       - "5432:5432"
@@ -8,20 +8,21 @@ services:
       POSTGRES_PASSWORD: insecure
       POSTGRES_USER: pakjekraam
       POSTGRES_DB: pakjekraam
-  web:
+  web_dev:
     build:
       args:
-        - NODE_ENV=production
+        - NODE_ENV=development
       context: .
       dockerfile: Dockerfile
+    command: dev
     environment:
       - API_MMAPPKEY
       - API_URL
-      - APP_ENV=production
+      - APP_ENV=dev
       - APP_NOTIFICATIE_FROM=tester@test.com
       - APP_SECRET=secret
-      - DATABASE_URL=pgsql://pakjekraam:insecure@database:5432/pakjekraam
-      - NODE_ENV=production
+      - DATABASE_URL=pgsql://pakjekraam:insecure@database_dev:5432/pakjekraam
+      - NODE_ENV=development
       - SWIFT_AUTH_URL=
       - SWIFT_CONTAINER_PREFIX=
       - SWIFT_EXTERNAL_DOMAIN=
@@ -33,4 +34,10 @@ services:
       - SWIFT_USER_PASSWORD=
       - THUMBNAILSERVICE_URL=https://thumbnail.service/
     links:
-      - database
+      - database_dev
+    ports:
+      - "8080:8080"
+    restart: always
+    volumes:
+      - ./:/srv
+      - /srv/node_modules

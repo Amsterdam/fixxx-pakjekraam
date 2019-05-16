@@ -9,7 +9,7 @@ Maak een bestand genaamd `.env`, begin met de inhoud van `example.env` als basis
 Om de database op te starten tijdens development draai je:
 
 ```shell
-docker-compose -f docker-compose-dev.yml up -d database_dev
+docker-compose up -d database_dev
 ```
 
 Draai `( . .env && npm run dev)` tijdens development (code wijzigen zorgt voor reload), of `npm run start` voor de echte versie. Gebruik `Control+C` om af te sluiten.
