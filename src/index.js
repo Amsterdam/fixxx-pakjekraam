@@ -6,6 +6,7 @@ const passport = require('passport');
 const path = require('path');
 const bodyParser = require('body-parser');
 const models = require('./model/index.js');
+const morgan = require('morgan');
 const { slugifyMarkt } = require('./domain-knowledge.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
@@ -34,6 +35,8 @@ models.sequelize.sync().then(
         process.exit(1);
     },
 );
+
+app.use(morgan(morgan.compile(':date[iso] :method :status :url :response-time ms')));
 
 // Required for Passport login form
 app.use(bodyParser.urlencoded({ extended: true }));
