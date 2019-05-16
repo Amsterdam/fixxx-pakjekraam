@@ -104,8 +104,8 @@
   { "locatie": 206, "tags": ["even"] },
   { "locatie": 208, "tags": ["even"] },
   { "locatie": 210, "tags": ["even"] },
-  { "locatie": 212, "tags": ["even", "branche-humus-olijven"], "branche": "humus-olijven" },
-  { "locatie": 214, "tags": ["even", "branche-humus-olijven"], "branche": "humus-olijven" },
+  { "locatie": 212, "tags": ["even", "eigen-materiaal"], "branche": "eigen-materiaal" },
+  { "locatie": 214, "tags": ["even", "eigen-materiaal"], "branche": "eigen-materiaal" },
   { "locatie": 216, "tags": ["even"] },
   { "locatie": 218, "tags": ["even"] },
   { "locatie": 220, "tags": ["even"] },
@@ -132,8 +132,18 @@
   { "locatie": 262, "tags": ["even", "branche-agf"], "branche": "agf" },
   { "locatie": 264, "tags": ["even", "experimentele-zone"] },
   { "locatie": 266, "tags": ["even", "experimentele-zone"] },
-  { "locatie": 268, "tags": ["even", "branche-bakker"], "branche": "bakker" },
-  { "locatie": 270, "tags": ["even", "branche-bakker"], "branche": "bakker" },
+  {
+    "locatie": 268,
+    "tags": ["even", "eigen-materiaal", "branche-bakker"],
+    "branche": "bakker",
+    "branche": "eigen-materiaal"
+  },
+  {
+    "locatie": 270,
+    "tags": ["even", "eigen-materiaal", "branche-bakker"],
+    "branche": "bakker",
+    "branche": "eigen-materiaal"
+  },
   { "locatie": 272, "tags": ["even"] },
   { "locatie": 1, "tags": ["oneven"] },
   { "locatie": 3, "tags": ["oneven"] },
@@ -185,8 +195,8 @@
   { "locatie": 95, "tags": ["oneven"] },
   { "locatie": 97, "tags": ["oneven"] },
   { "locatie": 99, "tags": ["oneven"] },
-  { "locatie": 101, "tags": ["oneven", "branche-noten"], "branche": "noten" },
-  { "locatie": 103, "tags": ["oneven", "branche-noten"], "branche": "noten" },
+  { "locatie": 101, "tags": ["oneven", "eigen-materiaal"], "branche": "eigen-materiaal" },
+  { "locatie": 103, "tags": ["oneven", "eigen-materiaal"], "branche": "eigen-materiaal" },
   { "locatie": 105, "tags": ["oneven"] },
   { "locatie": 107, "tags": ["oneven"] },
   { "locatie": 109, "tags": ["oneven"] },
@@ -232,16 +242,36 @@
   { "locatie": 189, "tags": ["oneven"] },
   { "locatie": 191, "tags": ["oneven"] },
   { "locatie": 193, "tags": ["oneven"] },
-  { "locatie": 195, "tags": ["oneven", "branche-churros"], "branche": "churros" },
-  { "locatie": 197, "tags": ["oneven", "branche-bakker"], "branche": "bakker" },
-  { "locatie": 199, "tags": ["oneven", "branche-bakker"], "branche": "bakker" },
+  { "locatie": 195, "tags": ["oneven", "eigen-materiaal"], "branche": "eigen-materiaal" },
+  {
+    "locatie": 197,
+    "tags": ["oneven", "eigen-materiaal", "branche-bakker"],
+    "branche": "bakker",
+    "branche": "eigen-materiaal"
+  },
+  {
+    "locatie": 199,
+    "tags": ["oneven", "eigen-materiaal", "branche-bakker"],
+    "branche": "bakker",
+    "branche": "eigen-materiaal"
+  },
   { "locatie": 201, "tags": ["oneven", "branche-bak"], "branche": "bak" },
   { "locatie": 203, "tags": ["oneven", "branche-bak"], "branche": "bak" },
   { "locatie": 205, "tags": ["oneven"] },
-  { "locatie": 207, "tags": ["oneven", "branche-gebakken-vis"], "branche": "gebakken-vis" },
-  { "locatie": 209, "tags": ["oneven", "branche-gebakken-vis"], "branche": "gebakken-vis" },
-  { "locatie": 211, "tags": ["oneven", "branche-noten"], "branche": "noten" },
-  { "locatie": 213, "tags": ["oneven", "branche-noten"], "branche": "noten" },
+  {
+    "locatie": 207,
+    "tags": ["oneven", "eigen-materiaal", "branche-gebakken-vis"],
+    "branche": "gebakken-vis",
+    "branche": "eigen-materiaal"
+  },
+  {
+    "locatie": 209,
+    "tags": ["oneven", "eigen-materiaal", "branche-gebakken-vis"],
+    "branche": "gebakken-vis",
+    "branche": "eigen-materiaal"
+  },
+  { "locatie": 211, "tags": ["oneven", "eigen-materiaal"], "branche": "eigen-materiaal" },
+  { "locatie": 213, "tags": ["oneven", "eigen-materiaal"], "branche": "eigen-materiaal" },
   { "locatie": 215, "tags": ["oneven"] },
   { "locatie": 217, "tags": ["oneven", "branche-bak"], "branche": "bak" },
   { "locatie": 219, "tags": ["oneven"] },
@@ -257,8 +287,8 @@
   { "locatie": 239, "tags": ["oneven"] },
   { "locatie": 241, "tags": ["oneven"] },
   { "locatie": 243, "tags": ["oneven"] },
-  { "locatie": 245, "tags": ["oneven", "branche-kaas"], "branche": "kaas" },
-  { "locatie": 247, "tags": ["oneven", "branche-kaas"], "branche": "kaas" },
+  { "locatie": 245, "tags": ["oneven", "eigen-materiaal"], "branche": "eigen-materiaal" },
+  { "locatie": 247, "tags": ["oneven", "eigen-materiaal"], "branche": "eigen-materiaal" },
   { "locatie": 249, "tags": ["oneven"] },
   { "locatie": 251, "tags": ["oneven"] },
   { "locatie": 253, "tags": ["oneven", "experimentele-zone"] },
@@ -266,5 +296,5 @@
   { "locatie": 257, "tags": ["oneven"] },
   { "locatie": 259, "tags": ["oneven"] },
   { "locatie": 261, "tags": ["oneven", "branche-bak"], "branche": "bak" },
-  { "locatie": 263, "tags": ["oneven", "branche-bak"], "branche": "bak" }
+  { "locatie": 263, "tags": ["oneven", "branche-bak", "branche-patat"], "branche": "bak", "branche": "patat" }
 ]
