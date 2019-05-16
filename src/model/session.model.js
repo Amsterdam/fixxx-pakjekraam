@@ -1,6 +1,9 @@
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-    const Session = sequelize.define(
-        'sessions',
+    class Session extends Model {}
+
+    Session.init(
         {
             sid: {
                 type: DataTypes.STRING,
@@ -9,11 +12,7 @@ module.exports = (sequelize, DataTypes) => {
             sess: DataTypes.JSON,
             expire: DataTypes.DATE,
         },
-        {
-            freezeTableName: true,
-            tableName: 'session',
-            timestamps: false,
-        },
+        { sequelize, modelName: 'session', freezeTableName: true, tableName: 'session', timestamps: false },
     );
 
     return Session;
