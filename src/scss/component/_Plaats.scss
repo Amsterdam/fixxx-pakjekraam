@@ -1,19 +1,10 @@
-@import "../global/designSystem";
-@import "../global/variables";
-@import "../global/icons";
-
 .table-cell--left {
     text-align: left;
 }
 
 .Plaats {
-    display: flex;
-    justify-content: space-evenly;
-    flex-direction: row;
-    align-content: stretch;
-    margin-top: -1px;
-
     &__prop {
+        padding: 0 5px;
         flex-grow: 1;
         border-top: 1px solid #000;
         border-bottom: 1px solid #000;
@@ -21,6 +12,7 @@
         @include p1;
         font-size: 14px;
         line-height: 20px;
+        border-top: none;
     }
     &__prop-plaats-nr {
         width: 5%;
@@ -112,8 +104,7 @@
         }
     }
     &__prop-vph {
-        width: 7%;
-
+        text-align: right;
         border-right: none;
     }
     &__prop-vph-description {
@@ -125,7 +116,6 @@
     }
     &__prop-properties {
         border-right: none;
-        width: 10px;
         .icon {
             display: block;
             width: 100%;
@@ -141,21 +131,8 @@
         }
     }
     &__prop-empty-fields {
-        width: 30%;
         border-left: none;
-        margin-left: 10px;
         border-right: none;
         border-top: none;
-
-        position: relative;
-        &:before {
-            //content: '';
-            height: 70%;
-            width: 1px;
-            background-color: #000;
-            position: absolute;
-            left: 0;
-            bottom: 0;
-        }
     }
 }

@@ -1,60 +1,8 @@
 @import "../global/variables";
 @import "../global/designSystem";
 
-.indelingslijst-page {
-}
-
-.indelingslijst__h {
-    width: 100%;
-}
-
-@page {
-    size: A4;
-    margin: 0;
-}
-
-@media print {
-    .IndelingslijstPage,
-    .indelingslijst-page {
-        padding-top: 0;
-        display: flex !important;
-        //justify-content: space-around;
-        //flex-wrap: wrap;
-        min-width: 0 !important;
-        margin: 0;
-        background-color: #fff;
-        width: 100vw;
-        height: 100vh;
-        page-break-after: always;
-        &__wrapper {
-            margin: 0;
-            padding: 0;
-        }
-    }
-}
-
-table {
-    width: 100%;
-    //border: 1px solid;
-}
-
-.street-bundel {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-.indelingslijst__list {
-    width: 40%;
-    table {
-        //border-right: 1px solid;
-    }
-}
-
 .IndelingslijstPage {
     background-color: $primary-white;
-    //border-bottom: 2px solid $neutral-grey5;
-    //border-right: 2px solid $neutral-grey5;
     box-shadow: $boxShadowDefault;
     margin-bottom: 30px;
     &__ratio {
@@ -83,15 +31,23 @@ table {
         justify-content: space-between;
         width: 100%;
         flex-wrap: wrap;
+        font-size: 0;
+        &:after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .IndelingslijstList + .IndelingslijstList {
+            margin-left: 4%;
+        }
     }
     &__index {
-        position: absolute;
         right: 0;
-        //transform: translateX(-50%);
         font-size: 30px;
         line-height: 40px;
         text-align: center;
-        display: block;
+        display: inline-block;
+        margin-left: 10px;
         width: 40px;
         height: 40px;
         border: 2px solid #000;
@@ -99,9 +55,8 @@ table {
         top: -10px;
     }
     &__heading {
-        display: inline-block;
+        display: block;
         margin: 0;
-        position: relative;
         padding-right: 60px;
         margin-bottom: 20px;
     }
@@ -113,14 +68,65 @@ table {
     }
 }
 
-//.albert-cuypstraat {
-//  &__straat-3b,
-//  &__straat-3a,
-//  &__straat-2a,
-//  &__straat-2b,
-//  &__straat-1b,
-//  &__straat-1a {
-//    width: 40%;
-//    border: 1px solid;
-//  }
-//}
+@page {
+    size: A4;
+}
+
+@media print {
+    * {
+        page-break-after: avoid;
+        page-break-before: avoid;
+        page-break-inside: avoid;
+    }
+    header {
+        display: none !important;
+    }
+    main > * {
+        display: none;
+    }
+    .container {
+        max-width: 100%;
+    }
+    .container__content {
+        margin: 0;
+        display: block;
+        & > * {
+            display: none;
+        }
+        .Indelingslijst {
+            display: block;
+        }
+    }
+
+    .IndelingslijstPage {
+        display: block;
+        page-break-after: always;
+        min-width: 0 !important;
+        background-color: #fff;
+        width: auto !important; /* 100% Might be breaking your current code. */
+        height: auto !important;
+        box-shadow: none;
+        &__ratio {
+            height: auto;
+            position: static;
+            padding-top: 0 !important;
+        }
+        &__wrapper {
+            position: static;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: auto;
+        }
+        &__heading {
+            padding: 0;
+        }
+        &__list-wrapper {
+            display: block;
+        }
+    }
+    .Street,
+    .IndelingslijstList {
+        display: inline-block;
+    }
+}

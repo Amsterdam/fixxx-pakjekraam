@@ -1,32 +1,33 @@
 @import "../global/designSystem";
 
-tr {
-    th,
-    td {
-        padding: 1px 5px;
-    }
-    th {
-        line-height: 30px;
-        @include p1;
-    }
-}
 .IndelingslijstList {
     width: 48%;
+    vertical-align: top;
     &__wrapper {
-        display: flex;
-        flex-direction: column;
+        &:first-child .Plaats__prop {
+            border-top: 1px solid;
+        }
     }
     &__header {
-        width: 33.333%;
+        padding: 0 5px;
         border: none;
+        border-bottom: 1px solid;
+        @include p1;
     }
     &__header-row {
-        display: flex;
+        //display: flex;
     }
     &__header-plaats {
         width: 10%;
     }
     &__header-properties {
         width: 12px;
+    }
+    &__vph {
+        width: 20px;
+        text-align: right;
+    }
+    &__table {
+        width: 100%;
     }
 }

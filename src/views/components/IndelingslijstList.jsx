@@ -6,9 +6,9 @@ import React from 'react';
 const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => {
     return (
         <div className={'IndelingslijstList indelingslijst__list ' + markt + '__' + page.class}>
-            <h4>{page.title}</h4>
+            {page.title && <h4>{page.title}</h4>}
 
-            <table cellPadding="0" cellSpacing="0">
+            <table className="IndelingslijstList__table" cellPadding="0" cellSpacing="0">
                 <thead className="IndelingslijstList__wrapper">
                     <tr className="IndelingslijstList__header-row">
                         <th className="IndelingslijstList__header IndelingslijstList__header-properties" />
