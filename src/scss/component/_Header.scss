@@ -22,17 +22,20 @@ $headerHeightTop__540: 108px;
         justify-content: space-around;
         min-height: $headerHeight - $headerHeightTop;
     }
-    &__logo {
+    &__logo-link {
+        display: flex;
         width: 100px;
         margin-right: 30px;
     }
+    &__logo {
+        width: 100px;
+    }
     &__top-container {
-        //padding-top: 10px;
         display: flex;
     }
     &__heading {
-        @include h4;
-        margin: 7px 0 0 0;
+        @include h1;
+        margin: 9px 0 0 0;
     }
     &__nav-item {
         @include sitenavitem-default;

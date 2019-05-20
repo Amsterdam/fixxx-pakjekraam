@@ -1,0 +1,12 @@
+.InputField {
+    display: flex;
+    flex-direction: column;
+    &--submit {
+        background-color: $neutral-grey2;
+        height: 64px;
+        padding: 0 10px;
+        flex-direction: row-reverse;
+        align-content: flex-end;
+        align-items: center;
+    }
+}

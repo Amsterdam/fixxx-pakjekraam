@@ -1,0 +1,31 @@
+$inputMinWidth: 70px;
+$inputMaxWidth: 620px;
+
+.Input {
+    display: inline-block;
+    @include p1;
+    padding: 9px 9px 11px 9px;
+    border: 1px solid $neutral-grey4;
+    color: $neutral-grey4;
+    min-width: $inputMinWidth;
+    max-width: $inputMaxWidth;
+    outline-offset: 0;
+    outline: 2px solid transparent;
+    transition: border-color 0.4s, outline 0.4s;
+    &:hover {
+        border-color: $primary-black;
+        color: $primary-black;
+    }
+    &:focus {
+        outline-offset: 0;
+        outline: 2px solid $support-focus;
+    }
+    [disabled="disabled"] {
+        border-color: $neutral-grey3;
+        color: $neutral-grey3;
+    }
+
+    &--submit {
+        @include button-primary;
+    }
+}

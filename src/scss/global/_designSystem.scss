@@ -177,7 +177,7 @@ $h1-text-align: left;
 }
 /** h1 **/
 $h1-font-size: 30px;
-$h1-color: #ffffff;
+$h1-color: #000000;
 $h1-line-height: 38px;
 $h1-font-family: Avenir Next LT Pro;
 $h1-font-weight: 500;
@@ -191,34 +191,20 @@ $h1-text-align: left;
     font-weight: $h1-font-weight;
     text-align: $h1-text-align;
 }
-/** h1 **/
-$h1-font-size: 24px;
-$h1-color: #ffffff;
-$h1-line-height: 30px;
-$h1-font-family: Avenir Next LT Pro;
-$h1-font-weight: 500;
-$h1-text-align: left;
 
-@mixin h1() {
-    font-size: $h1-font-size;
-    color: $h1-color;
-    line-height: $h1-line-height;
+@mixin h1a() {
+    font-size: 24px;
+    color: #ffffff;
+    line-height: 30px;
     font-family: $h1-font-family;
     font-weight: $h1-font-weight;
     text-align: $h1-text-align;
 }
-/** h1 **/
-$h1-font-size: 24px;
-$h1-color: #000000;
-$h1-line-height: 30px;
-$h1-font-family: Avenir Next LT Pro;
-$h1-font-weight: 500;
-$h1-text-align: left;
 
-@mixin h1() {
-    font-size: $h1-font-size;
-    color: $h1-color;
-    line-height: $h1-line-height;
+@mixin h1b() {
+    font-size: 24px;
+    color: #000000;
+    line-height: 30px;
     font-family: $h1-font-family;
     font-weight: $h1-font-weight;
     text-align: $h1-text-align;
@@ -239,50 +225,29 @@ $h2-text-align: left;
     font-weight: $h2-font-weight;
     text-align: $h2-text-align;
 }
-/** h2 **/
-$h2-font-size: 24px;
-$h2-color: #ffffff;
-$h2-line-height: 30px;
-$h2-font-family: Avenir Next LT Pro;
-$h2-font-weight: 500;
-$h2-text-align: left;
 
-@mixin h2() {
-    font-size: $h2-font-size;
-    color: $h2-color;
-    line-height: $h2-line-height;
+@mixin h2a() {
+    font-size: 24px;
+    color: #ffffff;
+    line-height: 30px;
     font-family: $h2-font-family;
     font-weight: $h2-font-weight;
     text-align: $h2-text-align;
 }
-/** h2 **/
-$h2-font-size: 20px;
-$h2-color: #ffffff;
-$h2-line-height: 28px;
-$h2-font-family: Avenir Next LT Pro;
-$h2-font-weight: 500;
-$h2-text-align: left;
 
-@mixin h2() {
-    font-size: $h2-font-size;
-    color: $h2-color;
-    line-height: $h2-line-height;
+@mixin h2b() {
+    font-size: 20px;
+    color: #ffffff;
+    line-height: 28px;
     font-family: $h2-font-family;
     font-weight: $h2-font-weight;
     text-align: $h2-text-align;
 }
-/** h2 **/
-$h2-font-size: 20px;
-$h2-color: #000000;
-$h2-line-height: 28px;
-$h2-font-family: Avenir Next LT Pro;
-$h2-font-weight: 500;
-$h2-text-align: left;
 
-@mixin h2() {
-    font-size: $h2-font-size;
-    color: $h2-color;
-    line-height: $h2-line-height;
+@mixin h2c() {
+    font-size: 20px;
+    color: #ffffff;
+    line-height: 28px;
     font-family: $h2-font-family;
     font-weight: $h2-font-weight;
     text-align: $h2-text-align;

@@ -4,19 +4,24 @@ const Page = require('./Page.jsx');
 class LoginForm extends React.Component {
     render() {
         return (
-            <form method="POST" action="/login">
-                <h1>Inloggen</h1>
-                <p>
-                    <label htmlFor="username">Gebruikersnaam:</label>
-                    <input id="username" name="username" />
-                </p>
-                <p>
-                    <label htmlFor="password">Wachtwoord:</label>
-                    <input id="password" name="password" type="password" />
-                </p>
-                <p>
-                    <input type="submit" />
-                </p>
+            <form className="Form" method="POST" action="/login">
+                <fieldset className="Fieldset">
+                    <p className="InputField">
+                        <label className="Label" htmlFor="username">
+                            Gebruikersnaam:
+                        </label>
+                        <input className="Input Input--text" id="username" name="username" />
+                    </p>
+                    <p className="InputField">
+                        <label className="Label" htmlFor="password">
+                            Wachtwoord:
+                        </label>
+                        <input className="Input Input--password" id="password" name="password" type="password" />
+                    </p>
+                    <p className="InputField InputField--submit">
+                        <input className="Input Input--submit" type="submit" />
+                    </p>
+                </fieldset>
             </form>
         );
     }

@@ -4,30 +4,15 @@
     min-width: 90px;
     line-height: 44px;
     text-decoration: none;
-    position: relative;
-    z-index: 1;
     border: none;
     cursor: pointer;
-    &:before {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background-color: $bgColor;
-        z-index: -1;
-    }
-    &:after {
-        content: "";
-        transition: background-color 0.4s;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0);
-        z-index: -1;
+    background-color: $bgColor;
+    text-align: center;
+    color: $primary-white;
+    transition: background-color 0.4s;
+    &:hover {
+        color: $primary-white;
+        background-color: $primary-red-darker;
     }
     &:hover:after {
         background-color: rgba(0, 0, 0, 0.2);

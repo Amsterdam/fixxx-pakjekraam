@@ -8,6 +8,8 @@
 
 @import "element/body";
 @import "element/table";
+@import "element/fieldset";
+@import "element/heading";
 
 @import "component/App";
 @import "component/Content";
@@ -24,3 +26,9 @@
 @import "component/Street";
 @import "component/PrintableBackground";
 @import "component/PrintButton";
+
+@import "component/Input";
+@import "component/Label";
+@import "component/InputField";
+@import "component/Fieldset";
+@import "component/Form";
