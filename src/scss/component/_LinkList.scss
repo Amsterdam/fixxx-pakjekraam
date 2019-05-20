@@ -1,0 +1,8 @@
+.LinkList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    &__item {
+        padding: 6px 0;
+    }
+}

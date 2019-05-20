@@ -1,0 +1,26 @@
+.Link {
+    @include p1;
+    text-decoration: none;
+    padding-left: 15px;
+    position: relative;
+    &:before {
+        @include icon($icon-Chevron-Right);
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 14px;
+        line-height: 18px;
+    }
+    &:hover {
+        color: $primary-red;
+        text-decoration: underline;
+    }
+    &:hover:before {
+        color: $primary-black;
+        text-decoration: none !important;
+    }
+    &:focus {
+        outline: 2px solid $support-focus;
+        background-color: $support-focus;
+    }
+}

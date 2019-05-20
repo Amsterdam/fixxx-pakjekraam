@@ -5,10 +5,12 @@ const today = () => new Date().toISOString().replace(/T.+/, '');
 const MarktList = ({ markten }) => {
     return (
         <div>
-            <ul>
+            <ul className="LinkList">
                 {markten.map(markt => (
-                    <li key={markt.id}>
-                        <a href={`/markt-indeling/${markt.id}/${today()}/indelingslijst/`}>{markt.naam}</a>
+                    <li key={markt.id} className="LinkList__item">
+                        <a href={`/markt-indeling/${markt.id}/${today()}/indelingslijst/`} className="Link">
+                            {markt.naam}
+                        </a>
                     </li>
                 ))}
             </ul>

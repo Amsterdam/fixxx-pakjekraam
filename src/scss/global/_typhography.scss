@@ -26,3 +26,13 @@
         url("https://fast.fonts.net/dv2/11/52a192b1-bea5-4b48-879f-107f009b666f.svg?d44f19a684109620e484157da190e818b8181684acb8d9de547f80309ae0bf5e91b6053e1258f1bce7fab996bc526645cf13af7b372f6511c6d0a113d853a4d631b380a63d71c5cf121ddc130765c6947c96cf59ddb4eac38977be3e6a9c8b56faf3b6c765af5ea9a36f05c17d0ecffc70f6a4bc9166ab1cd141d8ab6cbabf86b22eea9d861d5e238ffbe64725b6026d1953&projectId=0037f97b-b0f6-41de-8f33-75b12c9f76ea#52a192b1-bea5-4b48-879f-107f009b666f")
             format("svg");
 }
+@font-face {
+    font-family: "#{$icomoon-font-family}";
+    src: url("#{$icomoon-font-path}/#{$icomoon-font-family}.eot?kol2t1");
+    src: url("#{$icomoon-font-path}/#{$icomoon-font-family}.eot?kol2t1#iefix") format("embedded-opentype"),
+        url("#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?kol2t1") format("truetype"),
+        url("#{$icomoon-font-path}/#{$icomoon-font-family}.woff?kol2t1") format("woff"),
+        url("#{$icomoon-font-path}/#{$icomoon-font-family}.svg?kol2t1##{$icomoon-font-family}") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
