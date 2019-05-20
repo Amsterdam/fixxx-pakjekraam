@@ -19,7 +19,7 @@
     "lint": "concurrently 'npm:lint:*'",
     "lint:editorconfig": "git ls-files '*.cfg' '*.cnf' '*.conf' '*.crt' '*.css' '*.csv' '*.dockerignore' '*.editorconfig' '*.env' '*.eslintignore' '*.eslintrc' '*.feature' '*.gitattributes' '*.gitignore' '*.groovy' '*.htm' '*.html' '*.ini' '*.json' '*.jsx' '*.key' '*.less' '*.markdown' '*.md' '*.params' '*.pem' '*.php' '*.pub' '*.py' '*.rb' '*.rdf' '*.rq' '*.rsa' '*.scss' '*.service' '*.sh' '*.spec' '*.sql' '*.srl' '*.stylelintrc' '*.svg' '*.ts' '*.twig' '*.txt' '*.vcl' '*.wsdl' '*.xhtml' '*.xliff' '*.xml' '*.xqy' '*.xsd' '*.xsl' '*.xslt' '*.yml' '*AUTHORS' '*CONTRIBUTORS' '*Dockerfile' '*LICENSE' '*Makefile' '*README' '*Jenkinsfile' | xargs lintspaces --matchdotfiles --newline --editorconfig .editorconfig --ignores js-comments",
     "lint:eslint": "eslint './src/**/*.js' './src/**/*.jsx'",
-    "lint-fix": "concurrently 'npm:lint-fix:*'",
+    "lint-fix": "npm run lint-fix:eslint; npm run lint-fix:prettier",
     "lint-fix:eslint": "npm run lint:eslint -- --fix",
     "lint-fix:prettier": "prettier --write '**/*.js' '**/*.css' '**/*.scss' '**/*.json' '**/*.jsx' '*.yml'",
     "lint-non-npm": "git ls-files '*.yml' | tr '\n' '\\0' | xargs -0 yamllint",
