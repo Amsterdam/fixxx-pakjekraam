@@ -1,4 +1,5 @@
-[
+{
+  "obstakels": [
   {
     "kraamA": 6,
     "kraamB": 7,
@@ -135,3 +136,4 @@
     "obstakel": "loopje"
   }
 ]
+}
