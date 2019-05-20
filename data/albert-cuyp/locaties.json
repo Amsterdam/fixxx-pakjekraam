@@ -65,7 +65,7 @@
   { "locatie": 128, "tags": ["even"] },
   { "locatie": 130, "tags": ["even"] },
   { "locatie": 132, "tags": ["even"] },
-  { "locatie": 134, "tags": ["even"], "branche": "bak" },
+  { "locatie": 134, "tags": ["even"], "branche": ["bak"] },
   { "locatie": 136, "tags": ["even"] },
   { "locatie": 138, "tags": ["even"] },
   { "locatie": 140, "tags": ["even"] },
