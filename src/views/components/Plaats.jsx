@@ -10,7 +10,7 @@ const Plaats = ({ plaats, vph }) => {
         'branche-agf': '#2BB527',
         'experimentele-zone': '#9BCDFD',
         'branche-bak': '#FD9BCB',
-        'standwerkersplaats': '#FBF136',
+        standwerkersplaats: '#FBF136',
     };
 
     let plaatsProps = plaats.properties ? plaats.properties.split(',') : [],
