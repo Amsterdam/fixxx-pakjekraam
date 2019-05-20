@@ -20,10 +20,9 @@ const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => 
                 <tbody className="IndelingslijstList__wrapper">
                     {page.plaatsList.map((plaatsNr, i) => {
                         if (plaatsList[String(plaatsNr)]) {
-                            console.log('found: ' + plaatsNr);
                             if (obstakelList[String(plaatsNr)] && obstakelList[String(plaatsNr)].length > 0) {
                                 return (
-                                    <React.Fragment key={i}>
+                                    <React.Fragment key={plaatsNr}>
                                         <Plaats
                                             vph={vphl[String(plaatsNr)]}
                                             plaats={plaatsList[String(plaatsNr)]}
@@ -35,7 +34,7 @@ const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => 
                             } else {
                                 return (
                                     <Plaats
-                                        key={i}
+                                        key={plaatsNr}
                                         vph={vphl[String(plaatsNr)]}
                                         plaats={plaatsList[String(plaatsNr)]}
                                         obstakels={obstakelList}
@@ -43,8 +42,6 @@ const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => 
                                 );
                             }
                         } else {
-                            console.log('not found: ' + plaatsNr);
-
                             return <Plaats key={i} />;
                         }
                     })}
