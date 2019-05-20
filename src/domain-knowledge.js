@@ -16,6 +16,18 @@ const slugs = {
 
 const slugifyMarkt = marktId => slugs[marktId] || String(marktId);
 
+const dagen = {
+    zo: 0,
+    ma: 1,
+    di: 2,
+    wo: 3,
+    do: 4,
+    vr: 5,
+    za: 6,
+};
+
+const parseMarktDag = dag => (dagen.hasOwnProperty(dag) ? dagen[dag] : -1);
+
 module.exports = {
     DAPPERMARKT_ID,
     ALBERT_CUYP_ID,
@@ -24,4 +36,5 @@ module.exports = {
     REIGERSBOS_ID,
     TUSSEN_MEER_ID,
     slugifyMarkt,
+    parseMarktDag,
 };

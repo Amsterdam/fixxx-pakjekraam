@@ -33,7 +33,16 @@ class MarktenPage extends React.Component {
     };
 
     render() {
-        const { aanmeldingen, branches, geografie, locaties, ondernemers, paginas, voorkeuren, markt } = this.props.data;
+        const {
+            aanmeldingen,
+            branches,
+            geografie,
+            locaties,
+            ondernemers,
+            paginas,
+            voorkeuren,
+            markt,
+        } = this.props.data;
 
         const pl = {},
             vphl = {},

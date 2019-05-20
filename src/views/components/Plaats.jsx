@@ -39,7 +39,11 @@ const Plaats = ({ plaats, vph }) => {
             </td>
 
             <td className="Plaats__prop Plaats__prop-vph">
-                <strong>{vph ? vph.sollicitatieNummer : ''}</strong>
+                {vph ? (
+                    <a href={`/profile/${vph.erkenningsNummer}/`}>
+                        <strong>{vph.sollicitatieNummer}</strong>
+                    </a>
+                ) : null}
             </td>
             <td className="Plaats__prop Plaats__prop-vph-description">{vph ? vph.description : ''}</td>
 

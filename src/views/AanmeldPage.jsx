@@ -5,13 +5,19 @@ const AanmeldForm = require('./components/AanmeldForm.jsx');
 
 class AanmeldPage extends React.Component {
     propTypes = {
+        aanmeldingen: PropTypes.array,
+        date: PropTypes.string.isRequired,
         ondernemer: PropTypes.object.isRequired,
     };
 
     render() {
         return (
             <Page>
-                <AanmeldForm ondernemer={this.props.ondernemer} />
+                <AanmeldForm
+                    aanmeldingen={this.props.aanmeldingen}
+                    ondernemer={this.props.ondernemer}
+                    date={this.props.date}
+                />
             </Page>
         );
     }

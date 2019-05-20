@@ -1,6 +1,12 @@
-const { login, getMarkt, getMarkten: getMakkelijkeMarkten, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
+const {
+    login,
+    getMarkt,
+    getMarkten: getMakkelijkeMarkten,
+    getMarktondernemersByMarkt,
+} = require('./makkelijkemarkt-api.js');
 const { ALBERT_CUYP_ID, slugifyMarkt } = require('./domain-knowledge.js');
 const { rsvp } = require('./model/index.js');
+const { formatOndernemerName } = require('./util.js');
 const fs = require('fs');
 
 const loadJSON = (path, defaultValue = null) =>
@@ -25,6 +31,12 @@ const getAanmeldingen = (marktId, marktDate) => {
     });
 };
 
+const getAanmeldingenByOndernemer = erkenningsNummer => {
+    return rsvp.findAll({
+        where: { erkenningsNummer },
+    });
+};
+
 const getVoorkeuren = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/voorkeuren.json`, []);
 
 const getBranches = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/branches.json`, []);
@@ -41,11 +53,17 @@ const getIndelingslijstInput = (token, marktId, date) =>
             ondernemers
                 .filter(ondernemer => !ondernemer.doorgehaald)
                 .map(data => {
-                    const { id, sollicitatieNummer, status } = data;
+                    const {
+                        id,
+                        koopman: { erkenningsnummer },
+                        sollicitatieNummer,
+                        status,
+                    } = data;
 
                     return {
-                        description: `${data.koopman.voorletters} ${data.koopman.achternaam}`,
-                        id,
+                        description: formatOndernemerName(data.koopman),
+                        id: erkenningsnummer,
+                        erkenningsNummer: erkenningsnummer,
                         // FIXME: Support multiple locations
                         locatie: data.vastePlaatsen ? parseInt(data.vastePlaatsen[0], 10) : undefined,
                         sollicitatieNummer,
@@ -82,6 +100,7 @@ const getMarkten = token =>
 
 module.exports = {
     getAanmeldingen,
+    getAanmeldingenByOndernemer,
     getVoorkeuren,
     getBranches,
     getMarktplaatsen,

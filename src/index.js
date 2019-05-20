@@ -11,9 +11,11 @@ const { slugifyMarkt } = require('./domain-knowledge.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
 const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
+const { tomorrow, nextWeek } = require('./util.js');
 const {
     getIndelingslijstInput,
     getAanmeldingen,
+    getAanmeldingenByOndernemer,
     getVoorkeuren,
     getBranches,
     getMarktplaatsen,
@@ -27,6 +29,10 @@ const HTTP_DEFAULT_PORT = 8080;
 
 const port = process.env.PORT || HTTP_DEFAULT_PORT;
 const app = express();
+
+const errorPage = (res, err) => {
+    res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
+};
 
 // Ensure the database tables have been created, particularly the session storage.
 models.sequelize.sync().then(
@@ -89,7 +95,7 @@ app.get('/markt/:marktId/', ensureLoggedIn(), function(req, res) {
     getMarkt(req.user.token).then(markten => res.render('MarktenPage', { markten }));
 });
 app.get('/markt-indeling/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) => {
-    getIndelingslijstInput(req.user.token, req.params.marktId).then(
+    getIndelingslijstInput(req.user.token, req.params.marktId, req.params.datum).then(
         data => {
             res.render('MarktDetailPage', { data });
         },
@@ -214,8 +220,32 @@ app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', ensureLoggedIn(), (req, res
     );
 });
 
-app.get('/afmelden/', ensureLoggedIn(), (req, res) => {
-    res.render('AfmeldPage', {});
+const afmeldPage = (res, token, erkenningsNummer) => {
+    const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
+    const marktenPromise = ondernemerPromise.then(ondernemer =>
+        Promise.all(
+            ondernemer.sollicitaties
+                .map(sollicitatie => sollicitatie.markt.id)
+                .map(marktId => getMarkt(token, marktId)),
+        ),
+    );
+
+    Promise.all([ondernemerPromise, marktenPromise, getAanmeldingenByOndernemer(erkenningsNummer)]).then(
+        ([ondernemer, markten, aanmeldingen]) => {
+            res.render('AfmeldPage', {
+                ondernemer,
+                aanmeldingen,
+                markten,
+                startDate: tomorrow(),
+                endDate: nextWeek(),
+            });
+        },
+        err => errorPage(res, err),
+    );
+};
+
+app.get('/afmelden/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
+    afmeldPage(res, req.user.token, req.params.erkenningsNummer);
 });
 
 app.post('/afmelden/', ensureLoggedIn(), (req, res) => {
@@ -223,10 +253,21 @@ app.post('/afmelden/', ensureLoggedIn(), (req, res) => {
     res.end('TODO');
 });
 
+const aanmeldPage = (res, token, erkenningsNummer) => {
+    Promise.all([getMarktondernemer(token, erkenningsNummer), getAanmeldingenByOndernemer(erkenningsNummer)]).then(
+        ([ondernemer, aanmeldingen]) => {
+            res.render('AanmeldPage', { ondernemer, aanmeldingen, date: tomorrow() });
+        },
+        err => errorPage(res, err),
+    );
+};
+
 app.get('/aanmelden/', ensureLoggedIn(), (req, res) => {
-    getMarktondernemer(req.user.token, req.user.erkenningsNummer).then(ondernemer => {
-        res.render('AanmeldPage', { ondernemer });
-    });
+    aanmeldPage(res, req.user.token, req.user.erkenningsNummer);
+});
+
+app.get('/aanmelden/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
+    aanmeldPage(res, req.user.token, req.params.erkenningsNummer);
 });
 
 const aanmeldFormDataToRSVP = formData => ({
@@ -255,8 +296,17 @@ app.get('/profile', ensureLoggedIn(), (req, res) => {
     }
 });
 
-app.get('/markt-indeling/:marktId/data.json', ensureLoggedIn(), (req, res) => {
-    getIndelingslijstInput(req.user.token, req.params.marktId).then(
+app.get('/profile/:erkenningsNummer', ensureLoggedIn(), (req, res) => {
+    getMarktondernemer(req.user.token, req.params.erkenningsNummer).then(
+        ondernemer => {
+            res.render('PublicProfilePage', { ondernemer });
+        },
+        error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
+    );
+});
+
+app.get('/markt-indeling/:marktId/:marktDate/data.json', ensureLoggedIn(), (req, res) => {
+    getIndelingslijstInput(req.user.token, req.params.marktId, req.params.marktDate).then(
         data => {
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8',
