@@ -1,139 +1,139 @@
 {
   "obstakels": [
-  {
-    "kraamA": 6,
-    "kraamB": 7,
-    "obstakel": "loopje"
-  },
-  {
-    "kraamA": 6,
-    "kraamB": 7,
-    "obstakel": "lantaarnpaal"
-  },
-  {
-    "kraamA": 12,
-    "kraamB": 13,
-    "obstakel": "loopje"
-  },
-  {
-    "kraamA": 12,
-    "kraamB": 13,
-    "obstakel": "lantaarnpaal"
-  },
-  {
-    "kraamA": 15,
-    "kraamB": 16,
-    "obstakel": "lantaarnpaal"
-  },
-   {
-    "kraamA": 23,
-    "kraamB": 24,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 29,
-    "kraamB": 30,
-    "obstakel": "loopje"
-  },
-  {
-    "kraamA": 35,
-    "kraamB": 126,
-    "obstakel": "loopje"
-  },
-  {
-    "kraamA": 41,
-    "kraamB": 42,
-    "obstakel": "doorloop"
-  }
-   {
-    "kraamA": 47,
-    "kraamB": 48,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 53,
-    "kraamB": 128,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 59,
-    "kraamB": 60,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 65,
-    "kraamB": 66,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 71,
-    "kraamB": 129,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 77,
-    "kraamB": 78,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 77,
-    "kraamB": 78,
-    "obstakel": "lantaarnpaal"
-  },
-   {
-    "kraamA": 83,
-    "kraamB": 84,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 83,
-    "kraamB": 84,
-    "obstakel": "lantaarnpaal"
-  },
-   {
-    "kraamA": 86,
-    "kraamB": 87,
-    "obstakel": "lantaarnpaal"
-  },
-   {
-    "kraamA": 88,
-    "kraamB": 131,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 94,
-    "kraamB": 95,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 100,
-    "kraamB": 101,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 106,
-    "kraamB": 132,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 112,
-    "kraamB": 113,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 118,
-    "kraamB": 119,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 124,
-    "kraamB": 134,
-    "obstakel": "loopje"
-  },
-   {
-    "kraamA": 141,
-    "kraamB": 142,
-    "obstakel": "loopje"
-  }
-]
+    {
+      "kraamA": 6,
+      "kraamB": 7,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 6,
+      "kraamB": 7,
+      "obstakel": "lantaarnpaal"
+    },
+    {
+      "kraamA": 12,
+      "kraamB": 13,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 12,
+      "kraamB": 13,
+      "obstakel": "lantaarnpaal"
+    },
+    {
+      "kraamA": 15,
+      "kraamB": 16,
+      "obstakel": "lantaarnpaal"
+    },
+    {
+      "kraamA": 23,
+      "kraamB": 24,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 29,
+      "kraamB": 30,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 35,
+      "kraamB": 126,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 41,
+      "kraamB": 42,
+      "obstakel": "doorloop"
+    },
+    {
+      "kraamA": 47,
+      "kraamB": 48,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 53,
+      "kraamB": 128,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 59,
+      "kraamB": 60,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 65,
+      "kraamB": 66,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 71,
+      "kraamB": 129,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 77,
+      "kraamB": 78,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 77,
+      "kraamB": 78,
+      "obstakel": "lantaarnpaal"
+    },
+    {
+      "kraamA": 83,
+      "kraamB": 84,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 83,
+      "kraamB": 84,
+      "obstakel": "lantaarnpaal"
+    },
+    {
+      "kraamA": 86,
+      "kraamB": 87,
+      "obstakel": "lantaarnpaal"
+    },
+    {
+      "kraamA": 88,
+      "kraamB": 131,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 94,
+      "kraamB": 95,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 100,
+      "kraamB": 101,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 106,
+      "kraamB": 132,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 112,
+      "kraamB": 113,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 118,
+      "kraamB": 119,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 124,
+      "kraamB": 134,
+      "obstakel": "loopje"
+    },
+    {
+      "kraamA": 141,
+      "kraamB": 142,
+      "obstakel": "loopje"
+    }
+  ]
 }
