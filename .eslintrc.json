@@ -15,7 +15,7 @@
   "rules": {
     "accessor-pairs": ["error"],
     "array-callback-return": ["off"],
-    "array-element-newline": ["error", { "multiline": true }],
+    "array-element-newline": ["off", { "multiline": true }],
     "arrow-parens": ["error", "as-needed"],
     "arrow-spacing": ["error"],
     "block-scoped-var": ["error"],
