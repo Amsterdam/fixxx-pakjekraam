@@ -24,6 +24,7 @@ const IndelingslijstPage = ({ page, index, data, markt }) => {
                                         plaatsList={data.locaties}
                                         vphl={data.ondernemers}
                                         obstakelList={data.obstakels}
+                                        aanmeldingen={data.aanmeldingen}
                                     />
                                 );
                             }

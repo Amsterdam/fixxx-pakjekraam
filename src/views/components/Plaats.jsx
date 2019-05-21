@@ -2,7 +2,7 @@ import PrintableBackground from './PrintableBackground';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Plaats = ({ plaats, vph, first }) => {
+const Plaats = ({ plaats, vph, first, aanmelding }) => {
     const colorList = {
         'branche-vis': '#343797',
         vis: '#343797',
@@ -87,17 +87,24 @@ const Plaats = ({ plaats, vph, first }) => {
                     </a>
                 ) : null}
             </td>
-            <td className="Plaats__prop Plaats__prop-vph-description">{vph ? vph.description : ''}</td>
-
-            <td className="Plaats__prop Plaats__prop-empty-fields" />
+            <td
+                className={`Plaats__prop Plaats__prop-vph-description ${
+                    aanmelding && aanmelding.attending === false ? 'Plaats--vph-attendance-not-attending' : ''
+                } ${aanmelding ? 'Plaats--vph-attendance-verified' : ''}
+                `}
+            >
+                {vph ? vph.description : ''}
+            </td>
+            <td className="Plaats__prop Plaats__prop-empty-fields">{aanmelding ? '🆗' : null}</td>
         </tr>
     );
 };
 
 Plaats.propTypes = {
-    plaats: PropTypes.object,
+    plaats: PropTypes.object.isRequired,
     vph: PropTypes.object,
     first: PropTypes.bool,
+    aanmelding: PropTypes.object,
 };
 
 module.exports = Plaats;

@@ -3,7 +3,7 @@ import Plaats from './Plaats';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => {
+const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt, aanmeldingen }) => {
     let first = true;
 
     return (
@@ -21,6 +21,11 @@ const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => 
                 </thead>
                 <tbody className="IndelingslijstList__wrapper">
                     {page.plaatsList.map((plaatsNr, i) => {
+                        const vasteOndernemer = vphl[plaatsNr];
+                        const aanmelding =
+                            vasteOndernemer &&
+                            aanmeldingen.find(rsvp => rsvp.erkenningsNummer === vasteOndernemer.erkenningsNummer);
+
                         if (plaatsList[String(plaatsNr)]) {
                             if (obstakelList[String(plaatsNr)] && obstakelList[String(plaatsNr)].length > 0) {
                                 return (
@@ -30,6 +35,7 @@ const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => 
                                             vph={vphl[String(plaatsNr)]}
                                             plaats={plaatsList[String(plaatsNr)]}
                                             obstakels={obstakelList}
+                                            aanmelding={aanmelding}
                                         />
                                         <ObstakelList obstakelList={obstakelList[String(plaatsNr)]} />
                                         {(first = true)}
@@ -44,6 +50,7 @@ const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => 
                                             vph={vphl[String(plaatsNr)]}
                                             plaats={plaatsList[String(plaatsNr)]}
                                             obstakels={obstakelList}
+                                            aanmelding={aanmelding}
                                         />
                                         {(first = false)}
                                     </React.Fragment>
@@ -60,6 +67,7 @@ const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => 
 };
 
 IndelingslijstList.propTypes = {
+    aanmeldingen: PropTypes.array.isRequired,
     page: PropTypes.object,
     plaatsList: PropTypes.object,
     vphl: PropTypes.object,

@@ -114,6 +114,9 @@
         width: 30%;
         border-left: none;
     }
+    &--vph-attendance-not-attending {
+        text-decoration: line-through;
+    }
     &__prop-properties {
         border-right: none;
         .icon {
