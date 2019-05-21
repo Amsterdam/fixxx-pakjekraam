@@ -2,6 +2,7 @@ const React = require('react');
 const Page = require('./components/Page.jsx');
 const PropTypes = require('prop-types');
 const MainNavigation = require('./components/MainNavigation.jsx');
+const MarktDayLink = require('./components/MarktDayLink.jsx');
 const Header = require('./components/Header');
 const Content = require('./components/Content');
 const Indelingslijst = require('./components/Indelingslijst');
@@ -88,6 +89,12 @@ class MarktenPage extends React.Component {
                     <div className="MarktDetailPage">
                         <h2>Indelingslijst</h2>
                         <PrintButton title="Print indelingslijst" />
+                        <p>
+                            <MarktDayLink markt={markt} offsetDate={new Date().toISOString()} direction={-1} />
+                        </p>
+                        <p>
+                            <MarktDayLink markt={markt} offsetDate={new Date().toISOString()} direction={1} />
+                        </p>
                         <Indelingslijst data={obj} markt={markt} />
                     </div>
                 </Content>

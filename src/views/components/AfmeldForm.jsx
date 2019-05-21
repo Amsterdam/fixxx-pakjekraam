@@ -2,27 +2,7 @@ const React = require('react');
 const Page = require('./Page.jsx');
 const PropTypes = require('prop-types');
 const { formatDayOfWeek, MILLISECONDS_IN_DAY } = require('../../util.js');
-const { parseMarktDag } = require('../../domain-knowledge.js');
-
-const toISODate = date => date.toISOString().replace(/T.+/, '');
-
-const getUpcomingMarktDays = (startDate, endDate, daysOfWeek) => {
-    const start = Date.parse(startDate),
-        end = Date.parse(endDate);
-
-    const days = Math.max(0, (end - start) / MILLISECONDS_IN_DAY);
-
-    const dates = [];
-
-    for (let i = 1, l = days; i <= l; i++) {
-        const date = new Date(start);
-
-        date.setDate(date.getDate() + i);
-        dates.push(date);
-    }
-
-    return dates.filter(date => daysOfWeek.includes(date.getDay())).map(toISODate);
-};
+const { getUpcomingMarktDays, parseMarktDag } = require('../../domain-knowledge.js');
 
 class AfmeldForm extends React.Component {
     propTypes = {

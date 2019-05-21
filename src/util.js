@@ -9,35 +9,33 @@ const dayOfWeekName = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 
 
 const formatDayOfWeek = date => dayOfWeekName[new Date(date).getDay()];
 
-const tomorrow = () => {
-    const date = new Date();
+const addDays = (offsetDate, days) => {
+    const date = new Date(offsetDate);
 
-    date.setDate(date.getDate() + 1);
+    date.setDate(date.getDate() + days);
 
     return date.toISOString().replace(/T.+/, '');
 };
+
+const tomorrow = () => addDays(Date.now(), 1);
 
 const endOfWeek = () => {
     const date = new Date();
 
-    date.setDate(date.getDate() + (DAYS_IN_WEEK - 1 - date.getDay()));
-
-    return date.toISOString().replace(/T.+/, '');
+    return addDays(date.getDate(), DAYS_IN_WEEK - 1 - date.getDay());
 };
 
-const nextWeek = () => {
-    const date = new Date();
+const nextWeek = () => addDays(Date.now(), DAYS_IN_WEEK);
 
-    date.setDate(date.getDate() + DAYS_IN_WEEK);
-
-    return date.toISOString().replace(/T.+/, '');
-};
+const toISODate = date => date.toISOString().replace(/T.+/, '');
 
 module.exports = {
+    addDays,
     formatDayOfWeek,
     tomorrow,
     endOfWeek,
     nextWeek,
+    toISODate,
     DAYS_IN_WEEK,
     MILLISECONDS_IN_SECOND,
     SECONDS_IN_MINUTE,
