@@ -76,7 +76,7 @@
     "multiline-comment-style": ["error"],
     "multiline-ternary": ["off"],
     "new-parens": ["error"],
-    "newline-after-var": ["error", "always"],
+    "newline-after-var": ["off", "always"],
     "new-cap": [
       "error",
       {
