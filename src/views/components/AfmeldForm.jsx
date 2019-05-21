@@ -37,6 +37,8 @@ class AfmeldForm extends React.Component {
         const { markten, ondernemer } = this.props;
         const sollicitaties = ondernemer.sollicitaties.filter(sollicitatie => !sollicitatie.doorgehaald);
 
+        let rsvpIndex = 0;
+
         const entries = sollicitaties.map(sollicitatie => {
             const markt = markten.find(m => m.id === sollicitatie.markt.id);
             const dates = getUpcomingMarktDays(
@@ -47,9 +49,12 @@ class AfmeldForm extends React.Component {
             const marktAanmeldingen = (this.props.aanmeldingen || []).filter(
                 aanmelding => aanmelding.marktId === sollicitatie.markt.id,
             );
+
+            // TODO: Replace non-pure `rsvpIndex` with grouping by `markt.id` afterwards
             const rsvpEntries = dates.map(date => ({
                 date,
                 rsvp: marktAanmeldingen.find(aanmelding => aanmelding.marktDate === date),
+                index: rsvpIndex++,
             }));
 
             return {
@@ -62,13 +67,11 @@ class AfmeldForm extends React.Component {
         });
 
         return (
-            <form method="POST" action="/afmelden/">
+            <form method="POST" action="/afmelden/" encType="application/x-www-form-urlencoded">
                 <h1>Afmelden door vasteplekhouders</h1>
-                <input type="hidden" name="startDate" value={this.props.startDate} />
-                <input type="hidden" name="endDate" value={this.props.endDate} />
                 <p>
-                    <label htmlFor="username">Erkenningsnummer:</label>
-                    <input id="username" name="username" value={ondernemer.erkenningsnummer} />
+                    <label htmlFor="erkenningsNummer">Erkenningsnummer:</label>
+                    <input id="erkenningsNummer" name="erkenningsNummer" value={ondernemer.erkenningsnummer} />
                 </p>
                 {entries.map(({ sollicitatie, markt, rsvpEntries }) => (
                     <section key={sollicitatie.markt.id}>
@@ -76,22 +79,25 @@ class AfmeldForm extends React.Component {
                             {markt.naam} ({sollicitatie.status})
                         </h2>
                         <ul>
-                            {rsvpEntries.map(({ date, rsvp }) => (
+                            {rsvpEntries.map(({ date, rsvp, index }) => (
                                 <li key={date}>
+                                    <input type="hidden" name={`rsvp[${index}][marktId]`} value={markt.id} />
+                                    <input type="hidden" name={`rsvp[${index}][marktDate]`} value={date} />
                                     <input
-                                        id={`aanmelding-${markt.id}-${date}`}
-                                        name={`aanmelding[]`}
+                                        id={`rsvp-${index}`}
+                                        name={`rsvp[${index}][attending]`}
                                         type="checkbox"
-                                        value={`${markt.id}/${date}`}
+                                        value="true"
                                         defaultChecked={
-                                            sollicitatie.status === 'vkk' ||
-                                            sollicitatie.status === 'vpl' ||
-                                            (rsvp && rsvp.attending)
+                                            rsvp
+                                                ? rsvp.attending
+                                                : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl'
                                         }
                                     />
-                                    <label htmlFor={`aanmelding-${markt.id}-${date}`}>
+                                    <label htmlFor={`rsvp-${index}`}>
                                         Ik kom op {formatDayOfWeek(date)} {date}
                                     </label>
+                                    {rsvp ? <span className="rsvp-verified">🆗</span> : null}
                                 </li>
                             ))}
                         </ul>
@@ -104,5 +110,4 @@ class AfmeldForm extends React.Component {
         );
     }
 }
-
 module.exports = AfmeldForm;

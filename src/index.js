@@ -249,8 +249,28 @@ app.get('/afmelden/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
 });
 
 app.post('/afmelden/', ensureLoggedIn(), (req, res) => {
-    console.log(req.body);
-    res.end('TODO');
+    /*
+     * TODO: Form data format validation
+     * TODO: Business logic validation
+     */
+
+    const { erkenningsNummer } = req.body;
+    const responses = req.body.rsvp.map(rsvp => ({
+        ...rsvp,
+        attending: rsvp.attending === 'true',
+        erkenningsNummer,
+    }));
+
+    // TODO: Redirect with success code
+    models.rsvp
+        .bulkCreate(responses)
+        .then(
+            () =>
+                res
+                    .status(HTTP_CREATED_SUCCESS)
+                    .redirect(`/afmelden/${erkenningsNummer}/?updated=${new Date().toISOString()}`),
+            error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
+        );
 });
 
 const aanmeldPage = (res, token, erkenningsNummer) => {
