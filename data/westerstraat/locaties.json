@@ -756,7 +756,7 @@
   },
   {
     "locatie": "250",
-    "branche": "promo"
+    "branche": ["promo"]
   },
   {
     "locatie": "251"

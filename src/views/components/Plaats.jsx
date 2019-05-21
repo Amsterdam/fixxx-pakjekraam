@@ -5,16 +5,54 @@ import React from 'react';
 const Plaats = ({ plaats, vph }) => {
     const colorList = {
         'branche-vis': '#343797',
+        vis: '#343797',
         'branche-natte-vis': '#CEFFFF',
         'branche-kip': '#9ACA27',
         'branche-agf': '#2BB527',
+        agf: '#2BB527',
+        'exo-groente': '#2BB527',
+        'streek-groente': '#2BB527',
+        kas: '#2BB527',
+        blm: '#6bb592',
+        bloemen: '#6bb592',
         'experimentele-zone': '#9BCDFD',
+        exp: '#9BCDFD',
+        zui: '#825ffd',
+        'kaas-zuivel': '#825ffd',
+        kaas: '#825ffd',
         'branche-bak': '#FD9BCB',
+        bak: '#FD9BCB',
+        baks7: '#FD9BCB',
+        baks6: '#FD9BCB',
+        baks5: '#FD9BCB',
+        baks4: '#FD9BCB',
+        olv: '#FD9BCB',
+        noten: '#FD9BCB',
+        snacks: '#FD9BCB',
+        'snacks-loempia': '#FD9BCB',
         standwerkersplaats: '#FBF136',
+        brc: '#C0C0C0',
+        food: '#C0C0C0',
+        keukenartikelen: '#C0C0C0',
+        borstel: '#C0C0C0',
+        dameskleding: '#C0C0C0',
+        'nacht-en-ondermode': '#C0C0C0',
+        horloges: '#C0C0C0',
+        modestoffen: '#C0C0C0',
+        sieraden: '#C0C0C0',
+        drogisterij: '#C0C0C0',
+        beenmode: '#C0C0C0',
+        tapijten: '#C0C0C0',
+        babykleding: '#C0C0C0',
+        schoenen: '#C0C0C0',
+        tassen: '#C0C0C0',
+        stn: '#C0C0C0',
+        promo: '#C0C0C0',
     };
 
     let plaatsProps = plaats.properties ? plaats.properties.split(',') : [],
         tags = plaats.tags || [];
+    const branches = plaats.branche || [];
 
     plaatsProps = plaatsProps.filter(word => !['dubble'].includes(word));
     plaatsProps.reverse();
@@ -24,7 +62,11 @@ const Plaats = ({ plaats, vph }) => {
         return tags.length && key === tags[0].trim();
     });
 
-    color = tags.length ? (color ? colorList[color] : '#C0C0C0') : undefined;
+    color = branches.length
+        ? colorList[branches[branches.length - 1]]
+            ? colorList[branches[branches.length - 1]]
+            : '#000000'
+        : undefined;
 
     tags = tags.join(' ');
 
