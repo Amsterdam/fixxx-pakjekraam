@@ -101,8 +101,8 @@
   { "locatie": 200, "tags": ["even"] },
   { "locatie": 202, "tags": ["even"] },
   { "locatie": 204, "tags": ["even"] },
-  { "locatie": 206, "tags": ["even"] },
-  { "locatie": 208, "tags": ["even"] },
+  { "locatie": 206, "tags": ["even", "kraam-8-meter"] },
+  { "locatie": 208, "tags": ["even", "kraam-8-meter"] },
   { "locatie": 210, "tags": ["even"] },
   { "locatie": 212, "tags": ["even", "eigen-materiaal"] },
   { "locatie": 214, "tags": ["even", "eigen-materiaal"] },
@@ -134,12 +134,12 @@
   { "locatie": 266, "tags": ["even", "experimentele-zone"] },
   {
     "locatie": 268,
-    "tags": ["even", "eigen-materiaal"],
+    "tags": ["even", "bezet-bij-afwezigheid", "eigen-materiaal"],
     "branche": ["bakker"]
   },
   {
     "locatie": 270,
-    "tags": ["even", "eigen-materiaal"],
+    "tags": ["even", "bezet-bij-afwezigheid", "eigen-materiaal"],
     "branche": ["bakker"]
   },
   { "locatie": 272, "tags": ["even"] },
@@ -252,7 +252,7 @@
     "branche": ["bakker"]
   },
   { "locatie": 201, "tags": ["oneven"], "branche": ["bak"] },
-  { "locatie": 203, "tags": ["oneven"], "branche": ["bak"] },
+  { "locatie": 203, "tags": ["oneven"], "branche": ["bak", "patat"] },
   { "locatie": 205, "tags": ["oneven"] },
   {
     "locatie": 207,
