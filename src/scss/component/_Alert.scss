@@ -1,0 +1,11 @@
+.Alert {
+    &__icon {
+        @include icon;
+    }
+    &__title {
+        @include h4;
+    }
+    &__message {
+        @include p1;
+    }
+}
