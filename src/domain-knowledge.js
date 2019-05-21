@@ -30,6 +30,9 @@ const parseMarktDag = dag => (dagen.hasOwnProperty(dag) ? dagen[dag] : -1);
 
 const isVast = status => status === 'vpl' || status === 'vkk';
 
+const formatOndernemerName = ondernemer =>
+    `${ondernemer.voorletters} ${ondernemer.tussenvoegsels} ${ondernemer.achternaam}`.replace(/\s+/g, ' ');
+
 module.exports = {
     DAPPERMARKT_ID,
     ALBERT_CUYP_ID,
@@ -37,6 +40,7 @@ module.exports = {
     WESTERSTRAAT_ID,
     REIGERSBOS_ID,
     TUSSEN_MEER_ID,
+    formatOndernemerName,
     slugifyMarkt,
     parseMarktDag,
     isVast,

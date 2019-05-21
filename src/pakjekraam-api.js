@@ -4,9 +4,8 @@ const {
     getMarkten: getMakkelijkeMarkten,
     getMarktondernemersByMarkt,
 } = require('./makkelijkemarkt-api.js');
-const { ALBERT_CUYP_ID, slugifyMarkt } = require('./domain-knowledge.js');
+const { ALBERT_CUYP_ID, formatOndernemerName, slugifyMarkt } = require('./domain-knowledge.js');
 const { rsvp } = require('./model/index.js');
-const { formatOndernemerName } = require('./util.js');
 const fs = require('fs');
 
 const loadJSON = (path, defaultValue = null) =>

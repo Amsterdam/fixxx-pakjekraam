@@ -1,6 +1,6 @@
 const React = require('react');
 const PropTypes = require('prop-types');
-const { formatOndernemerName } = require('../../util.js');
+const { formatOndernemerName } = require('../../domain-knowledge.js');
 
 class OndernemerProfile extends React.Component {
     propTypes = {

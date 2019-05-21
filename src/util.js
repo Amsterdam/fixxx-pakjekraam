@@ -33,12 +33,8 @@ const nextWeek = () => {
     return date.toISOString().replace(/T.+/, '');
 };
 
-const formatOndernemerName = ondernemer =>
-    `${ondernemer.voorletters} ${ondernemer.tussenvoegsels} ${ondernemer.achternaam}`.replace(/\s+/g, ' ');
-
 module.exports = {
     formatDayOfWeek,
-    formatOndernemerName,
     tomorrow,
     endOfWeek,
     nextWeek,
