@@ -5,6 +5,7 @@ import React from 'react';
 
 const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => {
     let first = true;
+
     return (
         <div className={'IndelingslijstList indelingslijst__list ' + markt + '__' + page.class}>
             {page.title && <h4>{page.title}</h4>}
