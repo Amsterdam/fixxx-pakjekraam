@@ -65,7 +65,7 @@ const getIndelingslijstInput = (token, marktId, date) =>
                         id: erkenningsnummer,
                         erkenningsNummer: erkenningsnummer,
                         // FIXME: Support multiple locations
-                        locatie: data.vastePlaatsen ? parseInt(data.vastePlaatsen[0], 10) : undefined,
+                        locatie: data.vastePlaatsen,
                         sollicitatieNummer,
                         status,
                     };

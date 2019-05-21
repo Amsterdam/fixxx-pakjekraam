@@ -44,31 +44,32 @@ class MarktenPage extends React.Component {
             markt,
         } = this.props.data;
 
-        const pl = {},
-            vphl = {},
-            obstakels = {};
+        const arrayToObject = (array, keyField) =>
+            array.reduce((obj, item) => {
+                obj[item[keyField]] = item;
 
-        let i, j;
+                return obj;
+            }, {});
 
-        for (i = 0; i < locaties.length; i++) {
-            let l = locaties[i].locatie;
+        const ondernemersToLocatieKeyValue = array =>
+            array.reduce((obj, item) => {
+                item.locatie.reduce((ar, i) => {
+                    obj[i] = item;
 
-            l = l.toString();
-            pl[locaties[i].locatie] = locaties[i];
-        }
-        for (i = 0; i < ondernemers.length; i++) {
-            if (ondernemers.locatie !== null && ondernemers[i].status === 'vpl') {
-                vphl[String(ondernemers[i].locatie)] = ondernemers[i];
-            }
-        }
-        for (i = 0; i < geografie.obstakels.length; i++) {
-            const plaats = String(geografie.obstakels[i].kraamA);
+                    return ar;
+                }, {});
 
-            if (!(obstakels[plaats] instanceof Array)) {
-                obstakels[plaats] = [];
-            }
-            obstakels[String(plaats)].push(geografie.obstakels[i].obstakel);
-        }
+                return obj;
+            }, {});
+
+        const pl = arrayToObject(locaties, 'locatie');
+        const vphl = ondernemersToLocatieKeyValue(ondernemers);
+        const obstakels = geografie.obstakels.reduce((total, obstakel) => {
+            total[String(obstakel.kraamA)] = total[String(obstakel.kraamA)] || [];
+            total[String(obstakel.kraamA)].push(obstakel.obstakel);
+
+            return total;
+        }, {});
 
         const obj = {
             aanmeldingen,
