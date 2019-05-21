@@ -28,6 +28,8 @@ const dagen = {
 
 const parseMarktDag = dag => (dagen.hasOwnProperty(dag) ? dagen[dag] : -1);
 
+const isVast = status => status === 'vpl' || status === 'vkk';
+
 module.exports = {
     DAPPERMARKT_ID,
     ALBERT_CUYP_ID,
@@ -37,4 +39,5 @@ module.exports = {
     TUSSEN_MEER_ID,
     slugifyMarkt,
     parseMarktDag,
+    isVast,
 };
