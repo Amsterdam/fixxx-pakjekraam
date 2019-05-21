@@ -31,7 +31,7 @@ class AanmeldForm extends React.Component {
                 <h1>Aanmelden voor sollicitanten</h1>
                 <p>
                     <label htmlFor="erkenningsnummer">Erkenningsnummer:</label>
-                    <input id="erkenningsnummer" name="erkenningsNummer" value={ondernemer.erkenningsnummer} />
+                    <input id="erkenningsnummer" name="erkenningsNummer" defaultValue={ondernemer.erkenningsnummer} />
                 </p>
                 <p>
                     <label htmlFor="marktId">Markt:</label>
@@ -44,7 +44,13 @@ class AanmeldForm extends React.Component {
                     </select>
                 </p>
                 <p>
-                    <input id="aanmelding[]" name="aanmelding" type="checkbox" value={date} defaultChecked={checked} />
+                    <input
+                        id="aanmelding[]"
+                        name="aanmelding"
+                        type="checkbox"
+                        defaultValue={date}
+                        defaultChecked={checked}
+                    />
                     <label htmlFor="aanmelding[]">
                         Ik kom morgen ({formatDayOfWeek(date)} {date})
                     </label>

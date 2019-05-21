@@ -51,7 +51,7 @@ class AfmeldForm extends React.Component {
                 <h1>Afmelden door vasteplekhouders</h1>
                 <p>
                     <label htmlFor="erkenningsNummer">Erkenningsnummer:</label>
-                    <input id="erkenningsNummer" name="erkenningsNummer" value={ondernemer.erkenningsnummer} />
+                    <input id="erkenningsNummer" name="erkenningsNummer" defaultValue={ondernemer.erkenningsnummer} />
                 </p>
                 {entries.map(({ sollicitatie, markt, rsvpEntries }) => (
                     <section key={sollicitatie.markt.id}>
@@ -61,13 +61,13 @@ class AfmeldForm extends React.Component {
                         <ul>
                             {rsvpEntries.map(({ date, rsvp, index }) => (
                                 <li key={date}>
-                                    <input type="hidden" name={`rsvp[${index}][marktId]`} value={markt.id} />
-                                    <input type="hidden" name={`rsvp[${index}][marktDate]`} value={date} />
+                                    <input type="hidden" name={`rsvp[${index}][marktId]`} defaultValue={markt.id} />
+                                    <input type="hidden" name={`rsvp[${index}][marktDate]`} defaultValue={date} />
                                     <input
                                         id={`rsvp-${index}`}
                                         name={`rsvp[${index}][attending]`}
                                         type="checkbox"
-                                        value="true"
+                                        defaultValue="true"
                                         defaultChecked={
                                             rsvp
                                                 ? rsvp.attending
