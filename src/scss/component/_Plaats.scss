@@ -135,4 +135,10 @@
         border-right: none;
         border-top: none;
     }
+    &--first .Plaats__prop-properties,
+    &--first .Plaats__prop-plaats-nr,
+    &--first .Plaats__prop-vph-description,
+    &--first .Plaats__prop-vph {
+        border-top: solid 1px #000000;
+    }
 }

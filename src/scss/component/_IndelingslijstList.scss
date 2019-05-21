@@ -3,15 +3,9 @@
 .IndelingslijstList {
     width: 48%;
     vertical-align: top;
-    &__wrapper {
-        &:first-child .Plaats__prop {
-            border-top: 1px solid;
-        }
-    }
     &__header {
         padding: 0 5px;
         border: none;
-        border-bottom: 1px solid;
         @include p1;
     }
     &__header-row {

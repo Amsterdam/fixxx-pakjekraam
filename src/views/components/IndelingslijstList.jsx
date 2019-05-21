@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => {
+    let first = true;
     return (
         <div className={'IndelingslijstList indelingslijst__list ' + markt + '__' + page.class}>
             {page.title && <h4>{page.title}</h4>}
@@ -24,21 +25,27 @@ const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt }) => 
                                 return (
                                     <React.Fragment key={plaatsNr}>
                                         <Plaats
+                                            first={first}
                                             vph={vphl[String(plaatsNr)]}
                                             plaats={plaatsList[String(plaatsNr)]}
                                             obstakels={obstakelList}
                                         />
                                         <ObstakelList obstakelList={obstakelList[String(plaatsNr)]} />
+                                        {(first = true)}
                                     </React.Fragment>
                                 );
                             } else {
                                 return (
-                                    <Plaats
-                                        key={plaatsNr}
-                                        vph={vphl[String(plaatsNr)]}
-                                        plaats={plaatsList[String(plaatsNr)]}
-                                        obstakels={obstakelList}
-                                    />
+                                    <React.Fragment key={plaatsNr}>
+                                        <Plaats
+                                            first={first}
+                                            key={plaatsNr}
+                                            vph={vphl[String(plaatsNr)]}
+                                            plaats={plaatsList[String(plaatsNr)]}
+                                            obstakels={obstakelList}
+                                        />
+                                        {(first = false)}
+                                    </React.Fragment>
                                 );
                             }
                         } else {

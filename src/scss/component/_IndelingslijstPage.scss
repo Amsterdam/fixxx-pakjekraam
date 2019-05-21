@@ -67,21 +67,16 @@
         text-align: center;
     }
 }
-
 @page {
     size: A4;
 }
-
 @media print {
     * {
         page-break-after: avoid;
         page-break-before: avoid;
         page-break-inside: avoid;
     }
-    header {
-        display: none !important;
-    }
-    main > * {
+    .Header {
         display: none;
     }
     .container {
@@ -89,15 +84,14 @@
     }
     .container__content {
         margin: 0;
-        display: block;
-        & > * {
-            display: none;
-        }
-        .Indelingslijst {
-            display: block;
-        }
     }
-
+    .container__content h2,
+    .container__content .PrintButton {
+        display: none;
+    }
+    a {
+        text-decoration: none;
+    }
     .IndelingslijstPage {
         display: block;
         page-break-after: always;
@@ -106,6 +100,7 @@
         width: auto !important; /* 100% Might be breaking your current code. */
         height: auto !important;
         box-shadow: none;
+        padding: 10mm;
         &__ratio {
             height: auto;
             position: static;

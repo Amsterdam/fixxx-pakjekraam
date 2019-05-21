@@ -2,7 +2,7 @@ import PrintableBackground from './PrintableBackground';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Plaats = ({ plaats, vph }) => {
+const Plaats = ({ plaats, vph, first }) => {
     const colorList = {
         'branche-vis': '#343797',
         vis: '#343797',
@@ -71,7 +71,7 @@ const Plaats = ({ plaats, vph }) => {
     tags = tags.join(' ');
 
     return (
-        <tr className={'Plaats'}>
+        <tr className={'Plaats ' + (first && 'Plaats--first')}>
             <td className="Plaats__prop Plaats__prop-properties">
                 <span className={'icon icon-' + (plaatsProps ? plaatsProps[0] : '')} />
             </td>
@@ -97,6 +97,7 @@ const Plaats = ({ plaats, vph }) => {
 Plaats.propTypes = {
     plaats: PropTypes.object,
     vph: PropTypes.object,
+    first: PropTypes.bool,
 };
 
 module.exports = Plaats;

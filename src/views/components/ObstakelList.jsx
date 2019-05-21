@@ -5,7 +5,7 @@ import React from 'react';
 const ObstakelList = ({ obstakelList }) => {
     return (
         <tr className="ObstakelList">
-            <td colSpan="4">
+            <td colSpan="6">
                 {obstakelList.map((obstakel, i) => {
                     return <Obstakel key={i} obstakel={obstakel} />;
                 })}
@@ -15,7 +15,7 @@ const ObstakelList = ({ obstakelList }) => {
 };
 
 ObstakelList.propTypes = {
-    obstakelList: PropTypes.object,
+    obstakelList: PropTypes.array,
 };
 
 module.exports = ObstakelList;
