@@ -7,7 +7,9 @@ const Plaats = ({ plaats, vph, first, aanmelding }) => {
         'branche-vis': '#343797',
         vis: '#343797',
         'branche-natte-vis': '#CEFFFF',
+        'natte-vis': '#CEFFFF',
         'branche-kip': '#9ACA27',
+        kip: '#9ACA27',
         'branche-agf': '#2BB527',
         agf: '#2BB527',
         'exo-groente': '#2BB527',
@@ -22,13 +24,16 @@ const Plaats = ({ plaats, vph, first, aanmelding }) => {
         kaas: '#825ffd',
         'branche-bak': '#FD9BCB',
         bak: '#FD9BCB',
+        patat: '#FD9BCB',
         baks7: '#FD9BCB',
         baks6: '#FD9BCB',
         baks5: '#FD9BCB',
         baks4: '#FD9BCB',
+        'gebakken-vis': '#FD9BCB',
         olv: '#FD9BCB',
         noten: '#FD9BCB',
         snacks: '#FD9BCB',
+        bakker: '#FD9BCB',
         'snacks-loempia': '#FD9BCB',
         standwerkersplaats: '#FBF136',
         brc: '#C0C0C0',
@@ -99,7 +104,6 @@ const Plaats = ({ plaats, vph, first, aanmelding }) => {
         </tr>
     );
 };
-
 Plaats.propTypes = {
     plaats: PropTypes.object.isRequired,
     vph: PropTypes.object,
