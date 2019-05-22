@@ -1,282 +1,284 @@
-[
-  {
-    "kraam": 4,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 6,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 14,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 20,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 28,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 34,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 3,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 9,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 17,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 23,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 31,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 33,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 102,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 104,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 112,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 118,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 126,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 132,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 138,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 144,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 144,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 101,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 149,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 107,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 113,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 121,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 129,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 135,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 143,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 151,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 202,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 212,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 220,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 228,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 236,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 242,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 250,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 258,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 264,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 201,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 209,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 209,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 215,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 223,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 231,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 239,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 245,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 253,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 261,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 263,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 302,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 306,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 314,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 320,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 328,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 336,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 342,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 348,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 356,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 362,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 301,
-    "obstakel": "paal"
-  },
-  {
-    "kraam": 309,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 315,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 323,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 329,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 337,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 345,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 351,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 359,
-    "obstakel": "boom"
-  },
-  {
-    "kraam": 361,
-    "obstakel": "paal"
-  }
-]
+{
+  "obstakels": [
+    {
+      "kraam": 4,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 6,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 14,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 20,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 28,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 34,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 3,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 9,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 17,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 23,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 31,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 33,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 102,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 104,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 112,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 118,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 126,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 132,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 138,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 144,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 144,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 101,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 149,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 107,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 113,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 121,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 129,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 135,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 143,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 151,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 202,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 212,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 220,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 228,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 236,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 242,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 250,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 258,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 264,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 201,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 209,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 209,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 215,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 223,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 231,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 239,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 245,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 253,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 261,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 263,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 302,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 306,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 314,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 320,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 328,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 336,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 342,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 348,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 356,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 362,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 301,
+      "obstakel": "paal"
+    },
+    {
+      "kraam": 309,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 315,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 323,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 329,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 337,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 345,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 351,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 359,
+      "obstakel": "boom"
+    },
+    {
+      "kraam": 361,
+      "obstakel": "paal"
+    }
+  ]
+}
