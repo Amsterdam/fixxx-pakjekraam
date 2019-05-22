@@ -3,6 +3,7 @@ const Page = require('./Page.jsx');
 const PropTypes = require('prop-types');
 const { formatDayOfWeek, MILLISECONDS_IN_DAY } = require('../../util.js');
 const { getUpcomingMarktDays, parseMarktDag } = require('../../domain-knowledge.js');
+const today = () => new Date().toISOString().replace(/T.+/, '');
 
 class AfmeldForm extends React.Component {
     propTypes = {
@@ -47,8 +48,8 @@ class AfmeldForm extends React.Component {
         });
 
         return (
-            <form method="POST" action="/afmelden/" encType="application/x-www-form-urlencoded">
-                <h1>Afmelden door vasteplekhouders</h1>
+            <form className="Form" method="POST" action="/afmelden/" encType="application/x-www-form-urlencoded">
+                <h1>Afmelden voor {ondernemer.description}</h1>
                 <p>
                     <label htmlFor="erkenningsNummer">Erkenningsnummer:</label>
                     <input id="erkenningsNummer" name="erkenningsNummer" defaultValue={ondernemer.erkenningsnummer} />
@@ -58,33 +59,46 @@ class AfmeldForm extends React.Component {
                         <h2>
                             {markt.naam} ({sollicitatie.status})
                         </h2>
-                        <ul>
+                        <a
+                            href={`/markt-indeling/${markt.id}/${today()}/indelingslijst/#soll-${
+                                sollicitatie.sollicitatieNummer
+                            }`}
+                            className="Button"
+                        >
+                            Naar indelingslijst
+                        </a>
+                        <span>Aanvinken welke dagen je komt</span>
+                        <ul className="CheckboxList">
                             {rsvpEntries.map(({ date, rsvp, index }) => (
                                 <li key={date}>
                                     <input type="hidden" name={`rsvp[${index}][marktId]`} defaultValue={markt.id} />
                                     <input type="hidden" name={`rsvp[${index}][marktDate]`} defaultValue={date} />
-                                    <input
-                                        id={`rsvp-${index}`}
-                                        name={`rsvp[${index}][attending]`}
-                                        type="checkbox"
-                                        defaultValue="true"
-                                        defaultChecked={
-                                            rsvp
-                                                ? rsvp.attending
-                                                : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl'
-                                        }
-                                    />
-                                    <label htmlFor={`rsvp-${index}`}>
-                                        Ik kom op {formatDayOfWeek(date)} {date}
-                                    </label>
-                                    {rsvp ? <span className="rsvp-verified">🆗</span> : null}
+                                    <span className="InputField InputField--checkbox InputField--afmelden">
+                                        <input
+                                            id={`rsvp-${index}`}
+                                            name={`rsvp[${index}][attending]`}
+                                            type="checkbox"
+                                            defaultValue="true"
+                                            defaultChecked={
+                                                rsvp
+                                                    ? rsvp.attending
+                                                    : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl'
+                                            }
+                                        />
+                                        <label htmlFor={`rsvp-${index}`}>
+                                            Ik kom <strong>{formatDayOfWeek(date)}</strong>{' '}
+                                            <span className="InputField--afmelden__date">{date}</span>
+                                        </label>
+                                        {rsvp ? <span className="rsvp-verified">🆗</span> : null}
+                                    </span>
                                 </li>
                             ))}
                         </ul>
                     </section>
                 ))}
-                <p>
-                    <input type="submit" />
+                <p className="InputField InputField--submit">
+                    <input className="Input Input--submit-secondary" value="Versturen" type="submit" />
+                    <input className="Input Input--submit-tertiary" value="Annuleren" type="button" />
                 </p>
             </form>
         );

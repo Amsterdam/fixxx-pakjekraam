@@ -16,7 +16,10 @@ class Page extends React.Component {
                     <title>{this.props.title || 'Fixxx: Pak Je Kraam'}</title>
                     <link rel="stylesheet" type="text/css" href="/style/screen.css" />
                 </head>
-                <body className={this.props.bodyClass}>{this.props.children}</body>
+                <body className={this.props.bodyClass}>
+                    {this.props.children}
+                    <script src="/js/script.js" />
+                </body>
             </html>
         );
     }

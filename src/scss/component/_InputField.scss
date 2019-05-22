@@ -1,6 +1,10 @@
 .InputField {
     display: flex;
     flex-direction: column;
+
+    input + input {
+        margin-right: 10px;
+    }
     &--submit {
         background-color: $neutral-grey2;
         height: 64px;
@@ -8,5 +12,73 @@
         flex-direction: row-reverse;
         align-content: flex-end;
         align-items: center;
+    }
+    &--checkbox {
+        position: relative;
+        margin-bottom: 10px;
+        input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            position: absolute;
+        }
+        label {
+            @include p1;
+            padding: 10px 0 10px 40px;
+            display: inline-block;
+            position: relative;
+
+            &:after {
+                content: "";
+                position: absolute;
+                left: 0;
+                width: 22px;
+                height: 22px;
+                background-color: $primary-white;
+                border: 1px solid $primary-black;
+            }
+        }
+        input:checked + label {
+            &:after {
+                content: "";
+                @include icon($icon-Check-Mark);
+                position: absolute;
+                left: 0;
+                width: 22px;
+                height: 15px;
+                font-size: 10px;
+                text-align: center;
+                padding-top: 7px;
+                color: $primary-white;
+                background-color: $primary-black;
+            }
+        }
+    }
+    &--afmelden {
+        max-width: 270px;
+        padding-left: 10px;
+        label {
+            &:before {
+                content: "";
+                position: absolute;
+                background-color: $support-focus;
+                left: -10px;
+                top: 0;
+                right: -10px;
+                bottom: 0;
+                z-index: -1;
+                opacity: 0;
+                transition: opacity 0.2s;
+            }
+        }
+        input:checked + label {
+            &:before {
+                opacity: 1;
+            }
+        }
+        &__date {
+            float: right;
+        }
     }
 }

@@ -78,7 +78,11 @@ const Plaats = ({ plaats, vph, first, aanmelding }) => {
     tags = tags.join(' ');
 
     return (
-        <tr className={'Plaats ' + (first && 'Plaats--first')}>
+        <tr
+            className={'Plaats ' + (first && 'Plaats--first')}
+            data-sollicitatie-nummer={vph && vph.sollicitatieNummer}
+            id={'soll-' + (vph && vph.sollicitatieNummer)}
+        >
             <td className="Plaats__prop Plaats__prop-properties">
                 <span className={'icon icon-' + (plaatsProps ? plaatsProps[0] : '')} />
             </td>
@@ -89,7 +93,7 @@ const Plaats = ({ plaats, vph, first, aanmelding }) => {
 
             <td className="Plaats__prop Plaats__prop-vph">
                 {vph ? (
-                    <a href={`/profile/${vph.erkenningsNummer}/`}>
+                    <a href={`/afmelden/${vph.erkenningsNummer}/`}>
                         <strong>{vph.sollicitatieNummer}</strong>
                     </a>
                 ) : null}

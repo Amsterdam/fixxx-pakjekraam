@@ -25,7 +25,13 @@ $inputMaxWidth: 620px;
         color: $neutral-grey3;
     }
 
-    &--submit {
+    &--submit-primary {
         @include button-primary;
+    }
+    &--submit-secondary {
+        @include button-secondary;
+    }
+    &--submit-tertiary {
+        @include button-tertiary;
     }
 }

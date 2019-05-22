@@ -4,7 +4,7 @@ import React from 'react';
 
 const Indelingslijst = ({ data, markt }) => {
     return (
-        <div className="Indelingslijst">
+        <div className="Indelingslijst" data-handler="scroll-to" data-listen="sollicitatieNummer">
             <div className="indelingslijst-wrapper">
                 {data.paginas.map((p, i) => {
                     return <IndelingslijstPage key={i} page={p} index={i} data={data} markt={markt} />;

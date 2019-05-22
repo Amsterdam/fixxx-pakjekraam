@@ -1,7 +1,10 @@
+import Content from './components/Content';
+
 const React = require('react');
 const Page = require('./components/Page.jsx');
 const AfmeldForm = require('./components/AfmeldForm.jsx');
 const PropTypes = require('prop-types');
+import Header from './components/Header';
 
 class AfmeldPage extends React.Component {
     propTypes = {
@@ -16,14 +19,17 @@ class AfmeldPage extends React.Component {
     render() {
         return (
             <Page>
-                <AfmeldForm
-                    aanmeldingen={this.props.aanmeldingen}
-                    date={this.props.date}
-                    ondernemer={this.props.ondernemer}
-                    markten={this.props.markten}
-                    startDate={this.props.startDate}
-                    endDate={this.props.endDate}
-                />
+                <Header />
+                <Content>
+                    <AfmeldForm
+                        aanmeldingen={this.props.aanmeldingen}
+                        date={this.props.date}
+                        ondernemer={this.props.ondernemer}
+                        markten={this.props.markten}
+                        startDate={this.props.startDate}
+                        endDate={this.props.endDate}
+                    />
+                </Content>
             </Page>
         );
     }
