@@ -1,11 +1,45 @@
 .Alert {
-    &__icon {
-        @include icon;
+    border: 2px solid $neutral-grey3;
+    position: relative;
+    padding: 16px 20px 16px 60px;
+    min-height: 30px;
+    &__icon:before {
+        position: absolute;
+        left: 20px;
+        top: 16px;
+        width: 20px;
+        height: 20px;
+        font-size: 22px;
+        @include icon($icon-Alert);
     }
     &__title {
         @include h4;
+        margin: 0;
     }
     &__message {
         @include p1;
+        margin-top: 2px;
+    }
+    &--error {
+        border-color: $primary-red;
+        .Alert__icon:before {
+            @include icon($icon-Error);
+            color: $primary-red;
+            top: 20px;
+            font-size: 20px;
+        }
+    }
+    &--warning {
+        border-color: $supplement-orange;
+        .Alert__icon:before {
+            color: $supplement-orange;
+        }
+    }
+    &--success {
+        border-color: $supplement-lightgreen;
+        .Alert__icon:before {
+            @include icon($icon-Check-Mark);
+            color: $supplement-lightgreen;
+        }
     }
 }

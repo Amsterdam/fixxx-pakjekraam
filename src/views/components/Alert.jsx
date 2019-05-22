@@ -5,14 +5,14 @@ const Alert = ({ type, message, title }) => {
     return (
         <div className={'Alert Alert--' + type}>
             <span className="Alert__icon" />
-            {title && <h4 className="Alert__message">{title}</h4>}
+            {title && <h4 className="Alert__title">{title}</h4>}
             <span className="Alert__message">{message}</span>
         </div>
     );
 };
 
 Alert.propTypes = {
-    type: PropTypes.oneOf(['error', 'warning', 'notification']),
+    type: PropTypes.oneOf(['error', 'warning', 'success']),
     message: PropTypes.string,
     title: PropTypes.string,
 };

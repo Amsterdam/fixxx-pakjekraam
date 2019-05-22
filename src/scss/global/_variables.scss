@@ -52,6 +52,13 @@ $vm4: 6 * $vm1;
 $vm5: 9 * $vm1;
 $vm6: 12 * $vm1;
 
+$hm1: 5px;
+$hm2: 2 * $hm1;
+$m3: 3 * $hm1;
+$hm4: 6 * $hm1;
+$hm5: 9 * $hm1;
+$hm6: 12 * $hm1;
+
 $buttonMinHeight: 44px;
 
 $primary-red-darker: #bd0000;
@@ -59,6 +66,8 @@ $primary-red-darker: #bd0000;
 $icomoon-font-family: "icomoon" !default;
 $icomoon-font-path: "/fonts" !default;
 
+$icon-Check-Mark: "\e900";
+$icon-Error: "\e901";
 $icon-Quote: "\e966";
 $icon-Announcement: "\e96e";
 $icon-Close: "\e96f";
