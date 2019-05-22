@@ -7,7 +7,7 @@ const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt, aanme
     let first = true;
 
     return (
-        <div className={'IndelingslijstList indelingslijst__list ' + markt + '__' + page.class}>
+        <div className={'IndelingslijstList indelingslijst__list markt-' + markt.id + '__' + page.class}>
             {page.title && <h4>{page.title}</h4>}
 
             <table className="IndelingslijstList__table" cellPadding="0" cellSpacing="0">
@@ -72,7 +72,7 @@ IndelingslijstList.propTypes = {
     plaatsList: PropTypes.object,
     vphl: PropTypes.object,
     obstakelList: PropTypes.object,
-    markt: PropTypes.string,
+    markt: PropTypes.object,
 };
 
 module.exports = IndelingslijstList;

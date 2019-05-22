@@ -53,6 +53,8 @@ const Plaats = ({ plaats, vph, first, aanmelding }) => {
         tassen: '#C0C0C0',
         stn: '#C0C0C0',
         promo: '#C0C0C0',
+        'eigen-materiaal': '#C0C0C0',
+        'kraam-8-meter': '#ff7700',
     };
 
     let plaatsProps = plaats.properties ? plaats.properties.split(',') : [],
