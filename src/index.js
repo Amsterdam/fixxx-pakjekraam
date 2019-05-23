@@ -105,6 +105,17 @@ app.get('/markt-indeling/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (re
     );
 });
 
+app.get('/markt-indeling/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) => {
+    getMarktondernemersByMarkt(req.user.token, req.params.marktId).then(
+        ondernemers => {
+            res.render('SollicitantenPage', { ondernemers });
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
+        },
+    );
+});
+
 app.get('/login', function(req, res) {
     res.render('LoginPage', {});
 });
