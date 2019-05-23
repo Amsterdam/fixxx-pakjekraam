@@ -82,10 +82,6 @@ class MarktenPage extends React.Component {
             voorkeuren,
         };
 
-        console.log(aanmeldingen);
-        console.log(voorkeuren);
-        console.log(branches);
-
         return (
             <Page bodyClass="page-markt-detail">
                 <Header />

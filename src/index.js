@@ -84,7 +84,7 @@ app.set('view engine', 'jsx');
 app.engine('jsx', reactViews.createEngine({ beautify: true }));
 
 app.get('/', function(req, res) {
-    res.render('HomePage', {});
+    res.redirect('/markt/');
 });
 
 app.get('/markt/', ensureLoggedIn(), function(req, res) {
@@ -114,7 +114,7 @@ app.post('/login', passport.authenticate('local', { failureRedirect: '/login-err
      * TODO: Redirect to URL specified in URL query parameter,
      * so you go back to the page you intended to visit.
      */
-    res.redirect('/profile');
+    res.redirect('/');
 });
 
 app.get('/logout', function(req, res) {
@@ -220,7 +220,7 @@ app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', ensureLoggedIn(), (req, res
     );
 });
 
-const afmeldPage = (res, token, erkenningsNummer) => {
+const afmeldPage = (res, token, erkenningsNummer, currentMarktId) => {
     const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
     const marktenPromise = ondernemerPromise.then(ondernemer =>
         Promise.all(
@@ -238,6 +238,7 @@ const afmeldPage = (res, token, erkenningsNummer) => {
                 markten,
                 startDate: tomorrow(),
                 endDate: nextWeek(),
+                currentMarktId,
             });
         },
         err => errorPage(res, err),
@@ -248,13 +249,17 @@ app.get('/afmelden/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
     afmeldPage(res, req.user.token, req.params.erkenningsNummer);
 });
 
+app.get('/afmelden/:erkenningsNummer/:marktId', ensureLoggedIn(), (req, res) => {
+    afmeldPage(res, req.user.token, req.params.erkenningsNummer, req.params.marktId);
+});
+
 app.post('/afmelden/', ensureLoggedIn(), (req, res) => {
     /*
      * TODO: Form data format validation
      * TODO: Business logic validation
      */
 
-    const { erkenningsNummer } = req.body;
+    const { erkenningsNummer, next } = req.body;
     const responses = req.body.rsvp.map(rsvp => ({
         ...rsvp,
         attending: rsvp.attending === 'true',
@@ -265,10 +270,7 @@ app.post('/afmelden/', ensureLoggedIn(), (req, res) => {
     models.rsvp
         .bulkCreate(responses)
         .then(
-            () =>
-                res
-                    .status(HTTP_CREATED_SUCCESS)
-                    .redirect(`/afmelden/${erkenningsNummer}/?updated=${new Date().toISOString()}`),
+            () => res.status(HTTP_CREATED_SUCCESS).redirect(next),
             error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
         );
 });

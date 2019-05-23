@@ -1,0 +1,11 @@
+.Button {
+    &--primary {
+        @include button-primary;
+    }
+    &--secondary {
+        @include button-secondary;
+    }
+    &--tertiary {
+        @include button-tertiary;
+    }
+}

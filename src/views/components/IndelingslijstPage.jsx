@@ -41,7 +41,7 @@ IndelingslijstPage.propTypes = {
     page: PropTypes.object,
     index: PropTypes.number,
     data: PropTypes.object,
-    markt: PropTypes.object,
+    markt: PropTypes.object.isRequired,
 };
 
 module.exports = IndelingslijstPage;

@@ -3,4 +3,17 @@ $fieldsetMaxWidth: 620px;
 .Fieldset {
     max-width: $fieldsetMaxWidth;
     border: none;
+    margin-bottom: 100px;
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__title {
+        margin: 0;
+        margin-bottom: $hm5;
+    }
+    &__subtitle {
+        display: inline-block;
+        margin-bottom: 10px;
+    }
 }

@@ -12,10 +12,11 @@ class AfmeldForm extends React.Component {
         markten: PropTypes.array,
         startDate: PropTypes.string.isRequired,
         endDate: PropTypes.string.isRequired,
+        currentMarktId: PropTypes.string,
     };
 
     render() {
-        const { markten, ondernemer } = this.props;
+        const { markten, ondernemer, currentMarktId } = this.props;
         const sollicitaties = ondernemer.sollicitaties.filter(sollicitatie => !sollicitatie.doorgehaald);
 
         let rsvpIndex = 0;
@@ -49,25 +50,28 @@ class AfmeldForm extends React.Component {
 
         return (
             <form className="Form" method="POST" action="/afmelden/" encType="application/x-www-form-urlencoded">
-                <h1>Afmelden voor {ondernemer.description}</h1>
+                {/* <input name="next" value={`/afmelden/${ondernemer.erkenningsnummer}/?updated=${new Date().toISOString()}`}/>*/}
+                <h1>
+                    Afmelden voor {ondernemer.voorletters && ondernemer.voorletters + ' '}
+                    {ondernemer.achternaam}
+                </h1>
                 <p>
                     <label htmlFor="erkenningsNummer">Erkenningsnummer:</label>
                     <input id="erkenningsNummer" name="erkenningsNummer" defaultValue={ondernemer.erkenningsnummer} />
                 </p>
-                {entries.map(({ sollicitatie, markt, rsvpEntries }) => (
-                    <section key={sollicitatie.markt.id}>
-                        <h2>
-                            {markt.naam} ({sollicitatie.status})
-                        </h2>
-                        <a
-                            href={`/markt-indeling/${markt.id}/${today()}/indelingslijst/#soll-${
-                                sollicitatie.sollicitatieNummer
-                            }`}
-                            className="Button"
-                        >
-                            Naar indelingslijst
-                        </a>
-                        <span>Aanvinken welke dagen je komt</span>
+                {(currentMarktId
+                    ? entries.filter(({ markt }) => {
+                          return String(markt.id) === currentMarktId;
+                      })
+                    : entries
+                ).map(({ sollicitatie, markt, rsvpEntries }) => (
+                    <section className="Fieldset" key={sollicitatie.markt.id}>
+                        <div className="Fieldset__header">
+                            <h2 className="Fieldset__title">
+                                {markt.naam} ({sollicitatie.status}, {sollicitatie.sollicitatieNummer})
+                            </h2>
+                        </div>
+                        <span className="Fieldset__subtitle">Aanvinken welke dagen je komt</span>
                         <ul className="CheckboxList">
                             {rsvpEntries.map(({ date, rsvp, index }) => (
                                 <li key={date}>
@@ -86,20 +90,69 @@ class AfmeldForm extends React.Component {
                                             }
                                         />
                                         <label htmlFor={`rsvp-${index}`}>
-                                            Ik kom <strong>{formatDayOfWeek(date)}</strong>{' '}
+                                            <span className="InputField--afmelden__main">
+                                                Ik kom <strong>{formatDayOfWeek(date)}</strong>
+                                            </span>
                                             <span className="InputField--afmelden__date">{date}</span>
+                                            {rsvp ? (
+                                                <span
+                                                    className="InputField--afmelden__rsvp-verified"
+                                                    style={{ display: 'none' }}
+                                                >
+                                                    Bevestigd
+                                                </span>
+                                            ) : null}
                                         </label>
-                                        {rsvp ? <span className="rsvp-verified">🆗</span> : null}
                                     </span>
                                 </li>
                             ))}
                         </ul>
+                        {currentMarktId && (
+                            <p className="InputField InputField--submit">
+                                <button
+                                    className="Button Button--secondary"
+                                    type="submit"
+                                    name="next"
+                                    value={`/afmelden/${ondernemer.erkenningsnummer}/${
+                                        markt.id
+                                    }/?updated=${new Date().toISOString()}`}
+                                >
+                                    Opslaan en verder
+                                </button>
+                                {currentMarktId && (
+                                    <a
+                                        className="Button Button--tertiary"
+                                        href={`/markt-indeling/${markt.id}/${today()}/indelingslijst/#soll-${
+                                            sollicitatie.sollicitatieNummer
+                                        }`}
+                                    >
+                                        Terug
+                                    </a>
+                                )}
+                            </p>
+                        )}
                     </section>
                 ))}
-                <p className="InputField InputField--submit">
-                    <input className="Input Input--submit-secondary" value="Versturen" type="submit" />
-                    <input className="Input Input--submit-tertiary" value="Annuleren" type="button" />
-                </p>
+                {!currentMarktId && (
+                    <p className="InputField InputField--submit">
+                        <button
+                            className="Button Button--secondary"
+                            type="submit"
+                            name="next"
+                            value={`/afmelden/${ondernemer.erkenningsnummer}/?updated=${new Date().toISOString()}`}
+                        >
+                            Opslaan en verder
+                        </button>
+                        {currentMarktId && (
+                            <a
+                                className="Button Button--tertiary"
+                                href={`/markt-indeling/${markt.id}/${today()}/indelingslijst/`}
+                            >
+                                Annuleer
+                            </a>
+                        )}
+                    </p>
+                )}
             </form>
         );
     }

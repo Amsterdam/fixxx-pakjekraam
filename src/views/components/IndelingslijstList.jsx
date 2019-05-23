@@ -36,6 +36,7 @@ const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt, aanme
                                             plaats={plaatsList[String(plaatsNr)]}
                                             obstakels={obstakelList}
                                             aanmelding={aanmelding}
+                                            markt={markt}
                                         />
                                         <ObstakelList obstakelList={obstakelList[String(plaatsNr)]} />
                                         {(first = true)}
@@ -51,6 +52,7 @@ const IndelingslijstList = ({ page, plaatsList, vphl, obstakelList, markt, aanme
                                             plaats={plaatsList[String(plaatsNr)]}
                                             obstakels={obstakelList}
                                             aanmelding={aanmelding}
+                                            markt={markt}
                                         />
                                         {(first = false)}
                                     </React.Fragment>
@@ -72,7 +74,7 @@ IndelingslijstList.propTypes = {
     plaatsList: PropTypes.object,
     vphl: PropTypes.object,
     obstakelList: PropTypes.object,
-    markt: PropTypes.object,
+    markt: PropTypes.object.isRequired,
 };
 
 module.exports = IndelingslijstList;

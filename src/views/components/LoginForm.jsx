@@ -19,7 +19,7 @@ class LoginForm extends React.Component {
                         <input className="Input Input--password" id="password" name="password" type="password" />
                     </p>
                     <p className="InputField InputField--submit">
-                        <input className="Input Input--submit" type="submit" />
+                        <input className="Input Input--submit-primary" type="submit" />
                     </p>
                 </fieldset>
             </form>

@@ -2,7 +2,7 @@ import PrintableBackground from './PrintableBackground';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Plaats = ({ plaats, vph, first, aanmelding }) => {
+const Plaats = ({ plaats, vph, first, aanmelding, markt }) => {
     const colorList = {
         'branche-vis': '#343797',
         vis: '#343797',
@@ -93,7 +93,7 @@ const Plaats = ({ plaats, vph, first, aanmelding }) => {
 
             <td className="Plaats__prop Plaats__prop-vph">
                 {vph ? (
-                    <a href={`/afmelden/${vph.erkenningsNummer}/`}>
+                    <a href={`/afmelden/${vph.erkenningsNummer}/${markt.id}`}>
                         <strong>{vph.sollicitatieNummer}</strong>
                     </a>
                 ) : null}
@@ -115,6 +115,7 @@ Plaats.propTypes = {
     vph: PropTypes.object,
     first: PropTypes.bool,
     aanmelding: PropTypes.object,
+    markt: PropTypes.object.isRequired,
 };
 
 module.exports = Plaats;

@@ -1,19 +1,20 @@
-@mixin button($bgColor, $bgColorHover, $fontColor, $borderColor, $borderColorHover) {
+@mixin button($bgColor, $bgColorHover, $fontColor, $fontColorHover, $borderColor, $borderColorHover) {
     display: inline-block;
     padding: 0 15px;
     min-width: 90px;
     line-height: 42px;
+    height: 42px;
     text-decoration: none;
     cursor: pointer;
     background-color: $bgColor;
     text-align: center;
     color: $fontColor;
-    border: 1px solid $bgColor;
+    border: 1px solid $borderColor;
     transition: background-color 0.4s;
     &:hover {
-        color: $fontColor;
+        color: $fontColorHover;
         background-color: $bgColorHover;
-        border-color: $bgColorHover;
+        border-color: $borderColorHover;
     }
     &:hover:after {
         background-color: rgba(0, 0, 0, 0.2);
@@ -33,7 +34,14 @@
 
 @mixin button-primary() {
     @include buttonlabel-primary;
-    @include button($primary-red, $primary-red-darker, $primary-white, $primary-red, $primary-red-darker);
+    @include button(
+        $primary-red,
+        $primary-red-darker,
+        $primary-white,
+        $primary-white,
+        $primary-red,
+        $primary-red-darker
+    );
 }
 @mixin button-secondary() {
     @include buttonlabel-secondary;
@@ -41,13 +49,21 @@
         $primary-darkblue,
         $primary-darkblue-darker,
         $primary-white,
+        $primary-white,
         $primary-darkblue,
         $primary-darkblue-darker
     );
 }
 @mixin button-tertiary() {
     @include buttonlabel-tertiary;
-    @include button($primary-white, $primary-darkblue, $primary-darkblue, $primary-darkblue, $primary-darkblue-darker);
+    @include button(
+        $primary-white,
+        $primary-darkblue,
+        $primary-darkblue,
+        $primary-white,
+        $primary-darkblue,
+        $primary-darkblue-darker
+    );
 }
 
 @mixin icon($iconName) {
