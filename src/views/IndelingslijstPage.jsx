@@ -1,15 +1,14 @@
 const React = require('react');
 const Page = require('./components/Page.jsx');
-const PropTypes = require('prop-types');
-const MainNavigation = require('./components/MainNavigation.jsx');
-const MarktDayLink = require('./components/MarktDayLink.jsx');
 const Header = require('./components/Header');
 const Content = require('./components/Content');
-const Indelingslijst = require('./components/Indelingslijst');
+const PropTypes = require('prop-types');
 const PrintButton = require('./components/PrintButton');
 const MarktDetailBase = require('./components/MarktDetailBase');
+const MarktDayLink = require('./components/MarktDayLink.jsx');
+const Indelingslijst = require('./components/Indelingslijst');
 
-class MarktenPage extends React.Component {
+class IndelingslijstenPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -84,16 +83,18 @@ class MarktenPage extends React.Component {
         };
 
         return (
-            <MarktDetailBase bodyClass="page-markt-detail">
+            <MarktDetailBase bodyClass="page-markt-indelingslijst">
                 <div className="MarktDetailPage">
-                    <h2>Indelingslijst</h2>
-                    <PrintButton title="Print indelingslijst" />
-                    <p>
-                        <MarktDayLink markt={markt} offsetDate={new Date().toISOString()} direction={-1} />
-                    </p>
-                    <p>
-                        <MarktDayLink markt={markt} offsetDate={new Date().toISOString()} direction={1} />
-                    </p>
+                    <div className="MarktDetailPage__header">
+                        <h2>Indelingslijst</h2>
+                        <PrintButton title="Print indelingslijst" />
+                        <p>
+                            <MarktDayLink markt={markt} offsetDate={new Date().toISOString()} direction={-1} />
+                        </p>
+                        <p>
+                            <MarktDayLink markt={markt} offsetDate={new Date().toISOString()} direction={1} />
+                        </p>
+                    </div>
                     <Indelingslijst data={obj} markt={markt} />
                 </div>
             </MarktDetailBase>
@@ -101,4 +102,4 @@ class MarktenPage extends React.Component {
     }
 }
 
-module.exports = MarktenPage;
+module.exports = IndelingslijstenPage;

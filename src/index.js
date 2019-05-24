@@ -97,7 +97,7 @@ app.get('/markt/:marktId/', ensureLoggedIn(), function(req, res) {
 app.get('/markt-indeling/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) => {
     getIndelingslijstInput(req.user.token, req.params.marktId, req.params.datum).then(
         data => {
-            res.render('MarktDetailPage', { data });
+            res.render('IndelingslijstPage', { data });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);

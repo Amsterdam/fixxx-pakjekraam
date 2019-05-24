@@ -6,8 +6,4 @@ body {
 
     font-family: $ff-regular;
     @include p1;
-
-    &.page-markt-detail {
-        background-color: $neutral-grey2;
-    }
 }

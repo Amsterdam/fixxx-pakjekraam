@@ -1,6 +1,10 @@
 @import "../global/variables";
 @import "../global/designSystem";
 
+body.page-markt-indelingslijst {
+    background-color: $neutral-grey2;
+}
+
 .IndelingslijstPage {
     background-color: $primary-white;
     box-shadow: $boxShadowDefault;
@@ -76,52 +80,58 @@
         page-break-before: avoid;
         page-break-inside: avoid;
     }
-    .Header {
-        display: none;
-    }
-    .container {
-        max-width: 100%;
-    }
-    .container__content {
-        margin: 0;
-    }
-    .container__content h2,
-    .container__content .PrintButton {
-        display: none;
-    }
-    a {
-        text-decoration: none;
-    }
-    .IndelingslijstPage {
-        display: block;
-        page-break-after: always;
-        min-width: 0 !important;
-        background-color: #fff;
-        width: auto !important; /* 100% Might be breaking your current code. */
-        height: auto !important;
-        box-shadow: none;
-        padding: 10mm;
-        &__ratio {
-            height: auto;
-            position: static;
-            padding-top: 0 !important;
+    body.page-markt-indelingslijst {
+        background-color: transparent;
+        .Header {
+            display: none;
         }
-        &__wrapper {
-            position: static;
+        .container {
+            max-width: 100%;
+        }
+        .container__content {
             margin: 0;
-            padding: 0;
-            width: 100%;
-            height: auto;
         }
-        &__heading {
-            padding: 0;
+        .container__content h2,
+        .container__content .PrintButton {
+            display: none;
         }
-        &__list-wrapper {
+        a {
+            text-decoration: none;
+        }
+        .MarktDetailPage__header {
+            display: none;
+        }
+        .IndelingslijstPage {
             display: block;
+            page-break-after: always;
+            min-width: 0 !important;
+            background-color: #fff;
+            width: auto !important; /* 100% Might be breaking your current code. */
+            height: auto !important;
+            box-shadow: none;
+            padding: 10mm;
+            &__ratio {
+                height: auto;
+                position: static;
+                padding-top: 0 !important;
+            }
+            &__wrapper {
+                position: static;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: auto;
+            }
+            &__heading {
+                padding: 0;
+            }
+            &__list-wrapper {
+                display: block;
+            }
         }
-    }
-    .Street,
-    .IndelingslijstList {
-        display: inline-block;
+        .Street,
+        .IndelingslijstList {
+            display: inline-block;
+        }
     }
 }
