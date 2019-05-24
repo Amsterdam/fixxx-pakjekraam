@@ -8,7 +8,7 @@ const MarktList = ({ markten }) => {
             <ul className="LinkList">
                 {markten.map(markt => (
                     <li key={markt.id} className="LinkList__item">
-                        <a href={`/markt-indeling/${markt.id}/${today()}/indelingslijst/`} className="Link">
+                        <a href={`/markt/${markt.id}/`} className="Link">
                             {markt.naam}
                         </a>
                     </li>

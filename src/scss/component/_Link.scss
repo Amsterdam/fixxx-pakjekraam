@@ -23,4 +23,8 @@
         outline: 2px solid $support-focus;
         background-color: $support-focus;
     }
+    &--disabled {
+        pointer-events: none;
+        color: $neutral-grey3;
+    }
 }

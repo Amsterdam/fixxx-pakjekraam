@@ -95,10 +95,11 @@ app.get('/markt/:marktId/', ensureLoggedIn(), function(req, res) {
     getMarkt(req.user.token, req.params.marktId).then(markt => res.render('MarktDetailPage', { markt }));
 });
 
-app.get('/markt-indeling/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) => {
-    getIndelingslijstInput(req.user.token, req.params.marktId, req.params.datum).then(
+app.get('/markt/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) => {
+    const datum = req.params.datum;
+    getIndelingslijstInput(req.user.token, req.params.marktId, datum).then(
         data => {
-            res.render('IndelingslijstPage', { data });
+            res.render('IndelingslijstPage', { data, datum });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
@@ -106,7 +107,7 @@ app.get('/markt-indeling/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (re
     );
 });
 
-app.get('/markt-indeling/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) => {
+app.get('/markt/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) => {
     getMarktondernemersByMarkt(req.user.token, req.params.marktId).then(
         ondernemers => {
             res.render('SollicitantenPage', { ondernemers });

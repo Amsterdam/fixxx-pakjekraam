@@ -6,8 +6,23 @@ const HOURS_IN_DAY = 24;
 const MILLISECONDS_IN_DAY = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE * MINUTES_IN_HOUR * HOURS_IN_DAY;
 
 const dayOfWeekName = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+const monthName = [
+    'januari',
+    'februari',
+    'maart',
+    'april',
+    'mei',
+    'juni',
+    'juli',
+    'augustus',
+    'september',
+    'oktober',
+    'november',
+    'december',
+];
 
 const formatDayOfWeek = date => dayOfWeekName[new Date(date).getDay()];
+const formatMonth = date => monthName[new Date(date).getMonth()];
 
 const addDays = (offsetDate, days) => {
     const date = new Date(offsetDate);
@@ -32,6 +47,7 @@ const toISODate = date => date.toISOString().replace(/T.+/, '');
 module.exports = {
     addDays,
     formatDayOfWeek,
+    formatMonth,
     tomorrow,
     endOfWeek,
     nextWeek,

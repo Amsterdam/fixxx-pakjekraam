@@ -122,7 +122,7 @@ class AfmeldForm extends React.Component {
                                 {currentMarktId && (
                                     <a
                                         className="Button Button--tertiary"
-                                        href={`/markt-indeling/${markt.id}/${today()}/indelingslijst/#soll-${
+                                        href={`/markt/${markt.id}/${today()}/indelingslijst/#soll-${
                                             sollicitatie.sollicitatieNummer
                                         }`}
                                     >
@@ -146,7 +146,7 @@ class AfmeldForm extends React.Component {
                         {currentMarktId && (
                             <a
                                 className="Button Button--tertiary"
-                                href={`/markt-indeling/${markt.id}/${today()}/indelingslijst/`}
+                                href={`/markt/${markt.id}/${today()}/indelingslijst/`}
                             >
                                 Annuleer
                             </a>

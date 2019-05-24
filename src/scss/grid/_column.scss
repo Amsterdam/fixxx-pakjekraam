@@ -1,0 +1,7 @@
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+.col-1-2 {
+    width: calc(50% - (30px / 2));
+}

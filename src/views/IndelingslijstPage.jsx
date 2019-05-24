@@ -31,6 +31,7 @@ class IndelingslijstenPage extends React.Component {
         data: PropTypes.array,
         marktSlug: PropTypes.string,
         marktId: PropTypes.string,
+        datum: PropTypes.string,
     };
 
     render() {
@@ -44,6 +45,7 @@ class IndelingslijstenPage extends React.Component {
             voorkeuren,
             markt,
         } = this.props.data;
+        const { datum } = this.props;
 
         const arrayToObject = (array, keyField) =>
             array.reduce((obj, item) => {
@@ -82,6 +84,8 @@ class IndelingslijstenPage extends React.Component {
             voorkeuren,
         };
 
+        console.log(new Date(datum));
+
         return (
             <MarktDetailBase bodyClass="page-markt-indelingslijst">
                 <div className="MarktDetailPage">
@@ -89,10 +93,10 @@ class IndelingslijstenPage extends React.Component {
                         <h2>Indelingslijst</h2>
                         <PrintButton title="Print indelingslijst" />
                         <p>
-                            <MarktDayLink markt={markt} offsetDate={new Date().toISOString()} direction={-1} />
+                            <MarktDayLink markt={markt} offsetDate={new Date(datum).toISOString()} direction={-1} />
                         </p>
                         <p>
-                            <MarktDayLink markt={markt} offsetDate={new Date().toISOString()} direction={1} />
+                            <MarktDayLink markt={markt} offsetDate={new Date(datum).toISOString()} direction={1} />
                         </p>
                     </div>
                     <Indelingslijst data={obj} markt={markt} />
