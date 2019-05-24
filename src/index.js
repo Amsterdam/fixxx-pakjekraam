@@ -107,6 +107,18 @@ app.get('/markt/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) =
     );
 });
 
+app.get('/markt-indeling/:marktId/:datum/vasteplaatshouders/', ensureLoggedIn(), (req, res) => {
+    const datum = req.params.datum;
+    getIndelingslijstInput(req.user.token, req.params.marktId, datum).then(
+        data => {
+            res.render('VastplaatshoudersPage', { data, datum });
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
+        },
+    );
+});
+
 app.get('/markt/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) => {
     getMarktondernemersByMarkt(req.user.token, req.params.marktId).then(
         ondernemers => {
