@@ -4,11 +4,14 @@ const Header = require('./Header');
 const Content = require('./Content');
 const PropTypes = require('prop-types');
 
-const MarktDetailBase = ({ children, bodyClass }) => {
+const MarktDetailBase = ({ children, bodyClass, title }) => {
     return (
         <Page bodyClass={bodyClass}>
             <Header />
-            <Content>{children}</Content>
+            <Content>
+                {title && <h1>{title}</h1>}
+                {children}
+            </Content>
         </Page>
     );
 };
@@ -16,6 +19,7 @@ const MarktDetailBase = ({ children, bodyClass }) => {
 MarktDetailBase.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     bodyClass: PropTypes.string,
+    title: PropTypes.string,
 };
 
 module.exports = MarktDetailBase;
