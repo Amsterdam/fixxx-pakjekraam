@@ -92,8 +92,9 @@ app.get('/markt/', ensureLoggedIn(), function(req, res) {
 });
 
 app.get('/markt/:marktId/', ensureLoggedIn(), function(req, res) {
-    getMarkt(req.user.token).then(markten => res.render('MarktenPage', { markten }));
+    getMarkt(req.user.token, req.params.marktId).then(markt => res.render('MarktDetailPage', { markt }));
 });
+
 app.get('/markt-indeling/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) => {
     getIndelingslijstInput(req.user.token, req.params.marktId, req.params.datum).then(
         data => {

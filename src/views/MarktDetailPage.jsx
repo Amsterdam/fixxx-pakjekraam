@@ -1,104 +1,52 @@
 const React = require('react');
-const Page = require('./components/Page.jsx');
 const PropTypes = require('prop-types');
-const MainNavigation = require('./components/MainNavigation.jsx');
-const MarktDayLink = require('./components/MarktDayLink.jsx');
-const Header = require('./components/Header');
-const Content = require('./components/Content');
-const Indelingslijst = require('./components/Indelingslijst');
-const PrintButton = require('./components/PrintButton');
 const MarktDetailBase = require('./components/MarktDetailBase');
+const today = () => new Date().toISOString().replace(/T.+/, '');
 
-class MarktenPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: {
-                aanmeldingen: [],
-                branches: [],
-                locaties: [],
-                geografie: {
-                    obstakels: [],
-                },
-                ondernemers: [],
-                paginas: [],
-                voorkeuren: [],
-                markt: {},
-            },
-        };
-    }
-
+class MarktDetailPage extends React.Component {
     propTypes = {
-        data: PropTypes.array,
-        marktSlug: PropTypes.string,
-        marktId: PropTypes.string,
+        markt: PropTypes.object.isRequired,
     };
 
     render() {
-        const {
-            aanmeldingen,
-            branches,
-            geografie,
-            locaties,
-            ondernemers,
-            paginas,
-            voorkeuren,
-            markt,
-        } = this.props.data;
-
-        const arrayToObject = (array, keyField) =>
-            array.reduce((obj, item) => {
-                obj[item[keyField]] = item;
-
-                return obj;
-            }, {});
-
-        const ondernemersToLocatieKeyValue = array =>
-            array.reduce((obj, item) => {
-                item.locatie.reduce((ar, i) => {
-                    obj[i] = item;
-
-                    return ar;
-                }, {});
-
-                return obj;
-            }, {});
-
-        const pl = arrayToObject(locaties, 'locatie');
-        const vphl = ondernemersToLocatieKeyValue(ondernemers);
-        const obstakels = geografie.obstakels.reduce((total, obstakel) => {
-            total[String(obstakel.kraamA)] = total[String(obstakel.kraamA)] || [];
-            total[String(obstakel.kraamA)].push(obstakel.obstakel);
-
-            return total;
-        }, {});
-
-        const obj = {
-            aanmeldingen,
-            branches,
-            locaties: pl,
-            obstakels,
-            ondernemers: vphl,
-            paginas,
-            voorkeuren,
-        };
-
         return (
             <MarktDetailBase bodyClass="page-markt-detail">
-                <div className="MarktDetailPage">
-                    <h2>Indelingslijst</h2>
-                    <PrintButton title="Print indelingslijst" />
-                    <p>
-                        <MarktDayLink markt={markt} offsetDate={new Date().toISOString()} direction={-1} />
-                    </p>
-                    <p>
-                        <MarktDayLink markt={markt} offsetDate={new Date().toISOString()} direction={1} />
-                    </p>
-                    <Indelingslijst data={obj} markt={markt} />
+                <div className="row">
+                    <div className="col-1-2">
+                        <h2>Indelingslijsten</h2>
+                        <ul>
+                            <li>
+                                <a
+                                    href={`/markt-indeling/${this.props.markt.id}/${today()}/indelingslijst/`}
+                                    className=""
+                                >
+                                    Vandaag
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="col-1-2">
+                        <h2>Ondernemers</h2>
+                        <ul>
+                            <li>
+                                <a href="#" className="">
+                                    Vasteplaatshouder
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href={`/markt-indeling/${this.props.markt.id}/${today()}/indelingslijst/`}
+                                    className=""
+                                >
+                                    Sollicitanten
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </MarktDetailBase>
         );
     }
 }
 
-module.exports = MarktenPage;
+module.exports = MarktDetailPage;
