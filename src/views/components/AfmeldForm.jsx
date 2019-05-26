@@ -13,10 +13,11 @@ class AfmeldForm extends React.Component {
         startDate: PropTypes.string.isRequired,
         endDate: PropTypes.string.isRequired,
         currentMarktId: PropTypes.string,
+        query: PropTypes.string,
     };
 
     render() {
-        const { markten, ondernemer, currentMarktId } = this.props;
+        const { markten, ondernemer, currentMarktId, query } = this.props;
         const sollicitaties = ondernemer.sollicitaties.filter(sollicitatie => !sollicitatie.doorgehaald);
 
         let rsvpIndex = 0;
@@ -113,16 +114,16 @@ class AfmeldForm extends React.Component {
                                     className="Button Button--secondary"
                                     type="submit"
                                     name="next"
-                                    value={`/afmelden/${ondernemer.erkenningsnummer}/${
-                                        markt.id
-                                    }/?updated=${new Date().toISOString()}`}
+                                    value={`/markt/${markt.id}/${query.datum}/${query.type}/#soll-${
+                                        sollicitatie.sollicitatieNummer
+                                    }`}
                                 >
-                                    Opslaan en verder
+                                    Opslaan en terug
                                 </button>
                                 {currentMarktId && (
                                     <a
                                         className="Button Button--tertiary"
-                                        href={`/markt/${markt.id}/${today()}/indelingslijst/#soll-${
+                                        href={`/markt/${markt.id}/${query.datum}/${query.type}/#soll-${
                                             sollicitatie.sollicitatieNummer
                                         }`}
                                     >

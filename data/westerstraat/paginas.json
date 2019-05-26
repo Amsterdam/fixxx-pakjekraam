@@ -1,7 +1,7 @@
 [
   {
     "title": "Markt 1",
-    "indelingslijstList": [
+    "indelingslijstGroup": [
       {
         "class": "linkerzijde",
         "title": "",
@@ -16,7 +16,7 @@
   },
   {
     "title": "Markt 2",
-    "indelingslijstList": [
+    "indelingslijstGroup": [
       {
         "class": "linkerzijde",
         "plaatsList": [
@@ -85,7 +85,7 @@
   },
   {
     "title": "Markt 3",
-    "indelingslijstList": [
+    "indelingslijstGroup": [
       {
         "class": "linkerzijde",
         "plaatsList": [
@@ -166,7 +166,7 @@
   },
   {
     "title": "Markt 4",
-    "indelingslijstList": [
+    "indelingslijstGroup": [
       {
         "class": "linkerzijde",
         "plaatsList": [

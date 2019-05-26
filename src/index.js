@@ -97,9 +97,10 @@ app.get('/markt/:marktId/', ensureLoggedIn(), function(req, res) {
 
 app.get('/markt/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) => {
     const datum = req.params.datum;
+    const type = 'indelingslijst';
     getIndelingslijstInput(req.user.token, req.params.marktId, datum).then(
         data => {
-            res.render('IndelingslijstPage', { data, datum });
+            res.render('IndelingslijstPage', { data, datum, type });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
@@ -107,11 +108,12 @@ app.get('/markt/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) =
     );
 });
 
-app.get('/markt-indeling/:marktId/:datum/vasteplaatshouders/', ensureLoggedIn(), (req, res) => {
+app.get('/markt/:marktId/:datum/vasteplaatshouders/', ensureLoggedIn(), (req, res) => {
     const datum = req.params.datum;
+    const type = 'vasteplaatshouders';
     getIndelingslijstInput(req.user.token, req.params.marktId, datum).then(
         data => {
-            res.render('VastplaatshoudersPage', { data, datum });
+            res.render('VastplaatshoudersPage', { data, datum, type });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
@@ -120,9 +122,11 @@ app.get('/markt-indeling/:marktId/:datum/vasteplaatshouders/', ensureLoggedIn(),
 });
 
 app.get('/markt/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) => {
+    const datum = req.params.datum;
+    const type = 'sollicitanten';
     getMarktondernemersByMarkt(req.user.token, req.params.marktId).then(
         ondernemers => {
-            res.render('SollicitantenPage', { ondernemers });
+            res.render('SollicitantenPage', { ondernemers, datum, type });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
@@ -245,7 +249,7 @@ app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', ensureLoggedIn(), (req, res
     );
 });
 
-const afmeldPage = (res, token, erkenningsNummer, currentMarktId) => {
+const afmeldPage = (res, token, erkenningsNummer, currentMarktId, query) => {
     const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
     const marktenPromise = ondernemerPromise.then(ondernemer =>
         Promise.all(
@@ -254,7 +258,6 @@ const afmeldPage = (res, token, erkenningsNummer, currentMarktId) => {
                 .map(marktId => getMarkt(token, marktId)),
         ),
     );
-
     Promise.all([ondernemerPromise, marktenPromise, getAanmeldingenByOndernemer(erkenningsNummer)]).then(
         ([ondernemer, markten, aanmeldingen]) => {
             res.render('AfmeldPage', {
@@ -264,6 +267,7 @@ const afmeldPage = (res, token, erkenningsNummer, currentMarktId) => {
                 startDate: tomorrow(),
                 endDate: nextWeek(),
                 currentMarktId,
+                query,
             });
         },
         err => errorPage(res, err),
@@ -271,11 +275,11 @@ const afmeldPage = (res, token, erkenningsNummer, currentMarktId) => {
 };
 
 app.get('/afmelden/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
-    afmeldPage(res, req.user.token, req.params.erkenningsNummer);
+    afmeldPage(res, req.user.token, req.params.erkenningsNummer, req.query);
 });
 
 app.get('/afmelden/:erkenningsNummer/:marktId', ensureLoggedIn(), (req, res) => {
-    afmeldPage(res, req.user.token, req.params.erkenningsNummer, req.params.marktId);
+    afmeldPage(res, req.user.token, req.params.erkenningsNummer, req.params.marktId, req.query);
 });
 
 app.post('/afmelden/', ensureLoggedIn(), (req, res) => {

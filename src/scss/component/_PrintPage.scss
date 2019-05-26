@@ -1,11 +1,14 @@
+.PrintPage {
+}
+
 @import "../global/variables";
 @import "../global/designSystem";
 
-body.page-markt-indelingslijst {
+body.page-print {
     background-color: $neutral-grey2;
 }
 
-.IndelingslijstPage {
+.PrintPage {
     background-color: $primary-white;
     box-shadow: $boxShadowDefault;
     margin-bottom: 30px;
@@ -80,7 +83,7 @@ body.page-markt-indelingslijst {
         page-break-before: avoid;
         page-break-inside: avoid;
     }
-    body.page-markt-indelingslijst {
+    body.page-print {
         background-color: transparent;
         .Header {
             display: none;
@@ -101,7 +104,7 @@ body.page-markt-indelingslijst {
         .MarktDetailPage__header {
             display: none;
         }
-        .IndelingslijstPage {
+        .PrintPage {
             display: block;
             page-break-after: always;
             min-width: 0 !important;

@@ -1,7 +1,7 @@
 [
   {
     "title": "",
-    "indelingslijstList": [
+    "indelingslijstGroup": [
       {
         "type": "street",
         "title": "Ferdinand Bolstraat"
@@ -101,7 +101,7 @@
   },
   {
     "title": "",
-    "indelingslijstList": [
+    "indelingslijstGroup": [
       {
         "type": "street",
         "title": "Eerste van der Helststraat"
@@ -177,7 +177,7 @@
   },
   {
     "title": "",
-    "indelingslijstList": [
+    "indelingslijstGroup": [
       {
         "class": "straat-3a",
         "plaatsList": [
@@ -273,7 +273,7 @@
   },
   {
     "title": "",
-    "indelingslijstList": [
+    "indelingslijstGroup": [
       {
         "type": "street",
         "title": "Eerste Sweelinckstraat"

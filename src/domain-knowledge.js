@@ -53,6 +53,25 @@ const getUpcomingMarktDays = (startDate, endDate, daysOfWeek) => {
 const formatOndernemerName = ondernemer =>
     `${ondernemer.voorletters} ${ondernemer.tussenvoegsels} ${ondernemer.achternaam}`.replace(/\s+/g, ' ');
 
+const ondernemersToLocatieKeyValue = array =>
+    array.reduce((obj, item) => {
+        item.locatie.reduce((ar, i) => {
+            obj[i] = item;
+
+            return ar;
+        }, {});
+
+        return obj;
+    }, {});
+
+const obstakelsToLocatieKeyValue = array =>
+    array.reduce((total, obstakel) => {
+        total[String(obstakel.kraamA)] = total[String(obstakel.kraamA)] || [];
+        total[String(obstakel.kraamA)].push(obstakel.obstakel);
+
+        return total;
+    }, {});
+
 module.exports = {
     DAPPERMARKT_ID,
     ALBERT_CUYP_ID,
@@ -65,4 +84,6 @@ module.exports = {
     parseMarktDag,
     isVast,
     getUpcomingMarktDays,
+    ondernemersToLocatieKeyValue,
+    obstakelsToLocatieKeyValue,
 };

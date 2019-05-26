@@ -1,12 +1,11 @@
 const React = require('react');
-const Page = require('./components/Page.jsx');
-const Header = require('./components/Header');
-const Content = require('./components/Content');
 const PropTypes = require('prop-types');
 const PrintButton = require('./components/PrintButton');
 const MarktDetailBase = require('./components/MarktDetailBase');
 const MarktDayLink = require('./components/MarktDayLink.jsx');
 const Indelingslijst = require('./components/Indelingslijst');
+const { ondernemersToLocatieKeyValue, obstakelsToLocatieKeyValue } = require('../domain-knowledge.js');
+const { arrayToObject } = require('../util.js');
 
 class IndelingslijstenPage extends React.Component {
     constructor(props) {
@@ -32,6 +31,7 @@ class IndelingslijstenPage extends React.Component {
         marktSlug: PropTypes.string,
         marktId: PropTypes.string,
         datum: PropTypes.string,
+        type: PropTypes.string,
     };
 
     render() {
@@ -45,34 +45,10 @@ class IndelingslijstenPage extends React.Component {
             voorkeuren,
             markt,
         } = this.props.data;
-        const { datum } = this.props;
-
-        const arrayToObject = (array, keyField) =>
-            array.reduce((obj, item) => {
-                obj[item[keyField]] = item;
-
-                return obj;
-            }, {});
-
-        const ondernemersToLocatieKeyValue = array =>
-            array.reduce((obj, item) => {
-                item.locatie.reduce((ar, i) => {
-                    obj[i] = item;
-
-                    return ar;
-                }, {});
-
-                return obj;
-            }, {});
-
+        const { datum, type } = this.props;
         const pl = arrayToObject(locaties, 'locatie');
         const vphl = ondernemersToLocatieKeyValue(ondernemers);
-        const obstakels = geografie.obstakels.reduce((total, obstakel) => {
-            total[String(obstakel.kraamA)] = total[String(obstakel.kraamA)] || [];
-            total[String(obstakel.kraamA)].push(obstakel.obstakel);
-
-            return total;
-        }, {});
+        const obstakels = obstakelsToLocatieKeyValue(geografie.obstakels);
 
         const obj = {
             aanmeldingen,
@@ -99,7 +75,7 @@ class IndelingslijstenPage extends React.Component {
                             <MarktDayLink markt={markt} offsetDate={new Date(datum).toISOString()} direction={1} />
                         </p>
                     </div>
-                    <Indelingslijst data={obj} markt={markt} />
+                    <Indelingslijst data={obj} markt={markt} datum={datum} type={type} />
                 </div>
             </MarktDetailBase>
         );

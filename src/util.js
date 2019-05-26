@@ -44,6 +44,13 @@ const nextWeek = () => addDays(Date.now(), DAYS_IN_WEEK);
 
 const toISODate = date => date.toISOString().replace(/T.+/, '');
 
+const arrayToObject = (array, keyField) =>
+    array.reduce((obj, item) => {
+        obj[item[keyField]] = item;
+
+        return obj;
+    }, {});
+
 module.exports = {
     addDays,
     formatDayOfWeek,
@@ -52,6 +59,7 @@ module.exports = {
     endOfWeek,
     nextWeek,
     toISODate,
+    arrayToObject,
     DAYS_IN_WEEK,
     MILLISECONDS_IN_SECOND,
     SECONDS_IN_MINUTE,

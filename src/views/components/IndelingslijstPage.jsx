@@ -1,9 +1,9 @@
-import IndelingslijstList from './IndelingslijstList';
+import IndelingslijstGroup from './IndelingslijstGroup';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Street from './Street';
 
-const IndelingslijstPage = ({ page, index, data, markt }) => {
+const IndelingslijstPage = ({ page, index, data, markt, type, datum }) => {
     return (
         <div className="IndelingslijstPage indelingslijst-page">
             <div className="IndelingslijstPage__ratio" data-ratio="210:297">
@@ -13,12 +13,12 @@ const IndelingslijstPage = ({ page, index, data, markt }) => {
                         <span className="IndelingslijstPage__index">{index + 1}</span>
                     </h3>
                     <div className="IndelingslijstPage__list-wrapper">
-                        {page.indelingslijstList.map((pageItem, i) => {
+                        {page.indelingslijstGroup.map((pageItem, i) => {
                             if (pageItem.type && pageItem.type === 'street') {
                                 return <Street title={pageItem.title} />;
                             } else {
                                 return (
-                                    <IndelingslijstList
+                                    <IndelingslijstGroup
                                         key={i}
                                         page={pageItem}
                                         plaatsList={data.locaties}
@@ -26,6 +26,8 @@ const IndelingslijstPage = ({ page, index, data, markt }) => {
                                         obstakelList={data.obstakels}
                                         aanmeldingen={data.aanmeldingen}
                                         markt={markt}
+                                        datum={datum}
+                                        type={type}
                                     />
                                 );
                             }
@@ -42,6 +44,8 @@ IndelingslijstPage.propTypes = {
     index: PropTypes.number,
     data: PropTypes.object,
     markt: PropTypes.object.isRequired,
+    type: PropTypes.string,
+    datum: PropTypes.string,
 };
 
 module.exports = IndelingslijstPage;

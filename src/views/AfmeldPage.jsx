@@ -15,6 +15,7 @@ class AfmeldPage extends React.Component {
         startDate: PropTypes.string.isRequired,
         endDate: PropTypes.string.isRequired,
         currentMarktId: PropTypes.string,
+        query: PropTypes.string,
     };
 
     render() {
@@ -30,6 +31,7 @@ class AfmeldPage extends React.Component {
                         startDate={this.props.startDate}
                         endDate={this.props.endDate}
                         currentMarktId={this.props.currentMarktId}
+                        query={this.props.query}
                     />
                 </Content>
             </Page>

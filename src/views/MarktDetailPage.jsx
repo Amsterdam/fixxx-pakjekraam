@@ -50,7 +50,7 @@ class MarktDetailPage extends React.Component {
                         <h2>Ondernemers</h2>
                         <ul className="LinkList">
                             <li>
-                                <a href="#" className="Link">
+                                <a href={`/markt/${markt.id}/${today()}/vasteplaatshouders/`} className="Link">
                                     Vasteplaatshouder
                                 </a>
                             </li>

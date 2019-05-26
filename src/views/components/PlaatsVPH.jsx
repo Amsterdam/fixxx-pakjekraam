@@ -2,7 +2,7 @@ import PrintableBackground from './PrintableBackground';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
+const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
     const colorList = {
         'branche-vis': '#343797',
         vis: '#343797',
@@ -110,11 +110,11 @@ const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
             >
                 {vph ? vph.description : ''}
             </td>
-            <td className="Plaats__prop Plaats__prop-empty-fields">{aanmelding ? '🆗' : null}</td>
+            <td className="Plaats__prop Plaats__prop-empty-fields">{aanmelding ? 'bevestigd' : null}</td>
         </tr>
     );
 };
-Plaats.propTypes = {
+PlaatsVPH.propTypes = {
     plaats: PropTypes.object.isRequired,
     vph: PropTypes.object,
     first: PropTypes.bool,
@@ -124,4 +124,4 @@ Plaats.propTypes = {
     type: PropTypes.string,
 };
 
-module.exports = Plaats;
+module.exports = PlaatsVPH;
