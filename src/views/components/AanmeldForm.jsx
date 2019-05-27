@@ -41,6 +41,12 @@ class AanmeldForm extends React.Component {
                 <p>
                     Erkenningsnummer: <strong>{ondernemer.erkenningsnummer}</strong>
                 </p>
+                <input
+                    id="erkenningsNummer"
+                    name="erkenningsNummer"
+                    defaultValue={ondernemer.erkenningsnummer}
+                    type="hidden"
+                />
                 <section className="Fieldset">
                     {markt ? (
                         <input name="marktId" id="marktId" value={markt.id} type="hidden" />

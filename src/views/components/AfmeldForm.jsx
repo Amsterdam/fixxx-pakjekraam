@@ -59,6 +59,12 @@ class AfmeldForm extends React.Component {
                 <p>
                     Erkenningsnummer: <strong>{ondernemer.erkenningsnummer}</strong>
                 </p>
+                <input
+                    id="erkenningsNummer"
+                    name="erkenningsNummer"
+                    defaultValue={ondernemer.erkenningsnummer}
+                    type="hidden"
+                />
                 {(currentMarktId
                     ? entries.filter(({ markt }) => {
                           return String(markt.id) === currentMarktId;
