@@ -57,6 +57,12 @@ const paginate = (array, pageSize, pageNumber) => {
     return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
 };
 
+const numberSort = (a, b) => (a > b ? 1 : a === b ? 0 : -1);
+
+const stringSort = (a, b) => (a > b ? 1 : a === b ? 0 : -1);
+
+const flatten = (a = [], b = []) => [...a, ...b];
+
 module.exports = {
     addDays,
     formatDayOfWeek,
@@ -67,6 +73,9 @@ module.exports = {
     toISODate,
     arrayToObject,
     paginate,
+    numberSort,
+    stringSort,
+    flatten,
     DAYS_IN_WEEK,
     MILLISECONDS_IN_SECOND,
     SECONDS_IN_MINUTE,

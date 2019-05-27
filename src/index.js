@@ -16,7 +16,8 @@ const {
     getIndelingslijstInput,
     getAanmeldingen,
     getAanmeldingenByOndernemer,
-    getVoorkeuren,
+    getOndernemerVoorkeuren,
+    getPlaatsvoorkeuren,
     getBranches,
     getMarktplaatsen,
     getMarkten,
@@ -242,7 +243,7 @@ app.get('/api/0.0.1/markt/:marktId/:date/aanmeldingen.json', ensureLoggedIn(), (
 });
 
 app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', ensureLoggedIn(), (req, res) => {
-    getVoorkeuren(req.params.marktId).then(
+    getPlaatsvoorkeuren(req.params.marktId).then(
         branches => {
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -348,6 +349,89 @@ app.post('/aanmelden/', ensureLoggedIn(), (req, res) => {
         .create(aanmeldFormDataToRSVP(req.body))
         .then(
             () => res.status(HTTP_CREATED_SUCCESS).redirect(next ? next : '/'),
+            error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
+        );
+});
+
+const voorkeurenPage = (res, token, erkenningsNummer) => {
+    const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
+    const marktenPromise = ondernemerPromise
+        .then(ondernemer =>
+            Promise.all(
+                ondernemer.sollicitaties
+                    .map(sollicitatie => sollicitatie.markt.id)
+                    .map(marktId => getMarkt(token, marktId)),
+            ),
+        )
+        .then(markten =>
+            Promise.all(
+                markten.map(markt =>
+                    getMarktplaatsen(markt.id).then(marktplaatsen => ({
+                        ...markt,
+                        marktplaatsen,
+                    })),
+                ),
+            ),
+        );
+
+    Promise.all([ondernemerPromise, marktenPromise, getOndernemerVoorkeuren(erkenningsNummer)]).then(
+        ([ondernemer, markten, plaatsvoorkeuren]) => {
+            res.render('VoorkeurenPage', { ondernemer, markten, plaatsvoorkeuren });
+        },
+        err => errorPage(res, err),
+    );
+};
+
+app.get('/voorkeuren/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
+    voorkeurenPage(res, req.user.token, req.params.erkenningsNummer);
+});
+
+const voorkeurenFormDataToObject = formData => ({
+    marktId: parseInt(formData.marktId, 10),
+    erkenningsNummer: formData.erkenningsNummer,
+    plaatsId: formData.plaatsId,
+    priority: parseInt(formData.priority, 10),
+});
+
+app.post('/voorkeuren/', ensureLoggedIn(), (req, res) => {
+    /*
+     * TODO: Form data format validation
+     * TODO: Business logic validation
+     */
+
+    const { erkenningsNummer, redirectTo } = req.body;
+
+    const removeExisting = () =>
+        models.plaatsvoorkeur
+            .destroy({
+                where: {
+                    erkenningsNummer,
+                },
+            })
+            .then(n => console.log(`${n} Bestaande voorkeuren verwijderd...`));
+
+    const ignoreEmptyVoorkeur = voorkeur => !!voorkeur.plaatsId;
+
+    const insertFormData = () => {
+        console.log(`${req.body.plaatsvoorkeuren.length} (nieuwe) voorkeuren opslaan...`);
+
+        const voorkeuren = req.body.plaatsvoorkeuren
+            .map(voorkeurenFormDataToObject)
+            .map(plaatsvoorkeur => ({
+                ...plaatsvoorkeur,
+                erkenningsNummer,
+            }))
+            .filter(ignoreEmptyVoorkeur);
+
+        return models.plaatsvoorkeur.bulkCreate(voorkeuren);
+    };
+
+    // TODO: Remove and insert in one transaction
+
+    removeExisting()
+        .then(insertFormData)
+        .then(
+            () => res.status(HTTP_CREATED_SUCCESS).redirect(redirectTo),
             error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
         );
 });

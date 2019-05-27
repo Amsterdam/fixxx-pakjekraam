@@ -36,6 +36,11 @@ class PublicProfilePage extends React.Component {
                             <a href={`/aanmelden/${ondernemer.erkenningsnummer}/`}>Aanmelden als sollicitant</a>
                         </p>
                     ) : null}
+                    {ondernemer.sollicitaties.length > 0 ? (
+                        <p>
+                            <a href={`/voorkeuren/${ondernemer.erkenningsnummer}/`}>Voorkeuren doorgeven</a>
+                        </p>
+                    ) : null}
                 </Content>
             </Page>
         );

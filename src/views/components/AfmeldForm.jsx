@@ -1,5 +1,4 @@
 const React = require('react');
-const Page = require('./Page.jsx');
 const PropTypes = require('prop-types');
 const { formatDayOfWeek, MILLISECONDS_IN_DAY } = require('../../util.js');
 const { getMarktDays, parseMarktDag } = require('../../domain-knowledge.js');

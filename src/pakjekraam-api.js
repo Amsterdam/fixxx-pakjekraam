@@ -5,7 +5,7 @@ const {
     getMarktondernemersByMarkt,
 } = require('./makkelijkemarkt-api.js');
 const { ALBERT_CUYP_ID, formatOndernemerName, slugifyMarkt } = require('./domain-knowledge.js');
-const { rsvp } = require('./model/index.js');
+const { plaatsvoorkeur, rsvp } = require('./model/index.js');
 const fs = require('fs');
 
 const loadJSON = (path, defaultValue = null) =>
@@ -36,7 +36,17 @@ const getAanmeldingenByOndernemer = erkenningsNummer => {
     });
 };
 
-const getVoorkeuren = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/voorkeuren.json`, []);
+const getPlaatsvoorkeuren = marktId => {
+    return plaatsvoorkeur.findAll({
+        where: { marktId },
+    });
+};
+
+const getOndernemerVoorkeuren = erkenningsNummer => {
+    return plaatsvoorkeur.findAll({
+        where: { erkenningsNummer },
+    });
+};
 
 const getBranches = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/branches.json`, []);
 
@@ -72,7 +82,7 @@ const getIndelingslijstInput = (token, marktId, date) =>
         ),
         getMarktplaatsen(marktId),
         getAanmeldingen(marktId, date),
-        getVoorkeuren(marktId),
+        getPlaatsvoorkeuren(marktId),
         getBranches(marktId),
         getMarktPaginas(marktId),
         getMarktGeografie(marktId),
@@ -98,7 +108,7 @@ const getSollicitantenlijstInput = (token, marktId, date) =>
             ondernemers.filter(ondernemer => !ondernemer.doorgehaald && ondernemer.status === 'soll'),
         ),
         getAanmeldingen(marktId, date),
-        getVoorkeuren(marktId),
+        getPlaatsvoorkeuren(marktId),
         getMarkt(token, marktId),
     ]).then(args => {
         const [ondernemers, aanmeldingen, voorkeuren, markt] = args;
@@ -119,7 +129,8 @@ const getMarkten = token =>
 module.exports = {
     getAanmeldingen,
     getAanmeldingenByOndernemer,
-    getVoorkeuren,
+    getPlaatsvoorkeuren,
+    getOndernemerVoorkeuren,
     getBranches,
     getMarktplaatsen,
     getIndelingslijstInput,
