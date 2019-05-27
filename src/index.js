@@ -20,6 +20,7 @@ const {
     getBranches,
     getMarktplaatsen,
     getMarkten,
+    getSollicitantenlijstInput,
 } = require('./pakjekraam-api.js');
 const { calcToewijzingen, simulateAanmeldingen } = require('./www/script/controller.js');
 
@@ -124,9 +125,9 @@ app.get('/markt/:marktId/:datum/vasteplaatshouders/', ensureLoggedIn(), (req, re
 app.get('/markt/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) => {
     const datum = req.params.datum;
     const type = 'sollicitanten';
-    getMarktondernemersByMarkt(req.user.token, req.params.marktId).then(
-        ondernemers => {
-            res.render('SollicitantenPage', { ondernemers, datum, type });
+    getSollicitantenlijstInput(req.user.token, req.params.marktId).then(
+        ({ ondernemers, aanmeldingen, voorkeuren, markt }) => {
+            res.render('SollicitantenPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
@@ -304,10 +305,14 @@ app.post('/afmelden/', ensureLoggedIn(), (req, res) => {
         );
 });
 
-const aanmeldPage = (res, token, erkenningsNummer) => {
-    Promise.all([getMarktondernemer(token, erkenningsNummer), getAanmeldingenByOndernemer(erkenningsNummer)]).then(
-        ([ondernemer, aanmeldingen]) => {
-            res.render('AanmeldPage', { ondernemer, aanmeldingen, date: tomorrow() });
+const aanmeldPage = (res, token, erkenningsNummer, marktId, query) => {
+    Promise.all([
+        getMarktondernemer(token, erkenningsNummer),
+        getAanmeldingenByOndernemer(erkenningsNummer),
+        getMarkt(token, marktId),
+    ]).then(
+        ([ondernemer, aanmeldingen, markt]) => {
+            res.render('AanmeldPage', { ondernemer, aanmeldingen, markt, date: tomorrow() });
         },
         err => errorPage(res, err),
     );
@@ -321,6 +326,10 @@ app.get('/aanmelden/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
     aanmeldPage(res, req.user.token, req.params.erkenningsNummer);
 });
 
+app.get('/aanmelden/:erkenningsNummer/:marktId', ensureLoggedIn(), (req, res) => {
+    aanmeldPage(res, req.user.token, req.params.erkenningsNummer, req.params.marktId, req.query);
+});
+
 const aanmeldFormDataToRSVP = formData => ({
     marktId: parseInt(formData.marktId, 10),
     marktDate: formData.aanmelding,
@@ -329,10 +338,11 @@ const aanmeldFormDataToRSVP = formData => ({
 });
 
 app.post('/aanmelden/', ensureLoggedIn(), (req, res) => {
+    const { next } = req.body;
     models.rsvp
         .create(aanmeldFormDataToRSVP(req.body))
         .then(
-            () => res.status(HTTP_CREATED_SUCCESS).redirect('/'),
+            () => res.status(HTTP_CREATED_SUCCESS).redirect(next ? next : '/'),
             error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
         );
 });

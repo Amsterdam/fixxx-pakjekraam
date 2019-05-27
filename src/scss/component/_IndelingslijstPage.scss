@@ -4,12 +4,18 @@
 body.page-markt-indelingslijst {
     background-color: $neutral-grey2;
 }
+
 :target {
     display: block;
     position: relative;
-    top: -120px;
+    top: -200px;
     visibility: hidden;
+    & + a {
+        outline: 2px solid $support-focus;
+        background-color: $support-focus;
+    }
 }
+
 .IndelingslijstPage {
     background-color: $primary-white;
     box-shadow: $boxShadowDefault;
@@ -76,9 +82,11 @@ body.page-markt-indelingslijst {
         text-align: center;
     }
 }
+
 @page {
     size: A4;
 }
+
 @media print {
     * {
         page-break-after: avoid;

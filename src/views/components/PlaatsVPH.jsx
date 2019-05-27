@@ -81,9 +81,6 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
         <tr className={'Plaats ' + (first && 'Plaats--first')} data-sollicitatie-nummer={vph && vph.sollicitatieNummer}>
             <td className="Plaats__prop Plaats__prop-properties">
                 <span className={'icon icon-' + (plaatsProps ? plaatsProps[0] : '')} />
-                <a className="Plaats__target" href="#" id={'soll-' + (vph && vph.sollicitatieNummer)}>
-                    target
-                </a>
             </td>
             <td className="Plaats__prop Plaats__prop-plaats-nr">
                 {plaats.locatie}
@@ -91,6 +88,7 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
             </td>
 
             <td className="Plaats__prop Plaats__prop-vph">
+                <span id={'soll-' + (vph && vph.sollicitatieNummer)} />
                 {vph ? (
                     <a
                         href={`/afmelden/${vph.erkenningsNummer}/${markt.id}/${datum ? `?datum=` + datum : ``}${

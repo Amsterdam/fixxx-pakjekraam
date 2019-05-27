@@ -92,6 +92,25 @@ const getIndelingslijstInput = (token, marktId, date) =>
         };
     });
 
+const getSollicitantenlijstInput = (token, marktId, date) =>
+    Promise.all([
+        getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
+            ondernemers.filter(ondernemer => !ondernemer.doorgehaald && ondernemer.status === 'soll'),
+        ),
+        getAanmeldingen(marktId, date),
+        getVoorkeuren(marktId),
+        getMarkt(token, marktId),
+    ]).then(args => {
+        const [ondernemers, aanmeldingen, voorkeuren, markt] = args;
+
+        return {
+            ondernemers,
+            aanmeldingen,
+            voorkeuren,
+            markt,
+        };
+    });
+
 const getMarkten = token =>
     getMakkelijkeMarkten(token)
         // Only show markten for which JSON data with location info exists
@@ -105,4 +124,5 @@ module.exports = {
     getMarktplaatsen,
     getIndelingslijstInput,
     getMarkten,
+    getSollicitantenlijstInput,
 };
