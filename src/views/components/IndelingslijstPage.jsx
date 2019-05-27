@@ -1,3 +1,4 @@
+import { formatDayOfWeek } from '../../util';
 import IndelingslijstGroup from './IndelingslijstGroup';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -8,6 +9,9 @@ const IndelingslijstPage = ({ page, index, data, markt, type, datum }) => {
         <div className="IndelingslijstPage indelingslijst-page">
             <div className="IndelingslijstPage__ratio" data-ratio="210:297">
                 <div className="IndelingslijstPage__wrapper">
+                    <span className="IndelingslijstPage__date">
+                        {formatDayOfWeek(datum)}, {datum}
+                    </span>
                     <h3 className="IndelingslijstPage__heading">
                         {markt.naam}
                         <span className="IndelingslijstPage__index">{index + 1}</span>
