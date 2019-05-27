@@ -5,7 +5,7 @@ const MarktDetailBase = require('./components/MarktDetailBase');
 const MarktDayLink = require('./components/MarktDayLink.jsx');
 const Indelingslijst = require('./components/Indelingslijst');
 const { ondernemersToLocatieKeyValue, obstakelsToLocatieKeyValue } = require('../domain-knowledge.js');
-const { arrayToObject } = require('../util.js');
+const { arrayToObject, formatDate } = require('../util.js');
 
 class IndelingslijstenPage extends React.Component {
     constructor(props) {
@@ -60,13 +60,11 @@ class IndelingslijstenPage extends React.Component {
             voorkeuren,
         };
 
-        console.log(new Date(datum));
-
         return (
             <MarktDetailBase bodyClass="page-markt-indelingslijst">
                 <div className="MarktDetailPage">
                     <div className="MarktDetailPage__header">
-                        <h2>Indelingslijst</h2>
+                        <h2>Indelingslijst {formatDate(datum)}</h2>
                         <PrintButton title="Print indelingslijst" />
                         <p>
                             <MarktDayLink markt={markt} offsetDate={new Date(datum).toISOString()} direction={-1} />

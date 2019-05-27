@@ -1,4 +1,4 @@
-import { addDays, DAYS_IN_WEEK, formatDayOfWeek, formatMonth, nextWeek, tomorrow } from '../util.js';
+import { addDays, DAYS_IN_WEEK, formatDate, nextWeek } from '../util.js';
 const React = require('react');
 const PropTypes = require('prop-types');
 const MarktDetailBase = require('./components/MarktDetailBase');
@@ -21,10 +21,6 @@ class MarktDetailPage extends React.Component {
                 return {
                     relativeDay: relativeDays[i],
                     date: d,
-                    day: new Date(d).getDate(),
-                    month: formatMonth(d),
-                    weekDay: formatDayOfWeek(new Date(d)),
-                    marktDag: marktDagen[new Date(d).getDay()],
                 };
             },
         );
@@ -36,11 +32,11 @@ class MarktDetailPage extends React.Component {
                     <div className="col-1-2">
                         <h2>Indelingslijsten</h2>
                         <ul className="LinkList">
-                            {dates.map(({ date, day, month, weekDay, relativeDay }) => (
+                            {dates.map(({ date, relativeDay }) => (
                                 <li key={date}>
                                     <a className={`Link`} href={`/markt/${markt.id}/${date}/indelingslijst/`}>
                                         <strong>{relativeDay && relativeDay + ', '}</strong>
-                                        {weekDay} {day} {month}
+                                        {formatDate(date)}
                                     </a>
                                 </li>
                             ))}

@@ -23,6 +23,7 @@ const monthName = [
 
 const formatDayOfWeek = date => dayOfWeekName[new Date(date).getDay()];
 const formatMonth = date => monthName[new Date(date).getMonth()];
+const formatDate = date => `${formatDayOfWeek(date)} ${new Date(date).getDate()} ${formatMonth(date)}`;
 
 const addDays = (offsetDate, days) => {
     const date = new Date(offsetDate);
@@ -55,6 +56,7 @@ module.exports = {
     addDays,
     formatDayOfWeek,
     formatMonth,
+    formatDate,
     tomorrow,
     endOfWeek,
     nextWeek,
