@@ -78,13 +78,12 @@ const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
     tags = tags.join(' ');
 
     return (
-        <tr
-            className={'Plaats ' + (first && 'Plaats--first')}
-            data-sollicitatie-nummer={vph && vph.sollicitatieNummer}
-            id={'soll-' + (vph && vph.sollicitatieNummer)}
-        >
+        <tr className={'Plaats ' + (first && 'Plaats--first')} data-sollicitatie-nummer={vph && vph.sollicitatieNummer}>
             <td className="Plaats__prop Plaats__prop-properties">
                 <span className={'icon icon-' + (plaatsProps ? plaatsProps[0] : '')} />
+                <a className="Plaats__target" href="#" id={'soll-' + (vph && vph.sollicitatieNummer)}>
+                    target
+                </a>
             </td>
             <td className="Plaats__prop Plaats__prop-plaats-nr">
                 {plaats.locatie}

@@ -8,10 +8,13 @@ import { getUpcomingMarktDays, parseMarktDag } from '../domain-knowledge.js';
 class MarktDetailPage extends React.Component {
     propTypes = {
         markt: PropTypes.object.isRequired,
+        user: PropTypes.object,
+        type: PropTypes.string,
+        datum: PropTypes.string,
     };
 
     render() {
-        const { markt } = this.props;
+        const { markt, datum, type, user } = this.props;
         const startDate = addDays(today(), -1);
         const endDate = nextWeek();
         const marktDagen = (markt.marktDagen || []).map(parseMarktDag);
@@ -30,9 +33,15 @@ class MarktDetailPage extends React.Component {
         );
 
         return (
-            <MarktDetailBase bodyClass="page-markt-detail" title={markt.naam}>
+            <MarktDetailBase
+                bodyClass="page-markt-detail"
+                title={markt.naam}
+                datum={datum}
+                type={type}
+                user={user}
+                markt={markt}
+            >
                 <div className="row">
-                    {console.log(markt)}
                     <div className="col-1-2">
                         <h2>Indelingslijsten</h2>
                         <ul className="LinkList">

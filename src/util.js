@@ -51,6 +51,12 @@ const arrayToObject = (array, keyField) =>
         return obj;
     }, {});
 
+const paginate = (array, pageSize, pageNumber) => {
+    --pageNumber; // because pages logically start with 1, but technically with 0
+
+    return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
+};
+
 module.exports = {
     addDays,
     formatDayOfWeek,
@@ -60,6 +66,7 @@ module.exports = {
     nextWeek,
     toISODate,
     arrayToObject,
+    paginate,
     DAYS_IN_WEEK,
     MILLISECONDS_IN_SECOND,
     SECONDS_IN_MINUTE,

@@ -6,6 +6,7 @@ const MarktDayLink = require('./components/MarktDayLink.jsx');
 const Indelingslijst = require('./components/Indelingslijst');
 const { ondernemersToLocatieKeyValue, obstakelsToLocatieKeyValue } = require('../domain-knowledge.js');
 const { arrayToObject } = require('../util.js');
+const MarktDetailHeader = require('./components/MarktDetailHeader');
 
 class IndelingslijstenPage extends React.Component {
     constructor(props) {
@@ -32,6 +33,7 @@ class IndelingslijstenPage extends React.Component {
         marktId: PropTypes.string,
         datum: PropTypes.string,
         type: PropTypes.string,
+        user: PropTypes.object,
     };
 
     render() {
@@ -45,7 +47,7 @@ class IndelingslijstenPage extends React.Component {
             voorkeuren,
             markt,
         } = this.props.data;
-        const { datum, type } = this.props;
+        const { datum, type, user } = this.props;
         const pl = arrayToObject(locaties, 'locatie');
         const vphl = ondernemersToLocatieKeyValue(ondernemers);
         const obstakels = obstakelsToLocatieKeyValue(geografie.obstakels);
@@ -63,20 +65,15 @@ class IndelingslijstenPage extends React.Component {
         console.log(new Date(datum));
 
         return (
-            <MarktDetailBase bodyClass="page-markt-indelingslijst">
-                <div className="MarktDetailPage">
-                    <div className="MarktDetailPage__header">
-                        <h2>Indelingslijst</h2>
-                        <PrintButton title="Print indelingslijst" />
-                        <p>
-                            <MarktDayLink markt={markt} offsetDate={new Date(datum).toISOString()} direction={-1} />
-                        </p>
-                        <p>
-                            <MarktDayLink markt={markt} offsetDate={new Date(datum).toISOString()} direction={1} />
-                        </p>
-                    </div>
-                    <Indelingslijst data={obj} markt={markt} datum={datum} type={type} />
-                </div>
+            <MarktDetailBase
+                bodyClass="page-markt-indelingslijst page-print"
+                title="Indelingslijst"
+                markt={markt}
+                type={type}
+                datum={datum}
+                user={user}
+            >
+                <Indelingslijst data={obj} markt={markt} datum={datum} type={type} />
             </MarktDetailBase>
         );
     }

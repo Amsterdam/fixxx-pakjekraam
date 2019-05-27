@@ -30,7 +30,10 @@ const MarktDayLink = ({ markt, offsetDate, direction = 1 }) => {
     };
 
     return (
-        <a href={`/markt/${markt.id}/${targetDate}/indelingslijst/`}>
+        <a
+            className={`MarktDayLink MarktDayLink--${direction > 0 ? `right` : `left`}`}
+            href={`/markt/${markt.id}/${targetDate}/indelingslijst/`}
+        >
             {label[direction]} ({formatDayOfWeek(targetDate)})
         </a>
     );

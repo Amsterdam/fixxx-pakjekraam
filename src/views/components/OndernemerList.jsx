@@ -8,7 +8,9 @@ const OndernemerList = ({ ondernemers, markt }) => {
             <ul className="LinkList">
                 {ondernemers.map(ondernemer => (
                     <li key={ondernemer.koopman.erkenningsnummer} className="LinkList__item">
-                        <a href="/" className="Link">
+                        {console.log(ondernemer)}
+                        <a href={`/aanmelden/${ondernemer.koopman.erkenningsnummer}`} className="Link">
+                            <strong>{ondernemer.sollicitatieNummer}</strong>:&nbsp;
                             {ondernemer.koopman.achternaam}
                         </a>
                     </li>

@@ -1,7 +1,6 @@
 .table-cell--left {
     text-align: left;
 }
-
 .Plaats {
     &__prop {
         padding: 0 5px;
@@ -13,6 +12,14 @@
         font-size: 14px;
         line-height: 20px;
         border-top: none;
+    }
+    &__target {
+        display: block;
+        margin: 0;
+        padding: 0;
+        width: 0;
+        height: 0;
+        visibility: hidden;
     }
     &__prop-plaats-nr {
         width: 5%;

@@ -1,0 +1,22 @@
+.MarktDetailHeader {
+    position: sticky;
+    z-index: 100;
+    top: 0;
+    background-color: $neutral-grey2;
+
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &__title-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-grow: 1;
+    }
+    &__title-sub {
+        display: block;
+        @include p1;
+    }
+}

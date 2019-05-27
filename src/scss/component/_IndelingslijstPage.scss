@@ -4,7 +4,12 @@
 body.page-markt-indelingslijst {
     background-color: $neutral-grey2;
 }
-
+:target {
+    display: block;
+    position: relative;
+    top: -120px;
+    visibility: hidden;
+}
 .IndelingslijstPage {
     background-color: $primary-white;
     box-shadow: $boxShadowDefault;

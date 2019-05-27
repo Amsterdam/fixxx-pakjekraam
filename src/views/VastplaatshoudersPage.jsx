@@ -12,10 +12,11 @@ class VastplaatshoudersPage extends React.Component {
         data: PropTypes.object.isRequired,
         datum: PropTypes.string,
         type: PropTypes.string,
+        user: PropTypes.object,
     };
 
     render() {
-        const { datum, type } = this.props;
+        const { datum, type, user } = this.props;
         const {
             aanmeldingen,
             branches,
@@ -35,6 +36,10 @@ class VastplaatshoudersPage extends React.Component {
             <MarktDetailBase
                 bodyClass="page-markt-vasteplaatshouders page-print"
                 title={`${markt.naam}: Vasteplaatshouders`}
+                markt={markt}
+                datum={datum}
+                type={type}
+                user={user}
             >
                 {paginas.map((pagina, i) => (
                     <PrintPage key={i} index={i} title={markt.naam}>

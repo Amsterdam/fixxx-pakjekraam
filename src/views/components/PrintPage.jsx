@@ -1,3 +1,4 @@
+import PrintPageHeader from './PrintPageHeader';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -6,10 +7,12 @@ const PrintPage = ({ children, index, title }) => {
         <div className="PrintPage">
             <div className="PrintPage__ratio" data-ratio="210:297">
                 <div className="PrintPage__wrapper">
-                    <h3 className="PrintPage__heading">
-                        {title}
-                        <span className="IndelingslijstPage__index">{index + 1}</span>
-                    </h3>
+                    <PrintPageHeader>
+                        <h3 className="PrintPage__heading">
+                            {title}
+                            <span className="IndelingslijstPage__index">{index + 1}</span>
+                        </h3>
+                    </PrintPageHeader>
                     <div className="PrintPage__list-wrapper">{children}</div>
                 </div>
             </div>
