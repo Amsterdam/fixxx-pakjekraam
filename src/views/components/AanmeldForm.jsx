@@ -39,8 +39,7 @@ class AanmeldForm extends React.Component {
                     {markt && ' voor de ' + markt.naam}
                 </h1>
                 <p>
-                    <label htmlFor="erkenningsNummer">Erkenningsnummer:</label>
-                    <input id="erkenningsNummer" name="erkenningsNummer" defaultValue={ondernemer.erkenningsnummer} />
+                    Erkenningsnummer: <strong>{ondernemer.erkenningsnummer}</strong>
                 </p>
                 <section className="Fieldset">
                     {markt ? (

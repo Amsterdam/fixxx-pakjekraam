@@ -57,8 +57,7 @@ class AfmeldForm extends React.Component {
                     {ondernemer.achternaam}
                 </h1>
                 <p>
-                    <label htmlFor="erkenningsNummer">Erkenningsnummer:</label>
-                    <input id="erkenningsNummer" name="erkenningsNummer" defaultValue={ondernemer.erkenningsnummer} />
+                    Erkenningsnummer: <strong>{ondernemer.erkenningsnummer}</strong>
                 </p>
                 {(currentMarktId
                     ? entries.filter(({ markt }) => {
