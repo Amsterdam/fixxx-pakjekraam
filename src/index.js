@@ -125,7 +125,7 @@ app.get('/markt/:marktId/:datum/vasteplaatshouders/', ensureLoggedIn(), (req, re
 app.get('/markt/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) => {
     const datum = req.params.datum;
     const type = 'sollicitanten';
-    getSollicitantenlijstInput(req.user.token, req.params.marktId).then(
+    getSollicitantenlijstInput(req.user.token, req.params.marktId, req.params.datum).then(
         ({ ondernemers, aanmeldingen, voorkeuren, markt }) => {
             res.render('SollicitantenPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type });
         },
