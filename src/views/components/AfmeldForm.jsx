@@ -2,7 +2,7 @@ const React = require('react');
 const Page = require('./Page.jsx');
 const PropTypes = require('prop-types');
 const { formatDayOfWeek, MILLISECONDS_IN_DAY } = require('../../util.js');
-const { getUpcomingMarktDays, parseMarktDag } = require('../../domain-knowledge.js');
+const { getMarktDays, parseMarktDag } = require('../../domain-knowledge.js');
 const today = () => new Date().toISOString().replace(/T.+/, '');
 
 class AfmeldForm extends React.Component {
@@ -24,7 +24,7 @@ class AfmeldForm extends React.Component {
 
         const entries = sollicitaties.map(sollicitatie => {
             const markt = markten.find(m => m.id === sollicitatie.markt.id);
-            const dates = getUpcomingMarktDays(
+            const dates = getMarktDays(
                 this.props.startDate,
                 this.props.endDate,
                 (markt.marktDagen || []).map(parseMarktDag),

@@ -1,5 +1,5 @@
 import { addDays, DAYS_IN_WEEK, formatDayOfWeek } from '../../util.js';
-import { getUpcomingMarktDays, parseMarktDag } from '../../domain-knowledge.js';
+import { getMarktDays, parseMarktDag } from '../../domain-knowledge.js';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -7,7 +7,7 @@ const MarktDayLink = ({ markt, offsetDate, direction = 1 }) => {
     let targetDate, startDate, endDate;
 
     if (direction === 1) {
-        startDate = offsetDate;
+        startDate = addDays(offsetDate, 1);
         endDate = addDays(offsetDate, 2 * DAYS_IN_WEEK);
     } else if (direction === -1) {
         startDate = addDays(offsetDate, -2 * DAYS_IN_WEEK);
@@ -16,7 +16,7 @@ const MarktDayLink = ({ markt, offsetDate, direction = 1 }) => {
         throw new TypeError();
     }
 
-    const dates = getUpcomingMarktDays(startDate, endDate, (markt.marktDagen || []).map(parseMarktDag));
+    const dates = getMarktDays(startDate, endDate, (markt.marktDagen || []).map(parseMarktDag));
 
     if (direction === 1) {
         targetDate = dates[0];
