@@ -46,6 +46,7 @@ class SollicitantenPage extends React.Component {
                 datum={datum}
                 type={type}
                 user={user}
+                showDate={false}
             >
                 {paginas.map((pagina, i) => (
                     <PrintPage key={i} index={i} title={markt.naam}>

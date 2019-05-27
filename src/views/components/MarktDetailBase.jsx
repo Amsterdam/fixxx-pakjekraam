@@ -8,7 +8,7 @@ import MarktDayLink from './MarktDayLink';
 import MarktDetailHeader from './MarktDetailHeader';
 import PrintButton from './PrintButton';
 
-const MarktDetailBase = ({ children, bodyClass, title, markt, type, datum, user }) => {
+const MarktDetailBase = ({ children, bodyClass, title, markt, type, datum, user, showDate }) => {
     const relativeDatum = d => {
         return formatDayOfWeek(d) + ', ' + new Date(d).getDate() + ' ' + formatMonth(d);
     };
@@ -17,19 +17,19 @@ const MarktDetailBase = ({ children, bodyClass, title, markt, type, datum, user 
         <Page bodyClass={bodyClass}>
             <Header user={user} />
             <MarktDetailHeader>
-                {datum && markt && (
+                {showDate && (
                     <MarktDayLink markt={markt} offsetDate={new Date(datum).toISOString()} direction={-1} type={type} />
                 )}
                 <div className="MarktDetailHeader__title-wrapper">
                     {title && (
                         <h1 className="MarktDetailHeader__title">
                             {title}
-                            {datum && <span className="MarktDetailHeader__title-sub">{relativeDatum(datum)}</span>}
+                            {showDate && <span className="MarktDetailHeader__title-sub">{relativeDatum(datum)}</span>}
                         </h1>
                     )}
                     {type && <PrintButton title={`Print ${type}`} />}
                 </div>
-                {datum && markt && (
+                {showDate && (
                     <MarktDayLink markt={markt} offsetDate={new Date(datum).toISOString()} direction={1} type={type} />
                 )}
             </MarktDetailHeader>
@@ -46,6 +46,7 @@ MarktDetailBase.propTypes = {
     title: PropTypes.string,
     datum: PropTypes.string,
     type: PropTypes.string,
+    showDate: PropTypes.bool,
 };
 
 module.exports = MarktDetailBase;

@@ -72,6 +72,7 @@ class IndelingslijstenPage extends React.Component {
                 type={type}
                 datum={datum}
                 user={user}
+                showDate={true}
             >
                 <Indelingslijst data={obj} markt={markt} datum={datum} type={type} />
             </MarktDetailBase>
