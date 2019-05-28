@@ -24,17 +24,12 @@ const MarktDayLink = ({ markt, offsetDate, direction = 1 }) => {
         targetDate = dates[dates.length - 1];
     }
 
-    const label = {
-        '-1': 'Vorige',
-        '1': 'Volgende',
-    };
-
     return (
         <a
             className={`MarktDayLink MarktDayLink--${direction > 0 ? `right` : `left`}`}
             href={`/markt/${markt.id}/${targetDate}/indelingslijst/`}
         >
-            {label[direction]} ({formatDayOfWeek(targetDate)})
+            {formatDayOfWeek(targetDate)}
         </a>
     );
 };

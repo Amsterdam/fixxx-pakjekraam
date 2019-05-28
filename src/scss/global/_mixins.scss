@@ -11,6 +11,9 @@
     color: $fontColor;
     border: 1px solid $borderColor;
     transition: background-color 0.4s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     &:hover {
         color: $fontColorHover;
         background-color: $bgColorHover;
@@ -76,4 +79,20 @@
     font-variant: normal;
     text-transform: none;
     line-height: 1;
+}
+@mixin linkHeader() {
+    @include p1;
+    text-decoration: none;
+    color: $primary-black;
+    &:hover {
+        color: $primary-red;
+        text-decoration: underline;
+    }
+    &:hover:before {
+        color: $primary-black;
+    }
+    &:focus {
+        background-color: $support-focus;
+        outline: 2px solid $support-focus;
+    }
 }

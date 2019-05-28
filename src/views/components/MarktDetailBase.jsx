@@ -23,7 +23,7 @@ const MarktDetailBase = ({ children, bodyClass, title, markt, type, datum, user,
                 <div className="MarktDetailHeader__title-wrapper">
                     {title && (
                         <h1 className="MarktDetailHeader__title">
-                            {title}
+                            {title}: {markt.naam}
                             {showDate && <span className="MarktDetailHeader__title-sub">{relativeDatum(datum)}</span>}
                         </h1>
                     )}

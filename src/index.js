@@ -89,19 +89,22 @@ app.get('/', function(req, res) {
 });
 
 app.get('/markt/', ensureLoggedIn(), function(req, res) {
-    getMarkten(req.user.token).then(markten => res.render('MarktenPage', { markten }));
+    const user = req.user.token;
+    getMarkten(req.user.token).then(markten => res.render('MarktenPage', { markten, user }));
 });
 
 app.get('/markt/:marktId/', ensureLoggedIn(), function(req, res) {
-    getMarkt(req.user.token, req.params.marktId).then(markt => res.render('MarktDetailPage', { markt }));
+    const user = req.user.token;
+    getMarkt(req.user.token, req.params.marktId).then(markt => res.render('MarktDetailPage', { markt, user }));
 });
 
 app.get('/markt/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) => {
+    const user = req.user.token;
     const datum = req.params.datum;
     const type = 'indelingslijst';
     getIndelingslijstInput(req.user.token, req.params.marktId, datum).then(
         data => {
-            res.render('IndelingslijstPage', { data, datum, type });
+            res.render('IndelingslijstPage', { data, datum, type, user });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
@@ -110,11 +113,12 @@ app.get('/markt/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) =
 });
 
 app.get('/markt/:marktId/:datum/vasteplaatshouders/', ensureLoggedIn(), (req, res) => {
+    const user = req.user.token;
     const datum = req.params.datum;
     const type = 'vasteplaatshouders';
     getIndelingslijstInput(req.user.token, req.params.marktId, datum).then(
         data => {
-            res.render('VastplaatshoudersPage', { data, datum, type });
+            res.render('VastplaatshoudersPage', { data, datum, type, user });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
@@ -123,11 +127,12 @@ app.get('/markt/:marktId/:datum/vasteplaatshouders/', ensureLoggedIn(), (req, re
 });
 
 app.get('/markt/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) => {
+    const user = req.user.token;
     const datum = req.params.datum;
     const type = 'sollicitanten';
     getSollicitantenlijstInput(req.user.token, req.params.marktId, req.params.datum).then(
         ({ ondernemers, aanmeldingen, voorkeuren, markt }) => {
-            res.render('SollicitantenPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type });
+            res.render('SollicitantenPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type, user });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);

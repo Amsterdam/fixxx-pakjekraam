@@ -1,16 +1,17 @@
 $headerHeight: 112px;
+$headerDesktopHeight: 152px;
 $headerHeightTop: 68px;
+$headerDesktopHeightTop: 108px;
 $headerHeight__540: 162px;
 $headerHeightTop__540: 108px;
 
 .Header {
-    height: $headerHeight;
+    //height: $headerHeight;
     display: flex;
     flex-direction: column;
     background-color: $neutral-grey1;
     &__top {
         background-color: $primary-white;
-        min-height: $headerHeightTop;
     }
     &__bottom {
         flex-grow: 1;
@@ -23,19 +24,22 @@ $headerHeightTop__540: 108px;
         min-height: $headerHeight - $headerHeightTop;
     }
     &__logo-link {
-        display: flex;
         width: 100px;
         margin-right: 30px;
     }
     &__logo {
         width: 100px;
+        display: block;
     }
     &__top-container {
         display: flex;
+        padding-top: 10px;
+        min-height: ($headerHeightTop - 10);
     }
     &__heading {
-        @include h1;
-        margin: 9px 0 0 0;
+        @include h4;
+        margin: -2px 0 0 0;
+        flex-grow: 1;
     }
     &__nav-item {
         @include sitenavitem-default;
@@ -47,13 +51,15 @@ $headerHeightTop__540: 108px;
         }
     }
     @media screen and (min-width: $screenMedium) {
-        &__heading {
-            //margin: 0 $containerMarginDesktop;
+        &__top-container {
+            min-height: ($headerDesktopHeightTop - 10);
         }
-    }
-    @media screen and (min-width: $screenLarge) {
-        &__content {
-            //margin: 0 $containerMarginDesktopPlus;
+        &__heading {
+            @include h1;
+            margin-top: -7px;
+        }
+        &__bottom-container {
+            min-height: $headerDesktopHeight - $headerDesktopHeightTop;
         }
     }
 }

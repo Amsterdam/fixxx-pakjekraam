@@ -3,7 +3,6 @@
     z-index: 100;
     top: 0;
     background-color: $neutral-grey2;
-
     &__wrapper {
         display: flex;
         align-items: center;
@@ -11,6 +10,7 @@
     }
     &__title-wrapper {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
         flex-grow: 1;
@@ -18,5 +18,8 @@
     &__title-sub {
         display: block;
         @include p1;
+    }
+    &__title {
+        @include h2;
     }
 }

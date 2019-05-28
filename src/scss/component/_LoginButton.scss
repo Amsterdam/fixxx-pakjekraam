@@ -1,0 +1,15 @@
+.LoginButton {
+    @include linkHeader;
+    line-height: 20px;
+    position: relative;
+    padding-left: 25px;
+    &:before {
+        @include icon($icon-Login);
+        display: inline-block;
+        margin-right: 5px;
+        font-size: 20px;
+        position: absolute;
+        left: 0;
+        top: -1px;
+    }
+}

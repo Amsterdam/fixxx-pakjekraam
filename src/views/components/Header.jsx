@@ -1,6 +1,8 @@
+import LoginButton from './LoginButton';
+import PropTypes from 'prop-types';
 import React from 'react';
 
-const Header = () => {
+const Header = ({ user }) => {
     return (
         <header className="Header">
             <div className="Header__top">
@@ -8,9 +10,16 @@ const Header = () => {
                     <div className="container__content">
                         <div className="Header__top-container">
                             <a className="Header__logo-link" href="/">
-                                <img className="Header__logo" src="/images/logo.svg" />
+                                <picture className="Header__logo">
+                                    <source srcSet="/images/logo-desktop.svg" media="(min-width: 540px)" />
+                                    <source srcSet="/images/logo-mobile.svg" media="(min-width: 0)" />
+                                    <img srcSet="/images/logo-desktop.svg" alt="…" />
+                                </picture>
                             </a>
                             <h1 className="Header__heading">Pak je kraam</h1>
+                            <div>
+                                <LoginButton user={user} />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -28,6 +37,10 @@ const Header = () => {
             </div>
         </header>
     );
+};
+
+Header.propTypes = {
+    user: PropTypes.object,
 };
 
 module.exports = Header;

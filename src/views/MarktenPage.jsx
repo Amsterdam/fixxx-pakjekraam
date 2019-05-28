@@ -15,7 +15,7 @@ class MarktenPage extends React.Component {
     render() {
         return (
             <Page>
-                <Header />
+                <Header user={this.props.user} />
                 <Content>
                     <h1 className="h1">Markten</h1>
                     <MarktList markten={this.props.markten} />
