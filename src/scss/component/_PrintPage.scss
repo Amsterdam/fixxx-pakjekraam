@@ -107,13 +107,14 @@ body.page-print {
         }
         .PrintPage {
             display: block;
-            page-break-after: always;
+            page-break-after: auto;
             min-width: 0 !important;
             background-color: #fff;
             width: auto !important; /* 100% Might be breaking your current code. */
             height: auto !important;
             box-shadow: none;
-            padding: 10mm;
+            padding: 6mm;
+            margin: 0;
             &__ratio {
                 height: auto;
                 position: static;
@@ -128,6 +129,7 @@ body.page-print {
             }
             &__heading {
                 padding: 0;
+                margin-bottom: 10px;
             }
             &__list-wrapper {
                 display: block;

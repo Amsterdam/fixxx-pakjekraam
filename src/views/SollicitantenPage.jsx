@@ -17,9 +17,9 @@ class SollicitantenPage extends React.Component {
     };
 
     render() {
-        const { markt, ondernemers, aanmeldingen, datum, type, user } = this.props;
-        const itemsOnPage = 25;
-        console.log(aanmeldingen);
+        const { markt, ondernemers, aanmeldingen, voorkeuren, datum, type, user } = this.props;
+        const itemsOnPage = 50;
+
         const paginas = ondernemers
             .map((ondernemer, i) => {
                 if (i % itemsOnPage === 0) {
@@ -37,6 +37,17 @@ class SollicitantenPage extends React.Component {
             .filter(ondernemer => {
                 return !!ondernemer;
             });
+        const paginasLists = paginas
+            .map((p, i) => {
+                return i % 2 === 0
+                    ? paginas.filter((pp, j) => {
+                          return j >= i && j < i + 2;
+                      })
+                    : null;
+            })
+            .filter(ondernemer => {
+                return !!ondernemer;
+            });
 
         return (
             <MarktDetailBase
@@ -48,9 +59,18 @@ class SollicitantenPage extends React.Component {
                 user={user}
                 showDate={false}
             >
-                {paginas.map((pagina, i) => (
-                    <PrintPage key={i} index={i} title={markt.naam}>
-                        <OndernemerList ondernemers={pagina} markt={markt} type={type} datum={datum} />
+                {paginasLists.map((pagina, i) => (
+                    <PrintPage key={i} index={i} title={`Sollicitanten: ${markt.naam}`}>
+                        {pagina.map((list, j) => (
+                            <OndernemerList
+                                key={j}
+                                ondernemers={list}
+                                markt={markt}
+                                type={type}
+                                datum={datum}
+                                aanmeldingen={aanmeldingen}
+                            />
+                        ))}
                     </PrintPage>
                 ))}
             </MarktDetailBase>

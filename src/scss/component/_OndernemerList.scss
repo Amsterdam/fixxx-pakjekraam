@@ -1,0 +1,42 @@
+.OndernemerList {
+    display: inline-block;
+    vertical-align: top;
+    width: 40%;
+    margin-right: 10%;
+    @include p1;
+
+    td,
+    th {
+        padding: 0 5px;
+        font-size: 14px;
+        line-height: 4mm;
+        //height: 5mm;
+        border: none;
+        border-bottom: 0.1mm solid $neutral-grey2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        &:first-child {
+            text-align: right;
+            padding-right: 5px;
+        }
+    }
+    th {
+        padding-bottom: 5px;
+        @include p1;
+        &:nth-child(1) {
+            width: 10px;
+        }
+    }
+    a {
+        text-decoration: none;
+    }
+    &__table {
+        width: 100%;
+    }
+    &__ondernemer--attending {
+        &:before {
+            @include icon($icon-Check-Mark);
+        }
+    }
+}
