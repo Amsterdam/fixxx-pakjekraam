@@ -2,1251 +2,1251 @@
   {
     "locatie": 1,
     "branche": ["exp"],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 2,
     "branche": ["bak"],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 3,
     "branche": ["exp"],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 4,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 5,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 6,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 7,
     "branche": [],
-    "properties": "boom,dubbel"
+    "properties": ["boom,dubbel"]
   },
   {
     "locatie": 8,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 9,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 10,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 11,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 12,
     "branche": ["exp"],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 13,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 14,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 15,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 16,
     "branche": [],
-    "properties": "boom,dubbel"
+    "properties": ["boom,dubbel"]
   },
   {
     "locatie": 17,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 18,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 19,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 20,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 21,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 22,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 23,
     "branche": ["bak"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 24,
     "branche": ["blm"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 25,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 26,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 27,
     "branche": ["stn"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 28,
     "branche": ["agf"],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 29,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 30,
     "branche": [],
-    "properties": "electra,dubbel"
+    "properties": ["electra,dubbel"]
   },
   {
     "locatie": 31,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 32,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 33,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 34,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 35,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 36,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 37,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 38,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 39,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 40,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 41,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 42,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 43,
     "branche": [],
-    "properties": "electra,dubbel"
+    "properties": ["electra,dubbel"]
   },
   {
     "locatie": 44,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 45,
     "branche": ["exp"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 46,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 47,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 48,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 49,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 50,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 51,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 52,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 53,
     "branche": ["bak"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 54,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 55,
     "branche": [],
-    "properties": "bankje"
+    "properties": ["bankje"]
   },
   {
     "locatie": 56,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 57,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 58,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 59,
     "branche": [],
-    "properties": "bankje"
+    "properties": ["bankje"]
   },
   {
     "locatie": 60,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 61,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 62,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 63,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 64,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 65,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 66,
     "branche": [],
-    "properties": "boom,dubbel"
+    "properties": ["boom,dubbel"]
   },
   {
     "locatie": 67,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 68,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 69,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 70,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 71,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 72,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 73,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 74,
     "branche": ["exp"],
-    "properties": "dubbel,bankje,boom"
+    "properties": ["dubbel,bankje,boom"]
   },
   {
     "locatie": 75,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 76,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 77,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 78,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 79,
     "branche": ["kas"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 80,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 81,
     "branche": ["baks7"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 82,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 83,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 84,
     "branche": [],
-    "properties": "electra,dubbel"
+    "properties": ["electra,dubbel"]
   },
   {
     "locatie": 85,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 86,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 87,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 88,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 89,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 90,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 91,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 92,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 93,
     "branche": ["stn"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 94,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 95,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 96,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 97,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 98,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 99,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 100,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 101,
     "branche": [],
-    "properties": "electra,dubbel"
+    "properties": ["electra,dubbel"]
   },
   {
     "locatie": 102,
     "branche": ["agf"],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 103,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 104,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 105,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 106,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 107,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 108,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 109,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 110,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 111,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 112,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 113,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 114,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 115,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 116,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 117,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 118,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 119,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 120,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 121,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 122,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 123,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 124,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 125,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 126,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 127,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 128,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 129,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 130,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 131,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 132,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 133,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 134,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 135,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 136,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 137,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 138,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 139,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 140,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 141,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 142,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 143,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 144,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 145,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 146,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 147,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 148,
     "branche": ["blm"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 149,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 150,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 151,
     "branche": ["exp"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 152,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 153,
     "branche": ["exp"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 154,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 155,
     "branche": ["exp"],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 156,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 157,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 158,
     "branche": [],
-    "properties": "electra,dubbel"
+    "properties": ["electra,dubbel"]
   },
   {
     "locatie": 159,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 160,
     "branche": ["zui"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 161,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 162,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 163,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 164,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 165,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 166,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 167,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 168,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 169,
     "branche": [],
-    "properties": "electra,dubbel"
+    "properties": ["electra,dubbel"]
   },
   {
     "locatie": 170,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 171,
     "branche": ["bak"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 172,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 173,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 174,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 175,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 176,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 177,
     "branche": ["brc"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 178,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 179,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 180,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 181,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 182,
     "branche": ["vis"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 183,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 184,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 185,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 186,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 187,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 188,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 189,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 190,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 191,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 192,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 193,
     "branche": ["olv"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 194,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 195,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 196,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 197,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 198,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 199,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 200,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 201,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 202,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 203,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 204,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 205,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 206,
     "branche": [],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 207,
     "branche": ["bak"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 208,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 209,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 210,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 211,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 212,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 213,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 214,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 215,
     "branche": ["zui"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 216,
     "branche": [],
-    "properties": "electra,dubbel"
+    "properties": ["electra,dubbel"]
   },
   {
     "locatie": 217,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 218,
     "branche": ["stn"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 219,
     "branche": ["baks6"],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 220,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 221,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 222,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 223,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 224,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 225,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 226,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 227,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 228,
     "branche": [],
-    "properties": "boom"
+    "properties": ["boom"]
   },
   {
     "locatie": 229,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 230,
     "branche": [],
-    "properties": "electra,dubbel"
+    "properties": ["electra,dubbel"]
   },
   {
     "locatie": 231,
     "branche": [],
-    "properties": "electra,dubbel"
+    "properties": ["electra,dubbel"]
   },
   {
     "locatie": 232,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 233,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 234,
     "branche": [],
-    "properties": "dubbel,boom"
+    "properties": ["dubbel,boom"]
   },
   {
     "locatie": 235,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 236,
     "branche": ["exp"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 237,
     "branche": ["baks5"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 238,
     "branche": ["exp"],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 239,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 240,
     "branche": [],
-    "properties": "bankje"
+    "properties": ["bankje"]
   },
   {
     "locatie": 241,
     "branche": [],
-    "properties": "electra,dubbel"
+    "properties": ["electra,dubbel"]
   },
   {
     "locatie": 242,
     "branche": [],
-    "properties": "boom,dubbel"
+    "properties": ["boom,dubbel"]
   },
   {
     "locatie": 243,
     "branche": [],
-    "properties": "bankje"
+    "properties": ["bankje"]
   },
   {
     "locatie": 244,
     "branche": ["exp"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 245,
     "branche": [],
-    "properties": "dubbel"
+    "properties": ["dubbel"]
   },
   {
     "locatie": 246,
     "branche": [],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 247,
     "branche": ["exp"],
-    "properties": "electra"
+    "properties": ["electra"]
   },
   {
     "locatie": 248,
     "branche": [],
-    "properties": "electra,dubbel"
+    "properties": ["electra,dubbel"]
   },
   {
     "locatie": 249,
     "branche": ["exp"],
-    "properties": ""
+    "properties": []
   },
   {
     "locatie": 250,
     "branche": [],
-    "properties": ""
+    "properties": []
   }
 ]
