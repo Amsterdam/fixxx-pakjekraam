@@ -3,7 +3,11 @@ import React from 'react';
 
 const LoginButton = ({ user }) => {
     return (
-        <a className="LoginButton" href={`${!user ? '/logout/' : '/login/'}`} role="button">
+        <a
+            className={`LoginButton LoginButton--${user ? 'logout' : 'login'}`}
+            href={`${!user ? '/logout/' : '/login/'}`}
+            role="button"
+        >
             {user ? 'Uitloggen' : 'Inloggen'}
         </a>
     );
