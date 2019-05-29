@@ -3,13 +3,21 @@
     "title": "Markt 1",
     "indelingslijstGroup": [
       {
+        "type": "street",
+        "title": "Noordemarkt"
+      },
+      {
         "class": "linkerzijde",
         "title": "",
+        "landmarkTop": "Noordermarkt",
+        "landmarkBottom": "1e Boomdwarsstraat",
         "plaatsList": ["2", "4", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "32", "34"]
       },
       {
         "class": "rechterzijde",
         "title": "",
+        "landmarkTop": "Noordermarkt",
+        "landmarkBottom": "Violettenstraat",
         "plaatsList": ["1", "3", "5", "7", "9", "11", "13", "15", "17", "19", "21", "23", "25", "27", "29", "31", "33"]
       }
     ]
@@ -19,6 +27,8 @@
     "indelingslijstGroup": [
       {
         "class": "linkerzijde",
+        "landmarkTop": "1e Boomdwarsstraat",
+        "landmarkBottom": "2e Boomdwarsstraat",
         "plaatsList": [
           "102",
           "104",
@@ -51,6 +61,8 @@
       },
       {
         "class": "rechterzijde",
+        "landmarkTop": "Violettenstraat",
+        "landmarkBottom": "1e Anjeliersdwarsstraat",
         "plaatsList": [
           "101",
           "103",
@@ -88,6 +100,8 @@
     "indelingslijstGroup": [
       {
         "class": "linkerzijde",
+        "landmarkTop": "2e Boomdwarsstraat",
+        "landmarkBottom": "Tichelstraat",
         "plaatsList": [
           "202",
           "204",
@@ -126,6 +140,8 @@
       },
       {
         "class": "rechterzijde",
+        "landmarkTop": "1e Anjeliersdwarsstraat",
+        "landmarkBottom": "2e Anjeliersdwarsstraat",
         "plaatsList": [
           "201",
           "203",
@@ -169,6 +185,8 @@
     "indelingslijstGroup": [
       {
         "class": "linkerzijde",
+        "landmarkTop": "Tichelstraat",
+        "landmarkBottom": "Lijnbaansgracht",
         "plaatsList": [
           "302",
           "304",
@@ -206,6 +224,8 @@
       },
       {
         "class": "rechterzijde",
+        "landmarkTop": "2e Anjeliersdwarsstraat",
+        "landmarkBottom": "Lijnbaansgracht",
         "plaatsList": [
           "301",
           "303",

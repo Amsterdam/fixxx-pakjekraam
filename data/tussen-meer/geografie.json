@@ -1,9 +1,14 @@
 {
   "obstakels": [
     {
-      "kraamA": 13,
-      "kraamB": 14,
-      "obstakel": ["doorloop"]
+      "kraamA": 65,
+      "kraamB": 64,
+      "obstakel": ["loopje"]
+    },
+    {
+      "kraamA": 5,
+      "kraamB": 6,
+      "obstakel": ["loopje"]
     },
     {
       "kraamA": 19,
@@ -11,14 +16,9 @@
       "obstakel": ["loopje"]
     },
     {
-      "kraamA": 50,
-      "kraamB": 51,
+      "kraamA": 51,
+      "kraamB": 50,
       "obstakel": ["loopje"]
-    },
-    {
-      "kraamA": 56,
-      "kraamB": 57,
-      "obstakel": ["doorloop"]
     }
   ]
 }
