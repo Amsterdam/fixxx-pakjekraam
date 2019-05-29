@@ -25,4 +25,35 @@
     &.markt-19__straat-1a {
         margin-top: 61px;
     }
+    &__title {
+        display: inline-block;
+        margin: 0;
+    }
+    &--block-right {
+        margin-left: 52%;
+    }
+    &__landmark {
+        @include p1;
+        @include fontBold;
+        font-size: 12px;
+        text-align: center;
+        margin: 0;
+        display: inline-block;
+        width: 100%;
+        position: relative;
+        height: 20px;
+        line-height: 20px;
+        z-index: 1;
+        border: 1px solid $neutral-grey5;
+        &:after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            right: 0;
+            border-top: solid 20px $neutral-grey2;
+        }
+        //border: 1px solid $neutral-grey4;
+    }
 }

@@ -1,18 +1,16 @@
 .Street {
+    display: inline-block;
     width: 100%;
     padding: 5px 0;
-
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
-    background-color: #ddd;
     position: relative;
     @include h4;
     text-align: center;
+    margin: 0;
 
     &:before {
         content: "";
         left: 0;
-        border-bottom: 1px dashed #fff;
+        border-bottom: 1px dashed $primary-black;
         width: 100%;
         height: 1px;
         position: absolute;
@@ -20,7 +18,7 @@
     }
     &__title {
         position: relative;
-        background-color: #ddd;
+        background-color: $primary-white;
         padding: 0 10px;
         z-index: 1;
     }

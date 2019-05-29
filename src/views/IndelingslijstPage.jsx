@@ -1,32 +1,13 @@
 const React = require('react');
 const PropTypes = require('prop-types');
-const PrintButton = require('./components/PrintButton');
 const MarktDetailBase = require('./components/MarktDetailBase');
-const MarktDayLink = require('./components/MarktDayLink.jsx');
-const Indelingslijst = require('./components/Indelingslijst');
 const { ondernemersToLocatieKeyValue, obstakelsToLocatieKeyValue } = require('../domain-knowledge.js');
 const { arrayToObject } = require('../util.js');
-const MarktDetailHeader = require('./components/MarktDetailHeader');
+const IndelingslijstGroup = require('./components/IndelingslijstGroup');
+const PrintPage = require('./components/PrintPage');
+const Street = require('./components/Street');
 
 class IndelingslijstenPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: {
-                aanmeldingen: [],
-                branches: [],
-                locaties: [],
-                geografie: {
-                    obstakels: [],
-                },
-                ondernemers: [],
-                paginas: [],
-                voorkeuren: [],
-                markt: {},
-            },
-        };
-    }
-
     propTypes = {
         data: PropTypes.array,
         marktSlug: PropTypes.string,
@@ -48,21 +29,9 @@ class IndelingslijstenPage extends React.Component {
             markt,
         } = this.props.data;
         const { datum, type, user } = this.props;
-        const pl = arrayToObject(locaties, 'locatie');
+        const plaatsList = arrayToObject(locaties, 'locatie');
         const vphl = ondernemersToLocatieKeyValue(ondernemers);
         const obstakels = obstakelsToLocatieKeyValue(geografie.obstakels);
-
-        const obj = {
-            aanmeldingen,
-            branches,
-            locaties: pl,
-            obstakels,
-            ondernemers: vphl,
-            paginas,
-            voorkeuren,
-        };
-
-        console.log(new Date(datum));
 
         return (
             <MarktDetailBase
@@ -74,7 +43,31 @@ class IndelingslijstenPage extends React.Component {
                 user={user}
                 showDate={true}
             >
-                <Indelingslijst data={obj} markt={markt} datum={datum} type={type} />
+                {paginas.map((page, j) => {
+                    return (
+                        <PrintPage key={j} index={j} title={`Indelingslijst ${markt.naam}`} label="Markt ">
+                            {page.indelingslijstGroup.map((pageItem, i) => {
+                                if (pageItem.type && pageItem.type === 'street') {
+                                    return <Street title={pageItem.title} />;
+                                } else {
+                                    return (
+                                        <IndelingslijstGroup
+                                            key={i}
+                                            page={pageItem}
+                                            plaatsList={plaatsList}
+                                            vphl={vphl}
+                                            obstakelList={obstakels}
+                                            aanmeldingen={aanmeldingen}
+                                            markt={markt}
+                                            datum={datum}
+                                            type={type}
+                                        />
+                                    );
+                                }
+                            })}
+                        </PrintPage>
+                    );
+                })}
             </MarktDetailBase>
         );
     }

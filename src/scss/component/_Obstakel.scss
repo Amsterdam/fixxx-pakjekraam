@@ -34,22 +34,13 @@
     }
     &__street {
         padding: 0 5px;
-        &:before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 20px;
-            background-color: #ddd;
-            top: 3px;
-            left: 0;
-        }
         &:after {
             content: "";
             position: absolute;
             width: 100%;
             height: 1px;
-            border-top: 1px dashed #fff;
-            top: 13px;
+            border-top: 3px double $primary-black;
+            top: 12px;
             left: 0;
         }
     }

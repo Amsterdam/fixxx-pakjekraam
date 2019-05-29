@@ -9,17 +9,23 @@ const IndelingslijstGroup = ({ page, plaatsList, vphl, obstakelList, markt, aanm
     const renderPlaats = props => {
         return !type ? <Plaats {...props} /> : <PlaatsVPH {...props} />;
     };
+    const classes = page.class.split(' ').map(cl => {
+        return 'IndelingslijstGroup--markt-' + markt.id + ' IndelingslijstGroup--' + cl.trim();
+    });
 
     return (
-        <div className={'IndelingslijstGroup indelingslijst__list markt-' + markt.id + '__' + page.class}>
-            {page.title && <h4>{page.title}</h4>}
+        <div className={'IndelingslijstGroup ' + classes}>
+            <h4 className="IndelingslijstGroup__title">{page.title}</h4>
+            {page.landmarkTop && (
+                <p className="IndelingslijstGroup__landmark IndelingslijstGroup__landmark-top">{page.landmarkTop}</p>
+            )}
 
             <table className="IndelingslijstGroup__table" cellPadding="0" cellSpacing="0">
                 <thead className="IndelingslijstGroup__wrapper">
                     <tr className="IndelingslijstGroup__header-row">
                         <th className="IndelingslijstGroup__header IndelingslijstGroup__header-properties" />
-                        <th className="IndelingslijstGroup__header IndelingslijstGroup__header-plaats">Nr.</th>
-                        <th className="IndelingslijstGroup__header IndelingslijstGroup__vph">VPH</th>
+                        <th className="IndelingslijstGroup__header IndelingslijstGroup__header-plaats">nr.</th>
+                        <th className="IndelingslijstGroup__header IndelingslijstGroup__vph">vph</th>
                         <th className="IndelingslijstGroup__header IndelingslijstGroup__empty-field" />
                     </tr>
                 </thead>
@@ -66,6 +72,11 @@ const IndelingslijstGroup = ({ page, plaatsList, vphl, obstakelList, markt, aanm
                     })}
                 </tbody>
             </table>
+            {page.landmarkBottom && (
+                <p className="IndelingslijstGroup__landmark IndelingslijstGroup__landmark-bottom">
+                    {page.landmarkBottom}
+                </p>
+            )}
         </div>
     );
 };

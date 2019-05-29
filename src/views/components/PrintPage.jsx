@@ -2,7 +2,7 @@ import PrintPageHeader from './PrintPageHeader';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const PrintPage = ({ children, index, title }) => {
+const PrintPage = ({ children, index, title, label }) => {
     return (
         <div className="PrintPage">
             <div className="PrintPage__ratio" data-ratio="210:297">
@@ -10,7 +10,11 @@ const PrintPage = ({ children, index, title }) => {
                     <PrintPageHeader>
                         <h3 className="PrintPage__heading">
                             {title}
-                            <span className="IndelingslijstPage__index">{index + 1}</span>
+                            {label ? (
+                                <span className="PrintPage__label">Markt {index + 1}</span>
+                            ) : (
+                                <span className="PrintPage__index">{index + 1}</span>
+                            )}
                         </h3>
                     </PrintPageHeader>
                     <div className="PrintPage__list-wrapper">{children}</div>
@@ -24,6 +28,7 @@ PrintPage.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     index: PropTypes.number,
     title: PropTypes.string,
+    label: PropTypes.string,
 };
 
 module.exports = PrintPage;
