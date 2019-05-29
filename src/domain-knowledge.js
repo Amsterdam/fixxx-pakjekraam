@@ -69,8 +69,8 @@ const ondernemersToLocatieKeyValue = array =>
 
 const obstakelsToLocatieKeyValue = array =>
     array.reduce((total, obstakel) => {
-        total[String(obstakel.kraamA)] = total[String(obstakel.kraamA)] || [];
-        total[String(obstakel.kraamA)].push(obstakel.obstakel);
+        total[String(obstakel.kraamA)] = total[String(obstakel.kraamA)] || obstakel.obstakel;
+        total[String(obstakel.kraamA)].concat(obstakel.obstakel);
 
         return total;
     }, {});

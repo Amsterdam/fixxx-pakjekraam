@@ -5,6 +5,7 @@ import React from 'react';
 import Street from './Street';
 
 const IndelingslijstPage = ({ page, index, data, markt, type, datum }) => {
+    // console.log(data.obstakels);
     return (
         <div className="IndelingslijstPage indelingslijst-page">
             <div className="IndelingslijstPage__ratio" data-ratio="210:297">

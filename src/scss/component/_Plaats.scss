@@ -1,6 +1,7 @@
 .table-cell--left {
     text-align: left;
 }
+
 .Plaats {
     &__prop {
         padding: 0 5px;
@@ -9,8 +10,8 @@
         border-bottom: 1px solid #000;
         border-right: 1px solid #000;
         @include p1;
-        font-size: 14px;
-        line-height: 18px;
+        font-size: 12px;
+        line-height: 16px;
         border-top: none;
     }
     &__target {
@@ -133,10 +134,14 @@
             background-position: center;
             background-repeat: no-repeat;
             background-size: contain;
+            line-height: 0;
         }
-        @each $icon in $iconListPlaats {
+        @each $icon, $var in $iconListPlaats {
             .icon-#{$icon} {
-                @extend .icon-black-#{$icon};
+                &:before {
+                    @include icon($var);
+                    font-size: 14px;
+                }
             }
         }
     }

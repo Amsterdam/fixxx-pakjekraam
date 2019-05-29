@@ -24,8 +24,6 @@ $colorListBranch: (
     baks6: #000077
 );
 
-$iconListPlaats: (loopje, loopjediedichtmag, lantaarnpaal, bankje, boom, electra);
-
 $ff-regular: "Avenir Next LT W01 Regular", verdana, sans-serif;
 $ff-bold: "Avenir Next LT W01 Demi", verdana, sans-serif;
 
@@ -67,6 +65,11 @@ $primary-darkblue-darker: #00387a;
 $icomoon-font-family: "icomoon" !default;
 $icomoon-font-path: "/fonts" !default;
 
+$icon-lantaarnpaal: "\e902";
+$icon-bankje: "\e903";
+$icon-boom: "\e904";
+$icon-electra: "\e905";
+$icon-loopjediedichtmag: "\e906";
 $icon-Check-Mark: "\e900";
 $icon-Error: "\e901";
 $icon-Quote: "\e966";
@@ -97,3 +100,11 @@ $icon-Document: "\e985";
 $icon-Print: "\e986";
 $icon-Search: "\e987";
 $icon-Trash-Bin: "\e988";
+
+$iconListPlaats: (
+    loopjediedichtmag: $icon-loopjediedichtmag,
+    lantaarnpaal: $icon-lantaarnpaal,
+    bankje: $icon-bankje,
+    boom: $icon-boom,
+    electra: $icon-electra
+);

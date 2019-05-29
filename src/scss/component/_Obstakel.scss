@@ -18,13 +18,20 @@
         background-position: center;
         font-size: 0;
         border: 1px solid #000;
-        @each $icon in $iconListPlaats {
-            &.icon-#{$icon} {
-                @extend .icon-black-#{$icon};
+
+        @each $icon, $var in $iconListPlaats {
+            &.icon-#{$icon}:before {
+                @include icon($var);
+                color: $primary-black;
+                font-size: 14px;
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+                display: inline-block;
+                text-align: center;
             }
         }
     }
-
     &__street {
         padding: 0 5px;
         &:before {

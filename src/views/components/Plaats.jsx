@@ -57,7 +57,7 @@ const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
         'kraam-8-meter': '#ff7700',
     };
 
-    let plaatsProps = plaats.properties ? plaats.properties.split(',') : [],
+    let plaatsProps = plaats.properties || [],
         tags = plaats.tags || [];
     const branches = plaats.branche || [];
 

@@ -125,7 +125,8 @@ body.page-markt-indelingslijst {
             width: auto !important; /* 100% Might be breaking your current code. */
             height: auto !important;
             box-shadow: none;
-            padding: 10mm;
+            padding: 6mm;
+            margin: 0;
             &__ratio {
                 height: auto;
                 position: static;
@@ -148,6 +149,30 @@ body.page-markt-indelingslijst {
         .Street,
         .IndelingslijstGroup {
             display: inline-block;
+        }
+        .Street {
+            background: none;
+            border: none;
+            &__title {
+                background-color: $primary-white;
+            }
+        }
+        .Street:before {
+            border-color: $primary-black;
+        }
+        .Obstakel {
+            &__street {
+                background-color: $primary-white;
+                &:before {
+                    display: none;
+                }
+                &:after {
+                    border-color: $primary-black;
+                }
+            }
+            &__text {
+                background-color: $primary-white;
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const ObstakelList = ({ obstakelList }) => {
+    // console.log(obstakelList);
     return (
         <tr className="ObstakelList">
             <td colSpan="6">
