@@ -169,6 +169,13 @@ const getQueryErrors = queryParams => {
     }));
 };
 
+app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
+    const user = req.user.token;
+    getMarktondernemer(req.user.token, req.param.erkenningsNummer).then(ondernemer =>
+        res.render('OndernemerDashboard', { ondernemer }),
+    );
+});
+
 app.get('/login', function(req, res) {
     const messages = getQueryErrors(req.query);
 
