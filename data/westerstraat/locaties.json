@@ -3,8 +3,7 @@
     "locatie": "1"
   },
   {
-    "locatie": "2",
-    "branche": ["bak"]
+    "locatie": "2"
   },
   {
     "locatie": "3",
@@ -12,7 +11,6 @@
   },
   {
     "locatie": "4",
-    "branche": ["bak"],
     "properties": ["lantaarnpaal"]
   },
   {
@@ -318,7 +316,6 @@
   },
   {
     "locatie": "102",
-    "branche": ["bak"],
     "properties": ["lantaarnpaal"]
   },
   {
@@ -326,7 +323,6 @@
   },
   {
     "locatie": "104",
-    "branche": ["bak"],
     "properties": ["boom"]
   },
   {
@@ -636,7 +632,6 @@
   },
   {
     "locatie": "201",
-    "branche": ["bak"],
     "properties": ["lantaarnpaal"]
   },
   {
@@ -644,8 +639,7 @@
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "203",
-    "branche": ["bak"]
+    "locatie": "203"
   },
   {
     "locatie": "204"
