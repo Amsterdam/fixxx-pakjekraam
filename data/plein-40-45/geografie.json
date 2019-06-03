@@ -16,6 +16,11 @@
       "obstakel": ["lantaarnpaal"]
     },
     {
+      "kraamA": 17,
+      "kraamB": 18,
+      "obstakel": ["loopje"]
+    },
+    {
       "kraamA": 23,
       "kraamB": 24,
       "obstakel": ["loopje"]
@@ -71,11 +76,6 @@
       "obstakel": ["loopje"]
     },
     {
-      "kraamA": 86,
-      "kraamB": 87,
-      "obstakel": ["lantaarnpaal"]
-    },
-    {
       "kraamA": 88,
       "kraamB": 131,
       "obstakel": ["loopje"]
@@ -111,6 +111,10 @@
       "obstakel": ["loopje"]
     },
     {
+      "kraamA": 135,
+      "obstakel": ["loopje"]
+    },
+    {
       "kraamA": 141,
       "kraamB": 142,
       "obstakel": ["loopje"]
@@ -118,6 +122,10 @@
     {
       "kraamA": 147,
       "kraamB": 148,
+      "obstakel": ["loopje"]
+    },
+    {
+      "kraamA": 150,
       "obstakel": ["loopje"]
     }
   ]

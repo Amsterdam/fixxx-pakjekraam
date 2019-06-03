@@ -85,6 +85,7 @@
   { "locatie": "84" },
   { "locatie": "85" },
   { "locatie": "86" },
+  { "locatie": "x", "properties": ["lantaarnpaal"] },
   { "locatie": "87" },
   { "locatie": "88" },
   { "locatie": "89" },
