@@ -19,7 +19,7 @@ trim_trailing_whitespace = true
 # .ts     = TypeScript
 # .vcl    = Vagrant
 # .xqy    = XQuery
-[*.{groovy,js,jsx,php,ts,vcl,xqy}]
+[*.{groovy,js,jsx,php,ts,tsx,vcl,xqy}]
 charset = UTF-8
 end_of_line = lf
 indent_size = 4

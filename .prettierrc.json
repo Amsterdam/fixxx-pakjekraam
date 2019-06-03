@@ -10,6 +10,15 @@
       }
     },
     {
+      "files": ["*.ts", "*.tsx"],
+      "options": {
+        "parser": "typescript",
+        "trailingComma": "all",
+        "tabWidth": 4,
+        "singleQuote": true
+      }
+    },
+    {
       "files": ["*.css", "*.scss"],
       "options": {
         "parser": "css",

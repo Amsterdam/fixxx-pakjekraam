@@ -10,18 +10,21 @@
   "scripts": {
     "build": "gulp build",
     "clean": "rm -rf dist/*",
-    "start": "node src/index.js",
+    "start": "ts-node src/index.js",
     "predev": "npm run build",
-    "dev": "node-dev src/index.js",
-    "test": "jest",
+    "dev": "ts-node-dev src/index.js",
+    "tdd": "jest --watch --verbose",
+    "test": "jest --verbose",
     "deploy": "concurrently 'npm:deploy:*'",
     "deploy:connect-pg": "echo 'TODO: Run node_modules/connect-pg-simple/table.sql' && exit 1",
     "lint": "concurrently 'npm:lint:*'",
-    "lint:editorconfig": "git ls-files '*.cfg' '*.cnf' '*.conf' '*.crt' '*.css' '*.csv' '*.dockerignore' '*.editorconfig' '*.env' '*.eslintignore' '*.eslintrc' '*.feature' '*.gitattributes' '*.gitignore' '*.groovy' '*.htm' '*.html' '*.ini' '*.json' '*.key' '*.less' '*.markdown' '*.md' '*.params' '*.pem' '*.php' '*.pub' '*.py' '*.rb' '*.rdf' '*.rq' '*.rsa' '*.scss' '*.service' '*.sh' '*.spec' '*.sql' '*.srl' '*.stylelintrc' '*.svg' '*.ts' '*.twig' '*.txt' '*.vcl' '*.wsdl' '*.xhtml' '*.xliff' '*.xml' '*.xqy' '*.xsd' '*.xsl' '*.xslt' '*.yml' '*AUTHORS' '*CONTRIBUTORS' '*Dockerfile' '*LICENSE' '*Makefile' '*README' '*Jenkinsfile' | xargs lintspaces --matchdotfiles --newline --editorconfig .editorconfig --ignores js-comments",
+    "lint:editorconfig": "git ls-files '*.cfg' '*.cnf' '*.conf' '*.crt' '*.css' '*.csv' '*.dockerignore' '*.editorconfig' '*.env' '*.eslintignore' '*.eslintrc' '*.feature' '*.gitattributes' '*.gitignore' '*.groovy' '*.htm' '*.html' '*.ini' '*.json' '*.key' '*.less' '*.markdown' '*.md' '*.params' '*.pem' '*.php' '*.pub' '*.py' '*.rb' '*.rdf' '*.rq' '*.rsa' '*.scss' '*.service' '*.sh' '*.spec' '*.sql' '*.srl' '*.stylelintrc' '*.svg' '*.twig' '*.txt' '*.vcl' '*.wsdl' '*.xhtml' '*.xliff' '*.xml' '*.xqy' '*.xsd' '*.xsl' '*.xslt' '*.yml' '*AUTHORS' '*CONTRIBUTORS' '*Dockerfile' '*LICENSE' '*Makefile' '*README' '*Jenkinsfile' | xargs lintspaces --matchdotfiles --newline --editorconfig .editorconfig --ignores js-comments",
     "lint:eslint": "eslint './src/**/*.js' './src/**/*.jsx'",
+    "lint:tslint": "tslint --type-check --project tsconfig.json --config tslint.json './src/**/*.ts' './src/**/*.tsx'",
     "lint-fix": "npm run lint-fix:eslint; npm run lint-fix:prettier",
     "lint-fix:eslint": "npm run lint:eslint -- --fix",
     "lint-fix:prettier": "prettier --write '**/*.js' '**/*.css' '**/*.scss' '**/*.json' '**/*.jsx' '*.yml'",
+    "lint-fix:tslint": "npm run lint:tslint -- --fix",
     "lint-non-npm": "git ls-files '*.yml' | tr '\n' '\\0' | xargs -0 yamllint",
     "prewatch": "npm run clean && npm run build",
     "watch": "gulp watch"
@@ -29,6 +32,10 @@
   "author": "",
   "license": "MPL-2.0",
   "devDependencies": {
+    "@types/jest": "23.3.10",
+    "@types/node": "11.11.5",
+    "@types/react": "16.8.19",
+    "@types/react-dom": "16.8.4",
     "babel-eslint": "10.0.1",
     "concurrently": "4.1.0",
     "eslint": "5.16.0",
@@ -44,7 +51,13 @@
     "node-dev": "4.0.0",
     "node-sass": "4.12.0",
     "npm-check": "5.9.0",
-    "prettier": "1.17.1"
+    "prettier": "1.17.1",
+    "ts-jest": "23.10.5",
+    "ts-node": "7.0.1",
+    "ts-node-dev": "1.0.0-pre.32",
+    "tslint": "5.12.0",
+    "tslint-eslint-rules": "5.4.0",
+    "typescript": "3.2.2"
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "7.4.4",
@@ -74,7 +87,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{css,js,json,jsx,scss}": [
+    "src/**/*.{css,js,json,jsx,scss,ts,tsx}": [
       "prettier --write",
       "git add"
     ]

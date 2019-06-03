@@ -1,0 +1,207 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint-eslint-rules"],
+  "rules": {
+    "only-arrow-functions": true,
+    "typedef-whitespace": [
+      true,
+      {
+        "call-signature": "nospace",
+        "index-signature": "nospace",
+        "parameter": "nospace",
+        "property-declaration": "nospace",
+        "variable-declaration": "nospace"
+      },
+      {
+        "call-signature": "onespace",
+        "index-signature": "onespace",
+        "parameter": "onespace",
+        "property-declaration": "onespace",
+        "variable-declaration": "onespace"
+      }
+    ],
+    "no-duplicate-variable": true,
+    "no-invalid-template-strings": true,
+    "no-use-before-declare": true,
+    "no-var-keyword": true,
+    "triple-equals": true,
+    "eofline": true,
+    "encoding": true,
+    "indent": [true, "spaces", 4],
+    "linebreak-style": [true, "LF"],
+    "prefer-const": true,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ],
+    "array-type": [true, "array"],
+    "ban": [
+      true,
+      ["describe", "only", "Do not commit 'describe.only' in your BDD tests, use during development only"],
+      ["it", "only", "Do not commit 'it.only' in your BDD tests, use during development only"],
+      {
+        "name": "setInterval",
+        "message": "Use recursive 'setTimeout' instead"
+      }
+    ],
+    "class-name": false,
+    "curly": true,
+    "import-spacing": true,
+    "match-default-export-name": true,
+    "max-line-length": [true, 120],
+    "member-access": true,
+    "newline-before-return": true,
+    "new-parens": true,
+    "no-boolean-literal-compare": true,
+    "no-consecutive-blank-lines": [true, 1],
+    "no-debugger": true,
+    "no-eval": true,
+    "no-reference": true,
+    "no-reference-import": true,
+    "no-trailing-whitespace": true,
+    "no-unnecessary-callback-wrapper": false,
+    "no-unnecessary-initializer": true,
+    "number-literal-format": true,
+    "object-literal-shorthand": true,
+    "prefer-template": true,
+    "quotemark": [true, "avoid-escape", "avoid-template", "single"],
+    "semicolon": [true, "always", "ignore-interfaces"],
+    "space-before-function-paren": [
+      true,
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "variable-name": [true, "check-format", "allow-leading-underscore", "ban-keywords"],
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-type",
+      "check-preblock"
+    ],
+    "array-bracket-spacing": false,
+    "arrow-parens": false,
+    "block-spacing": true,
+    "brace-style": [
+      true,
+      "1tbs",
+      {
+        "allowSingleLine": true
+      }
+    ],
+    "handle-callback-err": true,
+    "no-constant-condition": true,
+    "no-control-regex": true,
+    "no-duplicate-case": true,
+    "no-empty-character-class": true,
+    "no-ex-assign": true,
+    "no-extra-boolean-cast": true,
+    "no-extra-semi": true,
+    "no-inner-declarations": true,
+    "no-invalid-regexp": true,
+    "no-irregular-whitespace": true,
+    "no-multi-spaces": true,
+    "no-regex-spaces": true,
+    "no-sparse-arrays": true,
+    "no-unexpected-multiline": true,
+    "object-curly-spacing": true,
+    "space-in-parens": false,
+    "ter-arrow-body-style": true,
+    "ter-arrow-spacing": true,
+    "ter-computed-property-spacing": true,
+    "ter-func-call-spacing": true,
+    "ter-max-len": false,
+    "ter-newline-after-var": true,
+    "ter-no-mixed-spaces-and-tabs": true,
+    "ter-no-tabs": true,
+    "ter-prefer-arrow-callback": true,
+    "valid-jsdoc": true,
+    "valid-typeof": true
+  },
+  "jsRules": {
+    "align": {
+      "options": ["parameters", "statements"]
+    },
+    "class-name": true,
+    "curly": true,
+    "eofline": true,
+    "forin": true,
+    "import-spacing": true,
+    "indent": {
+      "options": ["spaces"]
+    },
+    "jsdoc-format": true,
+    "label-position": true,
+    "max-line-length": {
+      "options": [120]
+    },
+    "new-parens": true,
+    "no-arg": true,
+    "no-bitwise": true,
+    "no-conditional-assignment": true,
+    "no-consecutive-blank-lines": true,
+    "no-console": true,
+    "no-construct": true,
+    "no-debugger": true,
+    "no-duplicate-super": true,
+    "no-duplicate-variable": true,
+    "no-empty": true,
+    "no-eval": true,
+    "no-reference": true,
+    "no-shadowed-variable": true,
+    "no-string-literal": true,
+    "no-string-throw": true,
+    "no-switch-case-fall-through": false,
+    "no-trailing-whitespace": true,
+    "no-unused-expression": true,
+    "no-use-before-declare": true,
+    "object-literal-sort-keys": false,
+    "one-line": {
+      "options": ["check-catch", "check-else", "check-finally", "check-open-brace", "check-whitespace"]
+    },
+    "one-variable-per-declaration": {
+      "options": ["ignore-for-loop"]
+    },
+    "quotemark": {
+      "options": ["avoid-escape", "avoid-template", "single"]
+    },
+    "radix": true,
+    "semicolon": {
+      "options": ["always"]
+    },
+    "space-before-function-paren": {
+      "options": {
+        "anonymous": "never",
+        "asyncArrow": "always",
+        "constructor": "never",
+        "method": "never",
+        "named": "never"
+      }
+    },
+    "trailing-comma": {
+      "options": {
+        "multiline": "never",
+        "singleline": "never"
+      }
+    },
+    "triple-equals": {
+      "options": ["allow-null-check"]
+    },
+    "use-isnan": true,
+    "variable-name": {
+      "options": ["ban-keywords", "check-format", "allow-pascal-case"]
+    },
+    "whitespace": {
+      "options": ["check-branch", "check-decl", "check-operator", "check-separator", "check-type", "check-typecast"]
+    }
+  }
+}
