@@ -1,7 +1,7 @@
-import Button from './Button';
-import OndernemerMarktHeading from './OndernemerMarktHeading';
-import PropTypes from 'prop-types';
-import React from 'react';
+const Button = require('./Button');
+const OndernemerMarktHeading = require('./OndernemerMarktHeading');
+const PropTypes = require('prop-types');
+const React = require('react');
 
 const { formatDayOfWeek } = require('../../util.js');
 

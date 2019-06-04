@@ -1,6 +1,6 @@
-import PrintableBackground from './PrintableBackground';
-import PropTypes from 'prop-types';
-import React from 'react';
+const PrintableBackground = require('./PrintableBackground');
+const PropTypes = require('prop-types');
+const React = require('react');
 
 const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
     const colorList = {

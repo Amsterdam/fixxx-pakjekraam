@@ -1,10 +1,10 @@
-import Content from './components/Content';
+const Content = require('./components/Content');
 const React = require('react');
 const Page = require('./components/Page.jsx');
 const PropTypes = require('prop-types');
 const OndernemerProfile = require('./components/OndernemerProfile.jsx');
 const MarktmeesterProfile = require('./components/MarktmeesterProfile.jsx');
-import Header from './components/Header';
+const Header = require('./components/Header');
 
 const { isVast } = require('../domain-knowledge.js');
 

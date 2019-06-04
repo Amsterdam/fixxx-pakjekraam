@@ -1,6 +1,6 @@
-import OndernemerMarktAanwezigheid from './OndernemerMarktAanwezigheid';
-import PropTypes from 'prop-types';
-import React from 'react';
+const OndernemerMarktAanwezigheid = require('./OndernemerMarktAanwezigheid');
+const PropTypes = require('prop-types');
+const React = require('react');
 
 const { getMarktDays, parseMarktDag, filterRsvpList } = require('../../domain-knowledge.js');
 

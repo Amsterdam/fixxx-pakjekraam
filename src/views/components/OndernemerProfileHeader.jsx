@@ -1,6 +1,6 @@
-import ProfilePhoto from './ProfilePhoto';
-import PropTypes from 'prop-types';
-import React from 'react';
+const ProfilePhoto = require('./ProfilePhoto');
+const PropTypes = require('prop-types');
+const React = require('react');
 
 const OndernemerProfileHeader = ({ user }) => {
     return (

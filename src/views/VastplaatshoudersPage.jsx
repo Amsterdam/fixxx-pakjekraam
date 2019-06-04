@@ -1,11 +1,11 @@
 const { arrayToObject } = require('../util.js');
-import IndelingslijstGroup from './components/IndelingslijstGroup';
+const IndelingslijstGroup = require('./components/IndelingslijstGroup');
 const React = require('react');
-import MarktDetailBase from './components/MarktDetailBase';
-import PrintPage from './components/PrintPage';
+const MarktDetailBase = require('./components/MarktDetailBase');
+const PrintPage = require('./components/PrintPage');
 const PropTypes = require('prop-types');
 const { ondernemersToLocatieKeyValue, obstakelsToLocatieKeyValue } = require('../domain-knowledge.js');
-import Street from './components/Street';
+const Street = require('./components/Street');
 
 class VastplaatshoudersPage extends React.Component {
     propTypes = {

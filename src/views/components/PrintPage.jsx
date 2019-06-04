@@ -1,6 +1,6 @@
-import PrintPageHeader from './PrintPageHeader';
-import PropTypes from 'prop-types';
-import React from 'react';
+const PrintPageHeader = require('./PrintPageHeader');
+const PropTypes = require('prop-types');
+const React = require('react');
 
 const PrintPage = ({ children, index, title, label }) => {
     return (

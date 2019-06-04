@@ -1,10 +1,9 @@
-import Content from './components/Content';
-
+const Content = require('./components/Content');
 const React = require('react');
 const Page = require('./components/Page.jsx');
 const AfmeldForm = require('./components/AfmeldForm.jsx');
 const PropTypes = require('prop-types');
-import Header from './components/Header';
+const Header = require('./components/Header');
 
 class AfmeldPage extends React.Component {
     propTypes = {

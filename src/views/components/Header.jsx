@@ -1,6 +1,6 @@
-import LoginButton from './LoginButton';
-import PropTypes from 'prop-types';
-import React from 'react';
+const LoginButton = require('./LoginButton');
+const PropTypes = require('prop-types');
+const React = require('react');
 
 const Header = ({ user }) => {
     return (

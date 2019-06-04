@@ -1,9 +1,9 @@
-import { addDays, DAYS_IN_WEEK, formatDayOfWeek, formatMonth, nextWeek, tomorrow } from '../util.js';
+const { addDays, DAYS_IN_WEEK, formatDayOfWeek, formatMonth, nextWeek, tomorrow } = require('../util.js');
 const React = require('react');
 const PropTypes = require('prop-types');
 const MarktDetailBase = require('./components/MarktDetailBase');
 const today = () => new Date().toISOString().replace(/T.+/, '');
-import { getUpcomingMarktDays, parseMarktDag } from '../domain-knowledge.js';
+const { getUpcomingMarktDays, parseMarktDag } = require('../domain-knowledge.js');
 
 class MarktDetailPage extends React.Component {
     propTypes = {

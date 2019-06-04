@@ -1,8 +1,7 @@
 const React = require('react');
-import MarktDetailBase from './components/MarktDetailBase';
-import OndernemerList from './components/OndernemerList';
-import PrintPage from './components/PrintPage';
-
+const MarktDetailBase = require('./components/MarktDetailBase');
+const OndernemerList = require('./components/OndernemerList');
+const PrintPage = require('./components/PrintPage');
 const PropTypes = require('prop-types');
 
 class SollicitantenPage extends React.Component {

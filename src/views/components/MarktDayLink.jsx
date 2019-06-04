@@ -1,7 +1,7 @@
-import { addDays, DAYS_IN_WEEK, formatDayOfWeek } from '../../util.js';
-import { getMarktDays, parseMarktDag } from '../../domain-knowledge.js';
-import PropTypes from 'prop-types';
-import React from 'react';
+const { addDays, DAYS_IN_WEEK, formatDayOfWeek } = require('../../util.js');
+const { getMarktDays, parseMarktDag } = require('../../domain-knowledge.js');
+const PropTypes = require('prop-types');
+const React = require('react');
 
 const MarktDayLink = ({ markt, offsetDate, direction = 1 }) => {
     let targetDate, startDate, endDate;

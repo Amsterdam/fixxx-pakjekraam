@@ -3,10 +3,10 @@ const Page = require('./Page.jsx');
 const Header = require('./Header');
 const Content = require('./Content');
 const PropTypes = require('prop-types');
-import { formatDayOfWeek, formatMonth } from '../../util';
-import MarktDayLink from './MarktDayLink';
-import MarktDetailHeader from './MarktDetailHeader';
-import PrintButton from './PrintButton';
+const { formatDayOfWeek, formatMonth } = require('../../util');
+const MarktDayLink = require('./MarktDayLink');
+const MarktDetailHeader = require('./MarktDetailHeader');
+const PrintButton = require('./PrintButton');
 
 const MarktDetailBase = ({ children, bodyClass, title, markt, type, datum, user, showDate }) => {
     const relativeDatum = d => {

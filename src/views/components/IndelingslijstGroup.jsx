@@ -1,8 +1,8 @@
-import ObstakelList from './ObstakelList';
-import Plaats from './Plaats';
-import PlaatsVPH from './PlaatsVPH';
-import PropTypes from 'prop-types';
-import React from 'react';
+const ObstakelList = require('./ObstakelList');
+const Plaats = require('./Plaats');
+const PlaatsVPH = require('./PlaatsVPH');
+const PropTypes = require('prop-types');
+const React = require('react');
 
 const IndelingslijstGroup = ({ page, plaatsList, vphl, obstakelList, markt, aanmeldingen, type, datum }) => {
     let first = true;

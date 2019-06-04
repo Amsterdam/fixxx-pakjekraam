@@ -1,4 +1,4 @@
-import OndernemerMarktHeading from './OndernemerMarktHeading';
+const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 const React = require('react');
 const PropTypes = require('prop-types');
 const { formatDayOfWeek, MILLISECONDS_IN_DAY } = require('../../util.js');
