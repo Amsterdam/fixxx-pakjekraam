@@ -23,7 +23,7 @@ const {
     getMarkten,
     getSollicitantenlijstInput,
 } = require('./pakjekraam-api.js');
-const { calcToewijzingen, simulateAanmeldingen } = require('./www/script/controller.js');
+const { calcToewijzingen, simulateAanmeldingen } = require('./indeling.ts');
 
 const HTTP_CREATED_SUCCESS = 201;
 const HTTP_INTERNAL_SERVER_ERROR = 500;
@@ -531,19 +531,22 @@ app.get('/markt-indeling/:marktId/:marktDate/data.json', ensureLoggedIn(), (req,
     );
 });
 
-app.get('/markt-indeling/:marktId/:datum/concept-indeling.json', ensureLoggedIn(), (req, res) => {
-    getIndelingslijstInput(req.user.token, req.params.marktId).then(
+app.get('/markt-indeling/:marktId/:marktDate/concept-indeling.json', ensureLoggedIn(), (req, res) => {
+    getIndelingslijstInput(req.user.token, req.params.marktId, req.params.marktDate).then(
         markt => {
-            markt = simulateAanmeldingen(markt);
-
             console.time(`Berekenen indelingslijst`);
-            markt.toewijzingen = calcToewijzingen(markt);
+            markt = {
+                ...markt,
+                aanwezigheid: markt.aanmeldingen,
+                marktplaatsen: markt.locaties,
+            };
+            markt = calcToewijzingen(markt);
             console.timeEnd(`Berekenen indelingslijst`);
 
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8',
             });
-            res.send(JSON.stringify(markt.toewijzingen, null, '  '));
+            res.send(JSON.stringify(markt || [], null, '  '));
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
