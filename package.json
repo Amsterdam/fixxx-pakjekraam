@@ -14,7 +14,7 @@
     "predev": "npm run build",
     "dev": "ts-node-dev src/index.js",
     "tdd": "jest --watch --verbose",
-    "test": "jest --verbose",
+    "test": "jest --verbose --silent",
     "deploy": "concurrently 'npm:deploy:*'",
     "deploy:connect-pg": "echo 'TODO: Run node_modules/connect-pg-simple/table.sql' && exit 1",
     "lint": "concurrently 'npm:lint:*'",
