@@ -141,17 +141,53 @@ app.get('/markt/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) =>
     );
 });
 
+const publicErrors = {
+    INCORRECT_CREDENTIALS: 'incorrect-credentials',
+};
+
+const humanReadableMessage = {
+    [publicErrors.INCORRECT_CREDENTIALS]: 'Uw gebruikersnaam of wachtwoord is incorrect.',
+};
+
+/*
+ * Error message codes can be passed along via the query string, for example:
+ *
+ *     /login?error=incorrect-credentials
+ *     /login?error[]=incorrect-request&error[]=database-down
+ */
+const getQueryErrors = queryParams => {
+    const errorCodes = queryParams.error
+        ? Array.isArray(queryParams.error)
+            ? queryParams.error
+            : [queryParams.error]
+        : [];
+
+    return errorCodes.map(msg => ({
+        code: msg,
+        message: humanReadableMessage[msg] || msg,
+        severity: 'error',
+    }));
+};
+
 app.get('/login', function(req, res) {
-    res.render('LoginPage', {});
+    const messages = getQueryErrors(req.query);
+
+    res.render('LoginPage', {
+        messages,
+    });
 });
 
-app.post('/login', passport.authenticate('local', { failureRedirect: '/login-error' }), function(req, res) {
-    /*
-     * TODO: Redirect to URL specified in URL query parameter,
-     * so you go back to the page you intended to visit.
-     */
-    res.redirect('/');
-});
+app.post(
+    '/login',
+    passport.authenticate('local', { failureRedirect: `/login?error=${publicErrors.INCORRECT_CREDENTIALS}` }),
+    function(req, res) {
+        /*
+         * TODO: Redirect to URL specified in URL query parameter,
+         * so you go back to the page you intended to visit.
+         */
+        res.redirect('/profile');
+    },
+);
 
 app.get('/logout', function(req, res) {
     req.logout();
