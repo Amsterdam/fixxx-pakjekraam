@@ -171,8 +171,23 @@ const getQueryErrors = queryParams => {
 
 app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
     const user = req.user.token;
-    getMarktondernemer(req.user.token, req.param.erkenningsNummer).then(ondernemer =>
-        res.render('OndernemerDashboard', { ondernemer }),
+    const ondernemerPromise = getMarktondernemer(user, req.params.erkenningsNummer);
+    const marktenPromise = ondernemerPromise.then(ondernemer =>
+        Promise.all(
+            ondernemer.sollicitaties.map(sollicitatie => sollicitatie.markt.id).map(marktId => getMarkt(user, marktId)),
+        ),
+    );
+    Promise.all([ondernemerPromise, marktenPromise, getAanmeldingenByOndernemer(req.params.erkenningsNummer)]).then(
+        ([ondernemer, markten, aanmeldingen]) => {
+            res.render('OndernemerDashboard', {
+                ondernemer,
+                aanmeldingen,
+                markten,
+                startDate: tomorrow(),
+                endDate: nextWeek(),
+            });
+        },
+        err => errorPage(res, err),
     );
 });
 
@@ -184,15 +199,12 @@ app.get('/login', function(req, res) {
     });
 });
 
-app.post(
-    '/login',
-    passport.authenticate('local', { failureRedirect: `/login?error=${publicErrors.INCORRECT_CREDENTIALS}` }),
-    function(req, res) {
-        /*
-         * TODO: Redirect to URL specified in URL query parameter,
-         * so you go back to the page you intended to visit.
-         */
-        res.redirect('/profile');
+app.post('/login', passport.authenticate('local', { failureRedirect: `/login?error=${publicErrors.INCORRECT_CREDENTIALS}` }), function(req, res) {
+    /*
+     * TODO: Redirect to URL specified in URL query parameter,
+     * so you go back to the page you intended to visit.
+     */
+    // const next = req.query.next || '/';res.redirect(req.query.next ||'/profile');
     },
 );
 

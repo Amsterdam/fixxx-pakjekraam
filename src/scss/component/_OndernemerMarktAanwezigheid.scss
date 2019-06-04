@@ -1,0 +1,30 @@
+$itemMinWidth: 540px;
+
+.OndernemerMarktAanwezigheid {
+    &__list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    &__list-item {
+        padding-left: 25px;
+        position: relative;
+        min-width: $itemMinWidth;
+        &--attending:before {
+            content: "";
+            @include icon($icon-Check-Mark);
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 12px;
+        }
+    }
+    &__list-item-wrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+}

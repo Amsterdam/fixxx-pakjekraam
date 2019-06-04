@@ -7,7 +7,7 @@ import React from 'react';
 const IndelingslijstGroup = ({ page, plaatsList, vphl, obstakelList, markt, aanmeldingen, type, datum }) => {
     let first = true;
     const renderPlaats = props => {
-        return !type ? <Plaats {...props} /> : <PlaatsVPH {...props} />;
+        return !type || type === 'indelingslijst' ? <Plaats {...props} /> : <PlaatsVPH {...props} />;
     };
     const classes = page.class.split(' ').map(cl => {
         return 'IndelingslijstGroup--markt-' + markt.id + ' IndelingslijstGroup--' + cl.trim();

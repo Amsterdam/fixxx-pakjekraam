@@ -1,0 +1,18 @@
+.ProfilePhoto {
+    display: block;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+    position: relative;
+    img {
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    @media screen and (min-width: $screenMedium) {
+        width: 100px;
+        height: 100px;
+    }
+}

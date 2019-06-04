@@ -1,7 +1,8 @@
+import OndernemerMarktHeading from './OndernemerMarktHeading';
 const React = require('react');
 const PropTypes = require('prop-types');
 const { formatDayOfWeek, MILLISECONDS_IN_DAY } = require('../../util.js');
-const { getMarktDays, parseMarktDag } = require('../../domain-knowledge.js');
+const { getMarktDays, parseMarktDag, filterRsvpList } = require('../../domain-knowledge.js');
 const today = () => new Date().toISOString().replace(/T.+/, '');
 
 class AfmeldForm extends React.Component {
@@ -19,32 +20,16 @@ class AfmeldForm extends React.Component {
         const { markten, ondernemer, currentMarktId, query } = this.props;
         const sollicitaties = ondernemer.sollicitaties.filter(sollicitatie => !sollicitatie.doorgehaald);
 
-        let rsvpIndex = 0;
-
         const entries = sollicitaties.map(sollicitatie => {
             const markt = markten.find(m => m.id === sollicitatie.markt.id);
-            const dates = getMarktDays(
-                this.props.startDate,
-                this.props.endDate,
-                (markt.marktDagen || []).map(parseMarktDag),
-            );
             const marktAanmeldingen = (this.props.aanmeldingen || []).filter(
                 aanmelding => aanmelding.marktId === sollicitatie.markt.id,
             );
 
-            // TODO: Replace non-pure `rsvpIndex` with grouping by `markt.id` afterwards
-            const rsvpEntries = dates.map(date => ({
-                date,
-                rsvp: marktAanmeldingen.find(aanmelding => aanmelding.marktDate === date),
-                index: rsvpIndex++,
-            }));
-
             return {
                 sollicitatie,
                 markt,
-                dates,
-                rsvpEntries,
-                aanmeldingen: marktAanmeldingen,
+                rsvpEntries: filterRsvpList(marktAanmeldingen, markt),
             };
         });
 
@@ -69,75 +54,68 @@ class AfmeldForm extends React.Component {
                           return String(markt.id) === currentMarktId;
                       })
                     : entries
-                ).map(({ sollicitatie, markt, rsvpEntries }) => (
-                    <section className="Fieldset" key={sollicitatie.markt.id}>
-                        <div className="Fieldset__header">
-                            <h2 className="Fieldset__title">
-                                {markt.naam} ({sollicitatie.status}, {sollicitatie.sollicitatieNummer})
-                            </h2>
-                        </div>
-                        <span className="Fieldset__subtitle">Aanvinken welke dagen je komt</span>
-                        <ul className="CheckboxList">
-                            {rsvpEntries.map(({ date, rsvp, index }) => (
-                                <li key={date}>
-                                    <input type="hidden" name={`rsvp[${index}][marktId]`} defaultValue={markt.id} />
-                                    <input type="hidden" name={`rsvp[${index}][marktDate]`} defaultValue={date} />
-                                    <span className="InputField InputField--checkbox InputField--afmelden">
-                                        <input
-                                            id={`rsvp-${index}`}
-                                            name={`rsvp[${index}][attending]`}
-                                            type="checkbox"
-                                            defaultValue="true"
-                                            defaultChecked={
-                                                rsvp
-                                                    ? rsvp.attending
-                                                    : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl'
-                                            }
-                                        />
-                                        <label htmlFor={`rsvp-${index}`}>
-                                            <span className="InputField--afmelden__main">
-                                                Ik kom <strong>{formatDayOfWeek(date)}</strong>
-                                            </span>
-                                            <span className="InputField--afmelden__date">{date}</span>
-                                            {rsvp ? (
-                                                <span
-                                                    className="InputField--afmelden__rsvp-verified"
-                                                    style={{ display: 'none' }}
-                                                >
-                                                    Bevestigd
+                ).map(({ sollicitatie, markt, rsvpEntries }) => {
+                    const next = query.next
+                        ? query.next
+                        : `/markt/${markt.id}/${query.datum}/${query.type}/#soll-${sollicitatie.sollicitatieNummer}`;
+                    console.log(next);
+
+                    return (
+                        <section className="Fieldset" key={sollicitatie.markt.id}>
+                            <div className="Fieldset__header">
+                                <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
+                            </div>
+                            <span className="Fieldset__subtitle">Aanvinken welke dagen je komt</span>
+                            <ul className="CheckboxList">
+                                {rsvpEntries.map(({ date, rsvp, index }) => (
+                                    <li key={date}>
+                                        <input type="hidden" name={`rsvp[${index}][marktId]`} defaultValue={markt.id} />
+                                        <input type="hidden" name={`rsvp[${index}][marktDate]`} defaultValue={date} />
+                                        <span className="InputField InputField--checkbox InputField--afmelden">
+                                            <input
+                                                id={`rsvp-${index}`}
+                                                name={`rsvp[${index}][attending]`}
+                                                type="checkbox"
+                                                defaultValue="true"
+                                                defaultChecked={
+                                                    rsvp
+                                                        ? rsvp.attending
+                                                        : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl'
+                                                }
+                                            />
+                                            <label htmlFor={`rsvp-${index}`}>
+                                                <span className="InputField--afmelden__main">
+                                                    Ik kom <strong>{formatDayOfWeek(date)}</strong>
                                                 </span>
-                                            ) : null}
-                                        </label>
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
-                        {currentMarktId && (
-                            <p className="InputField InputField--submit">
-                                <button
-                                    className="Button Button--secondary"
-                                    type="submit"
-                                    name="next"
-                                    value={`/markt/${markt.id}/${query.datum}/${query.type}/#soll-${
-                                        sollicitatie.sollicitatieNummer
-                                    }`}
-                                >
-                                    Opslaan en terug
-                                </button>
-                                {currentMarktId && (
-                                    <a
-                                        className="Button Button--tertiary"
-                                        href={`/markt/${markt.id}/${query.datum}/${query.type}/#soll-${
-                                            sollicitatie.sollicitatieNummer
-                                        }`}
-                                    >
-                                        Terug
-                                    </a>
-                                )}
-                            </p>
-                        )}
-                    </section>
-                ))}
+                                                <span className="InputField--afmelden__date">{date}</span>
+                                                {rsvp ? (
+                                                    <span
+                                                        className="InputField--afmelden__rsvp-verified"
+                                                        style={{ display: 'none' }}
+                                                    >
+                                                        Bevestigd
+                                                    </span>
+                                                ) : null}
+                                            </label>
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                            {currentMarktId && (
+                                <p className="InputField InputField--submit">
+                                    <button className="Button Button--secondary" type="submit" name="next" value={next}>
+                                        Opslaan en terug
+                                    </button>
+                                    {currentMarktId && (
+                                        <a className="Button Button--tertiary" href={next}>
+                                            Terug
+                                        </a>
+                                    )}
+                                </p>
+                            )}
+                        </section>
+                    );
+                })}
                 {!currentMarktId && (
                     <p className="InputField InputField--submit">
                         <button

@@ -1,4 +1,4 @@
-const { MILLISECONDS_IN_DAY, toISODate, addDays } = require('./util.js');
+const { MILLISECONDS_IN_DAY, DAYS_IN_WEEK, toISODate, addDays, today, nextWeek, endOfWeek } = require('./util.js');
 
 const DAPPERMARKT_ID = 16;
 const ALBERT_CUYP_ID = 19;
@@ -75,6 +75,24 @@ const obstakelsToLocatieKeyValue = array =>
         return total;
     }, {});
 
+const filterRsvpList = (aanmeldingen, markt, startDate, endDate) => {
+    let rsvpIndex = 0;
+    const dates = getMarktDays(
+        startDate ? startDate : addDays(Date.now(), 1),
+        endDate ? endDate : addDays(endOfWeek(), DAYS_IN_WEEK),
+        (markt.marktDagen || []).map(parseMarktDag),
+    );
+    const newAanmeldingen = aanmeldingen.sort((a, b) => b.updatedAt - a.updatedAt);
+    // TODO: Replace non-pure `rsvpIndex` with grouping by `markt.id` afterwards
+    const rsvpList = dates.map(date => ({
+        date,
+        rsvp: newAanmeldingen.find(aanmelding => aanmelding.marktDate === date),
+        index: rsvpIndex++,
+    }));
+
+    return rsvpList;
+};
+
 module.exports = {
     DAPPERMARKT_ID,
     ALBERT_CUYP_ID,
@@ -90,4 +108,5 @@ module.exports = {
     getUpcomingMarktDays,
     ondernemersToLocatieKeyValue,
     obstakelsToLocatieKeyValue,
+    filterRsvpList,
 };

@@ -2,9 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const ProfilePhoto = ({ imageUrlSet }) => {
+    const mediaQueries = ['(max-width: 539px)', '(min-width: 540px)'];
+
     return (
         <picture className="ProfilePhoto">
-            <img src={imageUrlSet[0]} />
+            {imageUrlSet.map((url, i) => (
+                <source key={i} srcSet={url} media={mediaQueries[i]} />
+            ))}
+            <img srcSet={imageUrlSet[0]} alt="…" />
         </picture>
     );
 };

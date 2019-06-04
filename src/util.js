@@ -24,6 +24,8 @@ const monthName = [
 const formatDayOfWeek = date => dayOfWeekName[new Date(date).getDay()];
 const formatMonth = date => monthName[new Date(date).getMonth()];
 
+const today = () => new Date().toISOString().replace(/T.+/, '');
+
 const addDays = (offsetDate, days) => {
     const date = new Date(offsetDate);
 
@@ -37,7 +39,7 @@ const tomorrow = () => addDays(Date.now(), 1);
 const endOfWeek = () => {
     const date = new Date();
 
-    return addDays(date.getDate(), DAYS_IN_WEEK - 1 - date.getDay());
+    return addDays(date, DAYS_IN_WEEK - 1 - date.getDay());
 };
 
 const nextWeek = () => addDays(Date.now(), DAYS_IN_WEEK);
@@ -64,6 +66,7 @@ const stringSort = (a, b) => (a > b ? 1 : a === b ? 0 : -1);
 const flatten = (a = [], b = []) => [...a, ...b];
 
 module.exports = {
+    today,
     addDays,
     formatDayOfWeek,
     formatMonth,
