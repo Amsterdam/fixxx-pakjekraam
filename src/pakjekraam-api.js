@@ -7,6 +7,7 @@ const {
 const { ALBERT_CUYP_ID, formatOndernemerName, slugifyMarkt } = require('./domain-knowledge.js');
 const { plaatsvoorkeur, rsvp } = require('./model/index.js');
 const fs = require('fs');
+const { calcToewijzingen } = require('./indeling.ts');
 
 const loadJSON = (path, defaultValue = null) =>
     new Promise((resolve, reject) => {
@@ -73,8 +74,8 @@ const getIndelingslijstInput = (token, marktId, date) =>
                         description: formatOndernemerName(data.koopman),
                         id: erkenningsnummer,
                         erkenningsNummer: erkenningsnummer,
-                        // FIXME: Support multiple locations
-                        locatie: data.vastePlaatsen,
+                        locatie: data.vastePlaatsen, // FIXME: Remove deprecated `locatie`
+                        plaatsen: data.vastePlaatsen,
                         sollicitatieNummer,
                         status,
                     };
@@ -99,8 +100,17 @@ const getIndelingslijstInput = (token, marktId, date) =>
             paginas,
             geografie,
             markt,
+            marktplaatsen: locaties.map(locatie => ({
+                plaatsId: locatie.locatie,
+                branches: locatie.branche,
+                inactive: locatie.inactive,
+            })),
+            aanwezigheid: aanmeldingen,
+            aLijst: [], // TODO: retrieve aLijst from Makkelijke Markt
         };
     });
+
+const getIndelingslijst = (token, marktId, date) => getIndelingslijstInput(token, marktId, date).then(calcToewijzingen);
 
 const getSollicitantenlijstInput = (token, marktId, date) =>
     Promise.all([
@@ -133,6 +143,7 @@ module.exports = {
     getOndernemerVoorkeuren,
     getBranches,
     getMarktplaatsen,
+    getIndelingslijst,
     getIndelingslijstInput,
     getMarkten,
     getSollicitantenlijstInput,

@@ -4,7 +4,17 @@ const PlaatsVPH = require('./PlaatsVPH');
 const PropTypes = require('prop-types');
 const React = require('react');
 
-const IndelingslijstGroup = ({ page, plaatsList, vphl, obstakelList, markt, aanmeldingen, type, datum }) => {
+const IndelingslijstGroup = ({
+    page,
+    plaatsList,
+    vphl,
+    obstakelList,
+    markt,
+    aanmeldingen,
+    toewijzingen,
+    type,
+    datum,
+}) => {
     let first = true;
     const renderPlaats = props => {
         return !type || type === 'indelingslijst' ? <Plaats {...props} /> : <PlaatsVPH {...props} />;
@@ -37,6 +47,8 @@ const IndelingslijstGroup = ({ page, plaatsList, vphl, obstakelList, markt, aanm
                             vasteOndernemer &&
                             aanmeldingen.find(rsvp => rsvp.erkenningsNummer === vasteOndernemer.erkenningsNummer);
 
+                        const toewijzing = (toewijzingen || []).find(({ plaatsen }) => plaatsen.includes(plaatsNr));
+
                         const plaatsProps = {
                             first,
                             key: plaatsNr,
@@ -47,6 +59,7 @@ const IndelingslijstGroup = ({ page, plaatsList, vphl, obstakelList, markt, aanm
                             markt,
                             datum,
                             type,
+                            toewijzing,
                         };
 
                         if (plaatsList[String(plaatsNr)]) {
@@ -83,6 +96,7 @@ const IndelingslijstGroup = ({ page, plaatsList, vphl, obstakelList, markt, aanm
 
 IndelingslijstGroup.propTypes = {
     aanmeldingen: PropTypes.array.isRequired,
+    toewijzingen: PropTypes.array,
     page: PropTypes.object,
     plaatsList: PropTypes.object,
     vphl: PropTypes.object,

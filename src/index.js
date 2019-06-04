@@ -13,6 +13,7 @@ const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
 const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
 const { tomorrow, nextWeek } = require('./util.js');
 const {
+    getIndelingslijst,
     getIndelingslijstInput,
     getAanmeldingen,
     getAanmeldingenByOndernemer,
@@ -23,7 +24,6 @@ const {
     getMarkten,
     getSollicitantenlijstInput,
 } = require('./pakjekraam-api.js');
-const { calcToewijzingen, simulateAanmeldingen } = require('./indeling.ts');
 
 const HTTP_CREATED_SUCCESS = 201;
 const HTTP_INTERNAL_SERVER_ERROR = 500;
@@ -103,7 +103,7 @@ app.get('/markt/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) =
     const user = req.user.token;
     const datum = req.params.datum;
     const type = 'indelingslijst';
-    getIndelingslijstInput(req.user.token, req.params.marktId, datum).then(
+    getIndelingslijst(req.user.token, req.params.marktId, datum).then(
         data => {
             res.render('IndelingslijstPage', { data, datum, type, user });
         },
@@ -517,7 +517,7 @@ app.get('/profile/:erkenningsNummer', ensureLoggedIn(), (req, res) => {
     );
 });
 
-app.get('/markt-indeling/:marktId/:marktDate/data.json', ensureLoggedIn(), (req, res) => {
+app.get('/markt/:marktId/:marktDate/markt.json', ensureLoggedIn(), (req, res) => {
     getIndelingslijstInput(req.user.token, req.params.marktId, req.params.marktDate).then(
         data => {
             res.set({
@@ -531,18 +531,9 @@ app.get('/markt-indeling/:marktId/:marktDate/data.json', ensureLoggedIn(), (req,
     );
 });
 
-app.get('/markt-indeling/:marktId/:marktDate/concept-indeling.json', ensureLoggedIn(), (req, res) => {
-    getIndelingslijstInput(req.user.token, req.params.marktId, req.params.marktDate).then(
+app.get('/markt/:marktId/:marktDate/markt-indeling.json', ensureLoggedIn(), (req, res) => {
+    getIndelingslijst(req.user.token, req.params.marktId, req.params.marktDate).then(
         markt => {
-            console.time(`Berekenen indelingslijst`);
-            markt = {
-                ...markt,
-                aanwezigheid: markt.aanmeldingen,
-                marktplaatsen: markt.locaties,
-            };
-            markt = calcToewijzingen(markt);
-            console.timeEnd(`Berekenen indelingslijst`);
-
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8',
             });

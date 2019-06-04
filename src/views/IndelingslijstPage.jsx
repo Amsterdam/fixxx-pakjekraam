@@ -26,6 +26,7 @@ class IndelingslijstenPage extends React.Component {
             ondernemers,
             paginas,
             voorkeuren,
+            toewijzingen,
             markt,
         } = this.props.data;
         const { datum, type, user } = this.props;
@@ -58,6 +59,7 @@ class IndelingslijstenPage extends React.Component {
                                             vphl={vphl}
                                             obstakelList={obstakels}
                                             aanmeldingen={aanmeldingen}
+                                            toewijzingen={toewijzingen}
                                             markt={markt}
                                             datum={datum}
                                             type={type}
