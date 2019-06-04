@@ -44,8 +44,10 @@
             left: 0;
         }
     }
+
     &__text {
         position: relative;
         z-index: 1;
+        background-color: $primary-white;
     }
 }

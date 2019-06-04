@@ -63,7 +63,7 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
 
     plaatsProps = plaatsProps.filter(word => !['dubble'].includes(word));
     plaatsProps.reverse();
-    tags = tags.filter(word => !['even', 'oneven'].includes(word));
+    tags = tags.filter(word => ['experimentele-zone', 'standwerkersplaats', 'eigen-materiaal'].includes(word));
 
     let color = Object.keys(colorList).find(key => {
         return tags.length && key === tags[0].trim();
@@ -72,13 +72,16 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
     color = branches.length
         ? colorList[branches[branches.length - 1]]
             ? colorList[branches[branches.length - 1]]
-            : '#000000'
+            : '#5D4211'
         : undefined;
 
     tags = tags.join(' ');
 
     return (
-        <tr className={'Plaats ' + (first && 'Plaats--first')} data-sollicitatie-nummer={vph && vph.sollicitatieNummer}>
+        <tr
+            className={'Plaats ' + (first && 'Plaats--first') + ' ' + tags}
+            data-sollicitatie-nummer={vph && vph.sollicitatieNummer}
+        >
             <td className="Plaats__prop Plaats__prop-properties">
                 <span className={'icon icon-' + (plaatsProps ? plaatsProps[0] : '')} />
             </td>
@@ -101,7 +104,7 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
                 } ${aanmelding ? 'Plaats--vph-attendance-verified' : ''}
                 `}
             >
-                {vph ? vph.description : ''}
+                {vph ? vph.description : <strong>{tags}</strong>}
             </td>
             <td className="Plaats__prop Plaats__prop-empty-fields">{aanmelding ? 'bevestigd' : null}</td>
         </tr>

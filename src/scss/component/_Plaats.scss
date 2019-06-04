@@ -3,7 +3,10 @@
 }
 
 .Plaats {
+    position: relative;
     &__prop {
+        position: relative;
+        z-index: 1;
         padding: 0 5px;
         flex-grow: 1;
         border-top: 1px solid #000;
@@ -66,7 +69,7 @@
                 background-color: $color;
             }
         }
-        .kraam-8-meter {
+        .kraam-8-meter & {
             background-color: rgb(253, 152, 39);
         }
 
@@ -155,5 +158,21 @@
     &--first .Plaats__prop-vph-description,
     &--first .Plaats__prop-vph {
         border-top: solid 1px #000000;
+    }
+    &.experimentele-zone .Plaats__prop:after,
+    &.standwerkersplaats .Plaats__prop:after {
+        content: "";
+        position: absolute;
+        border-top: 16px solid;
+        left: 0;
+        top: 0;
+        right: 0;
+        z-index: -1;
+    }
+    &.standwerkersplaats .Plaats__prop:after {
+        border-top-color: #fbf136;
+    }
+    &.experimentele-zone .Plaats__prop:after {
+        border-top-color: #9bcdfd;
     }
 }
