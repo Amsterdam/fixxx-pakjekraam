@@ -1,1161 +1,1161 @@
 [
   {
-    "locatie": "1"
+    "plaatsId": "1"
   },
   {
-    "locatie": "2"
+    "plaatsId": "2"
   },
   {
-    "locatie": "3",
+    "plaatsId": "3",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "4",
+    "plaatsId": "4",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "5"
+    "plaatsId": "5"
   },
   {
-    "locatie": "6",
+    "plaatsId": "6",
     "properties": ["boom"]
   },
   {
-    "locatie": "7"
+    "plaatsId": "7"
   },
   {
-    "locatie": "8"
+    "plaatsId": "8"
   },
   {
-    "locatie": "9",
+    "plaatsId": "9",
     "properties": ["boom"]
   },
   {
-    "locatie": "10"
+    "plaatsId": "10"
   },
   {
-    "locatie": "11"
+    "plaatsId": "11"
   },
   {
-    "locatie": "12"
+    "plaatsId": "12"
   },
   {
-    "locatie": "13"
+    "plaatsId": "13"
   },
   {
-    "locatie": "14",
+    "plaatsId": "14",
     "properties": ["boom"]
   },
   {
-    "locatie": "15"
+    "plaatsId": "15"
   },
   {
-    "locatie": "16"
+    "plaatsId": "16"
   },
   {
-    "locatie": "17",
+    "plaatsId": "17",
     "properties": ["boom"]
   },
   {
-    "locatie": "18"
+    "plaatsId": "18"
   },
   {
-    "locatie": "19"
+    "plaatsId": "19"
   },
   {
-    "locatie": "20"
+    "plaatsId": "20"
   },
   {
-    "locatie": "21"
+    "plaatsId": "21"
   },
   {
-    "locatie": "22"
+    "plaatsId": "22"
   },
   {
-    "locatie": "23",
+    "plaatsId": "23",
     "properties": ["boom"]
   },
   {
-    "locatie": "24"
+    "plaatsId": "24"
   },
   {
-    "locatie": "25"
+    "plaatsId": "25"
   },
   {
-    "locatie": "26"
+    "plaatsId": "26"
   },
   {
-    "locatie": "27"
+    "plaatsId": "27"
   },
   {
-    "locatie": "28",
+    "plaatsId": "28",
     "properties": ["boom"]
   },
   {
-    "locatie": "29"
+    "plaatsId": "29"
   },
   {
-    "locatie": "30"
+    "plaatsId": "30"
   },
   {
-    "locatie": "31",
+    "plaatsId": "31",
     "properties": ["boom"]
   },
   {
-    "locatie": "32"
+    "plaatsId": "32"
   },
   {
-    "locatie": "33",
+    "plaatsId": "33",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "34",
+    "plaatsId": "34",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "35"
+    "plaatsId": "35"
   },
   {
-    "locatie": "36"
+    "plaatsId": "36"
   },
   {
-    "locatie": "37"
+    "plaatsId": "37"
   },
   {
-    "locatie": "38"
+    "plaatsId": "38"
   },
   {
-    "locatie": "39"
+    "plaatsId": "39"
   },
   {
-    "locatie": "40"
+    "plaatsId": "40"
   },
   {
-    "locatie": "41"
+    "plaatsId": "41"
   },
   {
-    "locatie": "42"
+    "plaatsId": "42"
   },
   {
-    "locatie": "43"
+    "plaatsId": "43"
   },
   {
-    "locatie": "44"
+    "plaatsId": "44"
   },
   {
-    "locatie": "45"
+    "plaatsId": "45"
   },
   {
-    "locatie": "46"
+    "plaatsId": "46"
   },
   {
-    "locatie": "47"
+    "plaatsId": "47"
   },
   {
-    "locatie": "48"
+    "plaatsId": "48"
   },
   {
-    "locatie": "49"
+    "plaatsId": "49"
   },
   {
-    "locatie": "50"
+    "plaatsId": "50"
   },
   {
-    "locatie": "51"
+    "plaatsId": "51"
   },
   {
-    "locatie": "52"
+    "plaatsId": "52"
   },
   {
-    "locatie": "53"
+    "plaatsId": "53"
   },
   {
-    "locatie": "54"
+    "plaatsId": "54"
   },
   {
-    "locatie": "55"
+    "plaatsId": "55"
   },
   {
-    "locatie": "56"
+    "plaatsId": "56"
   },
   {
-    "locatie": "57"
+    "plaatsId": "57"
   },
   {
-    "locatie": "58"
+    "plaatsId": "58"
   },
   {
-    "locatie": "59"
+    "plaatsId": "59"
   },
   {
-    "locatie": "60"
+    "plaatsId": "60"
   },
   {
-    "locatie": "61"
+    "plaatsId": "61"
   },
   {
-    "locatie": "62"
+    "plaatsId": "62"
   },
   {
-    "locatie": "63"
+    "plaatsId": "63"
   },
   {
-    "locatie": "64"
+    "plaatsId": "64"
   },
   {
-    "locatie": "65"
+    "plaatsId": "65"
   },
   {
-    "locatie": "66"
+    "plaatsId": "66"
   },
   {
-    "locatie": "67"
+    "plaatsId": "67"
   },
   {
-    "locatie": "68"
+    "plaatsId": "68"
   },
   {
-    "locatie": "69"
+    "plaatsId": "69"
   },
   {
-    "locatie": "70"
+    "plaatsId": "70"
   },
   {
-    "locatie": "71"
+    "plaatsId": "71"
   },
   {
-    "locatie": "72"
+    "plaatsId": "72"
   },
   {
-    "locatie": "73"
+    "plaatsId": "73"
   },
   {
-    "locatie": "74"
+    "plaatsId": "74"
   },
   {
-    "locatie": "75"
+    "plaatsId": "75"
   },
   {
-    "locatie": "76"
+    "plaatsId": "76"
   },
   {
-    "locatie": "77"
+    "plaatsId": "77"
   },
   {
-    "locatie": "78"
+    "plaatsId": "78"
   },
   {
-    "locatie": "79"
+    "plaatsId": "79"
   },
   {
-    "locatie": "80"
+    "plaatsId": "80"
   },
   {
-    "locatie": "81"
+    "plaatsId": "81"
   },
   {
-    "locatie": "82"
+    "plaatsId": "82"
   },
   {
-    "locatie": "83"
+    "plaatsId": "83"
   },
   {
-    "locatie": "84"
+    "plaatsId": "84"
   },
   {
-    "locatie": "85"
+    "plaatsId": "85"
   },
   {
-    "locatie": "86"
+    "plaatsId": "86"
   },
   {
-    "locatie": "87"
+    "plaatsId": "87"
   },
   {
-    "locatie": "88"
+    "plaatsId": "88"
   },
   {
-    "locatie": "89"
+    "plaatsId": "89"
   },
   {
-    "locatie": "90"
+    "plaatsId": "90"
   },
   {
-    "locatie": "91"
+    "plaatsId": "91"
   },
   {
-    "locatie": "92"
+    "plaatsId": "92"
   },
   {
-    "locatie": "93"
+    "plaatsId": "93"
   },
   {
-    "locatie": "94"
+    "plaatsId": "94"
   },
   {
-    "locatie": "95"
+    "plaatsId": "95"
   },
   {
-    "locatie": "96"
+    "plaatsId": "96"
   },
   {
-    "locatie": "97"
+    "plaatsId": "97"
   },
   {
-    "locatie": "98"
+    "plaatsId": "98"
   },
   {
-    "locatie": "99"
+    "plaatsId": "99"
   },
   {
-    "locatie": "100"
+    "plaatsId": "100"
   },
   {
-    "locatie": "101",
+    "plaatsId": "101",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "102",
+    "plaatsId": "102",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "103"
+    "plaatsId": "103"
   },
   {
-    "locatie": "104",
+    "plaatsId": "104",
     "properties": ["boom"]
   },
   {
-    "locatie": "105"
+    "plaatsId": "105"
   },
   {
-    "locatie": "106"
+    "plaatsId": "106"
   },
   {
-    "locatie": "107",
+    "plaatsId": "107",
     "properties": ["boom"]
   },
   {
-    "locatie": "108"
+    "plaatsId": "108"
   },
   {
-    "locatie": "109"
+    "plaatsId": "109"
   },
   {
-    "locatie": "110"
+    "plaatsId": "110"
   },
   {
-    "locatie": "111"
+    "plaatsId": "111"
   },
   {
-    "locatie": "112",
+    "plaatsId": "112",
     "properties": ["boom"]
   },
   {
-    "locatie": "113",
+    "plaatsId": "113",
     "properties": ["boom"]
   },
   {
-    "locatie": "114"
+    "plaatsId": "114"
   },
   {
-    "locatie": "115"
+    "plaatsId": "115"
   },
   {
-    "locatie": "116"
+    "plaatsId": "116"
   },
   {
-    "locatie": "117"
+    "plaatsId": "117"
   },
   {
-    "locatie": "118",
+    "plaatsId": "118",
     "properties": ["boom"]
   },
   {
-    "locatie": "119"
+    "plaatsId": "119"
   },
   {
-    "locatie": "120"
+    "plaatsId": "120"
   },
   {
-    "locatie": "121",
+    "plaatsId": "121",
     "properties": ["boom"]
   },
   {
-    "locatie": "122"
+    "plaatsId": "122"
   },
   {
-    "locatie": "123"
+    "plaatsId": "123"
   },
   {
-    "locatie": "124"
+    "plaatsId": "124"
   },
   {
-    "locatie": "125"
+    "plaatsId": "125"
   },
   {
-    "locatie": "126",
+    "plaatsId": "126",
     "properties": ["boom"]
   },
   {
-    "locatie": "127"
+    "plaatsId": "127"
   },
   {
-    "locatie": "128"
+    "plaatsId": "128"
   },
   {
-    "locatie": "129",
+    "plaatsId": "129",
     "properties": ["boom"]
   },
   {
-    "locatie": "130"
+    "plaatsId": "130"
   },
   {
-    "locatie": "131"
+    "plaatsId": "131"
   },
   {
-    "locatie": "132",
+    "plaatsId": "132",
     "properties": ["boom"]
   },
   {
-    "locatie": "133"
+    "plaatsId": "133"
   },
   {
-    "locatie": "134"
+    "plaatsId": "134"
   },
   {
-    "locatie": "135",
+    "plaatsId": "135",
     "tags": ["promo"],
     "properties": ["boom"]
   },
   {
-    "locatie": "136"
+    "plaatsId": "136"
   },
   {
-    "locatie": "137"
+    "plaatsId": "137"
   },
   {
-    "locatie": "138",
+    "plaatsId": "138",
     "properties": ["boom"]
   },
   {
-    "locatie": "139"
+    "plaatsId": "139"
   },
   {
-    "locatie": "140"
+    "plaatsId": "140"
   },
   {
-    "locatie": "141"
+    "plaatsId": "141"
   },
   {
-    "locatie": "142",
+    "plaatsId": "142",
     "tags": ["standwerkersplaats"]
   },
   {
-    "locatie": "143",
+    "plaatsId": "143",
     "properties": ["boom"]
   },
   {
-    "locatie": "144",
+    "plaatsId": "144",
     "properties": ["boom"]
   },
   {
-    "locatie": "145"
+    "plaatsId": "145"
   },
   {
-    "locatie": "146"
+    "plaatsId": "146"
   },
   {
-    "locatie": "147"
+    "plaatsId": "147"
   },
   {
-    "locatie": "148"
+    "plaatsId": "148"
   },
   {
-    "locatie": "149",
+    "plaatsId": "149",
     "properties": ["boom"]
   },
   {
-    "locatie": "150",
+    "plaatsId": "150",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "151",
+    "plaatsId": "151",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "152"
+    "plaatsId": "152"
   },
   {
-    "locatie": "153"
+    "plaatsId": "153"
   },
   {
-    "locatie": "154"
+    "plaatsId": "154"
   },
   {
-    "locatie": "155"
+    "plaatsId": "155"
   },
   {
-    "locatie": "156"
+    "plaatsId": "156"
   },
   {
-    "locatie": "157"
+    "plaatsId": "157"
   },
   {
-    "locatie": "158"
+    "plaatsId": "158"
   },
   {
-    "locatie": "159"
+    "plaatsId": "159"
   },
   {
-    "locatie": "160"
+    "plaatsId": "160"
   },
   {
-    "locatie": "161"
+    "plaatsId": "161"
   },
   {
-    "locatie": "162"
+    "plaatsId": "162"
   },
   {
-    "locatie": "163"
+    "plaatsId": "163"
   },
   {
-    "locatie": "164"
+    "plaatsId": "164"
   },
   {
-    "locatie": "165"
+    "plaatsId": "165"
   },
   {
-    "locatie": "166"
+    "plaatsId": "166"
   },
   {
-    "locatie": "167"
+    "plaatsId": "167"
   },
   {
-    "locatie": "168"
+    "plaatsId": "168"
   },
   {
-    "locatie": "169"
+    "plaatsId": "169"
   },
   {
-    "locatie": "170"
+    "plaatsId": "170"
   },
   {
-    "locatie": "171"
+    "plaatsId": "171"
   },
   {
-    "locatie": "172"
+    "plaatsId": "172"
   },
   {
-    "locatie": "173"
+    "plaatsId": "173"
   },
   {
-    "locatie": "174"
+    "plaatsId": "174"
   },
   {
-    "locatie": "175"
+    "plaatsId": "175"
   },
   {
-    "locatie": "176"
+    "plaatsId": "176"
   },
   {
-    "locatie": "177"
+    "plaatsId": "177"
   },
   {
-    "locatie": "178"
+    "plaatsId": "178"
   },
   {
-    "locatie": "179"
+    "plaatsId": "179"
   },
   {
-    "locatie": "180"
+    "plaatsId": "180"
   },
   {
-    "locatie": "181"
+    "plaatsId": "181"
   },
   {
-    "locatie": "182"
+    "plaatsId": "182"
   },
   {
-    "locatie": "183"
+    "plaatsId": "183"
   },
   {
-    "locatie": "184"
+    "plaatsId": "184"
   },
   {
-    "locatie": "185"
+    "plaatsId": "185"
   },
   {
-    "locatie": "186"
+    "plaatsId": "186"
   },
   {
-    "locatie": "187"
+    "plaatsId": "187"
   },
   {
-    "locatie": "188"
+    "plaatsId": "188"
   },
   {
-    "locatie": "189"
+    "plaatsId": "189"
   },
   {
-    "locatie": "190"
+    "plaatsId": "190"
   },
   {
-    "locatie": "191"
+    "plaatsId": "191"
   },
   {
-    "locatie": "192"
+    "plaatsId": "192"
   },
   {
-    "locatie": "193"
+    "plaatsId": "193"
   },
   {
-    "locatie": "194"
+    "plaatsId": "194"
   },
   {
-    "locatie": "195"
+    "plaatsId": "195"
   },
   {
-    "locatie": "196"
+    "plaatsId": "196"
   },
   {
-    "locatie": "197"
+    "plaatsId": "197"
   },
   {
-    "locatie": "198"
+    "plaatsId": "198"
   },
   {
-    "locatie": "199"
+    "plaatsId": "199"
   },
   {
-    "locatie": "200"
+    "plaatsId": "200"
   },
   {
-    "locatie": "201",
+    "plaatsId": "201",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "202",
+    "plaatsId": "202",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "203"
+    "plaatsId": "203"
   },
   {
-    "locatie": "204"
+    "plaatsId": "204"
   },
   {
-    "locatie": "205"
+    "plaatsId": "205"
   },
   {
-    "locatie": "206"
+    "plaatsId": "206"
   },
   {
-    "locatie": "207"
+    "plaatsId": "207"
   },
   {
-    "locatie": "208"
+    "plaatsId": "208"
   },
   {
-    "locatie": "209",
+    "plaatsId": "209",
     "properties": ["boom"]
   },
   {
-    "locatie": "210"
+    "plaatsId": "210"
   },
   {
-    "locatie": "211"
+    "plaatsId": "211"
   },
   {
-    "locatie": "212",
+    "plaatsId": "212",
     "properties": ["boom"]
   },
   {
-    "locatie": "213"
+    "plaatsId": "213"
   },
   {
-    "locatie": "214"
+    "plaatsId": "214"
   },
   {
-    "locatie": "215",
+    "plaatsId": "215",
     "properties": ["boom"]
   },
   {
-    "locatie": "216"
+    "plaatsId": "216"
   },
   {
-    "locatie": "217"
+    "plaatsId": "217"
   },
   {
-    "locatie": "218"
+    "plaatsId": "218"
   },
   {
-    "locatie": "219"
+    "plaatsId": "219"
   },
   {
-    "locatie": "220",
+    "plaatsId": "220",
     "properties": ["boom"]
   },
   {
-    "locatie": "221"
+    "plaatsId": "221"
   },
   {
-    "locatie": "222"
+    "plaatsId": "222"
   },
   {
-    "locatie": "223",
+    "plaatsId": "223",
     "properties": ["boom"]
   },
   {
-    "locatie": "224"
+    "plaatsId": "224"
   },
   {
-    "locatie": "225"
+    "plaatsId": "225"
   },
   {
-    "locatie": "226"
+    "plaatsId": "226"
   },
   {
-    "locatie": "227"
+    "plaatsId": "227"
   },
   {
-    "locatie": "228",
+    "plaatsId": "228",
     "properties": ["boom"]
   },
   {
-    "locatie": "229"
+    "plaatsId": "229"
   },
   {
-    "locatie": "230"
+    "plaatsId": "230"
   },
   {
-    "locatie": "231",
+    "plaatsId": "231",
     "properties": ["boom"]
   },
   {
-    "locatie": "232"
+    "plaatsId": "232"
   },
   {
-    "locatie": "233"
+    "plaatsId": "233"
   },
   {
-    "locatie": "234"
+    "plaatsId": "234"
   },
   {
-    "locatie": "235"
+    "plaatsId": "235"
   },
   {
-    "locatie": "236",
+    "plaatsId": "236",
     "properties": ["boom"]
   },
   {
-    "locatie": "237"
+    "plaatsId": "237"
   },
   {
-    "locatie": "238"
+    "plaatsId": "238"
   },
   {
-    "locatie": "239",
+    "plaatsId": "239",
     "properties": ["boom"]
   },
   {
-    "locatie": "240"
+    "plaatsId": "240"
   },
   {
-    "locatie": "241"
+    "plaatsId": "241"
   },
   {
-    "locatie": "242",
+    "plaatsId": "242",
     "properties": ["boom"]
   },
   {
-    "locatie": "243"
+    "plaatsId": "243"
   },
   {
-    "locatie": "244"
+    "plaatsId": "244"
   },
   {
-    "locatie": "245",
+    "plaatsId": "245",
     "properties": ["boom"]
   },
   {
-    "locatie": "246"
+    "plaatsId": "246"
   },
   {
-    "locatie": "247"
+    "plaatsId": "247"
   },
   {
-    "locatie": "248"
+    "plaatsId": "248"
   },
   {
-    "locatie": "249"
+    "plaatsId": "249"
   },
   {
-    "locatie": "250",
+    "plaatsId": "250",
     "branche": ["promo"],
     "properties": ["boom"]
   },
   {
-    "locatie": "251"
+    "plaatsId": "251"
   },
   {
-    "locatie": "252"
+    "plaatsId": "252"
   },
   {
-    "locatie": "253",
+    "plaatsId": "253",
     "properties": ["boom"]
   },
   {
-    "locatie": "254"
+    "plaatsId": "254"
   },
   {
-    "locatie": "255"
+    "plaatsId": "255"
   },
   {
-    "locatie": "256"
+    "plaatsId": "256"
   },
   {
-    "locatie": "257"
+    "plaatsId": "257"
   },
   {
-    "locatie": "258",
+    "plaatsId": "258",
     "properties": ["boom"]
   },
   {
-    "locatie": "259"
+    "plaatsId": "259"
   },
   {
-    "locatie": "260"
+    "plaatsId": "260"
   },
   {
-    "locatie": "261",
+    "plaatsId": "261",
     "properties": ["boom"]
   },
   {
-    "locatie": "262"
+    "plaatsId": "262"
   },
   {
-    "locatie": "263",
+    "plaatsId": "263",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "264",
+    "plaatsId": "264",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "265"
+    "plaatsId": "265"
   },
   {
-    "locatie": "266"
+    "plaatsId": "266"
   },
   {
-    "locatie": "267"
+    "plaatsId": "267"
   },
   {
-    "locatie": "268"
+    "plaatsId": "268"
   },
   {
-    "locatie": "269"
+    "plaatsId": "269"
   },
   {
-    "locatie": "270"
+    "plaatsId": "270"
   },
   {
-    "locatie": "271"
+    "plaatsId": "271"
   },
   {
-    "locatie": "272"
+    "plaatsId": "272"
   },
   {
-    "locatie": "273"
+    "plaatsId": "273"
   },
   {
-    "locatie": "274"
+    "plaatsId": "274"
   },
   {
-    "locatie": "275"
+    "plaatsId": "275"
   },
   {
-    "locatie": "276"
+    "plaatsId": "276"
   },
   {
-    "locatie": "277"
+    "plaatsId": "277"
   },
   {
-    "locatie": "278"
+    "plaatsId": "278"
   },
   {
-    "locatie": "279"
+    "plaatsId": "279"
   },
   {
-    "locatie": "280"
+    "plaatsId": "280"
   },
   {
-    "locatie": "281"
+    "plaatsId": "281"
   },
   {
-    "locatie": "282"
+    "plaatsId": "282"
   },
   {
-    "locatie": "283"
+    "plaatsId": "283"
   },
   {
-    "locatie": "284"
+    "plaatsId": "284"
   },
   {
-    "locatie": "285"
+    "plaatsId": "285"
   },
   {
-    "locatie": "286"
+    "plaatsId": "286"
   },
   {
-    "locatie": "287"
+    "plaatsId": "287"
   },
   {
-    "locatie": "288"
+    "plaatsId": "288"
   },
   {
-    "locatie": "289"
+    "plaatsId": "289"
   },
   {
-    "locatie": "290"
+    "plaatsId": "290"
   },
   {
-    "locatie": "291"
+    "plaatsId": "291"
   },
   {
-    "locatie": "292"
+    "plaatsId": "292"
   },
   {
-    "locatie": "293"
+    "plaatsId": "293"
   },
   {
-    "locatie": "294"
+    "plaatsId": "294"
   },
   {
-    "locatie": "295"
+    "plaatsId": "295"
   },
   {
-    "locatie": "296"
+    "plaatsId": "296"
   },
   {
-    "locatie": "297"
+    "plaatsId": "297"
   },
   {
-    "locatie": "298"
+    "plaatsId": "298"
   },
   {
-    "locatie": "299"
+    "plaatsId": "299"
   },
   {
-    "locatie": "300"
+    "plaatsId": "300"
   },
   {
-    "locatie": "301",
+    "plaatsId": "301",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "302",
+    "plaatsId": "302",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "303"
+    "plaatsId": "303"
   },
   {
-    "locatie": "304"
+    "plaatsId": "304"
   },
   {
-    "locatie": "305"
+    "plaatsId": "305"
   },
   {
-    "locatie": "306",
+    "plaatsId": "306",
     "properties": ["boom"]
   },
   {
-    "locatie": "307"
+    "plaatsId": "307"
   },
   {
-    "locatie": "308"
+    "plaatsId": "308"
   },
   {
-    "locatie": "309",
+    "plaatsId": "309",
     "properties": ["boom"]
   },
   {
-    "locatie": "310"
+    "plaatsId": "310"
   },
   {
-    "locatie": "311"
+    "plaatsId": "311"
   },
   {
-    "locatie": "312"
+    "plaatsId": "312"
   },
   {
-    "locatie": "313"
+    "plaatsId": "313"
   },
   {
-    "locatie": "314",
+    "plaatsId": "314",
     "properties": ["boom"]
   },
   {
-    "locatie": "315",
+    "plaatsId": "315",
     "properties": ["boom"]
   },
   {
-    "locatie": "316"
+    "plaatsId": "316"
   },
   {
-    "locatie": "317",
+    "plaatsId": "317",
     "tags": ["standwerkersplaats"]
   },
   {
-    "locatie": "318"
+    "plaatsId": "318"
   },
   {
-    "locatie": "319"
+    "plaatsId": "319"
   },
   {
-    "locatie": "320",
+    "plaatsId": "320",
     "properties": ["boom"]
   },
   {
-    "locatie": "321"
+    "plaatsId": "321"
   },
   {
-    "locatie": "322"
+    "plaatsId": "322"
   },
   {
-    "locatie": "323",
+    "plaatsId": "323",
     "properties": ["boom"]
   },
   {
-    "locatie": "324"
+    "plaatsId": "324"
   },
   {
-    "locatie": "325"
+    "plaatsId": "325"
   },
   {
-    "locatie": "326"
+    "plaatsId": "326"
   },
   {
-    "locatie": "327"
+    "plaatsId": "327"
   },
   {
-    "locatie": "328",
+    "plaatsId": "328",
     "properties": ["boom"]
   },
   {
-    "locatie": "329",
+    "plaatsId": "329",
     "properties": ["boom"]
   },
   {
-    "locatie": "330"
+    "plaatsId": "330"
   },
   {
-    "locatie": "331",
+    "plaatsId": "331",
     "tags": ["standwerkersplaats"]
   },
   {
-    "locatie": "332"
+    "plaatsId": "332"
   },
   {
-    "locatie": "333"
+    "plaatsId": "333"
   },
   {
-    "locatie": "334"
+    "plaatsId": "334"
   },
   {
-    "locatie": "335"
+    "plaatsId": "335"
   },
   {
-    "locatie": "336",
+    "plaatsId": "336",
     "properties": ["boom"]
   },
   {
-    "locatie": "337",
+    "plaatsId": "337",
     "properties": ["boom"]
   },
   {
-    "locatie": "338"
+    "plaatsId": "338"
   },
   {
-    "locatie": "339"
+    "plaatsId": "339"
   },
   {
-    "locatie": "340"
+    "plaatsId": "340"
   },
   {
-    "locatie": "341"
+    "plaatsId": "341"
   },
   {
-    "locatie": "342",
+    "plaatsId": "342",
     "properties": ["boom"]
   },
   {
-    "locatie": "343"
+    "plaatsId": "343"
   },
   {
-    "locatie": "344"
+    "plaatsId": "344"
   },
   {
-    "locatie": "345",
+    "plaatsId": "345",
     "properties": ["boom"]
   },
   {
-    "locatie": "346"
+    "plaatsId": "346"
   },
   {
-    "locatie": "347"
+    "plaatsId": "347"
   },
   {
-    "locatie": "348",
+    "plaatsId": "348",
     "properties": ["boom"]
   },
   {
-    "locatie": "349"
+    "plaatsId": "349"
   },
   {
-    "locatie": "350"
+    "plaatsId": "350"
   },
   {
-    "locatie": "351",
+    "plaatsId": "351",
     "properties": ["boom"]
   },
   {
-    "locatie": "352"
+    "plaatsId": "352"
   },
   {
-    "locatie": "353"
+    "plaatsId": "353"
   },
   {
-    "locatie": "354"
+    "plaatsId": "354"
   },
   {
-    "locatie": "355"
+    "plaatsId": "355"
   },
   {
-    "locatie": "356",
+    "plaatsId": "356",
     "properties": ["boom"]
   },
   {
-    "locatie": "357"
+    "plaatsId": "357"
   },
   {
-    "locatie": "358"
+    "plaatsId": "358"
   },
   {
-    "locatie": "359",
+    "plaatsId": "359",
     "properties": ["boom"]
   },
   {
-    "locatie": "360"
+    "plaatsId": "360"
   },
   {
-    "locatie": "361",
+    "plaatsId": "361",
     "properties": ["lantaarnpaal"]
   },
   {
-    "locatie": "362",
+    "plaatsId": "362",
     "properties": ["lantaarnpaal"]
   }
 ]

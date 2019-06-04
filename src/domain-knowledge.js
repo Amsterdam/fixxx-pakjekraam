@@ -58,7 +58,7 @@ const formatOndernemerName = ondernemer =>
 
 const ondernemersToLocatieKeyValue = array =>
     array.reduce((obj, item) => {
-        item.locatie.reduce((ar, i) => {
+        item.plaatsen.reduce((ar, i) => {
             obj[i] = item;
 
             return ar;
@@ -69,8 +69,8 @@ const ondernemersToLocatieKeyValue = array =>
 
 const obstakelsToLocatieKeyValue = array =>
     array.reduce((total, obstakel) => {
-        total[String(obstakel.kraamA)] = total[String(obstakel.kraamA)] || obstakel.obstakel;
-        total[String(obstakel.kraamA)].concat(obstakel.obstakel);
+        total[obstakel.kraamA] = total[obstakel.kraamA] || obstakel.obstakel;
+        total[obstakel.kraamA].concat(obstakel.obstakel);
 
         return total;
     }, {});

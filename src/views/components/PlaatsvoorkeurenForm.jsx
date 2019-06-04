@@ -3,14 +3,14 @@ const PropTypes = require('prop-types');
 const { formatOndernemerName } = require('../../domain-knowledge.js');
 const { stringSort, flatten } = require('../../util.js');
 
-const plaatsSort = (plaatsA, plaatsB) => stringSort(plaatsA.locatie, plaatsB.locatie);
+const plaatsSort = (plaatsA, plaatsB) => stringSort(plaatsA.plaatsId, plaatsB.plaatsId);
 
 const MarktplaatsSelect = ({ id, name, markt, value, optional, readonly }) => (
     <select name={name} id={id} disabled={readonly}>
         {optional ? <option value="" /> : null}
         {(markt.marktplaatsen || []).sort(plaatsSort).map(plaats => (
-            <option key={plaats.locatie} value={plaats.locatie} selected={String(plaats.locatie) === String(value)}>
-                {plaats.locatie}
+            <option key={plaats.plaatsId} value={plaats.plaatsId} selected={plaats.plaatsId === value}>
+                {plaats.plaatsId}
             </option>
         ))}
     </select>

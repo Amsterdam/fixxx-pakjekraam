@@ -30,7 +30,7 @@ class IndelingslijstenPage extends React.Component {
             markt,
         } = this.props.data;
         const { datum, type, user } = this.props;
-        const plaatsList = arrayToObject(locaties, 'locatie');
+        const plaatsList = arrayToObject(locaties, 'plaatsId');
         const vphl = ondernemersToLocatieKeyValue(ondernemers);
         const obstakels = obstakelsToLocatieKeyValue(geografie.obstakels);
 

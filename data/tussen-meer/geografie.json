@@ -1,23 +1,23 @@
 {
   "obstakels": [
     {
-      "kraamA": 65,
-      "kraamB": 64,
+      "kraamA": "65",
+      "kraamB": "64",
       "obstakel": ["loopje"]
     },
     {
-      "kraamA": 5,
-      "kraamB": 6,
+      "kraamA": "5",
+      "kraamB": "6",
       "obstakel": ["loopje"]
     },
     {
-      "kraamA": 19,
-      "kraamB": 20,
+      "kraamA": "19",
+      "kraamB": "20",
       "obstakel": ["loopje"]
     },
     {
-      "kraamA": 51,
-      "kraamB": 50,
+      "kraamA": "51",
+      "kraamB": "50",
       "obstakel": ["loopje"]
     }
   ]

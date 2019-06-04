@@ -86,7 +86,7 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
                 <span className={'icon icon-' + (plaatsProps ? plaatsProps[0] : '')} />
             </td>
             <td className="Plaats__prop Plaats__prop-plaats-nr">
-                {plaats.locatie}
+                {plaats.plaatsId}
                 {color && <PrintableBackground color={color} />}
             </td>
 

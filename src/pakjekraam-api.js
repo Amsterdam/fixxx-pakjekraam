@@ -74,7 +74,6 @@ const getIndelingslijstInput = (token, marktId, date) =>
                         description: formatOndernemerName(data.koopman),
                         id: erkenningsnummer,
                         erkenningsNummer: erkenningsnummer,
-                        locatie: data.vastePlaatsen, // FIXME: Remove deprecated `locatie`
                         plaatsen: data.vastePlaatsen,
                         sollicitatieNummer,
                         status,
@@ -101,7 +100,7 @@ const getIndelingslijstInput = (token, marktId, date) =>
             geografie,
             markt,
             marktplaatsen: locaties.map(locatie => ({
-                plaatsId: locatie.locatie,
+                plaatsId: locatie.plaatsId,
                 branches: locatie.branche,
                 inactive: locatie.inactive,
             })),

@@ -1,1251 +1,1251 @@
 [
   {
-    "locatie": 1,
+    "plaatsId": "1",
     "branche": ["exp"],
     "properties": ["boom"]
   },
   {
-    "locatie": 2,
+    "plaatsId": "2",
     "branche": ["bak"],
     "properties": ["boom"]
   },
   {
-    "locatie": 3,
+    "plaatsId": "3",
     "branche": ["exp"],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 4,
+    "plaatsId": "4",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 5,
+    "plaatsId": "5",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 6,
+    "plaatsId": "6",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 7,
+    "plaatsId": "7",
     "branche": [],
     "properties": ["boom,dubbel"]
   },
   {
-    "locatie": 8,
+    "plaatsId": "8",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 9,
+    "plaatsId": "9",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 10,
+    "plaatsId": "10",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 11,
+    "plaatsId": "11",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 12,
+    "plaatsId": "12",
     "branche": ["exp"],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 13,
+    "plaatsId": "13",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 14,
+    "plaatsId": "14",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 15,
+    "plaatsId": "15",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 16,
+    "plaatsId": "16",
     "branche": [],
     "properties": ["boom,dubbel"]
   },
   {
-    "locatie": 17,
+    "plaatsId": "17",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 18,
+    "plaatsId": "18",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 19,
+    "plaatsId": "19",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 20,
+    "plaatsId": "20",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 21,
+    "plaatsId": "21",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 22,
+    "plaatsId": "22",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 23,
+    "plaatsId": "23",
     "branche": ["bak"],
     "properties": []
   },
   {
-    "locatie": 24,
+    "plaatsId": "24",
     "branche": ["blm"],
     "properties": []
   },
   {
-    "locatie": 25,
+    "plaatsId": "25",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 26,
+    "plaatsId": "26",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 27,
+    "plaatsId": "27",
     "branche": ["stn"],
     "properties": []
   },
   {
-    "locatie": 28,
+    "plaatsId": "28",
     "branche": ["agf"],
     "properties": ["boom"]
   },
   {
-    "locatie": 29,
+    "plaatsId": "29",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 30,
+    "plaatsId": "30",
     "branche": [],
     "properties": ["electra,dubbel"]
   },
   {
-    "locatie": 31,
+    "plaatsId": "31",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 32,
+    "plaatsId": "32",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 33,
+    "plaatsId": "33",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 34,
+    "plaatsId": "34",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 35,
+    "plaatsId": "35",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 36,
+    "plaatsId": "36",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 37,
+    "plaatsId": "37",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 38,
+    "plaatsId": "38",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 39,
+    "plaatsId": "39",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 40,
+    "plaatsId": "40",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 41,
+    "plaatsId": "41",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 42,
+    "plaatsId": "42",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 43,
+    "plaatsId": "43",
     "branche": [],
     "properties": ["electra,dubbel"]
   },
   {
-    "locatie": 44,
+    "plaatsId": "44",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 45,
+    "plaatsId": "45",
     "branche": ["exp"],
     "properties": []
   },
   {
-    "locatie": 46,
+    "plaatsId": "46",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 47,
+    "plaatsId": "47",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 48,
+    "plaatsId": "48",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 49,
+    "plaatsId": "49",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 50,
+    "plaatsId": "50",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 51,
+    "plaatsId": "51",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 52,
+    "plaatsId": "52",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 53,
+    "plaatsId": "53",
     "branche": ["bak"],
     "properties": []
   },
   {
-    "locatie": 54,
+    "plaatsId": "54",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 55,
+    "plaatsId": "55",
     "branche": [],
     "properties": ["bankje"]
   },
   {
-    "locatie": 56,
+    "plaatsId": "56",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 57,
+    "plaatsId": "57",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 58,
+    "plaatsId": "58",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 59,
+    "plaatsId": "59",
     "branche": [],
     "properties": ["bankje"]
   },
   {
-    "locatie": 60,
+    "plaatsId": "60",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 61,
+    "plaatsId": "61",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 62,
+    "plaatsId": "62",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 63,
+    "plaatsId": "63",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 64,
+    "plaatsId": "64",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 65,
+    "plaatsId": "65",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 66,
+    "plaatsId": "66",
     "branche": [],
     "properties": ["boom,dubbel"]
   },
   {
-    "locatie": 67,
+    "plaatsId": "67",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 68,
+    "plaatsId": "68",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 69,
+    "plaatsId": "69",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 70,
+    "plaatsId": "70",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 71,
+    "plaatsId": "71",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 72,
+    "plaatsId": "72",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 73,
+    "plaatsId": "73",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 74,
+    "plaatsId": "74",
     "branche": ["exp"],
     "properties": ["dubbel,bankje,boom"]
   },
   {
-    "locatie": 75,
+    "plaatsId": "75",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 76,
+    "plaatsId": "76",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 77,
+    "plaatsId": "77",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 78,
+    "plaatsId": "78",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 79,
+    "plaatsId": "79",
     "branche": ["kas"],
     "properties": []
   },
   {
-    "locatie": 80,
+    "plaatsId": "80",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 81,
+    "plaatsId": "81",
     "branche": ["baks7"],
     "properties": []
   },
   {
-    "locatie": 82,
+    "plaatsId": "82",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 83,
+    "plaatsId": "83",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 84,
+    "plaatsId": "84",
     "branche": [],
     "properties": ["electra,dubbel"]
   },
   {
-    "locatie": 85,
+    "plaatsId": "85",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 86,
+    "plaatsId": "86",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 87,
+    "plaatsId": "87",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 88,
+    "plaatsId": "88",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 89,
+    "plaatsId": "89",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 90,
+    "plaatsId": "90",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 91,
+    "plaatsId": "91",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 92,
+    "plaatsId": "92",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 93,
+    "plaatsId": "93",
     "branche": ["stn"],
     "properties": []
   },
   {
-    "locatie": 94,
+    "plaatsId": "94",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 95,
+    "plaatsId": "95",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 96,
+    "plaatsId": "96",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 97,
+    "plaatsId": "97",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 98,
+    "plaatsId": "98",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 99,
+    "plaatsId": "99",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 100,
+    "plaatsId": "100",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 101,
+    "plaatsId": "101",
     "branche": [],
     "properties": ["electra,dubbel"]
   },
   {
-    "locatie": 102,
+    "plaatsId": "102",
     "branche": ["agf"],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 103,
+    "plaatsId": "103",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 104,
+    "plaatsId": "104",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 105,
+    "plaatsId": "105",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 106,
+    "plaatsId": "106",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 107,
+    "plaatsId": "107",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 108,
+    "plaatsId": "108",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 109,
+    "plaatsId": "109",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 110,
+    "plaatsId": "110",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 111,
+    "plaatsId": "111",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 112,
+    "plaatsId": "112",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 113,
+    "plaatsId": "113",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 114,
+    "plaatsId": "114",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 115,
+    "plaatsId": "115",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 116,
+    "plaatsId": "116",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 117,
+    "plaatsId": "117",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 118,
+    "plaatsId": "118",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 119,
+    "plaatsId": "119",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 120,
+    "plaatsId": "120",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 121,
+    "plaatsId": "121",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 122,
+    "plaatsId": "122",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 123,
+    "plaatsId": "123",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 124,
+    "plaatsId": "124",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 125,
+    "plaatsId": "125",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 126,
+    "plaatsId": "126",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 127,
+    "plaatsId": "127",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 128,
+    "plaatsId": "128",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 129,
+    "plaatsId": "129",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 130,
+    "plaatsId": "130",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 131,
+    "plaatsId": "131",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 132,
+    "plaatsId": "132",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 133,
+    "plaatsId": "133",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 134,
+    "plaatsId": "134",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 135,
+    "plaatsId": "135",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 136,
+    "plaatsId": "136",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 137,
+    "plaatsId": "137",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 138,
+    "plaatsId": "138",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 139,
+    "plaatsId": "139",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 140,
+    "plaatsId": "140",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 141,
+    "plaatsId": "141",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 142,
+    "plaatsId": "142",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 143,
+    "plaatsId": "143",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 144,
+    "plaatsId": "144",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 145,
+    "plaatsId": "145",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 146,
+    "plaatsId": "146",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 147,
+    "plaatsId": "147",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 148,
+    "plaatsId": "148",
     "branche": ["blm"],
     "properties": []
   },
   {
-    "locatie": 149,
+    "plaatsId": "149",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 150,
+    "plaatsId": "150",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 151,
+    "plaatsId": "151",
     "branche": ["exp"],
     "properties": []
   },
   {
-    "locatie": 152,
+    "plaatsId": "152",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 153,
+    "plaatsId": "153",
     "branche": ["exp"],
     "properties": []
   },
   {
-    "locatie": 154,
+    "plaatsId": "154",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 155,
+    "plaatsId": "155",
     "branche": ["exp"],
     "properties": ["electra"]
   },
   {
-    "locatie": 156,
+    "plaatsId": "156",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 157,
+    "plaatsId": "157",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 158,
+    "plaatsId": "158",
     "branche": [],
     "properties": ["electra,dubbel"]
   },
   {
-    "locatie": 159,
+    "plaatsId": "159",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 160,
+    "plaatsId": "160",
     "branche": ["zui"],
     "properties": []
   },
   {
-    "locatie": 161,
+    "plaatsId": "161",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 162,
+    "plaatsId": "162",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 163,
+    "plaatsId": "163",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 164,
+    "plaatsId": "164",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 165,
+    "plaatsId": "165",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 166,
+    "plaatsId": "166",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 167,
+    "plaatsId": "167",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 168,
+    "plaatsId": "168",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 169,
+    "plaatsId": "169",
     "branche": [],
     "properties": ["electra,dubbel"]
   },
   {
-    "locatie": 170,
+    "plaatsId": "170",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 171,
+    "plaatsId": "171",
     "branche": ["bak"],
     "properties": []
   },
   {
-    "locatie": 172,
+    "plaatsId": "172",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 173,
+    "plaatsId": "173",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 174,
+    "plaatsId": "174",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 175,
+    "plaatsId": "175",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 176,
+    "plaatsId": "176",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 177,
+    "plaatsId": "177",
     "branche": ["brc"],
     "properties": []
   },
   {
-    "locatie": 178,
+    "plaatsId": "178",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 179,
+    "plaatsId": "179",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 180,
+    "plaatsId": "180",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 181,
+    "plaatsId": "181",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 182,
+    "plaatsId": "182",
     "branche": ["vis"],
     "properties": []
   },
   {
-    "locatie": 183,
+    "plaatsId": "183",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 184,
+    "plaatsId": "184",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 185,
+    "plaatsId": "185",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 186,
+    "plaatsId": "186",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 187,
+    "plaatsId": "187",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 188,
+    "plaatsId": "188",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 189,
+    "plaatsId": "189",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 190,
+    "plaatsId": "190",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 191,
+    "plaatsId": "191",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 192,
+    "plaatsId": "192",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 193,
+    "plaatsId": "193",
     "branche": ["olv"],
     "properties": []
   },
   {
-    "locatie": 194,
+    "plaatsId": "194",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 195,
+    "plaatsId": "195",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 196,
+    "plaatsId": "196",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 197,
+    "plaatsId": "197",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 198,
+    "plaatsId": "198",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 199,
+    "plaatsId": "199",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 200,
+    "plaatsId": "200",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 201,
+    "plaatsId": "201",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 202,
+    "plaatsId": "202",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 203,
+    "plaatsId": "203",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 204,
+    "plaatsId": "204",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 205,
+    "plaatsId": "205",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 206,
+    "plaatsId": "206",
     "branche": [],
     "properties": ["electra"]
   },
   {
-    "locatie": 207,
+    "plaatsId": "207",
     "branche": ["bak"],
     "properties": []
   },
   {
-    "locatie": 208,
+    "plaatsId": "208",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 209,
+    "plaatsId": "209",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 210,
+    "plaatsId": "210",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 211,
+    "plaatsId": "211",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 212,
+    "plaatsId": "212",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 213,
+    "plaatsId": "213",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 214,
+    "plaatsId": "214",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 215,
+    "plaatsId": "215",
     "branche": ["zui"],
     "properties": []
   },
   {
-    "locatie": 216,
+    "plaatsId": "216",
     "branche": [],
     "properties": ["electra,dubbel"]
   },
   {
-    "locatie": 217,
+    "plaatsId": "217",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 218,
+    "plaatsId": "218",
     "branche": ["stn"],
     "properties": []
   },
   {
-    "locatie": 219,
+    "plaatsId": "219",
     "branche": ["baks6"],
     "properties": ["electra"]
   },
   {
-    "locatie": 220,
+    "plaatsId": "220",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 221,
+    "plaatsId": "221",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 222,
+    "plaatsId": "222",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 223,
+    "plaatsId": "223",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 224,
+    "plaatsId": "224",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 225,
+    "plaatsId": "225",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 226,
+    "plaatsId": "226",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 227,
+    "plaatsId": "227",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 228,
+    "plaatsId": "228",
     "branche": [],
     "properties": ["boom"]
   },
   {
-    "locatie": 229,
+    "plaatsId": "229",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 230,
+    "plaatsId": "230",
     "branche": [],
     "properties": ["electra,dubbel"]
   },
   {
-    "locatie": 231,
+    "plaatsId": "231",
     "branche": [],
     "properties": ["electra,dubbel"]
   },
   {
-    "locatie": 232,
+    "plaatsId": "232",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 233,
+    "plaatsId": "233",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 234,
+    "plaatsId": "234",
     "branche": [],
     "properties": ["dubbel,boom"]
   },
   {
-    "locatie": 235,
+    "plaatsId": "235",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 236,
+    "plaatsId": "236",
     "branche": ["exp"],
     "properties": []
   },
   {
-    "locatie": 237,
+    "plaatsId": "237",
     "branche": ["baks5"],
     "properties": []
   },
   {
-    "locatie": 238,
+    "plaatsId": "238",
     "branche": ["exp"],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 239,
+    "plaatsId": "239",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 240,
+    "plaatsId": "240",
     "branche": [],
     "properties": ["bankje"]
   },
   {
-    "locatie": 241,
+    "plaatsId": "241",
     "branche": [],
     "properties": ["electra,dubbel"]
   },
   {
-    "locatie": 242,
+    "plaatsId": "242",
     "branche": [],
     "properties": ["boom,dubbel"]
   },
   {
-    "locatie": 243,
+    "plaatsId": "243",
     "branche": [],
     "properties": ["bankje"]
   },
   {
-    "locatie": 244,
+    "plaatsId": "244",
     "branche": ["exp"],
     "properties": []
   },
   {
-    "locatie": 245,
+    "plaatsId": "245",
     "branche": [],
     "properties": ["dubbel"]
   },
   {
-    "locatie": 246,
+    "plaatsId": "246",
     "branche": [],
     "properties": []
   },
   {
-    "locatie": 247,
+    "plaatsId": "247",
     "branche": ["exp"],
     "properties": ["electra"]
   },
   {
-    "locatie": 248,
+    "plaatsId": "248",
     "branche": [],
     "properties": ["electra,dubbel"]
   },
   {
-    "locatie": 249,
+    "plaatsId": "249",
     "branche": ["exp"],
     "properties": []
   },
   {
-    "locatie": 250,
+    "plaatsId": "250",
     "branche": [],
     "properties": []
   }

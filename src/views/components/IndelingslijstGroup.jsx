@@ -52,8 +52,8 @@ const IndelingslijstGroup = ({
                         const plaatsProps = {
                             first,
                             key: plaatsNr,
-                            vph: vphl[String(plaatsNr)],
-                            plaats: plaatsList[String(plaatsNr)],
+                            vph: vphl[plaatsNr],
+                            plaats: plaatsList[plaatsNr],
                             obstakels: obstakelList,
                             aanmelding,
                             markt,
@@ -62,12 +62,12 @@ const IndelingslijstGroup = ({
                             toewijzing,
                         };
 
-                        if (plaatsList[String(plaatsNr)]) {
-                            if (obstakelList[String(plaatsNr)] && obstakelList[String(plaatsNr)].length > 0) {
+                        if (plaatsList[plaatsNr]) {
+                            if (obstakelList[plaatsNr] && obstakelList[plaatsNr].length > 0) {
                                 return (
                                     <React.Fragment key={plaatsNr}>
                                         {renderPlaats(plaatsProps)}
-                                        <ObstakelList obstakelList={obstakelList[String(plaatsNr)]} />
+                                        <ObstakelList obstakelList={obstakelList[plaatsNr]} />
                                         {(first = true)}
                                     </React.Fragment>
                                 );
