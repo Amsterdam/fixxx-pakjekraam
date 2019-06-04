@@ -417,6 +417,7 @@ const voorkeurenPage = (res, token, erkenningsNummer, query, currentMarktId) => 
         .then(ondernemer =>
             Promise.all(
                 ondernemer.sollicitaties
+                    .filter(sollicitatie => !sollicitatie.doorgehaald)
                     .map(sollicitatie => sollicitatie.markt.id)
                     .map(marktId => getMarkt(token, marktId)),
             ),
