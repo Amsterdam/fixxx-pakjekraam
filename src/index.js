@@ -207,7 +207,7 @@ app.post(
          * TODO: Redirect to URL specified in URL query parameter,
          * so you go back to the page you intended to visit.
          */
-        // const next = req.query.next || '/';res.redirect(req.query.next ||'/profile');
+        res.redirect('/');
     },
 );
 
