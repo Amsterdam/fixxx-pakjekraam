@@ -33,14 +33,7 @@ class MarktDetailPage extends React.Component {
         );
 
         return (
-            <MarktDetailBase
-                bodyClass="page-markt-detail"
-                title={markt.naam}
-                datum={datum}
-                type={type}
-                user={user}
-                markt={markt}
-            >
+            <MarktDetailBase bodyClass="page-markt-detail" datum={datum} type={type} user={user} markt={markt}>
                 <div className="row">
                     <div className="col-1-2">
                         <h2>Indelingslijsten</h2>

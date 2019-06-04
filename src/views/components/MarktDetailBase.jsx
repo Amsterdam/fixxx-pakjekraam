@@ -21,12 +21,11 @@ const MarktDetailBase = ({ children, bodyClass, title, markt, type, datum, user,
                     <MarktDayLink markt={markt} offsetDate={new Date(datum).toISOString()} direction={-1} type={type} />
                 )}
                 <div className="MarktDetailHeader__title-wrapper">
-                    {title && (
-                        <h1 className="MarktDetailHeader__title">
-                            {title}: {markt.naam}
-                            {showDate && <span className="MarktDetailHeader__title-sub">{relativeDatum(datum)}</span>}
-                        </h1>
-                    )}
+                    <h1 className="MarktDetailHeader__title">
+                        {markt.naam}
+                        {title ? ': ' + title : ''}
+                        {showDate && <span className="MarktDetailHeader__title-sub">{relativeDatum(datum)}</span>}
+                    </h1>
                     {type && <PrintButton title={`Print ${type}`} />}
                 </div>
                 {showDate && (

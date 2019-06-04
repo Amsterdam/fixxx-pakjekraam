@@ -29,7 +29,7 @@ class OndernemerProfile extends React.Component {
                                         sollicitatie.markt.id
                                     }/?next=/profile/${ondernemer.erkenningsnummer}`}
                                 >
-                                    <strong>aanweizigheid</strong>
+                                    <strong>aanwezigheid</strong>
                                 </a>
                                 &nbsp;&nbsp;
                                 <a
@@ -37,7 +37,7 @@ class OndernemerProfile extends React.Component {
                                         sollicitatie.markt.id
                                     }/?next=/profile/${ondernemer.erkenningsnummer}`}
                                 >
-                                    <strong>voorkeuren</strong>
+                                    <strong>plaatsvoorkeuren</strong>
                                 </a>
                             </li>
                         ))}

@@ -35,7 +35,7 @@ class VastplaatshoudersPage extends React.Component {
         return (
             <MarktDetailBase
                 bodyClass="page-markt-vasteplaatshouders page-print"
-                title={`${markt.naam}: Vasteplaatshouders`}
+                title={`Vasteplaatshouders`}
                 markt={markt}
                 datum={datum}
                 type={type}
