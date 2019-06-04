@@ -105,7 +105,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                             <h2>{markt.naam}</h2>
                             {entries
                                 .filter(entry => entry.marktId === markt.id)
-                                .map(({ marktId, plaatsId, priority, index, readonly }, n) => (
+                                .map(({ marktId, plaatsId, priority, index, readonly }, n, arr) => (
                                     <p key={index}>
                                         <label htmlFor={`voorkeur-${index}`}>Voorkeursplaats {n + 1}:</label>
                                         <input
@@ -116,7 +116,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         <input
                                             type="hidden"
                                             name={`plaatsvoorkeuren[${index}][priority]`}
-                                            defaultValue="1"
+                                            defaultValue={priority || 1 + (arr.length - n)}
                                         />
                                         <MarktplaatsSelect
                                             name={`plaatsvoorkeuren[${index}][plaatsId]`}
