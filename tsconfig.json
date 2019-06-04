@@ -2,15 +2,27 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     "baseUrl": "src/",
+    "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "lib": ["es2017", "es6"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "dist",
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "sourceMap": true,
+    "strictNullChecks": false,
     "target": "es6"
   },
+  "exclude": ["node_modules", "dist"],
   "include": ["src/**/*"]
 }
