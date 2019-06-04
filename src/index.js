@@ -199,12 +199,15 @@ app.get('/login', function(req, res) {
     });
 });
 
-app.post('/login', passport.authenticate('local', { failureRedirect: `/login?error=${publicErrors.INCORRECT_CREDENTIALS}` }), function(req, res) {
-    /*
-     * TODO: Redirect to URL specified in URL query parameter,
-     * so you go back to the page you intended to visit.
-     */
-    // const next = req.query.next || '/';res.redirect(req.query.next ||'/profile');
+app.post(
+    '/login',
+    passport.authenticate('local', { failureRedirect: `/login?error=${publicErrors.INCORRECT_CREDENTIALS}` }),
+    function(req, res) {
+        /*
+         * TODO: Redirect to URL specified in URL query parameter,
+         * so you go back to the page you intended to visit.
+         */
+        // const next = req.query.next || '/';res.redirect(req.query.next ||'/profile');
     },
 );
 
@@ -408,7 +411,7 @@ app.post('/aanmelden/', ensureLoggedIn(), (req, res) => {
         );
 });
 
-const voorkeurenPage = (res, token, erkenningsNummer) => {
+const voorkeurenPage = (res, token, erkenningsNummer, query, currentMarktId) => {
     const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
     const marktenPromise = ondernemerPromise
         .then(ondernemer =>
@@ -420,7 +423,7 @@ const voorkeurenPage = (res, token, erkenningsNummer) => {
         )
         .then(markten =>
             Promise.all(
-                markten.map(markt =>
+                (currentMarktId ? markten.filter(markt => String(markt.id) === currentMarktId) : markten).map(markt =>
                     getMarktplaatsen(markt.id).then(marktplaatsen => ({
                         ...markt,
                         marktplaatsen,
@@ -431,14 +434,18 @@ const voorkeurenPage = (res, token, erkenningsNummer) => {
 
     Promise.all([ondernemerPromise, marktenPromise, getOndernemerVoorkeuren(erkenningsNummer)]).then(
         ([ondernemer, markten, plaatsvoorkeuren]) => {
-            res.render('VoorkeurenPage', { ondernemer, markten, plaatsvoorkeuren });
+            res.render('VoorkeurenPage', { ondernemer, markten, plaatsvoorkeuren, query });
         },
         err => errorPage(res, err),
     );
 };
 
 app.get('/voorkeuren/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
-    voorkeurenPage(res, req.user.token, req.params.erkenningsNummer);
+    voorkeurenPage(res, req.user.token, req.params.erkenningsNummer, req.query);
+});
+
+app.get('/voorkeuren/:erkenningsNummer/:marktId', ensureLoggedIn(), (req, res) => {
+    voorkeurenPage(res, req.user.token, req.params.erkenningsNummer, req.query, req.params.marktId);
 });
 
 const voorkeurenFormDataToObject = formData => ({

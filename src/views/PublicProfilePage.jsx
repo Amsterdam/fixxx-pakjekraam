@@ -25,20 +25,15 @@ class PublicProfilePage extends React.Component {
                 <Header />
                 <Content>
                     <OndernemerProfile ondernemer={ondernemer} />
-                    {/* TODO: Only show when the user has permissions to respond to someone elses RSVP */}
-                    {isVastSomewhere ? (
-                        <p>
-                            <a href={`/afmelden/${ondernemer.erkenningsnummer}/`}>Afmelding doorgeven</a>
-                        </p>
-                    ) : null}
-                    {isSollicitantSomewhere ? (
-                        <p>
-                            <a href={`/aanmelden/${ondernemer.erkenningsnummer}/`}>Aanmelden als sollicitant</a>
-                        </p>
-                    ) : null}
                     {ondernemer.sollicitaties.length > 0 ? (
                         <p>
-                            <a href={`/voorkeuren/${ondernemer.erkenningsnummer}/`}>Voorkeuren doorgeven</a>
+                            <a
+                                href={`/voorkeuren/${ondernemer.erkenningsnummer}/?next=/profile/${
+                                    ondernemer.erkenningsnummer
+                                }`}
+                            >
+                                Voorkeuren voor alle markten
+                            </a>
                         </p>
                     ) : null}
                 </Content>

@@ -30,10 +30,12 @@ class PlaatsvoorkeurenForm extends React.Component {
         plaatsvoorkeuren: PropTypes.array.isRequired,
         markten: PropTypes.array.isRequired,
         ondernemer: PropTypes.object.isRequired,
+        query: PropTypes.string,
     };
 
     render() {
-        const { markten, ondernemer, plaatsvoorkeuren } = this.props;
+        const { markten, ondernemer, plaatsvoorkeuren, query } = this.props;
+        const next = query.next ? query.next : `/voorkeuren/${ondernemer.erkenningsnummer}/`;
         const hasVoorkeur = (marktId, plaatsId) =>
             plaatsvoorkeuren.some(voorkeur => voorkeur.marktId === marktId && voorkeur.plaatsId === plaatsId) ||
             ondernemer.sollicitaties.some(
@@ -87,7 +89,7 @@ class PlaatsvoorkeurenForm extends React.Component {
         return (
             <form className="Form" method="POST" action="/voorkeuren/" encType="application/x-www-form-urlencoded">
                 <h1>Voorkeuren voor {formatOndernemerName(ondernemer)}</h1>
-                <input type="hidden" name="redirectTo" defaultValue={`/voorkeuren/${ondernemer.erkenningsnummer}/`} />
+                <input type="hidden" name="redirectTo" defaultValue={next} />
                 <p>
                     Erkenningsnummer: <strong>{ondernemer.erkenningsnummer}</strong>
                     <input

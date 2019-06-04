@@ -20,7 +20,25 @@ class OndernemerProfile extends React.Component {
                         .filter(sollicitatie => !sollicitatie.doorgehaald)
                         .map(sollicitatie => (
                             <li key={sollicitatie.markt.id}>
-                                {sollicitatie.markt.naam} {sollicitatie.sollicitatieNummer} {sollicitatie.status}
+                                <span>
+                                    {sollicitatie.markt.naam} {sollicitatie.sollicitatieNummer} {sollicitatie.status}
+                                </span>
+                                <br />
+                                <a
+                                    href={`/afmelden/${ondernemer.erkenningsnummer}/${
+                                        sollicitatie.markt.id
+                                    }/?next=/profile/${ondernemer.erkenningsnummer}`}
+                                >
+                                    <strong>aanweizigheid</strong>
+                                </a>
+                                &nbsp;&nbsp;
+                                <a
+                                    href={`/voorkeuren/${ondernemer.erkenningsnummer}/${
+                                        sollicitatie.markt.id
+                                    }/?next=/profile/${ondernemer.erkenningsnummer}`}
+                                >
+                                    <strong>voorkeuren</strong>
+                                </a>
                             </li>
                         ))}
                 </ul>

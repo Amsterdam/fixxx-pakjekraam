@@ -11,6 +11,7 @@ class VoorkeurenPage extends React.Component {
         plaatsvoorkeuren: PropTypes.array.isRequired,
         markten: PropTypes.array.isRequired,
         ondernemer: PropTypes.object.isRequired,
+        query: PropTypes.string,
     };
 
     render() {
@@ -22,6 +23,7 @@ class VoorkeurenPage extends React.Component {
                         plaatsvoorkeuren={this.props.plaatsvoorkeuren}
                         ondernemer={this.props.ondernemer}
                         markten={this.props.markten}
+                        query={this.props.query}
                     />
                 </Content>
             </Page>
