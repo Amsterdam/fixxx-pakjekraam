@@ -114,7 +114,9 @@ const getIndelingslijst = (token, marktId, date) => getIndelingslijstInput(token
 const getSollicitantenlijstInput = (token, marktId, date) =>
     Promise.all([
         getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
-            ondernemers.filter(ondernemer => !ondernemer.doorgehaald && ondernemer.status === 'soll'),
+            ondernemers.filter(
+                ondernemer => !ondernemer.doorgehaald && (ondernemer.status === 'soll' || ondernemer.status === 'vkk'),
+            ),
         ),
         getAanmeldingen(marktId, date),
         getPlaatsvoorkeuren(marktId),

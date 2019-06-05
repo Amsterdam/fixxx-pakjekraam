@@ -11,6 +11,7 @@ const OndernemerList = ({ ondernemers, markt, aanmeldingen }) => {
                     <tr>
                         <th>Nr.</th>
                         <th>Sollicitant</th>
+                        <th>Status</th>
                         <th />
                     </tr>
                 </thead>
@@ -36,6 +37,7 @@ const OndernemerList = ({ ondernemers, markt, aanmeldingen }) => {
                                     {ondernemer.koopman.voorletters && ondernemer.koopman.voorletters + ' '}
                                     {ondernemer.koopman.achternaam}
                                 </td>
+                                <td>{ondernemer.status}</td>
                                 <td
                                     className={`${
                                         aanmelding && aanmelding.attending === false
