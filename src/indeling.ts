@@ -38,6 +38,13 @@ const unique = <T>(a: T[], b: T): T[] => (a.includes(b) ? a : [...a, b]);
 const count = <T>(arrayMaybe: T | T[]): number =>
     arrayMaybe ? (Array.isArray(arrayMaybe) ? arrayMaybe.length : 1) : 0;
 
+const prioritySort = (voorkeurA?: IPlaatsvoorkeur, voorkeurB?: IPlaatsvoorkeur) => {
+    const prioA = voorkeurA && typeof voorkeurA.priority === 'number' ? voorkeurA.priority : VOORKEUR_MINIMUM_PRIORITY;
+    const prioB = voorkeurB && typeof voorkeurB.priority === 'number' ? voorkeurB.priority : VOORKEUR_MINIMUM_PRIORITY;
+
+    return numberSort(-prioA, -prioB);
+};
+
 const FULL_REASON: IAfwijzingReason = {
     code: 1,
     message: 'Alle marktplaatsen zijn reeds ingedeeld',
@@ -80,6 +87,9 @@ const getOndernemerBranches = (markt: IMarkt, ondernemer: IMarktondernemer) =>
                 brancheId,
             },
     );
+
+const getOndernemerVoorkeuren = (markt: IMarkt, ondernemer: IMarktondernemer): IPlaatsvoorkeur[] =>
+    markt.voorkeuren.filter(voorkeur => voorkeur.erkenningsNummer === ondernemer.erkenningsNummer) || [];
 
 const findOptimalSpot = (
     ondernemer: IMarktondernemer,
@@ -133,10 +143,7 @@ const findOptimalSpot = (
         const voorkeurA = voorkeuren.find(voorkeur => voorkeur.plaatsId === a.plaatsId);
         const voorkeurB = voorkeuren.find(voorkeur => voorkeur.plaatsId === b.plaatsId);
 
-        const prioA = voorkeurA ? voorkeurA.priority : VOORKEUR_MINIMUM_PRIORITY;
-        const prioB = voorkeurB ? voorkeurB.priority : VOORKEUR_MINIMUM_PRIORITY;
-
-        return numberSort(-prioA, -prioB);
+        return prioritySort(voorkeurA, voorkeurB);
     });
 
     return mogelijkePlaatsen[0];
@@ -204,7 +211,7 @@ const assignPlaats = (
     ondernemer: IMarktondernemer,
     conflictResolution: 'merge' | 'reassign' | 'keep-both' = 'keep-both',
 ) => {
-    console.debug(`Plaats toegewezen aan ${ondernemer.erkenningsNummer}: ${toewijzing.plaatsen}`, toewijzing);
+    console.debug(`Plaats toegewezen aan ${ondernemer.erkenningsNummer}: ${toewijzing.plaatsen}`);
     const existingToewijzing = findToewijzing(state, ondernemer);
 
     let newToewijzing = {
@@ -216,10 +223,7 @@ const assignPlaats = (
     };
 
     if (existingToewijzing) {
-        console.log(
-            `Ondernemer is reeds toegwezen aan plaats(en): ${existingToewijzing.plaatsen.join('/')}`,
-            toewijzing,
-        );
+        console.log(`Ondernemer is reeds toegwezen aan plaats(en): ${existingToewijzing.plaatsen.join('/')}`);
 
         if (conflictResolution === 'merge') {
             newToewijzing = mergeToewijzing(existingToewijzing, newToewijzing);
@@ -365,9 +369,7 @@ const findPlaats = (
     // mogelijkePlaatsen = mogelijkePlaatsen.filter(plaats => intersects(plaats.branches, branches));
     // }
 
-    const ondernemerVoorkeuren = state.voorkeuren.filter(
-        voorkeur => voorkeur.erkenningsNummer === ondernemer.erkenningsNummer,
-    );
+    const ondernemerVoorkeuren = getOndernemerVoorkeuren(state, ondernemer);
 
     let reason;
 
@@ -477,8 +479,6 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
         )
         .reduce(flatten, []);
 
-    console.log('Voorkeuren volgens de herindeling: ', defaultVoorkeuren);
-
     const initialState: IMarktindeling = {
         ...markt,
         toewijzingQueue: [...aanwezigen],
@@ -548,6 +548,30 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
     indeling = indeling.toewijzingQueue
         .filter(ondernemer => !heeftVastePlaatsen(ondernemer))
         .reduce(findPlaats, indeling);
+
+    indeling = indeling.toewijzingen.reduce((state, toewijzing) => {
+        const { ondernemer } = toewijzing;
+        const voorkeuren = getOndernemerVoorkeuren(state, ondernemer).sort(prioritySort);
+
+        const currentIndex = voorkeuren.findIndex(voorkeur => toewijzing.plaatsen.includes(voorkeur.plaatsId));
+        const betereVoorkeuren = voorkeuren.slice(0, currentIndex === -1 ? voorkeuren.length : currentIndex);
+
+        const beterePlaatsen = betereVoorkeuren
+            .map(voorkeur => state.openPlaatsen.find(({ plaatsId }) => plaatsId === voorkeur.plaatsId))
+            .filter(Boolean);
+
+        console.log(
+            `Voor ondernemer ${ondernemer.erkenningsNummer} zijn er nog ${
+                betereVoorkeuren.length
+            } plaatsen die meer gewenst zijn (van de in totaal ${voorkeuren.length} voorkeuren, ${voorkeuren.map(
+                voorkeur => voorkeur.plaatsId,
+            )}), en daarvan zijn nog ${beterePlaatsen.length} vrij`,
+        );
+
+        state = findPlaats(state, ondernemer, 0, [], beterePlaatsen, 'ignore');
+
+        return state;
+    }, indeling);
 
     const expansionQueue = indeling.toewijzingen.filter(
         ({ ondernemer }) => !!ondernemer.voorkeur && ondernemer.voorkeur.aantalPlaatsen > 1,

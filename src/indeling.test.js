@@ -317,7 +317,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
 });
 
 describe('Automatisch toewijzen marktplaatsen: verschuiven', () => {
-    it.skip('Een ondernemer met vaste plaats kan kiezen voor een andere plaats', () => {
+    it('Een ondernemer met vaste plaats kan kiezen voor een andere plaats', () => {
         /*
          * Scenario:
          * - 2 marktplaatsen
