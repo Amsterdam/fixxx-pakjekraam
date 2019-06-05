@@ -30,7 +30,7 @@ class VastplaatshoudersPage extends React.Component {
 
         const obstakels = obstakelsToLocatieKeyValue(geografie.obstakels);
         const vphl = ondernemersToLocatieKeyValue(ondernemers);
-        const locatiesObject = arrayToObject(locaties, 'locatie');
+        const locatiesObject = arrayToObject(locaties, 'plaatsId');
 
         return (
             <MarktDetailBase
