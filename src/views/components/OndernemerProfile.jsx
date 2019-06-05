@@ -1,6 +1,7 @@
 const React = require('react');
 const PropTypes = require('prop-types');
 const { formatOndernemerName } = require('../../domain-knowledge.js');
+const { today } = require('../../util.js');
 const Button = require('./Button');
 
 class OndernemerProfile extends React.Component {
@@ -27,7 +28,14 @@ class OndernemerProfile extends React.Component {
                         .map(sollicitatie => (
                             <li key={sollicitatie.markt.id}>
                                 <span>
-                                    {sollicitatie.markt.naam} {sollicitatie.sollicitatieNummer} {sollicitatie.status}
+                                    <a
+                                        href={`/markt/${sollicitatie.markt.id}/${today()}/${
+                                            sollicitatie.status === 'vpl' ? 'vasteplaatshouders' : 'sollicitanten'
+                                        }/#soll-${sollicitatie.sollicitatieNummer}`}
+                                    >
+                                        {sollicitatie.markt.naam} {sollicitatie.status}
+                                    </a>{' '}
+                                    {sollicitatie.sollicitatieNummer}
                                 </span>
                                 <br />
                                 <a
