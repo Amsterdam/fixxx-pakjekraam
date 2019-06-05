@@ -199,6 +199,14 @@ app.get('/login', function(req, res) {
     });
 });
 
+app.get('/ondernemer-login', function(req, res) {
+    const messages = getQueryErrors(req.query);
+
+    res.render('OndernemerLoginPage', {
+        messages,
+    });
+});
+
 app.post(
     '/login',
     passport.authenticate('local', { failureRedirect: `/login?error=${publicErrors.INCORRECT_CREDENTIALS}` }),
