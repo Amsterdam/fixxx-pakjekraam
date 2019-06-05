@@ -1,6 +1,7 @@
 const React = require('react');
 const PropTypes = require('prop-types');
 const { formatOndernemerName } = require('../../domain-knowledge.js');
+const Button = require('./Button');
 
 class OndernemerProfile extends React.Component {
     propTypes = {
@@ -12,8 +13,13 @@ class OndernemerProfile extends React.Component {
 
         return (
             <div>
-                <h1>{formatOndernemerName(ondernemer)}</h1>
+                <h1>Ondernemer detail: {formatOndernemerName(ondernemer)}</h1>
                 <p>{ondernemer.erkenningsnummer}</p>
+                <Button
+                    href={`/dashboard/${ondernemer.erkenningsnummer}`}
+                    type="secondary"
+                    label="Ondernemer dashboard"
+                />
                 <h2>Markten</h2>
                 <ul>
                     {ondernemer.sollicitaties

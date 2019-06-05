@@ -27,7 +27,7 @@ const OndernemerList = ({ ondernemers, markt, aanmeldingen }) => {
                                 <td>
                                     <strong>
                                         <span id={`soll-${ondernemer.sollicitatieNummer}`} />
-                                        <a href={`/aanmelden/${ondernemer.koopman.erkenningsnummer}/${markt.id}`}>
+                                        <a href={`/profile/${ondernemer.koopman.erkenningsnummer}`}>
                                             {ondernemer.sollicitatieNummer}
                                         </a>
                                     </strong>

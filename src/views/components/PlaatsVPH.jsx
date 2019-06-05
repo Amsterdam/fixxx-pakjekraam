@@ -93,7 +93,7 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
             <td className="Plaats__prop Plaats__prop-vph">
                 <span id={'soll-' + (vph && vph.sollicitatieNummer)} />
                 {vph ? (
-                    <a href={`/dashboard/${vph.erkenningsNummer}`}>
+                    <a href={`/profile/${vph.erkenningsNummer}`}>
                         <strong>{vph.sollicitatieNummer}</strong>
                     </a>
                 ) : null}
