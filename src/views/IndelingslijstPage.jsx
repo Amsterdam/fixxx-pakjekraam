@@ -33,6 +33,7 @@ class IndelingslijstenPage extends React.Component {
         const plaatsList = arrayToObject(locaties, 'plaatsId');
         const vphl = ondernemersToLocatieKeyValue(ondernemers);
         const obstakels = obstakelsToLocatieKeyValue(geografie.obstakels);
+        const aanmeldingenOrdered = aanmeldingen.sort((a, b) => b.updatedAt - a.updatedAt);
 
         return (
             <MarktDetailBase
@@ -58,7 +59,7 @@ class IndelingslijstenPage extends React.Component {
                                             plaatsList={plaatsList}
                                             vphl={vphl}
                                             obstakelList={obstakels}
-                                            aanmeldingen={aanmeldingen}
+                                            aanmeldingen={aanmeldingenOrdered}
                                             toewijzingen={toewijzingen}
                                             markt={markt}
                                             datum={datum}

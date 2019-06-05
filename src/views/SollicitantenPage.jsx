@@ -18,6 +18,7 @@ class SollicitantenPage extends React.Component {
     render() {
         const { markt, ondernemers, aanmeldingen, voorkeuren, datum, type, user } = this.props;
         const itemsOnPage = 50;
+        const aanmeldingenOrdered = aanmeldingen.sort((a, b) => b.updatedAt - a.updatedAt);
 
         const paginas = ondernemers
             .map((ondernemer, i) => {
@@ -67,7 +68,7 @@ class SollicitantenPage extends React.Component {
                                 markt={markt}
                                 type={type}
                                 datum={datum}
-                                aanmeldingen={aanmeldingen}
+                                aanmeldingen={aanmeldingenOrdered}
                             />
                         ))}
                     </PrintPage>
