@@ -16,6 +16,7 @@ export interface IMarktScenario {
     voorkeuren: IPlaatsvoorkeur[];
     ondernemers: IMarktondernemer[];
     aLijst: IMarktondernemer[];
+    branches: IBranche[];
     rows: IMarktplaats[][];
 }
 

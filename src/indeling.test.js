@@ -182,7 +182,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         ).toStrictEqual(['1']);
     });
 
-    it.skip('Een ondernemer met een branche krijgt voorkeur', () => {
+    it('Een ondernemer met een branche krijgt voorkeur', () => {
         /*
          * Scenario:
          * - 1 marktplaats met branche
@@ -205,7 +205,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         expect(indeling.toewijzingen.some(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 99)).toBe(true);
     });
 
-    it.skip('Een ondernemer met eigen materieel krijgt voorkeur', () => {
+    it('Een ondernemer met eigen materieel krijgt voorkeur', () => {
         /*
          * Scenario:
          * - 1 marktplaats met eigen materieel voorkeur

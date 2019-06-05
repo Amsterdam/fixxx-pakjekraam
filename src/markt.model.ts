@@ -16,6 +16,10 @@ export enum ObstakelType {
     BANKJE = 'bankje',
 }
 
+export enum VerkoopinrichtingType {
+    EIGEN_MATERIEEL = 'eigen-materieel',
+}
+
 export enum DeelnemerStatus {
     VASTE_PLAATS = 'vpl',
     TIJDELIJKE_VASTE_PLAATS = 'vkk',
@@ -62,12 +66,14 @@ export interface IMarktondernemer extends IMarktdeelnemer {
     status: DeelnemerStatus;
     branches?: BrancheId[];
     voorkeur?: IMarktondernemerVoorkeur;
+    verkoopinrichting?: string[];
 }
 
 export interface IMarktplaats {
     plaatsId: PlaatsId;
     tags?: string[];
     branches?: BrancheId[];
+    verkoopinrichting?: string[];
     inactive?: boolean;
 }
 
@@ -100,7 +106,8 @@ export interface IAfwijzing {
     reason: IAfwijzingReason;
 }
 
-export interface IMarktindelingState {
+export interface IMarktindelingState extends IMarkt {
+    toewijzingQueue: IMarktondernemer[];
     openPlaatsen: IMarktplaats[];
     expansionQueue: IToewijzing[];
 }

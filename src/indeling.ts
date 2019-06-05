@@ -15,6 +15,9 @@ import {
 
 const VOORKEUR_MINIMUM_PRIORITY = 0;
 
+const intersects = (a: any[] = [], b: any[] = []) =>
+    a.some(value => b.includes(value)) || b.some(value => a.includes(value));
+
 const isVast = (status: DeelnemerStatus): boolean => status === 'vpl' || status === 'vkk';
 
 /*
@@ -70,19 +73,25 @@ const getAdjacentPlaatsenForMultiple = (markt: IMarktindeling, plaatsIds: Plaats
         .reduce(flatten, [])
         .reduce(unique, []);
 
+const getOndernemerBranches = (markt: IMarkt, ondernemer: IMarktondernemer) =>
+    (ondernemer.branches || []).map(
+        brancheId =>
+            markt.branches.find(b => b.brancheId === brancheId) || {
+                brancheId,
+            },
+    );
+
 const findOptimalSpot = (
     ondernemer: IMarktondernemer,
     voorkeuren: IPlaatsvoorkeur[],
     openPlaatsen: IMarktplaats[],
-    branches: IBranche[],
+    markt: IMarkt,
 ) => {
     let mogelijkePlaatsen = openPlaatsen;
 
     // console.debug(`Vind een plaats voor ${ondernemer.id}`);
 
-    const ondernemerBranches = (ondernemer.branches || []).map(brancheId =>
-        branches.find(b => b.brancheId === brancheId),
-    );
+    const ondernemerBranches = getOndernemerBranches(markt, ondernemer);
 
     mogelijkePlaatsen = ondernemerBranches.reduce(
         (mogelijkePlaatsen: IMarktplaats[], branche: IBranche): IMarktplaats[] => {
@@ -171,6 +180,9 @@ const findToewijzing = (state: IMarktindeling, ondernemer: IMarktondernemer) =>
 
 const addToewijzing = (state: IMarktindeling, toewijzing: IToewijzing): IMarktindeling => ({
     ...state,
+    toewijzingQueue: state.toewijzingQueue.filter(
+        ondernemer => ondernemer.erkenningsNummer !== toewijzing.erkenningsNummer,
+    ),
     openPlaatsen: state.openPlaatsen.filter(plaats => !toewijzing.plaatsen.includes(plaats.plaatsId)),
     toewijzingen: [...state.toewijzingen, toewijzing],
 });
@@ -295,7 +307,7 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
                 .join('/')}`,
         );
 
-        const uitbreidingPlaats = findOptimalSpot(ondernemer, indeling.voorkeuren, adjacent, indeling.branches);
+        const uitbreidingPlaats = findOptimalSpot(ondernemer, indeling.voorkeuren, adjacent, indeling);
 
         if (uitbreidingPlaats) {
             // Remove vrije plaats
@@ -335,8 +347,23 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
 const heeftVastePlaatsen = (ondernemer: IMarktondernemer): boolean =>
     isVast(ondernemer.status) && count(ondernemer.plaatsen) > 0;
 
-const findPlaats = (state: IMarktindeling, ondernemer: IMarktondernemer): IMarktindeling => {
-    const { openPlaatsen } = state;
+const findPlaats = (
+    state: IMarktindeling,
+    ondernemer: IMarktondernemer,
+    index: number,
+    ondernemers: IMarktondernemer[],
+    plaatsen?: IMarktplaats[],
+    handleRejection: 'reject' | 'ignore' = 'reject',
+): IMarktindeling => {
+    const mogelijkePlaatsen = plaatsen || state.openPlaatsen;
+
+    const branches = getOndernemerBranches(state, ondernemer);
+    console.log(`Branches van ${ondernemer.erkenningsNummer}: `, branches, ondernemer.branches);
+    // const requiredBranches = branches.filter(branche => branche.verplicht).map(branche => branche.brancheId);
+
+    // if (requiredBranches) {
+    // mogelijkePlaatsen = mogelijkePlaatsen.filter(plaats => intersects(plaats.branches, branches));
+    // }
 
     const ondernemerVoorkeuren = state.voorkeuren.filter(
         voorkeur => voorkeur.erkenningsNummer === ondernemer.erkenningsNummer,
@@ -344,7 +371,7 @@ const findPlaats = (state: IMarktindeling, ondernemer: IMarktondernemer): IMarkt
 
     let reason;
 
-    if (openPlaatsen.length === 0) {
+    if (state.openPlaatsen.length === 0) {
         reason = FULL_REASON;
     }
 
@@ -379,15 +406,18 @@ const findPlaats = (state: IMarktindeling, ondernemer: IMarktondernemer): IMarkt
     let plaats;
 
     if (!reason) {
-        plaats = findOptimalSpot(ondernemer, ondernemerVoorkeuren, openPlaatsen, state.branches);
+        plaats = findOptimalSpot(ondernemer, ondernemerVoorkeuren, mogelijkePlaatsen, state);
     }
 
     if (plaats) {
         return assignPlaats(state, createToewijzing(plaats, ondernemer), ondernemer, 'reassign');
     } else {
         console.debug(`Geen plaats gevonden voor ${ondernemer.erkenningsNummer}`);
-
-        return rejectOndernemer(state, ondernemer, reason);
+        if (handleRejection === 'reject') {
+            return rejectOndernemer(state, ondernemer, reason);
+        } else {
+            return state;
+        }
     }
 };
 
@@ -451,6 +481,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
 
     const initialState: IMarktindeling = {
         ...markt,
+        toewijzingQueue: [...aanwezigen],
         expansionQueue: [],
         afwijzingen: [],
         toewijzingen: [],
@@ -458,24 +489,65 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
         voorkeuren: [...defaultVoorkeuren, ...voorkeuren],
     };
 
-    /*
-     * stap 1:
-     * beperkt de indeling tot kramen met een toewijzingsbeperking (branche, eigen materieel)
-     * en ondernemers met een bijbehorende eigenschap
-     */
-    const brancheKramen = initialState.openPlaatsen.filter(plaats => count(plaats.branches) > 0);
-    const brancheOndernemers = aanwezigen.filter(ondernemer => count(ondernemer.branches) > 0);
-
-    console.log(`Branche-kramen: ${brancheKramen.length}`);
-    console.log(`Branche-ondernemers: ${brancheOndernemers.length}`);
-
-    const vastePlaatsenQueue = aanwezigen.filter(heeftVastePlaatsen);
+    const vastePlaatsenQueue = initialState.toewijzingQueue.filter(heeftVastePlaatsen);
 
     console.log(`Vasteplaatshouders eerst: ${vastePlaatsenQueue.length}`);
 
     let indeling = vastePlaatsenQueue.reduce(assignVastePlaats, initialState);
 
-    indeling = aanwezigen.filter(ondernemer => !heeftVastePlaatsen(ondernemer)).reduce(findPlaats, indeling);
+    /*
+     * stap 1:
+     * beperkt de indeling tot kramen met een toewijzingsbeperking (branche, eigen materieel)
+     * en ondernemers met een bijbehorende eigenschap
+     */
+    const verkoopinrichtingKramen = initialState.openPlaatsen.filter(plaats => count(plaats.verkoopinrichting) > 0);
+    const verkoopinrichtingOndernemers = indeling.toewijzingQueue.filter(
+        ondernemer => count(ondernemer.verkoopinrichting) > 0,
+    );
+
+    console.log(`Verkoopinrichting-kramen: ${verkoopinrichtingKramen.length}`);
+    console.log(`Verkoopinrichting-ondernemers: ${verkoopinrichtingOndernemers.length}`);
+
+    indeling = verkoopinrichtingOndernemers.reduce((indeling, ondernemer, index, ondernemers) => {
+        const ondernemerVerkoopinrichtingPlaatsen = indeling.openPlaatsen.filter(plaats =>
+            intersects(plaats.verkoopinrichting, ondernemer.verkoopinrichting),
+        );
+        console.log(
+            `Bijzondere verkoopinrichting-ondernemer ${ondernemer.erkenningsNummer} kan kiezen uit ${
+                ondernemerVerkoopinrichtingPlaatsen.length
+            } plaatsen`,
+        );
+
+        return findPlaats(indeling, ondernemer, index, ondernemers, ondernemerVerkoopinrichtingPlaatsen, 'ignore');
+    }, indeling);
+
+    /*
+     * stap 2:
+     * beperkt de indeling tot kramen met een bepaalde verkoopinrichting
+     */
+    const brancheKramen = initialState.openPlaatsen.filter(plaats => count(plaats.branches) > 0);
+    const brancheOndernemers = indeling.toewijzingQueue.filter(ondernemer => count(ondernemer.branches) > 0);
+
+    console.log(`Branche-kramen: ${brancheKramen.length}`);
+    console.log(`Branche-ondernemers: ${brancheOndernemers.length}`);
+
+    indeling = brancheOndernemers.reduce((indeling, ondernemer, index, ondernemers) => {
+        const ondernemerBranchePlaatsen = indeling.openPlaatsen.filter(plaats =>
+            intersects(plaats.branches, ondernemer.branches),
+        );
+        console.log(
+            `Branche-ondernemer ${ondernemer.erkenningsNummer} kan kiezen uit ${
+                ondernemerBranchePlaatsen.length
+            } plaatsen`,
+        );
+
+        return findPlaats(indeling, ondernemer, index, ondernemers, ondernemerBranchePlaatsen, 'ignore');
+    }, indeling);
+
+    // Deel sollicitanten in
+    indeling = indeling.toewijzingQueue
+        .filter(ondernemer => !heeftVastePlaatsen(ondernemer))
+        .reduce(findPlaats, indeling);
 
     const expansionQueue = indeling.toewijzingen.filter(
         ({ ondernemer }) => !!ondernemer.voorkeur && ondernemer.voorkeur.aantalPlaatsen > 1,
