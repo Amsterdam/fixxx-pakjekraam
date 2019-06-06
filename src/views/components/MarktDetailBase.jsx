@@ -15,7 +15,11 @@ const MarktDetailBase = ({ children, bodyClass, title, markt, type, datum, user,
 
     return (
         <Page bodyClass={bodyClass}>
-            <Header user={user} />
+            <Header user={user}>
+                <a className="Header__nav-item" href="/markt/">
+                    Markten
+                </a>
+            </Header>
             <MarktDetailHeader>
                 {showDate && (
                     <MarktDayLink markt={markt} offsetDate={new Date(datum).toISOString()} direction={-1} type={type} />

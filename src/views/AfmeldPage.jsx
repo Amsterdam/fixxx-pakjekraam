@@ -4,6 +4,7 @@ const Page = require('./components/Page.jsx');
 const AfmeldForm = require('./components/AfmeldForm.jsx');
 const PropTypes = require('prop-types');
 const Header = require('./components/Header');
+const OndernemerProfileHeader = require('./components/OndernemerProfileHeader');
 
 class AfmeldPage extends React.Component {
     propTypes = {
@@ -20,7 +21,9 @@ class AfmeldPage extends React.Component {
     render() {
         return (
             <Page>
-                <Header />
+                <Header user={this.props.ondernemer}>
+                    <OndernemerProfileHeader user={this.props.ondernemer} />
+                </Header>
                 <Content>
                     <AfmeldForm
                         aanmeldingen={this.props.aanmeldingen}

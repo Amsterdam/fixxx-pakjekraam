@@ -2,7 +2,7 @@ const LoginButton = require('./LoginButton');
 const PropTypes = require('prop-types');
 const React = require('react');
 
-const Header = ({ user }) => {
+const Header = ({ user, children }) => {
     return (
         <header className="Header">
             <div className="Header__top">
@@ -27,11 +27,7 @@ const Header = ({ user }) => {
             <div className="Header__bottom">
                 <div className="container">
                     <div className="container__content">
-                        <div className="Header__bottom-container">
-                            <a className="Header__nav-item" href="/markt/">
-                                Markten
-                            </a>
-                        </div>
+                        <div className="Header__bottom-container">{children}</div>
                     </div>
                 </div>
             </div>
@@ -41,6 +37,7 @@ const Header = ({ user }) => {
 
 Header.propTypes = {
     user: PropTypes.object,
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 
 module.exports = Header;

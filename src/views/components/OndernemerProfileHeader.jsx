@@ -1,6 +1,7 @@
 const ProfilePhoto = require('./ProfilePhoto');
 const PropTypes = require('prop-types');
 const React = require('react');
+const { formatOndernemerName } = require('../../domain-knowledge.js');
 
 const OndernemerProfileHeader = ({ user }) => {
     return (
@@ -9,10 +10,11 @@ const OndernemerProfileHeader = ({ user }) => {
                 <ProfilePhoto imageUrlSet={[user.fotoUrl, user.fotoMediumUrl]} />
             </div>
             <div className="OndernemerProfileHeader__text-wrapper">
-                <strong className="OndernemerProfileHeader__name">
-                    {user.voorletters && user.voorletters + ' '}
-                    {user.achternaam}
-                </strong>
+                <strong className="OndernemerProfileHeader__name">{formatOndernemerName(user)}</strong>
+                <span className="OndernemerProfileHeader__id">
+                    <span className="OndernemerProfileHeader__id-label">erkenningsnummer: </span>
+                    <strong className="OndernemerProfileHeader__id-value">{user.erkenningsnummer}</strong>
+                </span>
             </div>
         </header>
     );

@@ -1,11 +1,27 @@
 .OndernemerProfileHeader {
-    margin-top: 20px;
+    margin-top: 2px;
     display: flex;
+    flex-direction: row-reverse;
+    text-align: right;
     &__profile-photo {
+        margin-left: 10px;
     }
-    &____text-wrapper {
+    &__text-wrapper {
+        line-height: 19px;
     }
+    &__id,
     &__name {
+        display: block;
         //@include ;
+    }
+    &__id-label {
+        display: none;
+    }
+
+    @media screen and (min-width: $screenMedium) {
+        margin-top: -110px;
+        &__id-label {
+            display: inline-block;
+        }
     }
 }

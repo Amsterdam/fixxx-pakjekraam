@@ -1,20 +1,30 @@
 .LoginButton {
     @include linkHeader;
+    font-size: $fs-50;
     line-height: 20px;
     position: relative;
-    padding-left: 25px;
+    padding-left: 20px;
     &:before {
         display: inline-block;
-        margin-right: 5px;
-        font-size: 20px;
+        font-size: 16px;
         position: absolute;
         left: 0;
-        top: -1px;
+        top: 0;
     }
     &--login:before {
         @include icon($icon-Login);
     }
     &--logout:before {
         @include icon($icon-Logout);
+    }
+    @media screen and (min-width: $screenMedium) {
+        font-size: $fs-60;
+        &:before {
+            display: inline-block;
+            font-size: 20px;
+            position: absolute;
+            left: 0;
+            top: -1px;
+        }
     }
 }
