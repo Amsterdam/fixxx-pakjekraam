@@ -3,6 +3,9 @@ const { marktScenario } = require('./indeling-scenario.ts');
 
 /* eslint-disable no-magic-numbers */
 
+const FIRST_CHOICE = Number.MAX_SAFE_INTEGER;
+const SECOND_CHOICE = FIRST_CHOICE - 1;
+
 describe('Automatisch toewijzen marktplaatsen', () => {
     it('Een ondernemer wordt toegewezen aan een lege plek', () => {
         /*
@@ -314,6 +317,63 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          * - de ondernemer heeft een voorkeur voor kraam 2, daarna 1, daarna 3
          */
     );
+    it('Een ondernemer die kan uitbreiden aan verschillende zijden, wordt ingedeeld bij de voorkeurszijde', /*
+     * Scenario:
+     * - 3 marktplaatsen
+     * - 1 ondernemer met een vaste plek op de middelste kraam
+     * - de ondernemer heeft een voorkeur voor kraam 2, daarna 1, daarna 3
+     */ () => {
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 2 } })],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: SECOND_CHOICE }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(1);
+        expect(indeling.afwijzingen.length).toBe(0);
+        expect(indeling.toewijzingen[0].plaatsen.sort()).toStrictEqual(['2', '3']);
+    });
+
+    it.skip('Ondernemers die kunnen uitbreiden aan verschillende zijden, wordt ingedeeld bij de voorkeurszijde', /*
+     * Scenario:
+     * - 3 marktplaatsen
+     * - 1 ondernemer met een vaste plek op de middelste kraam
+     * - de ondernemer heeft een voorkeur voor kraam 2, daarna 1, daarna 3
+     */ () => {
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [
+                ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
+                ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
+            ],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats(), marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: SECOND_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '5', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '4', priority: SECOND_CHOICE }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(2);
+        expect(indeling.afwijzingen.length).toBe(0);
+        expect(
+            indeling.toewijzingen
+                .find(({ ondernemer: { sollicitatieNummer } }) => sollicitatieNummer === 1)
+                .plaatsen.sort(),
+        ).toStrictEqual(['2', '3']);
+        expect(
+            indeling.toewijzingen
+                .find(({ ondernemer: { sollicitatieNummer } }) => sollicitatieNummer === 2)
+                .plaatsen.sort(),
+        ).toStrictEqual(['4', '5']);
+    });
 });
 
 describe('Automatisch toewijzen marktplaatsen: verschuiven', () => {
@@ -558,5 +618,64 @@ describe('Automatisch toewijzen marktplaatsen: edge cases', () => {
          * TODO: Decide if there should be afwijzing too?
          * expect(indeling.afwijzingen.length).toBe(1);
          */
+    });
+
+    it.skip('Een branche-ondernemer krijgt voorkeur bij uitbreiden naar een brancheplaats', () => {
+        /*
+         * Scenario:
+         * - 4 marktplaatsen, waarvan 2 brancheplaatsen
+         * - 2 marktondernemers, waarvan 1 in deze branche
+         * - beide ondernemers willen uitbreiden naar dezelfde brancheplaats in het midden,
+         *   en de ondernemer zonder branche heeft betere anceniteit
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [
+                ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
+                ondernemer({ branches: ['branche-x'], voorkeur: { aantalPlaatsen: 2 } }),
+            ],
+            marktplaatsen: [
+                marktplaats(),
+                marktplaats(),
+                marktplaats({ branches: ['branche-x'] }),
+                marktplaats({ branches: ['branche-x'] }),
+            ],
+            voorkeuren: [
+                voorkeur({
+                    sollicitatieNummer: 1,
+                    plaatsId: '3',
+                    priority: FIRST_CHOICE,
+                }),
+                voorkeur({
+                    sollicitatieNummer: 1,
+                    plaatsId: '2',
+                    priority: SECOND_CHOICE,
+                }),
+                voorkeur({
+                    sollicitatieNummer: 2,
+                    plaatsId: '4',
+                    priority: FIRST_CHOICE,
+                }),
+                voorkeur({
+                    sollicitatieNummer: 2,
+                    plaatsId: '3',
+                    priority: SECOND_CHOICE,
+                }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(2);
+        expect(indeling.afwijzingen.length).toBe(0);
+        expect(
+            indeling.toewijzingen
+                .find(({ ondernemer: { sollicitatieNummer } }) => sollicitatieNummer === 1)
+                .plaatsen.sort(),
+        ).toStrictEqual(['1', '2']);
+        expect(
+            indeling.toewijzingen
+                .find(({ ondernemer: { sollicitatieNummer } }) => sollicitatieNummer === 2)
+                .plaatsen.sort(),
+        ).toStrictEqual(['3', '4']);
     });
 });
