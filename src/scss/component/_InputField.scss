@@ -4,16 +4,15 @@
 
     &--submit {
         background-color: $neutral-grey2;
-        height: 64px;
-        padding: 0 10px;
-        flex-direction: row-reverse;
-        align-content: flex-end;
-        align-items: center;
+        min-height: 44px;
+        padding: 10px;
+        flex-direction: column-reverse;
+        align-items: flex-start;
         & > * {
-            margin-right: 10px;
+            margin-bottom: 10px;
         }
         & > :first-child {
-            margin-right: 0;
+            margin-bottom: 0;
         }
     }
     &--checkbox {
@@ -27,7 +26,6 @@
             position: absolute;
         }
         label {
-            @include p1;
             padding: 10px 0 10px 40px;
             display: inline-block;
             position: relative;
@@ -59,8 +57,9 @@
         }
     }
     &--afmelden {
-        max-width: 400px;
-        padding-left: 10px;
+        max-width: 270px;
+        margin-left: 10px;
+        margin-right: 10px;
         label {
             display: flex;
             flex-direction: row;
@@ -96,6 +95,23 @@
             line-height: 24px;
             font-family: $ff-bold;
             padding: 0 5px;
+        }
+        &__divider {
+            max-width: 290px;
+            margin: 20px 0;
+        }
+    }
+    @media screen and (min-width: $screenMedium) {
+        &--submit {
+            display: flex;
+            flex-direction: row-reverse;
+            align-content: flex-end;
+            & > * {
+                margin: 0 10px 0;
+            }
+            & > :first-child {
+                margin: 0;
+            }
         }
     }
 }

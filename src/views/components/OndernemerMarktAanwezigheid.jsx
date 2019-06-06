@@ -9,7 +9,7 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
         <div className="OndernemerMarktAanwezigheid well">
             <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
             <ul className="OndernemerMarktAanwezigheid__list">
-                {rsvpEntries.map(({ date, rsvp, index }) => {
+                {rsvpEntries.map(({ date, rsvp, index }, i) => {
                     const attending = rsvp
                         ? rsvp.attending
                         : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl';
@@ -25,6 +25,11 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
                                 <strong>{formatDayOfWeek(date)}</strong>
                                 <span>{formatDate(date)}</span>
                             </span>
+                            {new Date(date).getDay() === 6 && i < 7 ? (
+                                <hr className="OndernemerMarktAanwezigheid__divider" />
+                            ) : (
+                                ``
+                            )}
                         </li>
                     );
                 })}

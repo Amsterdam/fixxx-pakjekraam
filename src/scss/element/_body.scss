@@ -6,8 +6,4 @@ body {
 
     font-family: $ff-regular;
     @include p1;
-    font-size: $fs-50;
-    @media screen and (min-width: $screenMedium) {
-        @include p1;
-    }
 }

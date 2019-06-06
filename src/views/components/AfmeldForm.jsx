@@ -1,9 +1,8 @@
 const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 const React = require('react');
 const PropTypes = require('prop-types');
-const { formatDayOfWeek, MILLISECONDS_IN_DAY } = require('../../util.js');
+const { formatDayOfWeek, MILLISECONDS_IN_DAY, today, formatDate } = require('../../util.js');
 const { getMarktDays, parseMarktDag, filterRsvpList } = require('../../domain-knowledge.js');
-const today = () => new Date().toISOString().replace(/T.+/, '');
 
 class AfmeldForm extends React.Component {
     propTypes = {
@@ -35,14 +34,7 @@ class AfmeldForm extends React.Component {
 
         return (
             <form className="Form" method="POST" action="/afmelden/" encType="application/x-www-form-urlencoded">
-                {/* <input name="next" value={`/afmelden/${ondernemer.erkenningsnummer}/?updated=${new Date().toISOString()}`}/>*/}
-                <h1>
-                    Afmelden voor {ondernemer.voorletters && ondernemer.voorletters + ' '}
-                    {ondernemer.achternaam}
-                </h1>
-                <p>
-                    Erkenningsnummer: <strong>{ondernemer.erkenningsnummer}</strong>
-                </p>
+                <h1>Aanwezigheid doorgeven</h1>
                 <input
                     id="erkenningsNummer"
                     name="erkenningsNummer"
@@ -67,7 +59,7 @@ class AfmeldForm extends React.Component {
                             </div>
                             <span className="Fieldset__subtitle">Aanvinken welke dagen je komt</span>
                             <ul className="CheckboxList">
-                                {rsvpEntries.map(({ date, rsvp, index }) => (
+                                {rsvpEntries.map(({ date, rsvp, index }, i) => (
                                     <li key={date}>
                                         <input type="hidden" name={`rsvp[${index}][marktId]`} defaultValue={markt.id} />
                                         <input type="hidden" name={`rsvp[${index}][marktDate]`} defaultValue={date} />
@@ -85,9 +77,9 @@ class AfmeldForm extends React.Component {
                                             />
                                             <label htmlFor={`rsvp-${index}`}>
                                                 <span className="InputField--afmelden__main">
-                                                    Ik kom <strong>{formatDayOfWeek(date)}</strong>
+                                                    <strong>{formatDayOfWeek(date)}</strong>
                                                 </span>
-                                                <span className="InputField--afmelden__date">{date}</span>
+                                                <span className="InputField--afmelden__date">{formatDate(date)}</span>
                                                 {rsvp ? (
                                                     <span
                                                         className="InputField--afmelden__rsvp-verified"
@@ -98,6 +90,11 @@ class AfmeldForm extends React.Component {
                                                 ) : null}
                                             </label>
                                         </span>
+                                        {new Date(date).getDay() === 6 && i < 7 ? (
+                                            <hr className="InputField--afmelden__divider" />
+                                        ) : (
+                                            ``
+                                        )}
                                     </li>
                                 ))}
                             </ul>
