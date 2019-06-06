@@ -80,7 +80,15 @@ const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type, toewijzing
 
     return (
         <tr
-            className={'Plaats ' + (first && 'Plaats--first') + ' ' + tags}
+            className={
+                'Plaats ' +
+                (first && 'Plaats--first') +
+                ' ' +
+                tags +
+                ' ' +
+                (aanmelding ? ' Plaats--vph-attendance-verified' : '') +
+                (aanmelding && aanmelding.attending === false ? ' Plaats--vph-attendance-not-attending' : '')
+            }
             data-sollicitatie-nummer={vph && vph.sollicitatieNummer}
         >
             <td className="Plaats__prop Plaats__prop-properties">
@@ -99,16 +107,10 @@ const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type, toewijzing
                     </a>
                 ) : null}
             </td>
-            <td
-                className={`Plaats__prop Plaats__prop-vph-description ${
-                    aanmelding && aanmelding.attending === false ? 'Plaats--vph-attendance-not-attending' : ''
-                } ${aanmelding ? 'Plaats--vph-attendance-verified' : ''}
-                `}
-            >
+            <td className={`Plaats__prop Plaats__prop-vph-description`}>
                 {vph ? vph.description : <strong>{tags}</strong>}
             </td>
             <td className="Plaats__prop Plaats__prop-empty-fields">
-                {aanmelding ? '🆗' : null}
                 {toewijzing ? <strong>{toewijzing.ondernemer.sollicitatieNummer}</strong> : null}
                 {toewijzing ? toewijzing.ondernemer.description : null}
             </td>

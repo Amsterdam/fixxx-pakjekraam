@@ -98,15 +98,10 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
                     </a>
                 ) : null}
             </td>
-            <td
-                className={`Plaats__prop Plaats__prop-vph-description ${
-                    aanmelding && aanmelding.attending === false ? 'Plaats--vph-attendance-not-attending' : ''
-                } ${aanmelding ? 'Plaats--vph-attendance-verified' : ''}
-                `}
-            >
+            <td className={`Plaats__prop Plaats__prop-vph-description`}>
                 {vph ? vph.description : <strong>{tags}</strong>}
             </td>
-            <td className="Plaats__prop Plaats__prop-empty-fields">{aanmelding ? 'bevestigd' : null}</td>
+            <td className="Plaats__prop Plaats__prop-empty-fields" />
         </tr>
     );
 };

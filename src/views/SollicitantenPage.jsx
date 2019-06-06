@@ -52,12 +52,12 @@ class SollicitantenPage extends React.Component {
         return (
             <MarktDetailBase
                 bodyClass="page-markt-sollicitanten page-print"
-                title="Sollicitanten aanmelden"
+                title="Sollicitanten & vastekaarthouders"
                 markt={markt}
                 datum={datum}
                 type={type}
                 user={user}
-                showDate={false}
+                showDate={true}
             >
                 {paginasLists.map((pagina, i) => (
                     <PrintPage key={i} index={i} title={`Sollicitanten: ${markt.naam}`}>

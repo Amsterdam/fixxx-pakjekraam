@@ -1,4 +1,12 @@
-const { addDays, DAYS_IN_WEEK, formatDayOfWeek, formatMonth, nextWeek, tomorrow } = require('../util.js');
+const {
+    addDays,
+    DAYS_IN_WEEK,
+    formatDayOfWeek,
+    formatMonth,
+    nextWeek,
+    capitalize,
+    relativeHumanDay,
+} = require('../util.js');
 const React = require('react');
 const PropTypes = require('prop-types');
 const MarktDetailBase = require('./components/MarktDetailBase');
@@ -18,11 +26,10 @@ class MarktDetailPage extends React.Component {
         const startDate = addDays(today(), -1);
         const endDate = nextWeek();
         const marktDagen = (markt.marktDagen || []).map(parseMarktDag);
-        const relativeDays = ['Vandaag', 'Morgen'];
         const dates = getUpcomingMarktDays(startDate, endDate, (markt.marktDagen || []).map(parseMarktDag)).map(
             (d, i) => {
                 return {
-                    relativeDay: relativeDays[i],
+                    relativeDay: relativeHumanDay(d),
                     date: d,
                     day: new Date(d).getDate(),
                     month: formatMonth(d),
@@ -34,15 +41,15 @@ class MarktDetailPage extends React.Component {
 
         return (
             <MarktDetailBase bodyClass="page-markt-detail" datum={datum} type={type} user={user} markt={markt}>
-                <div className="row">
+                <div className="row row--responsive">
                     <div className="col-1-2">
                         <h2>Indelingslijsten</h2>
                         <ul className="LinkList">
                             {dates.map(({ date, day, month, weekDay, relativeDay }) => (
-                                <li key={date}>
+                                <li key={date} className="LinkList__item">
                                     <a className={`Link`} href={`/markt/${markt.id}/${date}/indelingslijst/`}>
-                                        <strong>{relativeDay && relativeDay + ', '}</strong>
-                                        {weekDay} {day} {month}
+                                        <strong>{relativeDay !== '' && capitalize(relativeDay) + ', '}</strong>
+                                        {relativeDay !== '' ? weekDay : capitalize(weekDay)} {day} {month}
                                     </a>
                                 </li>
                             ))}
@@ -51,14 +58,17 @@ class MarktDetailPage extends React.Component {
                     <div className="col-1-2">
                         <h2>Ondernemers</h2>
                         <ul className="LinkList">
-                            <li>
+                            <li className="LinkList__item">
                                 <a href={`/markt/${markt.id}/${today()}/vasteplaatshouders/`} className="Link">
                                     Vasteplaatshouder
                                 </a>
                             </li>
-                            <li>
+                        </ul>
+                        <h2>Aanwezigheid vandaag</h2>
+                        <ul className="LinkList">
+                            <li className="LinkList__item">
                                 <a href={`/markt/${markt.id}/${today()}/sollicitanten/`} className="Link">
-                                    Sollicitanten
+                                    Sollicitanten & vastekaarthouders
                                 </a>
                             </li>
                         </ul>

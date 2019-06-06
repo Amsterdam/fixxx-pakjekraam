@@ -126,7 +126,23 @@
         border-left: none;
     }
     &--vph-attendance-not-attending {
-        text-decoration: line-through;
+        .Plaats__prop-vph-description,
+        .Plaats__prop-vph {
+            &:after {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 2px;
+                background-color: $primary-black;
+                top: 50%;
+                left: 0;
+            }
+        }
+    }
+    &--vph-attendance-verified {
+        .Plaats__prop-vph {
+            border-left: 2px solid $primary-black;
+        }
     }
     &__prop-properties {
         border-right: none;

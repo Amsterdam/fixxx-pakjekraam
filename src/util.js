@@ -34,6 +34,30 @@ const formatDate = date =>
 
 const today = () => new Date().toISOString().replace(/T.+/, '');
 
+const dateDiffInDays = (date1, date2) => {
+    const dt1 = new Date(date1),
+        dt2 = new Date(date2);
+
+    return Math.floor(
+        (Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) -
+            Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) /
+            MILLISECONDS_IN_DAY,
+    );
+};
+
+const relativeHumanDay = date => {
+    const dayOptions = { '0': 'vandaag', '1': 'morgen', '-1': 'gisteren' };
+    const diff = String(dateDiffInDays(today(), date));
+
+    return dayOptions[diff] ? dayOptions[diff] : '';
+};
+
+const capitalize = s => {
+    if (typeof s !== 'string') return '';
+
+    return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
 const addDays = (offsetDate, days) => {
     const date = new Date(offsetDate);
 
@@ -81,6 +105,8 @@ module.exports = {
     stringSort,
     flatten,
     formatDate,
+    relativeHumanDay,
+    capitalize,
     DAYS_IN_WEEK,
     MILLISECONDS_IN_SECOND,
     SECONDS_IN_MINUTE,
