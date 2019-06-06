@@ -18,6 +18,7 @@ class OndernemerDashboard extends React.Component {
 
     render() {
         const { ondernemer, user, markten, aanmeldingen, startDate, endDate } = this.props;
+
         return (
             <Page>
                 <Header user={ondernemer}>
