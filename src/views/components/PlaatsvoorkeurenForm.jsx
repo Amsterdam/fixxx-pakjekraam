@@ -1,14 +1,14 @@
 const React = require('react');
 const PropTypes = require('prop-types');
-const { formatOndernemerName } = require('../../domain-knowledge.js');
+const { formatOndernemerName, plaatsSort } = require('../../domain-knowledge.js');
 const { stringSort, flatten } = require('../../util.js');
 
-const plaatsSort = (plaatsA, plaatsB) => stringSort(plaatsA.plaatsId, plaatsB.plaatsId);
+const marktplaatsSort = (plaatsA, plaatsB) => plaatsSort(plaatsA.plaatsId, plaatsB.plaatsId);
 
 const MarktplaatsSelect = ({ id, name, markt, value, optional, readonly }) => (
     <select name={name} id={id} disabled={readonly}>
         {optional ? <option value="" /> : null}
-        {(markt.marktplaatsen || []).sort(plaatsSort).map(plaats => (
+        {(markt.marktplaatsen || []).sort(marktplaatsSort).map(plaats => (
             <option key={plaats.plaatsId} value={plaats.plaatsId} selected={plaats.plaatsId === value}>
                 {plaats.plaatsId}
             </option>

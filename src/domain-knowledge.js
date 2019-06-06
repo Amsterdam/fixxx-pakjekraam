@@ -1,4 +1,13 @@
-const { MILLISECONDS_IN_DAY, DAYS_IN_WEEK, toISODate, addDays, today, nextWeek, endOfWeek } = require('./util.js');
+const {
+    MILLISECONDS_IN_DAY,
+    DAYS_IN_WEEK,
+    toISODate,
+    addDays,
+    today,
+    nextWeek,
+    endOfWeek,
+    stringSort,
+} = require('./util.js');
 
 const DAPPERMARKT_ID = 16;
 const ALBERT_CUYP_ID = 19;
@@ -93,6 +102,28 @@ const filterRsvpList = (aanmeldingen, markt, startDate, endDate) => {
     return rsvpList;
 };
 
+const plaatsParts = plaatsId => plaatsId.replace(/([^0-9])([0-9])|([0-9])([^0-9])/g, '$1$3 $2$4').split(/\s+/);
+const plaatsSort = (plaatsA, plaatsB) => {
+    const partsA = plaatsParts(plaatsA),
+        partsB = plaatsParts(plaatsB),
+        l = Math.min(partsA.length, partsB.length);
+
+    let i = 0,
+        delta = 0;
+
+    for (; delta === 0 && i < l; i++) {
+        const partA = partsA[i],
+            partB = partsB[i];
+
+        delta =
+            /^[0-9]+$/.test(partA) && /^[0-9]+$/.test(partB)
+                ? parseInt(partA, 10) - parseInt(partB, 10)
+                : stringSort(partA, partB);
+    }
+
+    return delta;
+};
+
 module.exports = {
     DAPPERMARKT_ID,
     ALBERT_CUYP_ID,
@@ -109,4 +140,5 @@ module.exports = {
     ondernemersToLocatieKeyValue,
     obstakelsToLocatieKeyValue,
     filterRsvpList,
+    plaatsSort,
 };
