@@ -1,22 +1,23 @@
-$itemMinWidth: 540px;
+$itemMinWidth: 197px;
 
 .OndernemerMarktAanwezigheid {
     &__list {
         margin: 0;
         padding: 0;
         list-style: none;
+        margin-bottom: 30px;
     }
     &__list-item {
         padding-left: 25px;
         position: relative;
-        min-width: $itemMinWidth;
+        max-width: $itemMinWidth;
         &--attending:before {
             content: "";
             @include icon($icon-Check-Mark);
             display: block;
             position: absolute;
             left: 0;
-            top: 0;
+            top: 2px;
             width: 20px;
             height: 20px;
             line-height: 20px;
@@ -26,5 +27,8 @@ $itemMinWidth: 540px;
     &__list-item-wrapper {
         display: flex;
         justify-content: space-between;
+    }
+    .OndernemerMarktHeading {
+        margin: 0 0 $vm4;
     }
 }

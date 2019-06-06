@@ -2,12 +2,11 @@ const Button = require('./Button');
 const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 const PropTypes = require('prop-types');
 const React = require('react');
-
-const { formatDayOfWeek } = require('../../util.js');
+const { formatDayOfWeek, formatDate } = require('../../util.js');
 
 const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, ondernemer }) => {
     return (
-        <div className="OndernemerMarktAanwezigheid">
+        <div className="OndernemerMarktAanwezigheid well">
             <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
             <ul className="OndernemerMarktAanwezigheid__list">
                 {rsvpEntries.map(({ date, rsvp, index }) => {
@@ -22,27 +21,16 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
                                 attending ? 'attending' : 'not-attending'
                             }`}
                         >
-                            {attending ? (
-                                <span className="OndernemerMarktAanwezigheid__list-item-wrapper">
-                                    <span>
-                                        Ik kom <strong>{formatDayOfWeek(date)}</strong>
-                                    </span>
-                                    <span>{date}</span>
-                                </span>
-                            ) : (
-                                <span className="OndernemerMarktAanwezigheid__list-item-wrapper">
-                                    <span>
-                                        Ik kom niet <strong>{formatDayOfWeek(date)}</strong>
-                                    </span>
-                                    <span>{date}</span>
-                                </span>
-                            )}
+                            <span className="OndernemerMarktAanwezigheid__list-item-wrapper">
+                                <strong>{formatDayOfWeek(date)}</strong>
+                                <span>{formatDate(date)}</span>
+                            </span>
                         </li>
                     );
                 })}
             </ul>
             <Button
-                label="Wijziging doorgeven"
+                label="Aanwezigheid doorgeven"
                 href={`/afmelden/${ondernemer.erkenningsnummer}/${markt.id}/?next=/dashboard/${
                     ondernemer.erkenningsnummer
                 }/#markt-${markt.id}`}

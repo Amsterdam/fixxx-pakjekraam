@@ -1,0 +1,7 @@
+.well {
+    padding: $vm2 $hm2;
+    background-color: $neutral-grey1;
+    @media screen and (min-width: $screenMedium) {
+        padding: $vm4 $hm4;
+    }
+}

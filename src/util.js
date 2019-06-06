@@ -4,6 +4,7 @@ const SECONDS_IN_MINUTE = 60;
 const MINUTES_IN_HOUR = 60;
 const HOURS_IN_DAY = 24;
 const MILLISECONDS_IN_DAY = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE * MINUTES_IN_HOUR * HOURS_IN_DAY;
+const shortMonthCharCount = 3;
 
 const dayOfWeekName = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
 const monthName = [
@@ -23,6 +24,13 @@ const monthName = [
 
 const formatDayOfWeek = date => dayOfWeekName[new Date(date).getDay()];
 const formatMonth = date => monthName[new Date(date).getMonth()];
+
+const formatDate = date =>
+    new Date(date).getDate() +
+    ' ' +
+    formatMonth(date).slice(0, shortMonthCharCount) +
+    ' ' +
+    new Date(date).getFullYear();
 
 const today = () => new Date().toISOString().replace(/T.+/, '');
 
@@ -53,12 +61,6 @@ const arrayToObject = (array, keyField) =>
         return obj;
     }, {});
 
-const paginate = (array, pageSize, pageNumber) => {
-    --pageNumber; // because pages logically start with 1, but technically with 0
-
-    return array.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
-};
-
 const numberSort = (a, b) => (a > b ? 1 : a === b ? 0 : -1);
 
 const stringSort = (a, b) => (a > b ? 1 : a === b ? 0 : -1);
@@ -75,10 +77,10 @@ module.exports = {
     nextWeek,
     toISODate,
     arrayToObject,
-    paginate,
     numberSort,
     stringSort,
     flatten,
+    formatDate,
     DAYS_IN_WEEK,
     MILLISECONDS_IN_SECOND,
     SECONDS_IN_MINUTE,

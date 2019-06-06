@@ -25,7 +25,7 @@ class OndernemerDashboard extends React.Component {
                     <OndernemerProfileHeader user={ondernemer} />
                 </Header>
                 <Content>
-                    <h1 className="h1">Markten</h1>
+                    <h1 className="h1">Mijn markten</h1>
                     <OndernemerAanwezigheid {...this.props} />
                 </Content>
             </Page>

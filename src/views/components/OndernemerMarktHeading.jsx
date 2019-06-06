@@ -4,7 +4,9 @@ const React = require('react');
 const OndernemerMarktHeading = ({ markt, sollicitatie }) => {
     return (
         <h2 className="OndernemerMarktHeading" id={`markt-${markt.id}`}>
-            {markt.naam} ({sollicitatie.status}, {sollicitatie.sollicitatieNummer})
+            {markt.naam}
+            <span className="Pil">{sollicitatie.status}</span>
+            <span className="Pil">{sollicitatie.sollicitatieNummer}</span>
         </h2>
     );
 };
