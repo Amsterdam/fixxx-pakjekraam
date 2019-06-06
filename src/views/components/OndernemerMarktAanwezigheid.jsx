@@ -2,7 +2,7 @@ const Button = require('./Button');
 const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 const PropTypes = require('prop-types');
 const React = require('react');
-const { formatDayOfWeek, formatDate } = require('../../util.js');
+const { formatDayOfWeek, formatDate, DAYS_IN_WEEK } = require('../../util.js');
 
 const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, ondernemer }) => {
     return (
@@ -25,7 +25,7 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
                                 <strong>{formatDayOfWeek(date)}</strong>
                                 <span>{formatDate(date)}</span>
                             </span>
-                            {new Date(date).getDay() === 6 && i < 7 ? (
+                            {new Date(date).getDay() === DAYS_IN_WEEK - 1 && i < DAYS_IN_WEEK ? (
                                 <hr className="OndernemerMarktAanwezigheid__divider" />
                             ) : (
                                 ``

@@ -1,8 +1,8 @@
 const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 const React = require('react');
 const PropTypes = require('prop-types');
-const { formatDayOfWeek, MILLISECONDS_IN_DAY, today, formatDate } = require('../../util.js');
-const { getMarktDays, parseMarktDag, filterRsvpList } = require('../../domain-knowledge.js');
+const { formatDayOfWeek, DAYS_IN_WEEK, today, formatDate } = require('../../util.js');
+const { filterRsvpList } = require('../../domain-knowledge.js');
 
 class AfmeldForm extends React.Component {
     propTypes = {
@@ -90,7 +90,7 @@ class AfmeldForm extends React.Component {
                                                 ) : null}
                                             </label>
                                         </span>
-                                        {new Date(date).getDay() === 6 && i < 7 ? (
+                                        {new Date(date).getDay() === DAYS_IN_WEEK - 1 && i < DAYS_IN_WEEK ? (
                                             <hr className="InputField--afmelden__divider" />
                                         ) : (
                                             ``
