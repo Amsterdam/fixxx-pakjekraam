@@ -106,6 +106,13 @@ const getIndelingslijstInput = (token, marktId, date) =>
             })),
             aanwezigheid: aanmeldingen,
             aLijst: [], // TODO: retrieve aLijst from Makkelijke Markt
+            rows: paginas.reduce(
+                (list, pagina) => [
+                    ...list,
+                    ...pagina.indelingslijstGroup.map(group => group.plaatsList).filter(Array.isArray),
+                ],
+                [],
+            ),
         };
     });
 
