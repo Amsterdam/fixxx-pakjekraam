@@ -678,4 +678,35 @@ describe('Automatisch toewijzen marktplaatsen: edge cases', () => {
                 .plaatsen.sort(),
         ).toStrictEqual(['3', '4']);
     });
+
+    it.skip('Zoveel mogelijk ondernemers kunnen marktplaatsen uitbreiden', () => {
+        /*
+         * Scenario:
+         * - 2 marktrijen met elk 2 marktplaatsen
+         * - 2 ondernemers met een voorkeur voor 2 kramen
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [
+                ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
+                ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
+            ],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats()],
+            rows: [['1', '2'], ['3', '4']],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(2);
+        expect(indeling.afwijzingen.length).toBe(0);
+        expect(
+            indeling.toewijzingen
+                .find(({ ondernemer: { sollicitatieNummer } }) => sollicitatieNummer === 1)
+                .plaatsen.sort(),
+        ).toStrictEqual(['1', '2']);
+        expect(
+            indeling.toewijzingen
+                .find(({ ondernemer: { sollicitatieNummer } }) => sollicitatieNummer === 2)
+                .plaatsen.sort(),
+        ).toStrictEqual(['3', '4']);
+    });
 });
