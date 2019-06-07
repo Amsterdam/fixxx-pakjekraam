@@ -301,7 +301,11 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
     const { erkenningsNummer } = ondernemer;
     const currentPlaatsen = plaatsen.length;
 
-    console.log(`Ondernemer wil ${aantalPlaatsen} plaatsen, en heeft nu ${currentPlaatsen} plaats(en)`);
+    console.log(
+        `Ondernemer ${
+            ondernemer.erkenningsNummer
+        } wil ${aantalPlaatsen} plaatsen, en heeft nu ${currentPlaatsen} plaats(en)`,
+    );
 
     if (aantalPlaatsen > currentPlaatsen) {
         const adjacent = getAdjacentPlaatsenForMultiple(indeling, plaatsen);
@@ -589,7 +593,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
 
     indeling = indeling.expansionQueue.reduce(assignUitbreiding, indeling);
 
-    console.log(indeling);
+    console.log(indeling.toewijzingen.map(data => ({ ...data, ondernemer: undefined })));
 
     return indeling;
 };

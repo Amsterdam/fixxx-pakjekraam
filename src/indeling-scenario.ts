@@ -141,12 +141,25 @@ const marktScenario = (callback: (utils: scenarioUtils) => IMarktScenarioStub): 
 
     const seed: IMarktScenarioStub = callback({ marktplaats, ondernemer, voorkeur, aanmelding });
 
-    const markt: IMarktScenario = {
-        ...defaultMarkt,
-        ...seed,
+    const seedMixin = {
+        aanwezigheid: seed.aanwezigheid || [],
+        marktplaatsen: seed.marktplaatsen || [],
+        ondernemers: seed.ondernemers || [],
+        voorkeuren: seed.voorkeuren || [],
+        aLijst: seed.aLijst || [],
+        branches: seed.branches || [],
     };
 
-    if (!seed.rows) {
+    const markt: IMarktScenario = {
+        ...defaultMarkt,
+        ...seedMixin,
+    };
+
+    if (seed.rows) {
+        markt.rows = seed.rows.map(row =>
+            row.map(plaatsRef => markt.marktplaatsen.find(({ plaatsId }) => plaatsId === plaatsRef)),
+        );
+    } else {
         /*
          * When no physical distribution is provided,
          * assume there is one big row that is ordered by `plaatsId` in alphanumeric order.

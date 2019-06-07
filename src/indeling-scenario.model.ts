@@ -27,7 +27,7 @@ export interface IMarktScenarioStub {
     voorkeuren?: IPlaatsvoorkeur[];
     aLijst?: IMarktondernemer[];
     branches?: IBranche[];
-    rows?: IMarktplaats[][];
+    rows?: string[][];
 }
 
 export interface IMarktplaatsStub {

@@ -297,32 +297,32 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         expect(indeling.afwijzingen.some(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 99)).toBe(true);
     });
 
-    it.skip(
-        'Een ondernemer kan niet uitbreiden naar een andere marktkraamrij',
-        test.todo,
+    it('Een ondernemer kan niet uitbreiden naar een andere marktkraamrij', () => {
         /*
          * Scenario:
          * - 2 marktplaatsen gescheiden door een straat
          * - 1 ondernemer met een voorkeur voor 2 kramen
          */
-    );
+        const markt = marktScenario(({ ondernemer, marktplaats }) => ({
+            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 2 } })],
+            marktplaatsen: [marktplaats(), marktplaats()],
+            rows: [['1'], ['2']],
+        }));
 
-    it.skip(
-        'Een ondernemer die kan uitbreiden aan verschillende zijden, wordt ingedeeld bij de voorkeurszijde',
-        test.todo,
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(1);
+        expect(indeling.afwijzingen.length).toBe(0);
+        expect(indeling.toewijzingen[0].plaatsen).toStrictEqual(['1']);
+    });
+
+    it('Een ondernemer die kan uitbreiden aan verschillende zijden, wordt ingedeeld bij de voorkeurszijde', () => {
         /*
          * Scenario:
          * - 3 marktplaatsen
-         * - 1 ondernemer met een vaste plek op de 2e kraam
+         * - 1 ondernemer met een vaste plek op de middelste kraam
          * - de ondernemer heeft een voorkeur voor kraam 2, daarna 1, daarna 3
          */
-    );
-    it('Een ondernemer die kan uitbreiden aan verschillende zijden, wordt ingedeeld bij de voorkeurszijde', /*
-     * Scenario:
-     * - 3 marktplaatsen
-     * - 1 ondernemer met een vaste plek op de middelste kraam
-     * - de ondernemer heeft een voorkeur voor kraam 2, daarna 1, daarna 3
-     */ () => {
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
             ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 2 } })],
             marktplaatsen: [marktplaats(), marktplaats(), marktplaats()],
@@ -339,12 +339,13 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         expect(indeling.toewijzingen[0].plaatsen.sort()).toStrictEqual(['2', '3']);
     });
 
-    it.skip('Ondernemers die kunnen uitbreiden aan verschillende zijden, wordt ingedeeld bij de voorkeurszijde', /*
-     * Scenario:
-     * - 3 marktplaatsen
-     * - 1 ondernemer met een vaste plek op de middelste kraam
-     * - de ondernemer heeft een voorkeur voor kraam 2, daarna 1, daarna 3
-     */ () => {
+    it.skip('Ondernemers die kunnen uitbreiden aan verschillende zijden, wordt ingedeeld bij de voorkeurszijde', () => {
+        /*
+         * Scenario:
+         * - 3 marktplaatsen
+         * - 1 ondernemer met een vaste plek op de middelste kraam
+         * - de ondernemer heeft een voorkeur voor kraam 2, daarna 1, daarna 3
+         */
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
