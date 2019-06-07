@@ -7,6 +7,15 @@ const MILLISECONDS_IN_DAY = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE * MINUTES
 const shortMonthCharCount = 3;
 
 const WEEK_DAYS = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+
+const SUNDAY = 0;
+const MONDAY = 1;
+const TUESDAY = 2;
+const WEDNESDAY = 3;
+const THURSDAY = 4;
+const FRIDAY = 5;
+const SATURDAY = 6;
+
 const monthName = [
     'januari',
     'februari',
@@ -114,4 +123,11 @@ module.exports = {
     MINUTES_IN_HOUR,
     HOURS_IN_DAY,
     MILLISECONDS_IN_DAY,
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY,
 };

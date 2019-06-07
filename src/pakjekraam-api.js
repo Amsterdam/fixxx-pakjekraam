@@ -1,5 +1,6 @@
 const {
     login,
+    getALijst,
     getMarkt,
     getMarkten: getMakkelijkeMarkten,
     getMarktondernemersByMarkt,
@@ -87,8 +88,9 @@ const getIndelingslijstInput = (token, marktId, date) =>
         getMarktPaginas(marktId),
         getMarktGeografie(marktId),
         getMarkt(token, marktId),
+        getALijst(token, marktId, date),
     ]).then(args => {
-        const [ondernemers, locaties, aanmeldingen, voorkeuren, branches, paginas, geografie, markt] = args;
+        const [ondernemers, locaties, aanmeldingen, voorkeuren, branches, paginas, geografie, markt, aLijst] = args;
 
         return {
             locaties,
@@ -105,7 +107,9 @@ const getIndelingslijstInput = (token, marktId, date) =>
                 inactive: locatie.inactive,
             })),
             aanwezigheid: aanmeldingen,
-            aLijst: [], // TODO: retrieve aLijst from Makkelijke Markt
+            aLijst: aLijst.map(({ koopman: { erkenningsnummer } }) =>
+                ondernemers.find(({ erkenningsNummer }) => erkenningsnummer === erkenningsNummer),
+            ),
             rows: paginas.reduce(
                 (list, pagina) => [
                     ...list,

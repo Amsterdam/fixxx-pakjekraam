@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { setupCache } = require('axios-cache-adapter');
+const { addDays, MONDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY } = require('./util.js');
 
 const MILLISECONDS_IN_SECOND = 1000;
 const SECONDS_IN_MINUTE = 60;
@@ -91,9 +92,31 @@ const getMarkten = token => {
         .then(response => response.data);
 };
 
+const A_LIJST_DAYS = [FRIDAY, SATURDAY, SUNDAY];
+
+const getALijst = (token, marktId, marktDate) => {
+    const day = new Date(marktDate).getDay();
+
+    if (A_LIJST_DAYS.includes(day)) {
+        const monday = addDays(marktDate, MONDAY - day),
+            thursday = addDays(marktDate, THURSDAY - day);
+
+        return makkelijkeMarktAPI
+            .get(`lijst/week/${marktId}?startDate=${monday}&endDate=${thursday}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then(response => response.data);
+    } else {
+        return new Promise(resolve => resolve([]));
+    }
+};
+
 module.exports = {
     init,
     login,
+    getALijst,
     getMarkt,
     getMarkten,
     getMarktondernemer,
