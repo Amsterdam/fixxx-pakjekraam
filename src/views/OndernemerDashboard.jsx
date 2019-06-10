@@ -21,7 +21,7 @@ class OndernemerDashboard extends React.Component {
 
         return (
             <Page>
-                <Header user={ondernemer}>
+                <Header user={ondernemer} logoUrl={`/dashboard/${ondernemer.erkenningsnummer}`}>
                     <OndernemerProfileHeader user={ondernemer} />
                 </Header>
                 <Content>

@@ -2,14 +2,14 @@ const LoginButton = require('./LoginButton');
 const PropTypes = require('prop-types');
 const React = require('react');
 
-const Header = ({ user, children }) => {
+const Header = ({ user, children, logoUrl }) => {
     return (
         <header className="Header">
             <div className="Header__top">
                 <div className="container">
                     <div className="container__content">
                         <div className="Header__top-container">
-                            <a className="Header__logo-link" href="/">
+                            <a className="Header__logo-link" href={`${logoUrl ? logoUrl : `/`}`}>
                                 <picture className="Header__logo">
                                     <source srcSet="/images/logo-desktop.svg" media="(min-width: 540px)" />
                                     <source srcSet="/images/logo-mobile.svg" media="(min-width: 0)" />
@@ -37,6 +37,7 @@ const Header = ({ user, children }) => {
 
 Header.propTypes = {
     user: PropTypes.object,
+    logoUrl: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 

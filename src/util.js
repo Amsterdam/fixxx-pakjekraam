@@ -6,7 +6,7 @@ const HOURS_IN_DAY = 24;
 const MILLISECONDS_IN_DAY = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE * MINUTES_IN_HOUR * HOURS_IN_DAY;
 const shortMonthCharCount = 3;
 
-const dayOfWeekName = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+const WEEK_DAYS = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
 const monthName = [
     'januari',
     'februari',
@@ -22,7 +22,7 @@ const monthName = [
     'december',
 ];
 
-const formatDayOfWeek = date => dayOfWeekName[new Date(date).getDay()];
+const formatDayOfWeek = date => WEEK_DAYS[new Date(date).getDay()];
 const formatMonth = date => monthName[new Date(date).getMonth()];
 
 const formatDate = date =>
@@ -108,6 +108,7 @@ module.exports = {
     relativeHumanDay,
     capitalize,
     DAYS_IN_WEEK,
+    WEEK_DAYS,
     MILLISECONDS_IN_SECOND,
     SECONDS_IN_MINUTE,
     MINUTES_IN_HOUR,

@@ -2,9 +2,11 @@ const Button = require('./Button');
 const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 const PropTypes = require('prop-types');
 const React = require('react');
-const { formatDayOfWeek, formatDate, DAYS_IN_WEEK } = require('../../util.js');
+const { formatDayOfWeek, formatDate, WEEK_DAYS } = require('../../util.js');
 
 const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, ondernemer }) => {
+    let lastDivider = false;
+
     return (
         <div className="OndernemerMarktAanwezigheid well">
             <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
@@ -25,8 +27,12 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
                                 <strong>{formatDayOfWeek(date)}</strong>
                                 <span>{formatDate(date)}</span>
                             </span>
-                            {new Date(date).getDay() === DAYS_IN_WEEK - 1 && i < DAYS_IN_WEEK ? (
-                                <hr className="OndernemerMarktAanwezigheid__divider" />
+                            {WEEK_DAYS[new Date(date).getDay()].slice(0, 2) ===
+                                markt.marktDagen[markt.marktDagen.length - 1] && !lastDivider ? (
+                                <span className="OndernemerMarktAanwezigheid__divider">
+                                    volgende week
+                                    {(lastDivider = true)}
+                                </span>
                             ) : (
                                 ``
                             )}
@@ -35,7 +41,7 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
                 })}
             </ul>
             <Button
-                label="Aanwezigheid doorgeven"
+                label="Aanwezigheid wijzigen"
                 href={`/afmelden/${ondernemer.erkenningsnummer}/${markt.id}/?next=/dashboard/${
                     ondernemer.erkenningsnummer
                 }/#markt-${markt.id}`}

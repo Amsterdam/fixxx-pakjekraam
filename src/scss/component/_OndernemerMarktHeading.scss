@@ -1,4 +1,9 @@
 .OndernemerMarktHeading {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    &__markt-naam {
+        width: 100%;
+        margin-bottom: $hm1;
+    }
 }

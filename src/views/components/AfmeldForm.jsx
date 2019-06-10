@@ -1,7 +1,7 @@
 const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 const React = require('react');
 const PropTypes = require('prop-types');
-const { formatDayOfWeek, DAYS_IN_WEEK, today, formatDate } = require('../../util.js');
+const { formatDayOfWeek, WEEK_DAYS, today, formatDate } = require('../../util.js');
 const { filterRsvpList } = require('../../domain-knowledge.js');
 
 class AfmeldForm extends React.Component {
@@ -34,7 +34,7 @@ class AfmeldForm extends React.Component {
 
         return (
             <form className="Form" method="POST" action="/afmelden/" encType="application/x-www-form-urlencoded">
-                <h1>Aanwezigheid doorgeven</h1>
+                <h1>Aanwezigheid wijzigen</h1>
                 <input
                     id="erkenningsNummer"
                     name="erkenningsNummer"
@@ -47,10 +47,10 @@ class AfmeldForm extends React.Component {
                       })
                     : entries
                 ).map(({ sollicitatie, markt, rsvpEntries }) => {
+                    let lastDivider = false;
                     const next = query.next
                         ? query.next
                         : `/markt/${markt.id}/${query.datum}/${query.type}/#soll-${sollicitatie.sollicitatieNummer}`;
-                    console.log(next);
 
                     return (
                         <section className="Fieldset" key={sollicitatie.markt.id}>
@@ -90,11 +90,13 @@ class AfmeldForm extends React.Component {
                                                 ) : null}
                                             </label>
                                         </span>
-                                        {new Date(date).getDay() === DAYS_IN_WEEK - 1 && i < DAYS_IN_WEEK ? (
-                                            <hr className="InputField--afmelden__divider" />
-                                        ) : (
-                                            ``
-                                        )}
+                                        {WEEK_DAYS[new Date(date).getDay()].slice(0, 2) ===
+                                            markt.marktDagen[markt.marktDagen.length - 1] && !lastDivider ? (
+                                            <span className="OndernemerMarktAanwezigheid__divider">
+                                                volgende week
+                                                {(lastDivider = true)}
+                                            </span>
+                                        ) : null}
                                     </li>
                                 ))}
                             </ul>

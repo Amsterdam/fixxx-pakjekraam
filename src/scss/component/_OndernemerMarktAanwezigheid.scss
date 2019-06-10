@@ -31,4 +31,26 @@ $itemMinWidth: 197px;
     .OndernemerMarktHeading {
         margin: 0 0 $vm4;
     }
+    &__divider {
+        display: flex;
+        margin: 15px 0;
+        position: relative;
+        color: $neutral-grey4;
+        white-space: nowrap;
+        &:after,
+        &:before {
+            content: "";
+            display: block;
+            height: 1px;
+            width: 50%;
+            margin-top: 12px;
+            background-color: $neutral-grey4;
+        }
+        &:after {
+            margin-left: 2%;
+        }
+        &:before {
+            margin-right: 2%;
+        }
+    }
 }
