@@ -1,3 +1,4 @@
+const Alert = require('./components/Alert');
 const Content = require('./components/Content');
 const Header = require('./components/Header');
 const LoginForm = require('./components/LoginForm.jsx');
@@ -14,13 +15,11 @@ class LoginPage extends React.Component {
         return (
             <Page>
                 <Header />
+                {(this.props.messages || []).map(message => (
+                    <Alert key={message.code} message={message.message} code={message.code} />
+                ))}
                 <Content>
                     <h1 className="h1">Inloggen</h1>
-                    {(this.props.messages || []).map(message => (
-                        <p key={message.code} className={`Message Message--${message.code}`}>
-                            {message.message}
-                        </p>
-                    ))}
                     <LoginForm />
                 </Content>
             </Page>

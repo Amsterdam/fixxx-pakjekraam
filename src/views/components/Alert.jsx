@@ -12,7 +12,7 @@ const Alert = ({ type, message, title }) => {
 };
 
 Alert.propTypes = {
-    type: PropTypes.oneOf(['error', 'warning', 'success']),
+    type: PropTypes.string,
     message: PropTypes.string,
     title: PropTypes.string,
 };
