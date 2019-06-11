@@ -25,7 +25,7 @@ class LoginForm extends React.Component {
                         />
                     </p>
                     <p className="InputField InputField--submit">
-                        <input className="Input Input--submit-primary" type="submit" />
+                        <input className="Input Input--submit-primary" type="submit" value="Inloggen" />
                     </p>
                 </fieldset>
             </form>
