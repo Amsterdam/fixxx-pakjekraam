@@ -61,6 +61,9 @@ class AfmeldForm extends React.Component {
                             <ul className="CheckboxList">
                                 {rsvpEntries.map(({ date, rsvp, index }, i) => (
                                     <li key={date}>
+                                        {i === 0 ? (
+                                            <span className="OndernemerMarktAanwezigheid__divider">deze week</span>
+                                        ) : null}
                                         <input type="hidden" name={`rsvp[${index}][marktId]`} defaultValue={markt.id} />
                                         <input type="hidden" name={`rsvp[${index}][marktDate]`} defaultValue={date} />
                                         <span className="InputField InputField--checkbox InputField--afmelden">
