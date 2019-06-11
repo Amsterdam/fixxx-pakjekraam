@@ -1,5 +1,5 @@
 [
-  { "plaatsId": "1" },
+  { "plaatsId": "1", "properties": ["lantaarnpaal"] },
   { "plaatsId": "2" },
   { "plaatsId": "3" },
   { "plaatsId": "4" },
@@ -70,7 +70,7 @@
   { "plaatsId": "69" },
   { "plaatsId": "70" },
   { "plaatsId": "71" },
-  { "plaatsId": "72" },
+  { "plaatsId": "72", "properties": ["lantaarnpaal"] },
   { "plaatsId": "73" },
   { "plaatsId": "74" },
   { "plaatsId": "75" },
