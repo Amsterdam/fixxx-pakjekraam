@@ -49,7 +49,7 @@ class AfmeldForm extends React.Component {
                 ).map(({ sollicitatie, markt, rsvpEntries }) => {
                     let lastDivider = false;
                     const next = query.next
-                        ? query.next
+                        ? `${query.next}?error=aanwezigheid-saved`
                         : `/markt/${markt.id}/${query.datum}/${query.type}/#soll-${sollicitatie.sollicitatieNummer}`;
 
                     return (

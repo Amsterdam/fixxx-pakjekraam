@@ -1,8 +1,29 @@
+@keyframes slideInFromLeft {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 .Alert {
     border: 2px solid $neutral-grey3;
-    position: relative;
     padding: 16px 20px 16px 60px;
     min-height: 30px;
+    background-color: $primary-white;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    animation: 4s ease-out 0s 1 slideInFromLeft forwards;
+    pointer-events: none;
     &__icon:before {
         position: absolute;
         left: 20px;

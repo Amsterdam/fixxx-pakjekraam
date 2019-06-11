@@ -143,10 +143,12 @@ app.get('/markt/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) =>
 
 const publicErrors = {
     INCORRECT_CREDENTIALS: 'incorrect-credentials',
+    AANWEZIGHEID_SAVED: 'aanwezigheid-saved',
 };
 
 const humanReadableMessage = {
     [publicErrors.INCORRECT_CREDENTIALS]: 'Uw gebruikersnaam of wachtwoord is incorrect.',
+    [publicErrors.AANWEZIGHEID_SAVED]: 'De wijzigingen zijn met success doorgevoerd',
 };
 
 /*
@@ -170,6 +172,7 @@ const getQueryErrors = queryParams => {
 };
 
 app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
+    const message = getQueryErrors(req.query);
     const user = req.user.token;
     const ondernemerPromise = getMarktondernemer(user, req.params.erkenningsNummer);
     const marktenPromise = ondernemerPromise.then(ondernemer =>
@@ -185,6 +188,7 @@ app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
                 markten,
                 startDate: tomorrow(),
                 endDate: nextWeek(),
+                message,
             });
         },
         err => errorPage(res, err),

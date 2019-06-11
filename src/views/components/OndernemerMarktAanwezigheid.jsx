@@ -5,6 +5,8 @@ const React = require('react');
 const { formatDayOfWeek, formatDate, WEEK_DAYS } = require('../../util.js');
 
 const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, ondernemer }) => {
+    const next = `/dashboard/${ondernemer.erkenningsnummer}/#markt-${markt.id}`;
+
     let lastDivider = false;
 
     return (
@@ -42,9 +44,7 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
             </ul>
             <Button
                 label="Aanwezigheid wijzigen"
-                href={`/afmelden/${ondernemer.erkenningsnummer}/${markt.id}/?next=/dashboard/${
-                    ondernemer.erkenningsnummer
-                }/#markt-${markt.id}`}
+                href={`/afmelden/${ondernemer.erkenningsnummer}/${markt.id}/?next=${next}`}
             />
         </div>
     );
