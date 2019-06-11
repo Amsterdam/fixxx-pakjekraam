@@ -24,6 +24,9 @@
     opacity: 0;
     animation: 4s ease-out 0s 1 slideInFromLeft forwards;
     pointer-events: none;
+    top: 80px;
+    min-width: 210px;
+    z-index: 1;
     &__icon:before {
         position: absolute;
         left: 20px;
@@ -50,17 +53,24 @@
             font-size: 20px;
         }
     }
+    &--incorrect-credentials,
     &--warning {
         border-color: $supplement-orange;
         .Alert__icon:before {
             color: $supplement-orange;
         }
     }
+    &--aanwezigheid-saved,
     &--success {
         border-color: $supplement-lightgreen;
         .Alert__icon:before {
             @include icon($icon-Check-Mark);
             color: $supplement-lightgreen;
+        }
+    }
+    @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+            animation-delay: (($i - 1) * 4s);
         }
     }
 }

@@ -1,3 +1,4 @@
+const Alert = require('./Alert');
 const PropTypes = require('prop-types');
 const React = require('react');
 
@@ -6,6 +7,7 @@ class Page extends React.Component {
         children: PropTypes.optionalNode,
         title: PropTypes.string,
         bodyClass: PropTypes.string,
+        messages: PropTypes.array,
     };
 
     render() {
@@ -18,6 +20,9 @@ class Page extends React.Component {
                     <link rel="stylesheet" type="text/css" href="/style/screen.css" />
                 </head>
                 <body className={this.props.bodyClass}>
+                    {(this.props.messages || []).map(message => (
+                        <Alert key={message.code} message={message.message} type={message.code} />
+                    ))}
                     {this.props.children}
                     <script src="/js/script.js" />
                 </body>

@@ -172,7 +172,7 @@ const getQueryErrors = queryParams => {
 };
 
 app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
-    const message = getQueryErrors(req.query);
+    const messages = getQueryErrors(req.query);
     const user = req.user.token;
     const ondernemerPromise = getMarktondernemer(user, req.params.erkenningsNummer);
     const marktenPromise = ondernemerPromise.then(ondernemer =>
@@ -188,7 +188,7 @@ app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
                 markten,
                 startDate: tomorrow(),
                 endDate: nextWeek(),
-                message,
+                messages,
             });
         },
         err => errorPage(res, err),
