@@ -12,13 +12,14 @@ class OndernemerDashboard extends React.Component {
         ondernemer: PropTypes.object,
         aanmeldingen: PropTypes.array,
         markten: PropTypes.array,
+        messages: PropTypes.array,
         startDate: PropTypes.string.isRequired,
         endDate: PropTypes.string.isRequired,
         user: PropTypes.object,
     };
 
     render() {
-        const { ondernemer, user, markten, aanmeldingen, startDate, endDate } = this.props;
+        const { ondernemer, messages } = this.props;
 
         return (
             <Page messages={messages}>
