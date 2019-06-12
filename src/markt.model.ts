@@ -34,6 +34,7 @@ export interface IMarkt {
     marktplaatsen: IMarktplaats[];
     voorkeuren: IPlaatsvoorkeur[];
     ondernemers: IMarktondernemer[];
+    expansionLimit: number;
 }
 
 export interface IMarktindelingSeed {
@@ -110,6 +111,7 @@ export interface IMarktindelingState extends IMarkt {
     toewijzingQueue: IMarktondernemer[];
     openPlaatsen: IMarktplaats[];
     expansionQueue: IToewijzing[];
+    expansionIteration: number;
 }
 
 export interface IMarktindeling extends IMarkt, IMarktindelingSeed, IMarktindelingState {

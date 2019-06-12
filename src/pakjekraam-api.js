@@ -50,6 +50,8 @@ const getOndernemerVoorkeuren = erkenningsNummer => {
     });
 };
 
+const getMarktProperties = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/markt.json`, []);
+
 const getBranches = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/branches.json`, []);
 
 const getMarktplaatsen = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/locaties.json`, []);
@@ -60,6 +62,7 @@ const getMarktGeografie = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/g
 
 const getIndelingslijstInput = (token, marktId, date) =>
     Promise.all([
+        getMarktProperties(marktId),
         getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
             ondernemers
                 .filter(ondernemer => !ondernemer.doorgehaald)
@@ -76,6 +79,9 @@ const getIndelingslijstInput = (token, marktId, date) =>
                         id: erkenningsnummer,
                         erkenningsNummer: erkenningsnummer,
                         plaatsen: data.vastePlaatsen,
+                        voorkeur: {
+                            aantalPlaatsen: Math.max(1, data.aantal3MeterKramen + data.aantal4MeterKramen),
+                        },
                         sollicitatieNummer,
                         status,
                     };
@@ -90,7 +96,18 @@ const getIndelingslijstInput = (token, marktId, date) =>
         getMarkt(token, marktId),
         getALijst(token, marktId, date),
     ]).then(args => {
-        const [ondernemers, locaties, aanmeldingen, voorkeuren, branches, paginas, geografie, markt, aLijst] = args;
+        const [
+            marktProperties,
+            ondernemers,
+            locaties,
+            aanmeldingen,
+            voorkeuren,
+            branches,
+            paginas,
+            geografie,
+            markt,
+            aLijst,
+        ] = args;
 
         const marktplaatsen = locaties.map(locatie => ({
             plaatsId: locatie.plaatsId,
@@ -99,6 +116,7 @@ const getIndelingslijstInput = (token, marktId, date) =>
         }));
 
         return {
+            ...marktProperties,
             locaties,
             aanmeldingen,
             voorkeuren,

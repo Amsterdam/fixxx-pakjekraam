@@ -18,6 +18,7 @@ export interface IMarktScenario {
     aLijst: IMarktondernemer[];
     branches: IBranche[];
     rows: IMarktplaats[][];
+    expansionLimit?: number;
 }
 
 export interface IMarktScenarioStub {
@@ -28,6 +29,7 @@ export interface IMarktScenarioStub {
     aLijst?: IMarktondernemer[];
     branches?: IBranche[];
     rows?: string[][];
+    expansionLimit?: number;
 }
 
 export interface IMarktplaatsStub {

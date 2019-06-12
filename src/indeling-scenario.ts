@@ -148,6 +148,7 @@ const marktScenario = (callback: (utils: scenarioUtils) => IMarktScenarioStub): 
         voorkeuren: seed.voorkeuren || [],
         aLijst: seed.aLijst || [],
         branches: seed.branches || [],
+        expansionLimit: seed.expansionLimit,
     };
 
     const markt: IMarktScenario = {

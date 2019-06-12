@@ -5,6 +5,7 @@ const { marktScenario } = require('./indeling-scenario.ts');
 
 const FIRST_CHOICE = Number.MAX_SAFE_INTEGER;
 const SECOND_CHOICE = FIRST_CHOICE - 1;
+const THIRD_CHOICE = FIRST_CHOICE - 2;
 
 describe('Automatisch toewijzen marktplaatsen', () => {
     it('Een ondernemer wordt toegewezen aan een lege plek', () => {
@@ -75,7 +76,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         expect(indeling.toewijzingen[0].plaatsen.sort()).toStrictEqual(['1', '2']);
     });
 
-    it.skip('Een ondernemer kan uitbreiden naar een meervoudige plaats', () => {
+    it('Een ondernemer kan uitbreiden naar een meervoudige plaats', () => {
         /*
          * Scenario:
          * - 3 marktplaatsen
@@ -90,6 +91,29 @@ describe('Automatisch toewijzen marktplaatsen', () => {
 
         expect(indeling.toewijzingen.length).toBe(1);
         expect(indeling.toewijzingen[0].plaatsen.sort()).toStrictEqual(['1', '2', '3']);
+    });
+
+    it('Een ondernemer kan niet verder vergroten dan is toegestaan', () => {
+        /*
+         * Scenario:
+         * - 3 marktplaatsen
+         * - 1 ondernemer met een meervoudige plaats
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 3 } })],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: SECOND_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '1', priority: THIRD_CHOICE }),
+            ],
+            expansionLimit: 2,
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(1);
+        expect(indeling.toewijzingen[0].plaatsen.sort()).toStrictEqual(['2', '3']);
     });
 
     it('Een ondernemer met te laag ancenniteitsnummer krijgt geen dagvergunning op een volle markt', () => {
@@ -374,6 +398,44 @@ describe('Automatisch toewijzen marktplaatsen', () => {
                 .find(({ ondernemer: { sollicitatieNummer } }) => sollicitatieNummer === 2)
                 .plaatsen.sort(),
         ).toStrictEqual(['4', '5']);
+    });
+
+    it('Ondernemers kunnen eerst uitbreiden naar 2 plaatsen, voordat anderen mogen uitbreiden naar meer plaatsen', () => {
+        /*
+         * Scenario:
+         * - 3 marktplaatsen
+         * - 1 ondernemer met een vaste plek op de middelste kraam
+         * - de ondernemer heeft een voorkeur voor kraam 2, daarna 1, daarna 3
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [
+                ondernemer({ voorkeur: { aantalPlaatsen: 3 }, plaatsen: ['3', '4'], status: 'vpl' }),
+                ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
+            ],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '4', priority: SECOND_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: THIRD_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '1', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '2', priority: SECOND_CHOICE }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(2);
+        expect(indeling.afwijzingen.length).toBe(0);
+        expect(
+            indeling.toewijzingen
+                .find(({ ondernemer: { sollicitatieNummer } }) => sollicitatieNummer === 1)
+                .plaatsen.sort(),
+        ).toStrictEqual(['3', '4']);
+        expect(
+            indeling.toewijzingen
+                .find(({ ondernemer: { sollicitatieNummer } }) => sollicitatieNummer === 2)
+                .plaatsen.sort(),
+        ).toStrictEqual(['1', '2']);
     });
 });
 
