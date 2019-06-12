@@ -3,26 +3,24 @@
     vertical-align: top;
     &__header {
         padding: 0 5px;
-        border: none;
+        border: none !important;
         @include p1;
     }
     &__header-row {
         //display: flex;
     }
     &__header-plaats {
-        width: 10%;
     }
     &__header-properties {
-        width: 12px;
     }
     &__vph {
-        width: 20px;
         text-align: right;
     }
     &__table {
         width: 100%;
+        table-layout: fixed;
     }
-    &.markt-19__straat-1a {
+    &--markt-19.IndelingslijstGroup--straat-1a {
         margin-top: 61px;
     }
     &__title {

@@ -44,8 +44,12 @@ body.page-print {
             clear: both;
             display: table;
         }
+        .IndelingslijstGroup + .IndelingslijstGroup + .IndelingslijstGroup + .IndelingslijstGroup,
         .IndelingslijstGroup + .IndelingslijstGroup {
             margin-left: 4%;
+        }
+        .IndelingslijstGroup + .IndelingslijstGroup + .IndelingslijstGroup {
+            margin-left: 0;
         }
     }
     &__index {

@@ -1,3 +1,4 @@
+$plaatsCellHeight: 16px;
 .table-cell--left {
     text-align: left;
 }
@@ -14,8 +15,11 @@
         border-right: 1px solid #000;
         @include p1;
         font-size: 12px;
-        line-height: 16px;
+        line-height: $plaatsCellHeight;
         border-top: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     &__target {
         display: block;
@@ -26,7 +30,7 @@
         visibility: hidden;
     }
     &__prop-plaats-nr {
-        width: 5%;
+        width: 23px;
         color: $primary-black;
         text-align: center;
         border-right: none;
@@ -114,16 +118,20 @@
             background-color: rgb(251, 241, 54);
         }
     }
-    &__prop-vph {
+    &__prop-soll {
         text-align: right;
         border-right: none;
+        width: 35px;
     }
-    &__prop-vph-description {
+    &__prop-naam {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         width: 30%;
         border-left: none;
+    }
+    .Plaats__prop-vph-description {
+        border-right: none;
     }
     &--vph-attendance-not-attending {
         .Plaats__prop-vph-description,
@@ -141,11 +149,13 @@
     }
     &--vph-attendance-verified {
         .Plaats__prop-vph {
-            border-left: 2px solid $primary-black;
+            border-left: 3px solid $primary-black;
         }
     }
     &__prop-properties {
         border-right: none;
+        width: $plaatsCellHeight;
+        padding: 0;
         .icon {
             display: block;
             width: 100%;
@@ -167,14 +177,19 @@
     &__prop-empty-fields {
         border-left: none;
         border-right: none;
-        border-top: none;
+        &:last-of-type {
+            border-right: 1px solid;
+        }
     }
-    &--first .Plaats__prop-properties,
-    &--first .Plaats__prop-plaats-nr,
-    &--first .Plaats__prop-vph-description,
-    &--first .Plaats__prop-vph {
+    &--first .Plaats__prop {
         border-top: solid 1px #000000;
     }
+    &__prop-status {
+        width: 25px;
+        padding: 0;
+        border-left: none;
+    }
+
     &.experimentele-zone .Plaats__prop:after,
     &.standwerkersplaats .Plaats__prop:after {
         content: "";

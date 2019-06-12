@@ -1,3 +1,4 @@
+const OndernemerStatus = require('./OndernemerStatus');
 const PrintableBackground = require('./PrintableBackground');
 const PropTypes = require('prop-types');
 const React = require('react');
@@ -99,7 +100,7 @@ const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type, toewijzing
                 {color && <PrintableBackground color={color} />}
             </td>
 
-            <td className="Plaats__prop Plaats__prop-vph">
+            <td className="Plaats__prop Plaats__prop-soll Plaats__prop-vph">
                 <span id={'soll-' + (vph && vph.sollicitatieNummer)} />
                 {vph ? (
                     <a href={`/profile/${vph.erkenningsNummer}`}>
@@ -107,12 +108,15 @@ const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type, toewijzing
                     </a>
                 ) : null}
             </td>
-            <td className={`Plaats__prop Plaats__prop-vph-description`}>
+            <td className={`Plaats__prop Plaats__prop-naam Plaats__prop-vph-description`}>
                 {vph ? vph.description : <strong>{tags}</strong>}
             </td>
-            <td className="Plaats__prop Plaats__prop-empty-fields">
+            <td className="Plaats__prop Plaats__prop-soll">
                 {toewijzing ? <strong>{toewijzing.ondernemer.sollicitatieNummer}</strong> : null}
-                {toewijzing ? toewijzing.ondernemer.description : null}
+            </td>
+            <td className="Plaats__prop Plaats__prop-naam">{toewijzing ? toewijzing.ondernemer.description : null}</td>
+            <td className="Plaats__prop Plaats__prop-status">
+                {toewijzing ? <OndernemerStatus status={toewijzing.ondernemer.status} size={`s`} /> : null}
             </td>
         </tr>
     );

@@ -90,7 +90,7 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
                 {color && <PrintableBackground color={color} />}
             </td>
 
-            <td className="Plaats__prop Plaats__prop-vph">
+            <td className="Plaats__prop Plaats__prop-soll">
                 <span id={'soll-' + (vph && vph.sollicitatieNummer)} />
                 {vph ? (
                     <a href={`/profile/${vph.erkenningsNummer}`}>
@@ -98,9 +98,8 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
                     </a>
                 ) : null}
             </td>
-            <td className={`Plaats__prop Plaats__prop-vph-description`}>
-                {vph ? vph.description : <strong>{tags}</strong>}
-            </td>
+            <td className={`Plaats__prop Plaats__prop-naam`}>{vph ? vph.description : <strong>{tags}</strong>}</td>
+            <td className="Plaats__prop Plaats__prop-empty-fields" />
             <td className="Plaats__prop Plaats__prop-empty-fields" />
         </tr>
     );

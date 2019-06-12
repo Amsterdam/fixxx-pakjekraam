@@ -1,0 +1,44 @@
+$ondernemerStatusHeight: 18px;
+$ondernemerStatusHeightSmall: 15px;
+
+.OndernemerStatus {
+    @include fontBold;
+    color: $primary-white;
+    font-size: $fs-30;
+    z-index: 1;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    line-height: $ondernemerStatusHeight;
+    padding: 0 5px;
+    &:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        top: 0;
+        left: 0;
+        height: 0;
+        border: $ondernemerStatusHeight solid $primary-black;
+        z-index: -1;
+    }
+    &--vpl:before {
+        border-color: $primary-darkblue;
+    }
+    &--soll:before {
+        border-color: $supplement-darkgreen;
+    }
+    &--vkk:before {
+        border-color: $supplement-lightblue;
+    }
+    &--overig:before {
+        border-color: $support-focus;
+    }
+    &--size-s {
+        font-size: 9px;
+        line-height: $ondernemerStatusHeightSmall;
+        padding: 0 4px;
+        &:before {
+            border-width: $ondernemerStatusHeightSmall;
+        }
+    }
+}
