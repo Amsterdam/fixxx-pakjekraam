@@ -1,0 +1,41 @@
+$inputMinWidth: 70px;
+$inputMaxWidth: 620px;
+
+.Select {
+    border-radius: 0;
+    display: inline-block;
+    @include p1;
+    padding: 9px 9px 11px 9px;
+    border: 1px solid $neutral-grey4;
+    color: $neutral-grey4;
+    outline-offset: 0;
+    outline: 2px solid transparent;
+    transition: border-color 0.4s, outline 0.4s;
+    width: 100%;
+    padding-right: 30px;
+    &:hover {
+        border-color: $primary-black;
+        color: $primary-black;
+    }
+    &:focus {
+        outline-offset: 0;
+        outline: 2px solid $support-focus;
+    }
+    [disabled="disabled"] {
+        border-color: $neutral-grey3;
+        color: $neutral-grey3;
+    }
+    &__wrapper:after {
+        pointer-events: none;
+        @include icon($icon-Chevron-Down);
+        position: absolute;
+        transform: translateY(-50%);
+        right: $hm2;
+        top: 50%;
+    }
+    &__wrapper {
+        position: relative;
+        min-width: $inputMinWidth;
+        max-width: $inputMaxWidth;
+    }
+}

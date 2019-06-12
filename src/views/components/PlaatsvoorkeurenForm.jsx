@@ -2,28 +2,7 @@ const React = require('react');
 const PropTypes = require('prop-types');
 const { formatOndernemerName, plaatsSort } = require('../../domain-knowledge.js');
 const { stringSort, flatten } = require('../../util.js');
-
-const marktplaatsSort = (plaatsA, plaatsB) => plaatsSort(plaatsA.plaatsId, plaatsB.plaatsId);
-
-const MarktplaatsSelect = ({ id, name, markt, value, optional, readonly }) => (
-    <select name={name} id={id} disabled={readonly}>
-        {optional ? <option value="" /> : null}
-        {(markt.marktplaatsen || []).sort(marktplaatsSort).map(plaats => (
-            <option key={plaats.plaatsId} value={plaats.plaatsId} selected={plaats.plaatsId === value}>
-                {plaats.plaatsId}
-            </option>
-        ))}
-    </select>
-);
-
-MarktplaatsSelect.propTypes = {
-    markt: PropTypes.object.isRequired,
-    value: PropTypes.string,
-    id: PropTypes.string,
-    name: PropTypes.string,
-    optional: PropTypes.boolean,
-    readonly: PropTypes.boolean,
-};
+const MarktplaatsSelect = require('./MarktplaatsSelect');
 
 class PlaatsvoorkeurenForm extends React.Component {
     propTypes = {
@@ -42,7 +21,6 @@ class PlaatsvoorkeurenForm extends React.Component {
                 sollicitatie =>
                     sollicitatie.markt.id === parseInt(marktId, 10) && sollicitatie.vastePlaatsen.includes(plaatsId),
             );
-
         const marktEntries = markten
             .map(markt => {
                 return [
@@ -100,34 +78,34 @@ class PlaatsvoorkeurenForm extends React.Component {
                     />
                 </p>
                 {markten.map(markt => {
+                    let entriesFiltered = entries.filter(entry => entry.marktId === markt.id);
+                    console.log(entriesFiltered);
                     return (
                         <div key={markt.id}>
                             <h2>{markt.naam}</h2>
-                            {entries
-                                .filter(entry => entry.marktId === markt.id)
-                                .map(({ marktId, plaatsId, priority, index, readonly }, n, arr) => (
-                                    <p key={index}>
-                                        <label htmlFor={`voorkeur-${index}`}>Voorkeursplaats {n + 1}:</label>
-                                        <input
-                                            type="hidden"
-                                            name={`plaatsvoorkeuren[${index}][marktId]`}
-                                            defaultValue={markt.id}
-                                        />
-                                        <input
-                                            type="hidden"
-                                            name={`plaatsvoorkeuren[${index}][priority]`}
-                                            defaultValue={priority || 1 + (arr.length - n)}
-                                        />
-                                        <MarktplaatsSelect
-                                            name={`plaatsvoorkeuren[${index}][plaatsId]`}
-                                            id={`voorkeur-${index}`}
-                                            markt={markt}
-                                            value={plaatsId}
-                                            readonly={readonly}
-                                            optional={true}
-                                        />
-                                    </p>
-                                ))}
+                            {entriesFiltered.map(({ marktId, plaatsId, priority, index, readonly }, n, arr) => (
+                                <div className="InputField InputField--select" key={index}>
+                                    <label htmlFor={`voorkeur-${index}`}>Voorkeursplaats {n + 1}:</label>
+                                    <input
+                                        type="hidden"
+                                        name={`plaatsvoorkeuren[${index}][marktId]`}
+                                        defaultValue={markt.id}
+                                    />
+                                    <input
+                                        type="hidden"
+                                        name={`plaatsvoorkeuren[${index}][priority]`}
+                                        defaultValue={priority || 1 + (arr.length - n)}
+                                    />
+                                    <MarktplaatsSelect
+                                        name={`plaatsvoorkeuren[${index}][plaatsId]`}
+                                        id={`voorkeur-${index}`}
+                                        markt={markt}
+                                        value={plaatsId}
+                                        readonly={readonly}
+                                        optional={true}
+                                    />
+                                </div>
+                            ))}
                         </div>
                     );
                 })}
