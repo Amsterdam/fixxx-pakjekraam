@@ -116,6 +116,27 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         expect(indeling.toewijzingen[0].plaatsen.sort()).toStrictEqual(['2', '3']);
     });
 
+    it('Een ondernemer met meervoudige vaste plaats kan verkleinen', () => {
+        /*
+         * Scenario:
+         * - 3 marktplaatsen
+         * - 1 ondernemer met een meervoudige plaats
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [ondernemer({ plaatsen: ['1', '2'], voorkeur: { aantalPlaatsen: 1 } })],
+            marktplaatsen: [marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '1', priority: SECOND_CHOICE }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(1);
+        expect(indeling.toewijzingen[0].plaatsen.sort()).toStrictEqual(['2']);
+    });
+
     it('Een ondernemer met te laag ancenniteitsnummer krijgt geen dagvergunning op een volle markt', () => {
         /*
          * Scenario:

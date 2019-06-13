@@ -47,6 +47,14 @@ const prioritySort = (voorkeurA?: IPlaatsvoorkeur, voorkeurB?: IPlaatsvoorkeur) 
     return numberSort(-prioA, -prioB);
 };
 
+const sortPlaatsen = (plaatsen: IMarktplaats[], voorkeuren: IPlaatsvoorkeur[]) =>
+    [...plaatsen].sort((a, b) => {
+        const voorkeurA = voorkeuren.find(voorkeur => voorkeur.plaatsId === a.plaatsId);
+        const voorkeurB = voorkeuren.find(voorkeur => voorkeur.plaatsId === b.plaatsId);
+
+        return prioritySort(voorkeurA, voorkeurB);
+    });
+
 const FULL_REASON: IAfwijzingReason = {
     code: 1,
     message: 'Alle marktplaatsen zijn reeds ingedeeld',
@@ -141,12 +149,7 @@ const findOptimalSpot = (
 
     // voorkeuren.sort((a, b) => numberSort(a.priority, b.priority));
 
-    mogelijkePlaatsen.sort((a, b) => {
-        const voorkeurA = voorkeuren.find(voorkeur => voorkeur.plaatsId === a.plaatsId);
-        const voorkeurB = voorkeuren.find(voorkeur => voorkeur.plaatsId === b.plaatsId);
-
-        return prioritySort(voorkeurA, voorkeurB);
-    });
+    mogelijkePlaatsen = sortPlaatsen(mogelijkePlaatsen, voorkeuren);
 
     return mogelijkePlaatsen[0];
 };
@@ -259,9 +262,11 @@ const rejectOndernemer = (state: IMarktindeling, ondernemer: IMarktondernemer, r
 const assignVastePlaats = (state: IMarktindeling, ondernemer: IMarktondernemer): IMarktindeling => {
     const { openPlaatsen } = state;
 
-    const vastePlaatsen = ondernemer.plaatsen
+    let vastePlaatsen = ondernemer.plaatsen
         .map(vastePlaatsId => openPlaatsen.find(({ plaatsId }) => plaatsId === vastePlaatsId))
         .filter(Boolean);
+
+    vastePlaatsen = sortPlaatsen(vastePlaatsen, getOndernemerVoorkeuren(state, ondernemer));
 
     /*
      * TODO: Handle the cases filtered out by `filter(Boolean)`,
@@ -277,6 +282,14 @@ const assignVastePlaats = (state: IMarktindeling, ondernemer: IMarktondernemer):
     }
 
     state = vastePlaatsen
+        .slice(
+            0,
+            Math.min(
+                ondernemer.voorkeur && ondernemer.voorkeur.aantalPlaatsen
+                    ? ondernemer.voorkeur.aantalPlaatsen
+                    : vastePlaatsen.length,
+            ),
+        )
         .map(plaats => {
             console.log(`Wijs ondernemer ${ondernemer.erkenningsNummer} toe aan vaste plaats ${plaats.plaatsId}`);
 
