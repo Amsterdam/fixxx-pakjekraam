@@ -17,7 +17,7 @@ class ProfilePage extends React.Component {
     render(state) {
         return (
             <Page>
-                <Header user={user} />
+                <Header user={this.props.user} />
                 <Content>
                     {this.props.user.userType === 'ondernemer' ? (
                         <OndernemerProfile user={this.props.user} ondernemer={this.props.ondernemer} />

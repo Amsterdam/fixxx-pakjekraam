@@ -1,0 +1,12 @@
+.PlaatsvoorkeurenForm {
+    &__list {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    &__list-item {
+        margin-bottom: $vm2;
+        &--readonly {
+            display: none;
+        }
+    }
+}

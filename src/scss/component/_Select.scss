@@ -7,7 +7,7 @@ $inputMaxWidth: 620px;
     @include p1;
     padding: 9px 9px 11px 9px;
     border: 1px solid $neutral-grey4;
-    color: $neutral-grey4;
+    color: $neutral-grey5;
     outline-offset: 0;
     outline: 2px solid transparent;
     transition: border-color 0.4s, outline 0.4s;
@@ -37,5 +37,10 @@ $inputMaxWidth: 620px;
         position: relative;
         min-width: $inputMinWidth;
         max-width: $inputMaxWidth;
+    }
+    &--MarktplaatsSelect {
+    }
+    &__wrapper--MarktplaatsSelect {
+        width: 100px;
     }
 }

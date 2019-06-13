@@ -11,12 +11,13 @@ class VoorkeurenPage extends React.Component {
         markten: PropTypes.array.isRequired,
         ondernemer: PropTypes.object.isRequired,
         query: PropTypes.string,
+        user: PropTypes.string,
     };
 
     render() {
         return (
             <Page>
-                <Header />
+                <Header user={this.props.user} />
                 <Content>
                     <PlaatsvoorkeurenForm
                         plaatsvoorkeuren={this.props.plaatsvoorkeuren}

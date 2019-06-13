@@ -447,7 +447,7 @@ const voorkeurenPage = (res, token, erkenningsNummer, query, currentMarktId) => 
 
     Promise.all([ondernemerPromise, marktenPromise, getOndernemerVoorkeuren(erkenningsNummer)]).then(
         ([ondernemer, markten, plaatsvoorkeuren]) => {
-            res.render('VoorkeurenPage', { ondernemer, markten, plaatsvoorkeuren, query });
+            res.render('VoorkeurenPage', { ondernemer, markten, plaatsvoorkeuren, query, user: token });
         },
         err => errorPage(res, err),
     );
@@ -524,7 +524,7 @@ app.get('/profile', ensureLoggedIn(), (req, res) => {
 app.get('/profile/:erkenningsNummer', ensureLoggedIn(), (req, res) => {
     getMarktondernemer(req.user.token, req.params.erkenningsNummer).then(
         ondernemer => {
-            res.render('PublicProfilePage', { ondernemer });
+            res.render('PublicProfilePage', { ondernemer, user: req.user });
         },
         error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
     );
