@@ -92,6 +92,12 @@ const getIndelingslijstInput = (token, marktId, date) =>
     ]).then(args => {
         const [ondernemers, locaties, aanmeldingen, voorkeuren, branches, paginas, geografie, markt, aLijst] = args;
 
+        const marktplaatsen = locaties.map(locatie => ({
+            plaatsId: locatie.plaatsId,
+            branches: locatie.branche,
+            inactive: locatie.inactive,
+        }));
+
         return {
             locaties,
             aanmeldingen,
@@ -101,22 +107,21 @@ const getIndelingslijstInput = (token, marktId, date) =>
             paginas,
             geografie,
             markt,
-            marktplaatsen: locaties.map(locatie => ({
-                plaatsId: locatie.plaatsId,
-                branches: locatie.branche,
-                inactive: locatie.inactive,
-            })),
+            marktplaatsen,
             aanwezigheid: aanmeldingen,
             aLijst: aLijst.map(({ koopman: { erkenningsnummer } }) =>
                 ondernemers.find(({ erkenningsNummer }) => erkenningsnummer === erkenningsNummer),
             ),
-            rows: paginas.reduce(
-                (list, pagina) => [
-                    ...list,
-                    ...pagina.indelingslijstGroup.map(group => group.plaatsList).filter(Array.isArray),
-                ],
-                [],
-            ),
+            rows: (
+                marktProperties.rows ||
+                paginas.reduce(
+                    (list, pagina) => [
+                        ...list,
+                        ...pagina.indelingslijstGroup.map(group => group.plaatsList).filter(Array.isArray),
+                    ],
+                    [],
+                )
+            ).map(row => row.map(plaatsId => marktplaatsen.find(plaats => plaats.plaatsId === plaatsId))),
         };
     });
 
