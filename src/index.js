@@ -89,6 +89,10 @@ app.get('/', function(req, res) {
     res.redirect('/markt/');
 });
 
+app.get('/email/', ensureLoggedIn(), function(req, res) {
+    res.render('EmailPage');
+});
+
 app.get('/markt/', ensureLoggedIn(), function(req, res) {
     const user = req.user.token;
     getMarkten(req.user.token).then(markten => res.render('MarktenPage', { markten, user }));
