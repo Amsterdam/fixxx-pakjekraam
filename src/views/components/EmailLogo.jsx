@@ -33,11 +33,12 @@ const EmailLogo = () => {
                 .reduce((total, data) => {
                     return total.concat(data);
                 }, [])
-                .map(tr => (
-                    <tr>
-                        {tr.map(borderColor => {
+                .map((tr, i) => (
+                    <tr key={i}>
+                        {tr.map((borderColor, j) => {
                             const tdStyle = { ...defaultTdStyle, ...{ borderColor } };
-                            return <td width={w} height={w} align="center" valign="middle" style={tdStyle} />;
+
+                            return <td key={j} width={w} height={w} align="center" valign="middle" style={tdStyle} />;
                         })}
                     </tr>
                 ))}

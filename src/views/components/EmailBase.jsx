@@ -126,10 +126,10 @@ const EmailBase = ({ children, subject, domain, appName }) => {
                 <table border="0" cellPadding="0" cellSpacing="0" width="100%">
                     <tr>
                         <td bgcolor="#ffffff" align="center" style={{ padding: '15px' }} className="section-padding">
-                            {/*// <!--[if (gte mso 9)|(IE)]><table align="center" border="0" cellSpacing="0" cellPadding="0" width="500">*/}
-                            {/*// <tr>*/}
-                            {/*// <td align="center" valign="top" width="500">*/}
-                            {/*// <![endif]-->*/}
+                            {/* // <!--[if (gte mso 9)|(IE)]><table align="center" border="0" cellSpacing="0" cellPadding="0" width="500">*/}
+                            {/* // <tr>*/}
+                            {/* // <td align="center" valign="top" width="500">*/}
+                            {/* // <![endif]-->*/}
                             <table
                                 border="0"
                                 cellPadding="0"
@@ -209,20 +209,20 @@ const EmailBase = ({ children, subject, domain, appName }) => {
                                     </td>
                                 </tr>
                             </table>
-                            {/*// <!--[if (gte mso 9)|(IE)]>*/}
-                            {/*// </td>*/}
-                            {/*// </tr>*/}
-                            {/*// </table>*/}
-                            {/*// <![endif]-->*/}
+                            {/* // <!--[if (gte mso 9)|(IE)]>*/}
+                            {/* // </td>*/}
+                            {/* // </tr>*/}
+                            {/* // </table>*/}
+                            {/* // <![endif]-->*/}
                         </td>
                     </tr>
                     <tr>
                         <td bgcolor="#ffffff" align="center" style={{ padding: '20px 0p' }}>
-                            {/*// <!--[if (gte mso 9)|(IE)]>*/}
-                            {/*// <table align="center" border="0" cellSpacing="0" cellPadding="0" width="500">*/}
-                            {/*// <tr>*/}
-                            {/*// <td align="center" valign="top" width="500">*/}
-                            {/*// <![endif]-->*/}
+                            {/* // <!--[if (gte mso 9)|(IE)]>*/}
+                            {/* // <table align="center" border="0" cellSpacing="0" cellPadding="0" width="500">*/}
+                            {/* // <tr>*/}
+                            {/* // <td align="center" valign="top" width="500">*/}
+                            {/* // <![endif]-->*/}
                             <table
                                 width="100%"
                                 border="0"
@@ -269,11 +269,11 @@ const EmailBase = ({ children, subject, domain, appName }) => {
                                     </td>
                                 </tr>
                             </table>
-                            {/*// <!--[if (gte mso 9)|(IE)]>*/}
-                            {/*// </td>*/}
-                            {/*// </tr>*/}
-                            {/*// </table>*/}
-                            {/*// <![endif]-->*/}
+                            {/* // <!--[if (gte mso 9)|(IE)]>*/}
+                            {/* // </td>*/}
+                            {/* // </tr>*/}
+                            {/* // </table>*/}
+                            {/* // <![endif]-->*/}
                         </td>
                     </tr>
                 </table>
