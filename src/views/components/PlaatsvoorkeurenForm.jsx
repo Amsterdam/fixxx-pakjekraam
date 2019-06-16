@@ -118,7 +118,12 @@ class PlaatsvoorkeurenForm extends React.Component {
                                             } well`}
                                             style={{ ...{ order: priority || arr.length - n } }}
                                         >
-                                            <label htmlFor={`voorkeur-${index}`}>Voorkeursplaats {n + 1}:</label>
+                                            <label
+                                                className="PlaatsvoorkeurenForm__list-item__label"
+                                                htmlFor={`voorkeur-${index}`}
+                                            >
+                                                Voorkeursplaats {n + 1}:
+                                            </label>
                                             <input
                                                 type="hidden"
                                                 name={`plaatsvoorkeuren[${index}][marktId]`}
@@ -137,6 +142,11 @@ class PlaatsvoorkeurenForm extends React.Component {
                                                 readonly={readonly}
                                                 optional={true}
                                             />
+                                            {priority !== 1 && priority !== 2 ? (
+                                                <a href="#" data-handler="remove-voorkeur">
+                                                    verwijder
+                                                </a>
+                                            ) : null}
                                         </div>
                                     ))}
                             </div>

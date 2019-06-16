@@ -1,7 +1,10 @@
 !function (w, d) {
 
   var handlers = {
-
+    'remove-voorkeur': function(e){
+        var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item');
+        voorkeur.parentNode.removeChild(voorkeur);
+    }
   };
 
   var decorators = {
