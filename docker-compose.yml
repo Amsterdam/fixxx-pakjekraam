@@ -1,6 +1,6 @@
 version: "3.0"
 services:
-  database_dev:
+  database:
     image: postgres:9.5.11-alpine
     ports:
       - "5432:5432"
@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: insecure
       POSTGRES_USER: pakjekraam
       POSTGRES_DB: pakjekraam
-  web_dev:
+  web:
     build:
       args:
         - NODE_ENV=development
@@ -21,7 +21,7 @@ services:
       - APP_ENV=dev
       - APP_NOTIFICATIE_FROM=tester@test.com
       - APP_SECRET=secret
-      - DATABASE_URL=pgsql://pakjekraam:insecure@database_dev:5432/pakjekraam
+      - DATABASE_URL=pgsql://pakjekraam:insecure@database:5432/pakjekraam
       - NODE_ENV=development
       - SWIFT_AUTH_URL=
       - SWIFT_CONTAINER_PREFIX=
@@ -34,7 +34,7 @@ services:
       - SWIFT_USER_PASSWORD=
       - THUMBNAILSERVICE_URL=https://thumbnail.service/
     links:
-      - database_dev
+      - database
     ports:
       - "8080:8080"
     restart: always
