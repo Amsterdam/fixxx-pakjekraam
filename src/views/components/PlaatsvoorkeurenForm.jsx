@@ -115,7 +115,11 @@ class PlaatsvoorkeurenForm extends React.Component {
                                             key={index}
                                             className={`PlaatsvoorkeurenForm__list-item ${
                                                 readonly ? 'PlaatsvoorkeurenForm__list-item--readonly' : null
-                                            } well`}
+                                            } well ${
+                                                priority !== 1 && priority !== 2
+                                                    ? 'PlaatsvoorkeurenForm__list-item--sortable'
+                                                    : null
+                                            }`}
                                             style={{ ...{ order: priority || arr.length - n } }}
                                         >
                                             <label
@@ -143,9 +147,19 @@ class PlaatsvoorkeurenForm extends React.Component {
                                                 optional={true}
                                             />
                                             {priority !== 1 && priority !== 2 ? (
-                                                <a href="#" data-handler="remove-voorkeur">
-                                                    verwijder
-                                                </a>
+                                                <div>
+                                                    <a href="#" data-handler="remove-voorkeur">
+                                                        verwijder
+                                                    </a>
+                                                    <br />
+                                                    <a href="#" data-handler="move-voorkeur" data-direction="up">
+                                                        naar boven
+                                                    </a>
+                                                    <br />
+                                                    <a href="#" data-handler="move-voorkeur" data-direction="down">
+                                                        naar beneden
+                                                    </a>
+                                                </div>
                                             ) : null}
                                         </div>
                                     ))}

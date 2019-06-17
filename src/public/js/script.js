@@ -4,6 +4,21 @@
     'remove-voorkeur': function(e){
         var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item');
         voorkeur.parentNode.removeChild(voorkeur);
+    },
+    'move-voorkeur': function(e){
+        var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
+            priority = voorkeur.querySelector('input[name*="[priority]"]').value,
+            all = voorkeur.parentNode.querySelectorAll('.PlaatsvoorkeurenForm__list-item.PlaatsvoorkeurenForm__list-item--sortable'),
+            nodes = Array.prototype.slice.call(all).sort(function(a, b){return b.style.order - a.style.order}),
+            index = nodes.indexOf(voorkeur),
+            next = nodes[this.dataset.direction === 'up' ? index-1 : index+1];
+
+        if (next) {
+            voorkeur.querySelector('input[name*="[priority]"]').value = next.querySelector('input[name*="[priority]"]').value;
+            voorkeur.style.order = next.querySelector('input[name*="[priority]"]').value;
+            next.querySelector('input[name*="[priority]"]').value = priority;
+            next.style.order = priority;
+        }
     }
   };
 
