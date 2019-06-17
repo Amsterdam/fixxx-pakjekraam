@@ -417,6 +417,38 @@ app.get('/api/0.0.1/markt/:marktId/plaats-count/:count/', ensureLoggedIn(), (req
     );
 });
 
+const ondernemerChangeBranchePage = (res, token, erkenningsNummer, query) => {
+    const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
+
+    const marktenPromise = ondernemerPromise.then(ondernemer =>
+        Promise.all(
+            ondernemer.sollicitaties.map(soll =>
+                Promise.all([getMarkt(token, soll.markt.id), getBranches(soll.markt.id)]),
+            ),
+        ),
+    );
+    Promise.all([ondernemerPromise, marktenPromise]).then(
+        ([ondernemer, markten]) => {
+            const marktenBranches = markten.map(markt => {
+                return {
+                    ...markt[0],
+                    branches: markt[1],
+                };
+            });
+            res.render('OndernemerBranchePage', {
+                ondernemer,
+                markten: marktenBranches,
+                query,
+            });
+        },
+        err => errorPage(res, err),
+    );
+};
+
+app.get('/change-branche/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
+    ondernemerChangeBranchePage(res, req.user.token, req.params.erkenningsNummer, req.query);
+});
+
 const afmeldPage = (res, token, erkenningsNummer, currentMarktId, query) => {
     const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
     const marktenPromise = ondernemerPromise.then(ondernemer =>
