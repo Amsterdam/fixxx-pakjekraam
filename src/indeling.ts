@@ -534,33 +534,12 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
 
     console.log(`Vasteplaatshouders eerst: ${vastePlaatsenQueue.length}`);
 
-    let indeling = vastePlaatsenQueue.reduce(assignVastePlaats, initialState);
-
     /*
      * stap 1:
-     * beperkt de indeling tot kramen met een toewijzingsbeperking (branche, eigen materieel)
-     * en ondernemers met een bijbehorende eigenschap
+     * vasteplaatshouders
      */
-    const verkoopinrichtingKramen = initialState.openPlaatsen.filter(plaats => count(plaats.verkoopinrichting) > 0);
-    const verkoopinrichtingOndernemers = indeling.toewijzingQueue.filter(
-        ondernemer => count(ondernemer.verkoopinrichting) > 0,
-    );
 
-    console.log(`Verkoopinrichting-kramen: ${verkoopinrichtingKramen.length}`);
-    console.log(`Verkoopinrichting-ondernemers: ${verkoopinrichtingOndernemers.length}`);
-
-    indeling = verkoopinrichtingOndernemers.reduce((indeling, ondernemer, index, ondernemers) => {
-        const ondernemerVerkoopinrichtingPlaatsen = indeling.openPlaatsen.filter(plaats =>
-            intersects(plaats.verkoopinrichting, ondernemer.verkoopinrichting),
-        );
-        console.log(
-            `Bijzondere verkoopinrichting-ondernemer ${ondernemer.erkenningsNummer} kan kiezen uit ${
-                ondernemerVerkoopinrichtingPlaatsen.length
-            } plaatsen`,
-        );
-
-        return findPlaats(indeling, ondernemer, index, ondernemers, ondernemerVerkoopinrichtingPlaatsen, 'ignore');
-    }, indeling);
+    let indeling = vastePlaatsenQueue.reduce(assignVastePlaats, initialState);
 
     /*
      * stap 2:
@@ -583,6 +562,32 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
         );
 
         return findPlaats(indeling, ondernemer, index, ondernemers, ondernemerBranchePlaatsen, 'ignore');
+    }, indeling);
+
+    /*
+     * stap 3:
+     * beperkt de indeling tot kramen met een toewijzingsbeperking (branche, eigen materieel)
+     * en ondernemers met een bijbehorende eigenschap
+     */
+    const verkoopinrichtingKramen = initialState.openPlaatsen.filter(plaats => count(plaats.verkoopinrichting) > 0);
+    const verkoopinrichtingOndernemers = indeling.toewijzingQueue.filter(
+        ondernemer => count(ondernemer.verkoopinrichting) > 0,
+    );
+
+    console.log(`Verkoopinrichting-kramen: ${verkoopinrichtingKramen.length}`);
+    console.log(`Verkoopinrichting-ondernemers: ${verkoopinrichtingOndernemers.length}`);
+
+    indeling = verkoopinrichtingOndernemers.reduce((indeling, ondernemer, index, ondernemers) => {
+        const ondernemerVerkoopinrichtingPlaatsen = indeling.openPlaatsen.filter(plaats =>
+            intersects(plaats.verkoopinrichting, ondernemer.verkoopinrichting),
+        );
+        console.log(
+            `Bijzondere verkoopinrichting-ondernemer ${ondernemer.erkenningsNummer} kan kiezen uit ${
+                ondernemerVerkoopinrichtingPlaatsen.length
+            } plaatsen`,
+        );
+
+        return findPlaats(indeling, ondernemer, index, ondernemers, ondernemerVerkoopinrichtingPlaatsen, 'ignore');
     }, indeling);
 
     // Deel sollicitanten in
