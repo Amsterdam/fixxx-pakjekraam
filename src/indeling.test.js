@@ -543,7 +543,7 @@ describe('Automatisch toewijzen marktplaatsen: verschuiven', () => {
         ).toStrictEqual(['1']);
     });
 
-    it.skip('Een vasteplaatshouder kan wordt niet geplaatst op een van plaats van een andere vasteplaatshouder', () => {
+    it('Een vasteplaatshouder kan wordt niet geplaatst op een van plaats van een andere vasteplaatshouder', () => {
         /*
          * Scenario:
          * - 2 marktplaatsen
@@ -569,7 +569,7 @@ describe('Automatisch toewijzen marktplaatsen: verschuiven', () => {
         ).toStrictEqual(['2']);
     });
 
-    it.skip('Een vasteplaatshouder kan verplaatsen naar een losse plaats', () => {
+    it('Een vasteplaatshouder kan verplaatsen naar een losse plaats', () => {
         /*
          * Scenario:
          * - 2 marktplaatsen
@@ -589,7 +589,7 @@ describe('Automatisch toewijzen marktplaatsen: verschuiven', () => {
         ).toStrictEqual(['2']);
     });
 
-    it.skip('Een vasteplaatshouder kan verplaatsen naar een van plaats van een andere vasteplaatshouder die verplaatst naar een losse plaats', () => {
+    it('Een vasteplaatshouder kan verplaatsen naar een van plaats van een andere vasteplaatshouder die verplaatst naar een losse plaats', () => {
         /*
          * Scenario:
          * - 2 marktplaatsen

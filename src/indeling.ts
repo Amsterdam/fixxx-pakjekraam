@@ -172,15 +172,15 @@ const isAanwezig = (aanwezigheid: IRSVP[], ondernemer: IMarktondernemer) => {
 const removeToewijzing = (state: IMarktindeling, toewijzing: IToewijzing) => {
     const { openPlaatsen, toewijzingen } = state;
 
-    const plaats = state.marktplaatsen.find(plaats => toewijzing.plaatsen.includes(plaats.plaatsId));
-
-    if (plaats) {
+    if (toewijzingen.includes(toewijzing)) {
         console.log(`Verwijder toewijzing van ${toewijzing.erkenningsNummer} aan ${toewijzing.plaatsen}`);
+
+        const plaatsen = state.marktplaatsen.filter(plaats => toewijzing.plaatsen.includes(plaats.plaatsId));
 
         return {
             ...state,
             toewijzingen: toewijzingen.filter(t => t !== toewijzing),
-            openPlaatsen: [...openPlaatsen, plaats],
+            openPlaatsen: [...openPlaatsen, ...plaatsen],
         };
     } else {
         return state;
@@ -315,13 +315,6 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
     const { aantalPlaatsen } = ondernemer.voorkeur;
     const { erkenningsNummer } = ondernemer;
     const currentPlaatsen = plaatsen.length;
-
-    console.log(
-        `Ondernemer ${
-            ondernemer.erkenningsNummer
-        } wil ${aantalPlaatsen} plaatsen, en heeft nu ${currentPlaatsen} plaats(en)`,
-        toewijzing,
-    );
 
     const removeFromQueue = (indeling: IMarktindeling, toewijzing: IToewijzing) => ({
         ...indeling,
@@ -595,7 +588,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
         .filter(ondernemer => !heeftVastePlaatsen(ondernemer))
         .reduce(findPlaats, indeling);
 
-    indeling = indeling.toewijzingen.reduce((state, toewijzing) => {
+    const getPossibleMoves = (state: IMarktindeling, toewijzing: IToewijzing) => {
         const { ondernemer } = toewijzing;
         const voorkeuren = getOndernemerVoorkeuren(state, ondernemer).sort(prioritySort);
 
@@ -603,21 +596,73 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
         const betereVoorkeuren = voorkeuren.slice(0, currentIndex === -1 ? voorkeuren.length : currentIndex);
 
         const beterePlaatsen = betereVoorkeuren
+            .map(voorkeur => state.marktplaatsen.find(({ plaatsId }) => plaatsId === voorkeur.plaatsId))
+            .filter(Boolean);
+
+        const openPlaatsen = betereVoorkeuren
             .map(voorkeur => state.openPlaatsen.find(({ plaatsId }) => plaatsId === voorkeur.plaatsId))
             .filter(Boolean);
 
-        console.log(
-            `Voor ondernemer ${ondernemer.erkenningsNummer} zijn er nog ${
-                betereVoorkeuren.length
-            } plaatsen die meer gewenst zijn (van de in totaal ${voorkeuren.length} voorkeuren: ${voorkeuren
-                .map(voorkeur => voorkeur.plaatsId)
-                .join(', ')}), en daarvan zijn nog ${beterePlaatsen.length} vrij`,
-        );
+        return {
+            toewijzing,
+            betereVoorkeuren,
+            beterePlaatsen,
+            openPlaatsen,
+        };
+    };
 
-        state = findPlaats(state, ondernemer, 0, [], beterePlaatsen, 'ignore');
+    const move = (state: IMarktindeling, obj: any) =>
+        findPlaats(state, obj.toewijzing.ondernemer, 0, [], obj.openPlaatsen, 'ignore');
 
-        return state;
-    }, indeling);
+    const calculateMoveQueue = (state: IMarktindeling) =>
+        state.toewijzingen
+            .map(toewijzing => getPossibleMoves(state, toewijzing))
+            .filter(obj => obj.betereVoorkeuren.length > 0)
+            .map(obj => {
+                const {
+                    toewijzing: { ondernemer },
+                    betereVoorkeuren,
+                    openPlaatsen,
+                } = obj;
+
+                console.log(
+                    `Voor ondernemer ${ondernemer.erkenningsNummer} zijn er nog ${
+                        betereVoorkeuren.length
+                    } plaatsen die meer gewenst zijn (van de in totaal ${
+                        voorkeuren.length
+                    } voorkeuren: ${voorkeuren.map(voorkeur => voorkeur.plaatsId).join(', ')}), en daarvan zijn nog ${
+                        openPlaatsen.length
+                    } vrij`,
+                );
+
+                return obj;
+            })
+            .filter(obj => obj.beterePlaatsen.length > 0);
+
+    let moveQueue = calculateMoveQueue(indeling);
+
+    let moveIteration = 0;
+    const MOVE_LIMIT = 100;
+
+    for (; moveQueue.length > 0 && moveIteration < MOVE_LIMIT; moveIteration++) {
+        console.log(`Move-queue #${moveIteration}: ${moveQueue.length}`);
+
+        const previousIndeling = indeling;
+
+        indeling = moveQueue.reduce(move, indeling);
+
+        if (previousIndeling === indeling) {
+            // Non-essential optimization: nothing changed, so this was the last iteration.
+            // This could happen when someone wants to move to an open spot, but something is preventing the move.
+            // In this case don't retry the same move until the `MOVE_LIMIT` is exhausted.
+            break;
+        }
+
+        // TODO: the new `moveQueue` should be created as copy or subset of the existing `moveQueue`,
+        // and when all options to move to a better spot have failed and the options are exhausted,
+        // the person should not be included in the new queue.
+        moveQueue = calculateMoveQueue(indeling);
+    }
 
     indeling = {
         ...indeling,
@@ -643,6 +688,13 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
                 const { aantalPlaatsen } = ondernemer.voorkeur;
                 const currentPlaatsen = plaatsen.length;
 
+                return currentPlaatsen < Math.min(aantalPlaatsen, indeling.expansionIteration, indeling.expansionLimit);
+            })
+            .map(toewijzing => {
+                const { ondernemer, plaatsen } = toewijzing;
+                const { aantalPlaatsen } = ondernemer.voorkeur;
+                const currentPlaatsen = plaatsen.length;
+
                 console.log(
                     `Ondernemer ${
                         ondernemer.erkenningsNummer
@@ -650,7 +702,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
                     toewijzing,
                 );
 
-                return currentPlaatsen < Math.min(aantalPlaatsen, indeling.expansionIteration, indeling.expansionLimit);
+                return toewijzing;
             })
             .reduce(assignUitbreiding, indeling);
 
