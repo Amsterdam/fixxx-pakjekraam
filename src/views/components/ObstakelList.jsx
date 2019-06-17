@@ -3,7 +3,6 @@ const PropTypes = require('prop-types');
 const React = require('react');
 
 const ObstakelList = ({ obstakelList }) => {
-    // console.log(obstakelList);
     return (
         <tr className="ObstakelList">
             <td colSpan="6">

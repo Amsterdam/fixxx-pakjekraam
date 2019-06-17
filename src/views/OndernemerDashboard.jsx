@@ -5,13 +5,13 @@ const Header = require('./components/Header');
 const Content = require('./components/Content');
 const OndernemerAanwezigheid = require('./components/OndernemerAanwezigheid');
 const OndernemerProfileHeader = require('./components/OndernemerProfileHeader');
-const Alert = require('./components/Alert');
 
 class OndernemerDashboard extends React.Component {
     propTypes = {
         ondernemer: PropTypes.object,
         aanmeldingen: PropTypes.array,
         markten: PropTypes.array,
+        plaatsvoorkeuren: PropTypes.array,
         messages: PropTypes.array,
         startDate: PropTypes.string.isRequired,
         endDate: PropTypes.string.isRequired,
@@ -19,7 +19,7 @@ class OndernemerDashboard extends React.Component {
     };
 
     render() {
-        const { ondernemer, messages } = this.props;
+        const { ondernemer, messages, plaatsvoorkeuren, markten } = this.props;
 
         return (
             <Page messages={messages}>

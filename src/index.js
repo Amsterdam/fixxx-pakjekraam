@@ -179,17 +179,24 @@ app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
     const messages = getQueryErrors(req.query);
     const user = req.user.token;
     const ondernemerPromise = getMarktondernemer(user, req.params.erkenningsNummer);
+    const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(req.params.erkenningsNummer);
     const marktenPromise = ondernemerPromise.then(ondernemer =>
         Promise.all(
             ondernemer.sollicitaties.map(sollicitatie => sollicitatie.markt.id).map(marktId => getMarkt(user, marktId)),
         ),
     );
-    Promise.all([ondernemerPromise, marktenPromise, getAanmeldingenByOndernemer(req.params.erkenningsNummer)]).then(
-        ([ondernemer, markten, aanmeldingen]) => {
+    Promise.all([
+        ondernemerPromise,
+        marktenPromise,
+        ondernemerVoorkeurenPromise,
+        getAanmeldingenByOndernemer(req.params.erkenningsNummer),
+    ]).then(
+        ([ondernemer, markten, plaatsvoorkeuren, aanmeldingen]) => {
             res.render('OndernemerDashboard', {
                 ondernemer,
                 aanmeldingen,
                 markten,
+                plaatsvoorkeuren,
                 startDate: tomorrow(),
                 endDate: nextWeek(),
                 messages,

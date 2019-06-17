@@ -4,4 +4,8 @@
     @media screen and (min-width: $screenMedium) {
         padding: $vm4 $hm4;
     }
+    &--dark {
+        background-color: $primary-darkblue;
+        color: $primary-white;
+    }
 }

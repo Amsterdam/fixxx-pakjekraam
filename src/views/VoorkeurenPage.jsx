@@ -17,7 +17,6 @@ class VoorkeurenPage extends React.Component {
     render() {
         return (
             <Page>
-                <Header user={this.props.user} />
                 <Content>
                     <PlaatsvoorkeurenForm
                         plaatsvoorkeuren={this.props.plaatsvoorkeuren}

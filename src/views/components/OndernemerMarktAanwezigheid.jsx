@@ -1,5 +1,4 @@
 const Button = require('./Button');
-const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 const PropTypes = require('prop-types');
 const React = require('react');
 const { formatDayOfWeek, formatDate, WEEK_DAYS } = require('../../util.js');
@@ -10,8 +9,8 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
     let lastDivider = false;
 
     return (
-        <div className="OndernemerMarktAanwezigheid well">
-            <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
+        <div className="OndernemerMarktAanwezigheid">
+            <h3>Aanwezigheid</h3>
             <ul className="OndernemerMarktAanwezigheid__list">
                 {rsvpEntries.map(({ date, rsvp, index }, i) => {
                     const attending = rsvp

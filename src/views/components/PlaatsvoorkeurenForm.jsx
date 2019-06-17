@@ -3,6 +3,7 @@ const PropTypes = require('prop-types');
 const { formatOndernemerName } = require('../../domain-knowledge.js');
 const { flatten } = require('../../util.js');
 const MarktplaatsSelect = require('./MarktplaatsSelect');
+const Button = require('./Button');
 
 class PlaatsvoorkeurenForm extends React.Component {
     propTypes = {
@@ -82,7 +83,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                 encType="application/x-www-form-urlencoded"
             >
                 <h1>Voorkeuren voor {formatOndernemerName(ondernemer)}</h1>
-                <input type="hidden" name="redirectTo" defaultValue={next} />
+                {/* <input type="hidden" name="redirectTo" defaultValue={next} />*/}
                 <p>
                     Erkenningsnummer: <strong>{ondernemer.erkenningsnummer}</strong>
                     <input
@@ -150,14 +151,28 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         </div>
                                     ))}
                             </div>
+                            <p className="InputField InputField--submit">
+                                <button
+                                    className="Button Button--primary"
+                                    type="submit"
+                                    name="redirectTo"
+                                    value={`/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=${next}`}
+                                >
+                                    Opslaan
+                                </button>
+                                <button
+                                    className="Button Button--secondary"
+                                    type="submit"
+                                    name="redirectTo"
+                                    value={next}
+                                >
+                                    Opslaan en terug
+                                </button>
+                                <Button label="terug" href={next} type="tertiary" />
+                            </p>
                         </div>
                     );
                 })}
-                <p className="InputField InputField--submit">
-                    <button className="Button Button--secondary" type="submit" name="next" value="/voorkeuren/">
-                        Opslaan
-                    </button>
-                </p>
             </form>
         );
     }
