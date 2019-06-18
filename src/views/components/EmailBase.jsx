@@ -1,6 +1,6 @@
 const PropTypes = require('prop-types');
 const React = require('react');
-const EmailLogo = require('./EmailLogo');
+const EmailLogo = require('./EmailLogo.jsx');
 const headStyle =
     '' +
     '                /* CLIENT-SPECIFIC STYLES */\n' +
@@ -112,9 +112,9 @@ const fontLogo = {
     fontWeight: '400',
 };
 
-const EmailBase = ({ children, subject, domain, appName }) => {
+const EmailBase = ({ children, subject, domain, appName, lang }) => {
     return (
-        <html>
+        <html lang={lang} bgcolor="#FFF" color="#000">
             <head>
                 <title>{subject}</title>
                 <meta charSet="utf-8" />
@@ -287,6 +287,7 @@ EmailBase.propTypes = {
     subject: PropTypes.string,
     domain: PropTypes.string,
     appName: PropTypes.string,
+    lang: PropTypes.string,
 };
 
 module.exports = EmailBase;
