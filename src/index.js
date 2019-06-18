@@ -13,6 +13,8 @@ const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
 const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
 const { tomorrow, nextWeek } = require('./util.js');
 const {
+    getMarktProperties,
+    getMarktPaginas,
     getIndelingslijst,
     getIndelingslijstInput,
     getAanmeldingen,
@@ -330,6 +332,90 @@ app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', ensureLoggedIn(), (req, res
                 'Content-Type': 'application/json; charset=UTF-8',
             });
             res.send(JSON.stringify(branches));
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+        },
+    );
+});
+
+app.get('/api/0.0.1/markt/:marktId/plaats/:plaatsId', ensureLoggedIn(), (req, res) => {
+    Promise.all([
+        getMarktPaginas(req.params.marktId),
+        getMarktProperties(req.params.marktId),
+        getMarktplaatsen(req.params.marktId),
+    ]).then(
+        ([paginas, marktProperties, marktplaatsen]) => {
+            res.set({
+                'Content-Type': 'application/json; charset=UTF-8',
+            });
+            const rows = (
+                marktProperties.rows ||
+                paginas.reduce(
+                    (list, pagina) => [
+                        ...list,
+                        ...pagina.indelingslijstGroup.map(group => group.plaatsList).filter(Array.isArray),
+                    ],
+                    [],
+                )
+            ).map(row => row.map(plaatsId => marktplaatsen.find(plaats => plaats.plaatsId === plaatsId)));
+
+            const expandable =
+                rows.reduce((total, row) => {
+                    row.reduce((t, plaats, i) => {
+                        if (plaats.plaatsId === req.params.plaatsId) {
+                            total[plaats.plaatsId] = [];
+                            row[i - 1] && total[plaats.plaatsId].push(row[i - 1].plaatsId);
+                            row[i + 1] && total[plaats.plaatsId].push(row[i + 1].plaatsId);
+                        }
+                        return t;
+                    }, []);
+                    return total;
+                }, {})[req.params.plaatsId] || [];
+
+            res.send(JSON.stringify(expandable));
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+        },
+    );
+});
+
+app.get('/api/0.0.1/markt/:marktId/plaats-count/:count', ensureLoggedIn(), (req, res) => {
+    Promise.all([
+        getMarktPaginas(req.params.marktId),
+        getMarktProperties(req.params.marktId),
+        getMarktplaatsen(req.params.marktId),
+    ]).then(
+        ([paginas, marktProperties, marktplaatsen]) => {
+            res.set({
+                'Content-Type': 'application/json; charset=UTF-8',
+            });
+            const rows = (
+                marktProperties.rows ||
+                paginas.reduce(
+                    (list, pagina) => [
+                        ...list,
+                        ...pagina.indelingslijstGroup.map(group => group.plaatsList).filter(Array.isArray),
+                    ],
+                    [],
+                )
+            ).map(row => row.map(plaatsId => marktplaatsen.find(plaats => plaats.plaatsId === plaatsId)));
+
+            const expandable = rows.reduce((total, row) => {
+                console.log(row);
+                row.reduce((t, plaats, i) => {
+                    if (i % 3 !== 0) {
+                        t.push(plaats.plaatsId);
+                    } else {
+                        total.push(t);
+                    }
+                    return t;
+                }, []);
+                return total;
+            }, []);
+
+            res.send(JSON.stringify(expandable));
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end();

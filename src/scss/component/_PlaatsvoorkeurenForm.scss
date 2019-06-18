@@ -4,6 +4,8 @@
         flex-direction: column-reverse;
     }
     &__list-item {
+        display: flex;
+        flex-wrap: wrap;
         margin-bottom: $vm2;
         &--readonly {
             display: none;
@@ -11,5 +13,10 @@
     }
     &__list-item__label {
         display: block;
+    }
+    &__list-item__heading {
+        width: 100%;
+    }
+    &__list-item__wrapper {
     }
 }

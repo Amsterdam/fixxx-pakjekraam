@@ -23,7 +23,44 @@
   };
 
   var decorators = {
+      'voorkeur-form': function(){
+          var _createOption = function(value){
+                var option = document.createElement('option');
+                option.setAttribute('value', value);
+                option.text = value;
+                return option;
+              },
+              _updateSelects = function(elem, data) {
+                var container = _closest(elem, '.PlaatsvoorkeurenForm__list-item'),
+                    selects = container.querySelectorAll('select'),
+                    i, j, newValues = [];
+                for (i = 0; i < selects.length; i++){
+                    console.log(selects[i].value);
+                    for (j = 0 && selects[i].value; j < data.length; j++){
+                        selects[i].value !== data[j] && !helpers.isInArray(data[j], newValues) && newValues.push(data[j]);
+                    }
+                }
+                console.log(newValues);
+                for (i = 0; i < selects.length; i++){
+                    if (!selects[i].value){
+                        while (selects[i].firstChild) {
+                            selects[i].removeChild(selects[i].firstChild);
+                        }
+                        for (j = 0; j < newValues.length; j++){
+                            selects[i].add(_createOption(newValues[j]));
+                        }
+                    }
+                }
+              };
+          this.addEventListener('change', function(e){
+                  helpers.simpleAjax('/api/0.0.1/markt/33/plaats/'+e.target.value ,function(response){
+                        if (response.status >= 200 && response.status < 400) {
+                            _updateSelects(e.target, JSON.parse(response.response));
+                        }
+                  })
 
+          });
+      }
   };
   var helpers = {
     'ajax': function (options) {
@@ -52,6 +89,20 @@
       request.send(options.data);
 
       return request;
+    },
+    'simpleAjax': function(url, callback){
+      var request = new XMLHttpRequest();
+
+      request.open('GET', url, true);
+      request.onload = function() {
+        callback(request);
+      }
+
+      request.send();
+
+    },
+    'isInArray': function(value, array) {
+        return array.indexOf(value) > -1;
     },
     'isJson': function(str){
         try {

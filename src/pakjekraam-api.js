@@ -172,6 +172,8 @@ const getMarkten = token =>
         .then(markten => markten.filter(markt => fs.existsSync(`data/${slugifyMarkt(markt.id)}/locaties.json`)));
 
 module.exports = {
+    getMarktPaginas,
+    getMarktProperties,
     getAanmeldingen,
     getAanmeldingenByOndernemer,
     getPlaatsvoorkeuren,
