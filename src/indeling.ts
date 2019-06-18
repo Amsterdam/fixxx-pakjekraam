@@ -456,7 +456,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
     const { marktplaatsen, ondernemers, voorkeuren } = markt;
     const { aanwezigheid, aLijst } = markt;
 
-    const aanwezigen = ondernemers.filter(ondernemer => isAanwezig(aanwezigheid, ondernemer));
+    let aanwezigen = ondernemers.filter(ondernemer => isAanwezig(aanwezigheid, ondernemer));
 
     console.debug(`${aanwezigheid.filter(rsvp => !rsvp.attending).length} Afmeldingen`);
 
@@ -470,7 +470,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
 
     const abLijstPriority = (ondernemer: IMarktondernemer): number => (aLijst.includes(ondernemer) ? 1 : 2);
 
-    aanwezigen.sort((a, b) => {
+    const ondernemerSort = (a: IMarktondernemer, b: IMarktondernemer) => {
         // A-lijst of B-lijst
         const sort1 = numberSort(abLijstPriority(a), abLijstPriority(b));
 
@@ -481,7 +481,9 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
         const sort3 = numberSort(a.sollicitatieNummer, b.sollicitatieNummer);
 
         return sort1 || sort2 || sort3;
-    });
+    };
+
+    aanwezigen = [...aanwezigen].sort(ondernemerSort);
 
     console.debug(
         `Aanwezigen: ${aanwezigen.length}/${ondernemers.length} (${(
@@ -612,12 +614,20 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
     };
 
     const move = (state: IMarktindeling, obj: any) =>
-        findPlaats(state, obj.toewijzing.ondernemer, 0, [], obj.openPlaatsen, 'ignore');
+        findPlaats(
+            state,
+            obj.toewijzing.ondernemer,
+            0,
+            [],
+            intersection(obj.beterePlaatsen, state.openPlaatsen),
+            'ignore',
+        );
 
     const calculateMoveQueue = (state: IMarktindeling) =>
         state.toewijzingen
             .map(toewijzing => getPossibleMoves(state, toewijzing))
             .filter(obj => obj.betereVoorkeuren.length > 0)
+            .sort((objA, objB) => ondernemerSort(objA.toewijzing.ondernemer, objB.toewijzing.ondernemer))
             .map(obj => {
                 const {
                     toewijzing: { ondernemer },
@@ -630,14 +640,13 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
                         betereVoorkeuren.length
                     } plaatsen die meer gewenst zijn (van de in totaal ${
                         voorkeuren.length
-                    } voorkeuren: ${voorkeuren.map(voorkeur => voorkeur.plaatsId).join(', ')}), en daarvan zijn nog ${
+                    } voorkeuren: ${voorkeuren.map(({ plaatsId }) => plaatsId).join(', ')}), en daarvan zijn nog ${
                         openPlaatsen.length
-                    } vrij`,
+                    } vrij: ${openPlaatsen.map(({ plaatsId }) => plaatsId).join(', ')}`,
                 );
 
                 return obj;
-            })
-            .filter(obj => obj.beterePlaatsen.length > 0);
+            });
 
     let moveQueue = calculateMoveQueue(indeling);
 

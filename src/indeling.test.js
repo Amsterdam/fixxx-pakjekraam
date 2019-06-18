@@ -543,6 +543,111 @@ describe('Automatisch toewijzen marktplaatsen: verschuiven', () => {
         ).toStrictEqual(['1']);
     });
 
+    it('Een vasteplaatshouder kan indirect van plaats ruilen met een andere vasteplaatshouder', () => {
+        /*
+         * Scenario:
+         * - 2 marktplaatsen
+         * - 2 ondernemers
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [
+                ondernemer({ status: 'vpl', plaatsen: ['1'] }),
+                ondernemer({ status: 'vpl', plaatsen: ['2'] }),
+            ],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: SECOND_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '1', priority: FIRST_CHOICE }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(2);
+        expect(
+            indeling.toewijzingen.find(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 1).plaatsen,
+        ).toStrictEqual(['2']);
+        expect(
+            indeling.toewijzingen.find(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 2).plaatsen,
+        ).toStrictEqual(['1']);
+    });
+
+    it('Een indirecte ruil kan geblokkeerd worden door een marktondernemer met anceniteit', () => {
+        /*
+         * Scenario:
+         * - 2 marktplaatsen
+         * - 2 ondernemers
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [
+                ondernemer({ status: 'vpl', plaatsen: ['1'] }),
+                ondernemer({ status: 'vpl', plaatsen: ['3'] }),
+                ondernemer({ status: 'vpl', plaatsen: ['2'] }),
+            ],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '4', priority: SECOND_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '1', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '3', priority: SECOND_CHOICE }),
+                voorkeur({ sollicitatieNummer: 3, plaatsId: '1', priority: FIRST_CHOICE }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(3);
+
+        expect(
+            indeling.toewijzingen.find(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 1).plaatsen,
+        ).toStrictEqual(['4']);
+        expect(
+            indeling.toewijzingen.find(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 2).plaatsen,
+        ).toStrictEqual(['1']);
+        expect(
+            indeling.toewijzingen.find(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 3).plaatsen,
+        ).toStrictEqual(['2']);
+    });
+
+    it('Een ondernemer kan verschuiven naar een plek die vrij komt', () => {
+        /*
+         * Scenario:
+         * - 3 ondernemers
+         * - 2 ondernemers (1e en 3e anceniteit) kunnen direct verschuiven
+         * - wanneer de ondernemer met 1e anceniteit verschuift, komt de plek vrij waar ondernemer 2 en 3 ook graag naar toe willen
+         * - de tweede ondernemer heeft meer recht dan de ondernemer die in eerste instantie al kon verschuiven
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [
+                ondernemer({ status: 'vpl', plaatsen: ['1'] }),
+                ondernemer({ status: 'vpl', plaatsen: ['2'] }),
+                ondernemer({ status: 'vpl', plaatsen: ['3'] }),
+            ],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '4', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '1', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 3, plaatsId: '1', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 3, plaatsId: '5', priority: SECOND_CHOICE }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(3);
+
+        expect(
+            indeling.toewijzingen.find(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 1).plaatsen,
+        ).toStrictEqual(['4']);
+        expect(
+            indeling.toewijzingen.find(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 2).plaatsen,
+        ).toStrictEqual(['1']);
+        expect(
+            indeling.toewijzingen.find(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 3).plaatsen,
+        ).toStrictEqual(['5']);
+    });
+
     it('Een vasteplaatshouder kan wordt niet geplaatst op een van plaats van een andere vasteplaatshouder', () => {
         /*
          * Scenario:
