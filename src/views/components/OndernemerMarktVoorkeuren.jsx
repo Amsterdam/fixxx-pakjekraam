@@ -22,7 +22,7 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query 
                 <div>
                     <h4>
                         Je vaste plaats{sollicitatie.vastePlaatsen.length > 1 ? 'en' : null}:{' '}
-                        {sollicitatie.vastePlaatsen.join('&nbsp;&&nbsp;')}
+                        {sollicitatie.vastePlaatsen.join(' & ')}
                     </h4>
                 </div>
             ) : null}

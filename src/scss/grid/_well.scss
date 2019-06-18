@@ -8,4 +8,7 @@
         background-color: $primary-darkblue;
         color: $primary-white;
     }
+    & + & {
+        margin-top: 20px;
+    }
 }
