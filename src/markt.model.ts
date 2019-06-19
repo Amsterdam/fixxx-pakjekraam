@@ -57,6 +57,8 @@ export interface IMarktondernemerVoorkeur {
     aantalPlaatsen?: number;
     krachtStroom?: boolean;
     kraaminrichting?: KraamInrichting;
+    anywhere?: boolean;
+    inactive?: boolean;
 }
 
 export interface IMarktondernemer extends IMarktdeelnemer {

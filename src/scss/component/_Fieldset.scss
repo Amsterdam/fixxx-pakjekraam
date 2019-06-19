@@ -5,6 +5,7 @@
         @include fontBold;
         display: flex;
         justify-content: space-between;
+        font-size: inherit;
         margin-bottom: 20px;
         width: 100%;
     }

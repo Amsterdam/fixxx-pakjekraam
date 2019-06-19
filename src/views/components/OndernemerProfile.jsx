@@ -53,6 +53,14 @@ class OndernemerProfile extends React.Component {
                                 >
                                     <strong>plaatsvoorkeuren</strong>
                                 </a>
+                                &nbsp;&nbsp;
+                                <a
+                                    href={`/algemene-voorkeuren/${ondernemer.erkenningsnummer}/${
+                                        sollicitatie.markt.id
+                                    }/?next=/profile/${ondernemer.erkenningsnummer}`}
+                                >
+                                    <strong>algemene voorkeuren</strong>
+                                </a>
                             </li>
                         ))}
                 </ul>

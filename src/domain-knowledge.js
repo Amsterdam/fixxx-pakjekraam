@@ -1,4 +1,11 @@
 const {
+    ISO_SUNDAY,
+    ISO_MONDAY,
+    ISO_TUESDAY,
+    ISO_WEDNESDAY,
+    ISO_THURSDAY,
+    ISO_FRIDAY,
+    ISO_SATURDAY,
     MILLISECONDS_IN_DAY,
     DAYS_IN_WEEK,
     toISODate,
@@ -38,6 +45,18 @@ const dagen = {
 };
 
 const parseMarktDag = dag => (dagen.hasOwnProperty(dag) ? dagen[dag] : -1);
+
+const isoMarktDagen = {
+    ma: ISO_MONDAY,
+    di: ISO_TUESDAY,
+    wo: ISO_WEDNESDAY,
+    do: ISO_THURSDAY,
+    vr: ISO_FRIDAY,
+    za: ISO_SATURDAY,
+    zo: ISO_SUNDAY,
+};
+
+const parseISOMarktDag = dag => (isoMarktDagen.hasOwnProperty(dag) ? isoMarktDagen[dag] : -1);
 
 const isVast = status => status === 'vpl' || status === 'vkk';
 
@@ -124,6 +143,8 @@ const plaatsSort = (plaatsA, plaatsB) => {
     return delta;
 };
 
+const isErkenningsnummer = str => /^\d+$/.test(str);
+
 module.exports = {
     DAPPERMARKT_ID,
     ALBERT_CUYP_ID,
@@ -134,6 +155,7 @@ module.exports = {
     formatOndernemerName,
     slugifyMarkt,
     parseMarktDag,
+    parseISOMarktDag,
     isVast,
     getMarktDays,
     getUpcomingMarktDays,
@@ -141,4 +163,5 @@ module.exports = {
     obstakelsToLocatieKeyValue,
     filterRsvpList,
     plaatsSort,
+    isErkenningsnummer,
 };

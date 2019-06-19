@@ -28,7 +28,7 @@ class OndernemerDashboard extends React.Component {
                 </Header>
                 <Content>
                     <a
-                        href={`/branche/${ondernemer.erkenningsnummer}/?next=/dashboard/${
+                        href={`/algemene-voorkeuren/${ondernemer.erkenningsnummer}/?next=/dashboard/${
                             ondernemer.erkenningsnummer
                         }/`}
                         className="Button Button--secondary"

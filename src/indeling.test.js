@@ -313,6 +313,52 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         expect(indeling.afwijzingen.length).toBe(2);
     });
 
+    it('Een standwerker wordt ingedeeld bij de standwerkerplaats', () => {
+        /*
+         * Scenario:
+         * - 1 marktplaats met branche
+         * - 1 ondernemer met hoge anceniteit zonder branche
+         * - 1 ondernemer met lage anceniteit en branchetoewijzing
+         */
+
+        const markt = marktScenario(({ ondernemer, marktplaats }) => ({
+            ondernemers: [ondernemer({ branches: ['standwerker'] }), ondernemer({ branches: ['standwerker'] })],
+            marktplaatsen: [marktplaats(), marktplaats({ branches: ['standwerker'] })],
+            branches: [{ brancheId: 'standwerker', verplicht: true }],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(1);
+        expect(indeling.afwijzingen.length).toBe(1);
+        expect(
+            indeling.toewijzingen.find(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 1).plaatsen,
+        ).toStrictEqual(['2']);
+    });
+
+    it('Een ondernemer kan kiezen niet te worden ingedeeld op willekeurige plaatsen', () => {
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [
+                ondernemer({ voorkeur: { anywhere: false, aantalPlaatsen: 3 } }),
+                ondernemer({ voorkeur: { anywhere: false } }),
+            ],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: SECOND_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '2' }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(1);
+        expect(indeling.afwijzingen.length).toBe(1);
+        expect(
+            indeling.toewijzingen.find(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 1).plaatsen,
+        ).toStrictEqual(['2', '3']);
+    });
+
     it('Een ondernemer die maximalisatie van een branche-plaatsen overschrijdt krijgt geen dagvergunning', () => {
         /*
          * Scenario:

@@ -2,6 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const packageJSON = require('../package.json');
 const { init, login, getMarktondernemer } = require('./makkelijkemarkt-api.js');
+const { isErkenningsnummer } = require('./domain-knowledge.js');
 
 const MILLISECONDS_IN_SECOND = 1000;
 
@@ -13,8 +14,6 @@ const loginSettings = {
 };
 
 init(loginSettings);
-
-const isErkenningsnummer = str => /^\d+$/.test(str);
 
 passport.use(
     new LocalStrategy(

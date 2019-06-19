@@ -125,8 +125,8 @@ const findOptimalSpot = (
                  * Bijvoorbeeld: als de ondernemer een wil frituren (`{ "branche": "bak" }`)
                  * dan blijven alleen nog de kramen over waarop frituren is toegestaan.
                  */
-                mogelijkePlaatsen = mogelijkePlaatsen.filter(plaats =>
-                    plaats.branches.find(brancheId => brancheId === branche.brancheId),
+                mogelijkePlaatsen = mogelijkePlaatsen.filter(
+                    plaats => plaats.branches && plaats.branches.find(brancheId => brancheId === branche.brancheId),
                 );
                 console.debug(
                     `Filter op branche: ${branche.brancheId} (${mogelijkePlaatsen.length}/${openPlaatsen.length} over)`,
@@ -151,6 +151,16 @@ const findOptimalSpot = (
         },
         mogelijkePlaatsen,
     );
+
+    const onlyVoorkeursPlaatsen = (plaatsen: IMarktplaats[], voorkeuren: IPlaatsvoorkeur[]): IMarktplaats[] => {
+        const voorkeursplaatsen = voorkeuren.map(({ plaatsId }) => plaatsId);
+
+        return mogelijkePlaatsen.filter(({ plaatsId }) => voorkeursplaatsen.includes(plaatsId));
+    };
+
+    if (ondernemer.voorkeur && typeof ondernemer.voorkeur.anywhere === 'boolean' && !ondernemer.voorkeur.anywhere) {
+        mogelijkePlaatsen = onlyVoorkeursPlaatsen(mogelijkePlaatsen, voorkeuren);
+    }
 
     // voorkeuren.sort((a, b) => numberSort(a.priority, b.priority));
 
@@ -341,7 +351,12 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
             )}: ${openAdjacent.map(({ plaatsId }) => plaatsId).join(', ')}`,
         );
 
-        const uitbreidingPlaats = findOptimalSpot(ondernemer, indeling.voorkeuren, openAdjacent, indeling);
+        const uitbreidingPlaats = findOptimalSpot(
+            ondernemer,
+            getOndernemerVoorkeuren(indeling, ondernemer),
+            openAdjacent,
+            indeling,
+        );
 
         if (uitbreidingPlaats) {
             // Remove vrije plaats
@@ -481,7 +496,7 @@ const findPlaats = (
     } else {
         console.debug(`Geen plaats gevonden voor ${ondernemer.erkenningsNummer}`);
         if (handleRejection === 'reject') {
-            return rejectOndernemer(state, ondernemer, reason);
+            return rejectOndernemer(state, ondernemer, reason || { message: 'Geen plaats gevonden' });
         } else {
             return state;
         }

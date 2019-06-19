@@ -7,7 +7,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const models = require('./model/index.js');
 const morgan = require('morgan');
-const { slugifyMarkt } = require('./domain-knowledge.js');
+const { isErkenningsnummer, slugifyMarkt } = require('./domain-knowledge.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
 const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
@@ -18,6 +18,8 @@ const {
     getMarktPaginas,
     getIndelingslijst,
     getIndelingslijstInput,
+    getIndelingVoorkeur,
+    getIndelingVoorkeuren,
     getAanmeldingen,
     getAanmeldingenByOndernemer,
     getOndernemerVoorkeuren,
@@ -38,6 +40,18 @@ const app = express();
 const errorPage = (res, err) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
 };
+
+/*
+ * The built-in Sequelize `upsert()` doesn't work well with
+ * combined unique key constraints that allow NULL values.
+ */
+const upsert = (model, where, data) =>
+    model
+        .findOrCreate({
+            where,
+            defaults: data,
+        })
+        .spread((inst, created) => (created ? inst : inst.update(data)));
 
 // Ensure the database tables have been created, particularly the session storage.
 models.sequelize.sync().then(
@@ -578,6 +592,129 @@ app.get('/voorkeuren/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
 
 app.get('/voorkeuren/:erkenningsNummer/:marktId', ensureLoggedIn(), (req, res) => {
     voorkeurenPage(res, req.user.token, req.params.erkenningsNummer, req.query, req.params.marktId);
+});
+
+const algemeneVoorkeurenPage = (req, res, token, erkenningsNummer, marktId, marktDate) => {
+    const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
+    const marktPromise = marktId ? getMarkt(token, marktId) : Promise.resolve(null);
+
+    // TODO: Only allow relative URLs in `next`, to prevent redirection to 3rd party phishing sites
+    const next = req.query.next;
+
+    Promise.all([
+        ondernemerPromise,
+        marktPromise,
+        getIndelingVoorkeur(erkenningsNummer, marktId, marktDate),
+        getAllBranches(),
+    ]).then(
+        ([ondernemer, markt, voorkeur, branches]) => {
+            console.log(voorkeur);
+            res.render('AlgemeneVoorkeurenPage', { ondernemer, markt, marktId, marktDate, voorkeur, branches, next });
+        },
+        err => errorPage(res, err),
+    );
+};
+
+const jsonPage = res => data => {
+    res.set({
+        'Content-Type': 'application/json; charset=UTF-8',
+    });
+    res.send(JSON.stringify(data, null, '  '));
+};
+
+const internalServerErrorPage = res => err => {
+    res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
+};
+
+app.get('/algemene-voorkeuren/:erkenningsNummer/voorkeuren.json', ensureLoggedIn(), (req, res) => {
+    getIndelingVoorkeur(req.params.erkenningsNummer).then(jsonPage(res), internalServerErrorPage(res));
+});
+
+app.get('/algemene-voorkeuren/:marktId/markt-voorkeuren.json', ensureLoggedIn(), (req, res) => {
+    getIndelingVoorkeuren(req.params.marktId).then(jsonPage(res), internalServerErrorPage(res));
+});
+
+app.get('/algemene-voorkeuren/:marktId/:marktDate/markt-voorkeuren.json', ensureLoggedIn(), (req, res) => {
+    getIndelingVoorkeuren(req.params.marktId, req.params.marktDate).then(jsonPage(res), internalServerErrorPage(res));
+});
+
+const algemeneVoorkeurenFormData = body => {
+    const { erkenningsNummer, marktId, marktDate, brancheId, parentBrancheId, inrichting } = body;
+
+    const inactive = !!body.inactive;
+    const anywhere = !!body.anywhere;
+    const aantalPlaatsen = parseInt(body.aantalPlaatsen, 10) || null;
+
+    const voorkeur = {
+        erkenningsNummer,
+        marktId: marktId || null,
+        marktDate: marktDate || null,
+        anywhere,
+        aantalPlaatsen,
+        brancheId: brancheId || null,
+        parentBrancheId: parentBrancheId || null,
+        inrichting,
+        inactive,
+
+        monday: !!body.monday,
+        tuesday: !!body.tuesday,
+        wednesday: !!body.wednesday,
+        thursday: !!body.thursday,
+        friday: !!body.friday,
+        saturday: !!body.saturday,
+        sunday: !!body.sunday,
+    };
+
+    return voorkeur;
+};
+
+app.post('/algemene-voorkeuren/', ensureLoggedIn(), (req, res) => {
+    const { next } = req.body;
+
+    const data = algemeneVoorkeurenFormData(req.body);
+
+    const { erkenningsNummer, marktId, marktDate } = data;
+
+    upsert(
+        models.voorkeur,
+        {
+            erkenningsNummer,
+            marktId,
+            marktDate,
+        },
+        data,
+    ).then(
+        () => res.status(HTTP_CREATED_SUCCESS).redirect(next ? next : '/'),
+        error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
+    );
+});
+
+app.get('/algemene-voorkeuren/', ensureLoggedIn(), (req, res, next) => {
+    // TODO: Only allow access for role "marktondernemer"
+    if (isErkenningsnummer(req.user.username)) {
+        algemeneVoorkeurenPage(res, req.user.token, req.user.username);
+    } else {
+        next();
+    }
+});
+
+app.get('/algemene-voorkeuren/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
+    algemeneVoorkeurenPage(req, res, req.user.token, req.params.erkenningsNummer);
+});
+
+app.get('/algemene-voorkeuren/:erkenningsNummer/:marktId/', ensureLoggedIn(), (req, res) => {
+    algemeneVoorkeurenPage(req, res, req.user.token, req.params.erkenningsNummer, req.params.marktId);
+});
+
+app.get('/algemene-voorkeuren/:erkenningsNummer/:marktId/:marktDate/', ensureLoggedIn(), (req, res) => {
+    algemeneVoorkeurenPage(
+        req,
+        res,
+        req.user.token,
+        req.params.erkenningsNummer,
+        req.params.marktId,
+        req.params.marktDate,
+    );
 });
 
 const voorkeurenFormDataToObject = formData => ({

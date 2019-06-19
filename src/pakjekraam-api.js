@@ -6,7 +6,9 @@ const {
     getMarktondernemersByMarkt,
 } = require('./makkelijkemarkt-api.js');
 const { ALBERT_CUYP_ID, formatOndernemerName, slugifyMarkt } = require('./domain-knowledge.js');
-const { plaatsvoorkeur, rsvp } = require('./model/index.js');
+const { numberSort, stringSort } = require('./util.js');
+const { Sequelize } = require('./model/index.js');
+const models = require('./model/index.js');
 const fs = require('fs');
 const { calcToewijzingen } = require('./indeling.ts');
 
@@ -26,26 +28,115 @@ const loadJSON = (path, defaultValue = null) =>
         });
     });
 
+/*
+ * Convert a Sequelize instance to a regular object
+ */
+const toPlainInstance = inst => inst.get({ plain: true });
+
 const getAanmeldingen = (marktId, marktDate) => {
-    return rsvp.findAll({
+    return models.rsvp.findAll({
         where: { marktId, marktDate },
     });
 };
 
 const getAanmeldingenByOndernemer = erkenningsNummer => {
-    return rsvp.findAll({
+    return models.rsvp.findAll({
         where: { erkenningsNummer },
     });
 };
 
 const getPlaatsvoorkeuren = marktId => {
-    return plaatsvoorkeur.findAll({
+    return models.plaatsvoorkeur.findAll({
         where: { marktId },
     });
 };
 
+const indelingVoorkeurPrio = voorkeur => (voorkeur.marktId ? 1 : 0) | (voorkeur.marktDate ? 2 : 0);
+const indelingVoorkeurSort = (a, b) => numberSort(indelingVoorkeurPrio(a), indelingVoorkeurPrio(b));
+
+const indelingVoorkeurMerge = (a, b) => ({
+    ...a,
+    ...Object.keys(b).reduce((state, key) => {
+        if (b[key] !== null && typeof b[key] !== 'undefined') {
+            state[key] = b[key];
+        }
+
+        return state;
+    }, {}),
+});
+
+const getIndelingVoorkeur = (erkenningsNummer, marktId = null, marktDate = null) => {
+    const where = {
+        erkenningsNummer,
+        [Sequelize.Op.and]: [
+            { [Sequelize.Op.or]: [{ marktId }, { marktId: null }] },
+            { [Sequelize.Op.or]: [{ marktDate }, { marktDate: null }] },
+        ],
+    };
+
+    return models.voorkeur
+        .findAll({
+            where,
+        })
+        .then(voorkeuren =>
+            voorkeuren
+                .map(toPlainInstance)
+                .sort(indelingVoorkeurSort)
+                .reduce(indelingVoorkeurMerge, null),
+        );
+};
+
+const groupByErkenningsNummer = (groups, voorkeur) => {
+    let group;
+
+    for (let i = groups.length; i--; ) {
+        if (groups[i][0].erkenningsNummer === voorkeur.erkenningsNummer) {
+            group = groups[i];
+            break;
+        }
+    }
+
+    if (group) {
+        group.push(voorkeur);
+    } else {
+        groups.push([voorkeur]);
+    }
+
+    return groups;
+};
+
+const convertVoorkeur = obj => ({
+    ...obj,
+    branches: obj.brancheId ? [obj.brancheId] : [],
+});
+
+const getIndelingVoorkeuren = (marktId, marktDate = null) => {
+    const where = {
+        [Sequelize.Op.and]: [
+            {
+                [Sequelize.Op.or]: marktId ? [{ marktId }, { marktId: null }] : [{ marktId: null }],
+            },
+            {
+                [Sequelize.Op.or]: marktDate ? [{ marktDate }, { marktDate: null }] : [{ marktDate: null }],
+            },
+        ],
+    };
+
+    return models.voorkeur
+        .findAll({
+            where,
+        })
+        .then(voorkeuren =>
+            voorkeuren
+                .map(toPlainInstance)
+                .sort((a, b) => indelingVoorkeurSort(a, b) || stringSort(a.erkenningsNummer, b.erkenningsNummer))
+                .reduce(groupByErkenningsNummer, [])
+                .map(arr => arr.reduce(indelingVoorkeurMerge)),
+        );
+};
+
 const getOndernemerVoorkeuren = erkenningsNummer => {
-    return plaatsvoorkeur.findAll({
+    return models.plaatsvoorkeur.findAll({
         where: { erkenningsNummer },
     });
 };
@@ -62,33 +153,47 @@ const getMarktPaginas = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/pag
 
 const getMarktGeografie = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/geografie.json`, []);
 
-const getIndelingslijstInput = (token, marktId, date) =>
-    Promise.all([
-        getMarktProperties(marktId),
-        getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
-            ondernemers
-                .filter(ondernemer => !ondernemer.doorgehaald)
-                .map(data => {
-                    const {
-                        id,
-                        koopman: { erkenningsnummer },
-                        sollicitatieNummer,
-                        status,
-                    } = data;
+/*
+ * Convert an object from Makkelijke Markt to our own type of `IMarktondernemer` object
+ */
+const convertOndernemer = data => {
+    const {
+        id,
+        koopman: { erkenningsnummer },
+        sollicitatieNummer,
+        status,
+    } = data;
 
-                    return {
-                        description: formatOndernemerName(data.koopman),
-                        id: erkenningsnummer,
-                        erkenningsNummer: erkenningsnummer,
-                        plaatsen: data.vastePlaatsen,
-                        voorkeur: {
-                            aantalPlaatsen: Math.max(1, data.aantal3MeterKramen + data.aantal4MeterKramen),
-                        },
-                        sollicitatieNummer,
-                        status,
-                    };
-                }),
-        ),
+    return {
+        description: formatOndernemerName(data.koopman),
+        id: erkenningsnummer,
+        erkenningsNummer: erkenningsnummer,
+        plaatsen: data.vastePlaatsen,
+        voorkeur: {
+            aantalPlaatsen: Math.max(1, data.aantal3MeterKramen + data.aantal4MeterKramen),
+        },
+        sollicitatieNummer,
+        status,
+    };
+};
+
+const getIndelingslijstInput = (token, marktId, date) => {
+    const ondernemersPromise = getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
+        ondernemers.filter(ondernemer => !ondernemer.doorgehaald).map(convertOndernemer),
+    );
+    const voorkeurenPromise = getIndelingVoorkeuren(marktId, date).then(voorkeuren => voorkeuren.map(convertVoorkeur));
+
+    // Populate the `ondernemer.voorkeur` field
+    const enrichedOndernemers = Promise.all([ondernemersPromise, voorkeurenPromise]).then(([ondernemers, voorkeuren]) =>
+        ondernemers.map(ondernemer => ({
+            ...ondernemer,
+            voorkeur: voorkeuren.find(voorkeur => voorkeur.erkenningsNummer === ondernemer.erkenningsNummer),
+        })),
+    );
+
+    return Promise.all([
+        getMarktProperties(marktId),
+        enrichedOndernemers,
         getMarktplaatsen(marktId),
         getAanmeldingen(marktId, date),
         getPlaatsvoorkeuren(marktId),
@@ -144,6 +249,7 @@ const getIndelingslijstInput = (token, marktId, date) =>
             ).map(row => row.map(plaatsId => marktplaatsen.find(plaats => plaats.plaatsId === plaatsId))),
         };
     });
+};
 
 const getIndelingslijst = (token, marktId, date) => getIndelingslijstInput(token, marktId, date).then(calcToewijzingen);
 
@@ -183,6 +289,8 @@ module.exports = {
     getOndernemerVoorkeuren,
     getBranches,
     getMarktplaatsen,
+    getIndelingVoorkeur,
+    getIndelingVoorkeuren,
     getIndelingslijst,
     getIndelingslijstInput,
     getMarkten,

@@ -6,6 +6,16 @@ const HOURS_IN_DAY = 24;
 const MILLISECONDS_IN_DAY = MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE * MINUTES_IN_HOUR * HOURS_IN_DAY;
 const shortMonthCharCount = 3;
 
+const ISO_WEEK_DAYS = ['', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag', 'zondag'];
+
+const ISO_MONDAY = 1;
+const ISO_TUESDAY = 2;
+const ISO_WEDNESDAY = 3;
+const ISO_THURSDAY = 4;
+const ISO_FRIDAY = 5;
+const ISO_SATURDAY = 6;
+const ISO_SUNDAY = 7;
+
 const WEEK_DAYS = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
 
 const SUNDAY = 0;
@@ -31,6 +41,7 @@ const monthName = [
     'december',
 ];
 
+const formatISODayOfWeek = day => ISO_WEEK_DAYS[day];
 const formatDayOfWeek = date => WEEK_DAYS[new Date(date).getDay()];
 const formatMonth = date => monthName[new Date(date).getMonth()];
 
@@ -114,6 +125,7 @@ module.exports = {
     paginate,
     today,
     addDays,
+    formatISODayOfWeek,
     formatDayOfWeek,
     formatMonth,
     tomorrow,
@@ -141,4 +153,11 @@ module.exports = {
     FRIDAY,
     SATURDAY,
     SUNDAY,
+    ISO_SUNDAY,
+    ISO_MONDAY,
+    ISO_TUESDAY,
+    ISO_WEDNESDAY,
+    ISO_THURSDAY,
+    ISO_FRIDAY,
+    ISO_SATURDAY,
 };
