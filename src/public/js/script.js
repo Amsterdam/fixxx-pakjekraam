@@ -2,8 +2,18 @@
 
   var handlers = {
     'remove-voorkeur': function(e){
-        var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item');
+        var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
+            container = _closest(this, '.PlaatsvoorkeurenForm__list'),
+            _resetCopy = function(){
+                var i,
+                    plaatsSetsList = container.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
+                    plaatsSetsListArray = Array.prototype.slice.call(plaatsSetsList).sort(function(a, b){return b.style.order - a.style.order});
+                for (i = 0;i < plaatsSetsListArray.length; i++){
+                    plaatsSetsListArray[i].querySelector('.PlaatsvoorkeurenForm__list-item__heading').textContent = (i + 1) + 'e keuze';
+                }
+            };
         voorkeur.parentNode.removeChild(voorkeur);
+        _resetCopy();
     },
     'move-voorkeur': function(e){
         var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
