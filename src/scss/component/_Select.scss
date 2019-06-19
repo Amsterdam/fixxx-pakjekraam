@@ -21,7 +21,9 @@ $inputMaxWidth: 620px;
         outline-offset: 0;
         outline: 2px solid $support-focus;
     }
-    [disabled="disabled"] {
+
+    &:disabled,
+    &[disabled="disabled"] {
         border-color: $neutral-grey3;
         color: $neutral-grey3;
     }
@@ -38,9 +40,12 @@ $inputMaxWidth: 620px;
         min-width: $inputMinWidth;
         max-width: $inputMaxWidth;
     }
+    &__wrapper--disabled:after {
+        color: $neutral-grey3;
+    }
     &--MarktplaatsSelect {
     }
     &__wrapper--MarktplaatsSelect {
-        width: 100px;
+        width: 85px;
     }
 }

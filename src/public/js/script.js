@@ -19,47 +19,133 @@
             next.querySelector('input[name*="[priority]"]').value = priority;
             next.style.order = priority;
         }
-    }
+    },
+    'add-voorkeur': function(e){
+        var prototype = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
+            voorkeurContainer = _closest(this, '.PlaatsvoorkeurenForm__list'),
+            newVoorkeur = prototype.cloneNode(true),
+            i,
+            _resetPrototype = function(prototype){
+
+            },
+            _addNew = function(voorkeur){
+                var selects = voorkeur.querySelectorAll('select');
+                voorkeurContainer.appendChild(voorkeur);
+                for(i = 0; i < selects.length; i++){
+                    selects[i].setAttribute('name', selects[i].dataset.name);
+                    selects[i].setAttribute('id', selects[i].dataset.id);
+                }
+                voorkeur.classList.add('PlaatsvoorkeurenForm__list-item--sortable');
+            },
+            _setPrioroty = function () {
+
+            }
+
+        _resetPrototype(prototype);
+        _addNew(newVoorkeur);
+        _setPrioroty();
+
+        console.log(prototype);
+        console.log(voorkeurContainer);
+        console.log(newVoorkeur);
+
+
+    },
   };
 
   var decorators = {
       'voorkeur-form': function(){
-          var _createOption = function(value){
+          var plaatsSets = this.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
+              timeout,
+              _init = function(){
+                  var i;
+                  for(i = 0; i < plaatsSets.length; i++){
+                      _setSelectDisabledState(plaatsSets[i].querySelector('select'), false);
+                  }
+              },
+              _nextSelect = function(select) {
+                var selectContainer = _closest(select, '.PlaatsvoorkeurenForm__list-item').querySelectorAll('select'),
+                    elemArray = Array.prototype.slice.call(selectContainer);
+                    if (elemArray[elemArray.indexOf(select) + 1])
+                        return elemArray[elemArray.indexOf(select) + 1];
+                    return;
+
+              },
+              _getSelectsData = function(select){
+                var selects = _closest(select, '.PlaatsvoorkeurenForm__list-item').querySelectorAll('select'),
+                    a = [], i;
+                for(i = 0; i < selects.length; i++){
+                    if (selects[i].value){
+                        a.push(selects[i].value);
+                    }
+                    if(selects[i] === select){
+                        i = select.length+1;
+                    }
+                }
+                return a;
+              },
+              _getEnableSave = function(select){
+                var selects = _closest(select, '.PlaatsvoorkeurenForm__list-item').querySelectorAll('select'), i;
+                for(i = 0; i < selects.length; i++){
+                    selects[i].setAttribute('name', selects[i].dataset.name);
+                    selects[i].setAttribute('id', selects[i].dataset.id);
+                }
+              },
+              _getData = function(select){
+                    var marktId = _closest(select, '[data-markt-id]').dataset.marktId,
+                        next = _nextSelect(select),
+                        plaatsIds = _getSelectsData(select).join('-');
+                    // console.log(_getSelectsData(select));
+                  helpers.simpleAjax('/api/0.0.1/markt/' + marktId + '/plaats/'+plaatsIds ,function(response){
+                        if (response.status >= 200 && response.status < 400) {
+                            _updateSelects(select, JSON.parse(response.response));
+                            if (next){
+                                _getData(next);
+                            }else{
+                                _getEnableSave(select);
+                            }
+                        }
+                  })
+              },
+              _setSelectDisabledState = function(select, disabled){
+                  disabled ? select.setAttribute('disabled', 'disabled') : select.removeAttribute('disabled');
+                  _closest(select, '.Select__wrapper').classList[disabled ? 'add' : 'remove']('Select__wrapper--disabled');
+              },
+              _createOption = function(value){
                 var option = document.createElement('option');
                 option.setAttribute('value', value);
                 option.text = value;
                 return option;
               },
               _updateSelects = function(elem, data) {
-                var container = _closest(elem, '.PlaatsvoorkeurenForm__list-item'),
-                    selects = container.querySelectorAll('select'),
-                    i, j, newValues = [];
+                var plaatsSet = _closest(elem, '.PlaatsvoorkeurenForm__list-item'),
+                    selects = plaatsSet.querySelectorAll('select'),
+                    disable = false,
+                    nextSelect,
+                    i, j;
+
                 for (i = 0; i < selects.length; i++){
-                    console.log(selects[i].value);
-                    for (j = 0 && selects[i].value; j < data.length; j++){
-                        selects[i].value !== data[j] && !helpers.isInArray(data[j], newValues) && newValues.push(data[j]);
+                    if (selects[i+1] && elem === selects[i]){
+                        nextSelect = selects[i+1];
+                        i++;
+                        disable = true;
                     }
+                    _setSelectDisabledState(selects[i], disable);
                 }
-                console.log(newValues);
-                for (i = 0; i < selects.length; i++){
-                    if (!selects[i].value){
-                        while (selects[i].firstChild) {
-                            selects[i].removeChild(selects[i].firstChild);
-                        }
-                        for (j = 0; j < newValues.length; j++){
-                            selects[i].add(_createOption(newValues[j]));
-                        }
+                if(nextSelect){
+                    _setSelectDisabledState(nextSelect, false);
+                    while (nextSelect.firstChild) {
+                        nextSelect.removeChild(nextSelect.firstChild);
+                    }
+                    for (j = 0; j < data.length; j++){
+                        nextSelect.add(_createOption(data[j]));
                     }
                 }
               };
           this.addEventListener('change', function(e){
-                  helpers.simpleAjax('/api/0.0.1/markt/33/plaats/'+e.target.value ,function(response){
-                        if (response.status >= 200 && response.status < 400) {
-                            _updateSelects(e.target, JSON.parse(response.response));
-                        }
-                  })
-
+            _getData(e.target);
           });
+          _init();
       }
   };
   var helpers = {
