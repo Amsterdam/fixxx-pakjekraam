@@ -7,12 +7,14 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query 
     const voorkeurEntries = plaatsvoorkeuren
         .map((voorkeur, index) => {
             return {
-                marktId: markt.id,
+                marktId: voorkeur.dataValues.marktId,
                 plaatsId: voorkeur.plaatsId,
                 priority: voorkeur.priority,
             };
         })
-        .sort((a, b) => b.priority - a.priority);
+        .sort((a, b) => b.priority - a.priority)
+        .filter(m => m.marktId === markt.id);
+
     const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id);
 
     return (
