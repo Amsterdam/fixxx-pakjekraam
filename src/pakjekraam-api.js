@@ -54,6 +54,8 @@ const getMarktProperties = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/
 
 const getBranches = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/branches.json`, []);
 
+const getAllBranches = () => loadJSON(`./data//branches.json`, []);
+
 const getMarktplaatsen = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/locaties.json`, []);
 
 const getMarktPaginas = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/paginas.json`, []);
@@ -172,6 +174,7 @@ const getMarkten = token =>
         .then(markten => markten.filter(markt => fs.existsSync(`data/${slugifyMarkt(markt.id)}/locaties.json`)));
 
 module.exports = {
+    getAllBranches,
     getMarktPaginas,
     getMarktProperties,
     getAanmeldingen,

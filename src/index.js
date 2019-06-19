@@ -13,6 +13,7 @@ const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
 const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
 const { tomorrow, nextWeek } = require('./util.js');
 const {
+    getAllBranches,
     getMarktProperties,
     getMarktPaginas,
     getIndelingslijst,
@@ -419,6 +420,7 @@ app.get('/api/0.0.1/markt/:marktId/plaats-count/:count/', ensureLoggedIn(), (req
 
 const ondernemerChangeBranchePage = (res, token, erkenningsNummer, query) => {
     const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
+    const branchesPromise = getAllBranches();
 
     const marktenPromise = ondernemerPromise.then(ondernemer =>
         Promise.all(
@@ -427,18 +429,13 @@ const ondernemerChangeBranchePage = (res, token, erkenningsNummer, query) => {
             ),
         ),
     );
-    Promise.all([ondernemerPromise, marktenPromise]).then(
-        ([ondernemer, markten]) => {
-            const marktenBranches = markten.map(markt => {
-                return {
-                    ...markt[0],
-                    branches: markt[1],
-                };
-            });
+    Promise.all([ondernemerPromise, branchesPromise]).then(
+        ([ondernemer, branches]) => {
             res.render('OndernemerBranchePage', {
                 ondernemer,
-                markten: marktenBranches,
+                branches,
                 query,
+                user: token,
             });
         },
         err => errorPage(res, err),

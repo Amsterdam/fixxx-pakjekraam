@@ -8,14 +8,18 @@ const OndernemerChangeBrancheForm = require('./components/OndernemerChangeBranch
 class OndernemerBranchePage extends React.Component {
     propTypes = {
         ondernemer: PropTypes.object.isRequired,
-        markten: PropTypes.array.isRequired,
+        branches: PropTypes.array.isRequired,
         query: PropTypes.string,
+        user: PropTypes.object,
     };
 
     render() {
         return (
             <Page>
-                <OndernemerChangeBrancheForm {...this.props} />
+                <Header user={this.props.user} />
+                <Content>
+                    <OndernemerChangeBrancheForm {...this.props} />
+                </Content>
             </Page>
         );
     }
