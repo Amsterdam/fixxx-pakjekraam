@@ -25,18 +25,17 @@ class PlaatsvoorkeurenForm extends React.Component {
 
         // fixme: vastePlaatsen related new item count
         const marktEntries = ondernemer.sollicitaties
-            .map(sollicitatie =>
-                sollicitatie.vastePlaatsen.map(plaatsId => ({
+            .map(sollicitatie => {
+                return (sollicitatie.status === 'vpl' ? sollicitatie.vastePlaatsen : [1]).map(() => ({
                     marktId: sollicitatie.markt.id,
                     plaatsId: null,
                     erkenningsNummer: ondernemer.erkenningsnummer,
                     priority: 2,
                     readonly: false,
                     newItem: true,
-                })),
-            )
+                }));
+            })
             .reduce(flatten, []);
-
         const voorkeurEntries = plaatsvoorkeuren.map((voorkeur, index) => {
             return {
                 marktId: voorkeur.marktId,
@@ -86,12 +85,13 @@ class PlaatsvoorkeurenForm extends React.Component {
                 {markten.map(markt => {
                     const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id);
                     const entriesFiltered = allEntries.filter(entry => entry.marktId === markt.id);
-
                     // fixme: vastePlaatsen related new item count
                     const entriesSplit = entriesFiltered
                         .map((entry, i) => {
-                            return i % sollicitatie.vastePlaatsen.length === 0
-                                ? entriesFiltered.filter((e, j) => j >= i && j < i + sollicitatie.vastePlaatsen.length)
+                            const newCount = sollicitatie.status === 'vpl' ? sollicitatie.vastePlaatsen.length : 1;
+
+                            return i % newCount === 0
+                                ? entriesFiltered.filter((e, j) => j >= i && j < i + newCount)
                                 : null;
                         })
                         .filter(entry => !!entry);
