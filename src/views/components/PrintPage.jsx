@@ -11,7 +11,7 @@ const PrintPage = ({ children, index, title, label }) => {
                         <h3 className="PrintPage__heading">
                             {title}
                             {label ? (
-                                <span className="PrintPage__label">Markt {index + 1}</span>
+                                <span className="PrintPage__label">{label}</span>
                             ) : (
                                 <span className="PrintPage__index">{index + 1}</span>
                             )}

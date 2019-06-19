@@ -1,7 +1,11 @@
 [
   {
-    "title": "Reigersbos kerkplein links",
+    "title": "Markt 1",
     "indelingslijstGroup": [
+      {
+        "type": "street",
+        "title": "Reigersbos kerkplein links"
+      },
       {
         "class": "linkerzijde",
         "title": "",

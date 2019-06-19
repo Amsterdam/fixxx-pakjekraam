@@ -1,6 +1,6 @@
 [
   {
-    "title": "",
+    "title": "Markt 1",
     "indelingslijstGroup": [
       {
         "type": "street",
@@ -100,7 +100,7 @@
     ]
   },
   {
-    "title": "",
+    "title": "Markt 2a",
     "indelingslijstGroup": [
       {
         "type": "street",
@@ -176,7 +176,7 @@
     ]
   },
   {
-    "title": "",
+    "title": "Markt 2b",
     "indelingslijstGroup": [
       {
         "class": "straat-3a",
@@ -272,7 +272,7 @@
     ]
   },
   {
-    "title": "",
+    "title": "Markt 3",
     "indelingslijstGroup": [
       {
         "type": "street",

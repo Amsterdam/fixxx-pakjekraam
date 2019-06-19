@@ -12,16 +12,7 @@ body.page-print {
     background-color: $primary-white;
     box-shadow: $boxShadowDefault;
     margin-bottom: 30px;
-    &__ratio {
-        position: relative;
-        height: 0;
-        width: 100%;
-        &[data-ratio="210:297"] {
-            padding-top: (297 / 210) * 100%;
-        }
-    }
     &__wrapper {
-        position: absolute;
         top: 0;
         left: 0;
         width: calc(100% - 40px);
@@ -48,6 +39,11 @@ body.page-print {
         .IndelingslijstGroup + .IndelingslijstGroup {
             margin-left: 4%;
         }
+        .IndelingslijstGroup
+            + .IndelingslijstGroup
+            + .IndelingslijstGroup
+            + .IndelingslijstGroup
+            + .IndelingslijstGroup,
         .IndelingslijstGroup + .IndelingslijstGroup + .IndelingslijstGroup {
             margin-left: 0;
         }
@@ -81,6 +77,19 @@ body.page-print {
         line-height: 30px;
         padding: 0 15px;
         margin-left: 10px;
+    }
+    @media screen and (min-width: $screenLarge) {
+        &__ratio {
+            position: relative;
+            height: 0;
+            width: 100%;
+            &[data-ratio="210:297"] {
+                padding-top: (297 / 210) * 100%;
+            }
+        }
+        &__wrapper {
+            position: absolute;
+        }
     }
 }
 @page {

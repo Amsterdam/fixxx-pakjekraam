@@ -30,7 +30,7 @@ $plaatsCellHeight: 16px;
         visibility: hidden;
     }
     &__prop-plaats-nr {
-        width: 23px;
+        width: 24px;
         color: $primary-black;
         text-align: center;
         border-right: none;
@@ -170,8 +170,13 @@ $plaatsCellHeight: 16px;
                 &:before {
                     @include icon($var);
                     font-size: 14px;
+                    text-align: center;
+                    display: block;
                 }
             }
+        }
+        .icon-bankje:before {
+            font-size: 9px;
         }
     }
     &__prop-empty-fields {
@@ -188,6 +193,15 @@ $plaatsCellHeight: 16px;
         width: 25px;
         padding: 0;
         border-left: none;
+        .OndernemerStatus {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            text-align: center;
+            padding: 0;
+        }
     }
 
     &.experimentele-zone .Plaats__prop:after,

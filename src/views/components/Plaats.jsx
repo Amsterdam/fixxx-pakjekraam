@@ -112,7 +112,11 @@ const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type, toewijzing
                 {vph ? vph.description : <strong>{tags}</strong>}
             </td>
             <td className="Plaats__prop Plaats__prop-soll">
-                {toewijzing ? <strong>{toewijzing.ondernemer.sollicitatieNummer}</strong> : null}
+                {toewijzing ? (
+                    <a href={`/profile/${toewijzing.erkenningsNummer}`}>
+                        <strong>{toewijzing.ondernemer.sollicitatieNummer}</strong>
+                    </a>
+                ) : null}
             </td>
             <td className="Plaats__prop Plaats__prop-naam">{toewijzing ? toewijzing.ondernemer.description : null}</td>
             <td className="Plaats__prop Plaats__prop-status">
