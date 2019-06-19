@@ -47,14 +47,14 @@ class IndelingslijstenPage extends React.Component {
             >
                 {paginas.map((page, j) => {
                     return (
-                        <PrintPage key={j} index={j} title={`Indelingslijst ${markt.naam}`} label="Markt ">
+                        <PrintPage key={`page-${j}`} index={j} title={`Indelingslijst ${markt.naam}`} label="Markt ">
                             {page.indelingslijstGroup.map((pageItem, i) => {
                                 if (pageItem.type && pageItem.type === 'street') {
-                                    return <Street title={pageItem.title} />;
+                                    return <Street key={`page-street-${i}`} title={pageItem.title} />;
                                 } else {
                                     return (
                                         <IndelingslijstGroup
-                                            key={i}
+                                            key={`page-group-${i}`}
                                             page={pageItem}
                                             plaatsList={plaatsList}
                                             vphl={vphl}

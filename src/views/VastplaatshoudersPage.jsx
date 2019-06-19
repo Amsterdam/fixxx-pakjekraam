@@ -44,14 +44,14 @@ class VastplaatshoudersPage extends React.Component {
                 showDate={false}
             >
                 {paginas.map((pagina, i) => (
-                    <PrintPage key={i} index={i} title={markt.naam}>
+                    <PrintPage key={`page-${i}`} index={i} title={markt.naam}>
                         {pagina.indelingslijstGroup.map((pageItem, ii) => {
                             if (pageItem.type && pageItem.type === 'street') {
-                                return <Street title={pageItem.title} />;
+                                return <Street key={`page-street-${ii}`} title={pageItem.title} />;
                             } else {
                                 return (
                                     <IndelingslijstGroup
-                                        key={ii}
+                                        key={`page-group-${ii}`}
                                         page={pageItem}
                                         plaatsList={locatiesObject}
                                         vphl={vphl}

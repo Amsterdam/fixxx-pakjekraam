@@ -50,7 +50,8 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
                 })}
             </ul>
             <Button
-                label="Aanwezigheid wijzigen"
+                label="Wijzigen aanwezigheid"
+                type={`secondary`}
                 href={`/afmelden/${ondernemer.erkenningsnummer}/${markt.id}/?next=${next}`}
             />
         </div>

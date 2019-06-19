@@ -342,7 +342,6 @@ app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', ensureLoggedIn(), (req, res
 
 app.get('/api/0.0.1/markt/:marktId/plaats/:plaatsIds', ensureLoggedIn(), (req, res) => {
     const plaatsIds = req.params.plaatsIds.split('-');
-    console.log(plaatsIds);
 
     Promise.all([
         getMarktPaginas(req.params.marktId),
@@ -442,7 +441,7 @@ const ondernemerChangeBranchePage = (res, token, erkenningsNummer, query) => {
     );
 };
 
-app.get('/change-branche/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
+app.get('/branche/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
     ondernemerChangeBranchePage(res, req.user.token, req.params.erkenningsNummer, req.query);
 });
 

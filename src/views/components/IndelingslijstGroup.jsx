@@ -109,7 +109,7 @@ IndelingslijstGroup.propTypes = {
     vphl: PropTypes.object,
     obstakelList: PropTypes.object,
     markt: PropTypes.object.isRequired,
-    type: PropTypes.oneOf(['vph', 'indeling']),
+    type: PropTypes.string,
     datum: PropTypes.string,
 };
 

@@ -46,7 +46,7 @@ const OndernemerAanwezigheid = ({ ondernemer, aanmeldingen, markten, plaatsvoork
 };
 
 OndernemerAanwezigheid.propTypes = {
-    ondernemer: PropTypes.array.isRequired,
+    ondernemer: PropTypes.object.isRequired,
     aanmeldingen: PropTypes.array,
     markten: PropTypes.array,
     plaatsvoorkeuren: PropTypes.array,

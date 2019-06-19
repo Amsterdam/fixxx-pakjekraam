@@ -27,6 +27,14 @@ class OndernemerDashboard extends React.Component {
                     <OndernemerProfileHeader user={ondernemer} />
                 </Header>
                 <Content>
+                    <a
+                        href={`/branche/${ondernemer.erkenningsnummer}/?next=/dashboard/${
+                            ondernemer.erkenningsnummer
+                        }/`}
+                        className="Button Button--secondary"
+                    >
+                        Profiel
+                    </a>
                     <h1 className="h1">Mijn markten</h1>
                     <OndernemerAanwezigheid {...this.props} />
                 </Content>

@@ -1,12 +1,12 @@
-$fieldsetMaxWidth: 620px;
-
 .Fieldset {
     max-width: $fieldsetMaxWidth;
     border: none;
-    margin-bottom: 100px;
     &__header {
+        @include fontBold;
         display: flex;
         justify-content: space-between;
+        margin-bottom: 20px;
+        width: 100%;
     }
     &__title {
         margin: 0;
@@ -15,5 +15,15 @@ $fieldsetMaxWidth: 620px;
     &__subtitle {
         display: inline-block;
         margin-bottom: 10px;
+    }
+    &--horizontal {
+        display: flex;
+        flex-wrap: wrap;
+        .InputField--radiobutton {
+            margin-right: 30px;
+        }
+    }
+    & + & {
+        margin-top: 30px;
     }
 }

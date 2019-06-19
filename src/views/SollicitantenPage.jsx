@@ -3,6 +3,7 @@ const MarktDetailBase = require('./components/MarktDetailBase');
 const OndernemerList = require('./components/OndernemerList');
 const PrintPage = require('./components/PrintPage');
 const PropTypes = require('prop-types');
+const { paginate } = require('../util');
 
 class SollicitantenPage extends React.Component {
     propTypes = {
@@ -20,34 +21,8 @@ class SollicitantenPage extends React.Component {
         const itemsOnPage = 50;
         const aanmeldingenOrdered = aanmeldingen.sort((a, b) => b.updatedAt - a.updatedAt);
 
-        const paginas = ondernemers
-            .map((ondernemer, i) => {
-                if (i % itemsOnPage === 0) {
-                    return ondernemers
-                        .sort((a, b) => {
-                            return a.sollicitatieNummer < b.sollicitatieNummer;
-                        })
-                        .filter((o, j) => {
-                            return j >= i && j < i + itemsOnPage;
-                        });
-                } else {
-                    return null;
-                }
-            })
-            .filter(ondernemer => {
-                return !!ondernemer;
-            });
-        const paginasLists = paginas
-            .map((p, i) => {
-                return i % 2 === 0
-                    ? paginas.filter((pp, j) => {
-                          return j >= i && j < i + 2;
-                      })
-                    : null;
-            })
-            .filter(ondernemer => {
-                return !!ondernemer;
-            });
+        const paginas = paginate(ondernemers, itemsOnPage);
+        const paginasLists = paginate(paginas, 2);
 
         return (
             <MarktDetailBase

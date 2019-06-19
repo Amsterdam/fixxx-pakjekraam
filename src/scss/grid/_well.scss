@@ -1,14 +1,22 @@
 .well {
     padding: $vm2 $hm2;
     background-color: $neutral-grey1;
-    @media screen and (min-width: $screenMedium) {
-        padding: $vm4 $hm4;
-    }
+
     &--dark {
         background-color: $primary-darkblue;
         color: $primary-white;
     }
     & + & {
         margin-top: 20px;
+    }
+    &--max-width {
+        max-width: $fieldsetMaxWidth - (2 * $hm2);
+    }
+
+    @media screen and (min-width: $screenMedium) {
+        padding: $vm4 $hm4;
+        &--max-width {
+            max-width: $fieldsetMaxWidth - (2 * $hm4);
+        }
     }
 }

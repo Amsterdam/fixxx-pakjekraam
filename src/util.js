@@ -34,6 +34,16 @@ const monthName = [
 const formatDayOfWeek = date => WEEK_DAYS[new Date(date).getDay()];
 const formatMonth = date => monthName[new Date(date).getMonth()];
 
+const paginate = (arr, count) =>
+    arr.reduce((t, a, i) => {
+        if (i % count === 0) {
+            t.push([]);
+        }
+        t[t.length - 1].push(a);
+
+        return t;
+    }, []);
+
 const formatDate = date =>
     new Date(date).getDate() +
     ' ' +
@@ -101,6 +111,7 @@ const stringSort = (a, b) => (a > b ? 1 : a === b ? 0 : -1);
 const flatten = (a = [], b = []) => [...a, ...b];
 
 module.exports = {
+    paginate,
     today,
     addDays,
     formatDayOfWeek,

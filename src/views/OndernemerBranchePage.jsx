@@ -4,6 +4,7 @@ const Page = require('./components/Page.jsx');
 const PropTypes = require('prop-types');
 const Header = require('./components/Header');
 const OndernemerChangeBrancheForm = require('./components/OndernemerChangeBrancheForm');
+const OndernemerProfileHeader = require('./components/OndernemerProfileHeader');
 
 class OndernemerBranchePage extends React.Component {
     propTypes = {
@@ -14,9 +15,13 @@ class OndernemerBranchePage extends React.Component {
     };
 
     render() {
+        const { ondernemer } = this.props;
+
         return (
             <Page>
-                <Header user={this.props.user} />
+                <Header user={ondernemer} logoUrl={`/dashboard/${ondernemer.erkenningsnummer}`}>
+                    <OndernemerProfileHeader user={ondernemer} />
+                </Header>
                 <Content>
                     <OndernemerChangeBrancheForm {...this.props} />
                 </Content>

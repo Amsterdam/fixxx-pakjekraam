@@ -1,6 +1,6 @@
 const PropTypes = require('prop-types');
 const React = require('react');
-const { flatten } = require('../../util.js');
+const { paginate } = require('../../util.js');
 const Button = require('./Button');
 
 const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query }) => {
@@ -29,14 +29,18 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query 
             {voorkeurEntries ? (
                 <div key="voorkeuren">
                     <ul>
-                        {voorkeurEntries.map(entry => (
-                            <li key={entry.plaatsId}>
-                                {entry.plaatsId}: prio: {entry.priority}
+                        {paginate(
+                            voorkeurEntries,
+                            sollicitatie.status === 'vpl' ? sollicitatie.vastePlaatsen.length : 1,
+                        ).map((entry, i) => (
+                            <li key={`${i + 1}e keuze`}>
+                                {i + 1}e keuze: <strong>{entry.map(e => e.plaatsId).join(' & ')}</strong>
                             </li>
                         ))}
                     </ul>
                     <Button
                         label="Wijzig plaatsvoorkeuren"
+                        type={`secondary`}
                         href={`/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=/dashboard/${
                             ondernemer.erkenningsnummer
                         }`}
