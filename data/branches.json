@@ -1,0 +1,138 @@
+[
+  {
+    "brancheId": 1,
+    "description": "brood en banket"
+  },
+  {
+    "brancheId": 2,
+    "description": "vlees en vleeswaren"
+  },
+  {
+    "brancheId": 3,
+    "description": "aardappelen, groente en fruit"
+  },
+  {
+    "brancheId": 4,
+    "description": "kaas en zuivel"
+  },
+  {
+    "brancheId": 5,
+    "description": "ijs"
+  },
+  {
+    "brancheId": 6,
+    "description": "gebakken vis"
+  },
+  {
+    "brancheId": 7,
+    "description": "natte vis"
+  },
+  {
+    "brancheId": 8,
+    "description": "poelier"
+  },
+  {
+    "brancheId": 9,
+    "description": "noten/zuidvruchten"
+  },
+  {
+    "brancheId": 10,
+    "description": "hummus/olijven"
+  },
+  {
+    "brancheId": 12,
+    "description": "oudhollands gebak (poffertjes, stroopwafels, pannenkoeken)"
+  },
+  {
+    "brancheId": 13,
+    "description": "exotische groenten"
+  },
+  {
+    "brancheId": 14,
+    "description": "patat en snacks"
+  },
+  {
+    "brancheId": 15,
+    "description": "health products"
+  },
+  {
+    "brancheId": 16,
+    "description": "parfumerie/persoonlijke verzorging"
+  },
+  {
+    "brancheId": 17,
+    "description": "sieraden en horloges"
+  },
+  {
+    "brancheId": 18,
+    "description": "stoffen"
+  },
+  {
+    "brancheId": 19,
+    "description": "bovenkleding"
+  },
+  {
+    "brancheId": 20,
+    "description": "ondergoed"
+  },
+  {
+    "brancheId": 21,
+    "description": "kinderkleding"
+  },
+  {
+    "brancheId": 22,
+    "description": "tweedehands kleding"
+  },
+  {
+    "brancheId": 23,
+    "description": "sokken"
+  },
+  {
+    "brancheId": 24,
+    "description": "schoenen en lederwaren"
+  },
+  {
+    "brancheId": 25,
+    "description": "boeken"
+  },
+  {
+    "brancheId": 26,
+    "description": "antiek en kunst"
+  },
+  {
+    "brancheId": 27,
+    "description": "speelgoed en spellen"
+  },
+  {
+    "brancheId": 28,
+    "description": "huishoudelijke artikelen"
+  },
+  {
+    "brancheId": 29,
+    "description": "elektronica, mobieltjes en accessoires"
+  },
+  {
+    "brancheId": 30,
+    "description": "dierenbenodigdheden"
+  },
+  {
+    "brancheId": 31,
+    "description": "fietsen en auto-accessoires"
+  },
+  {
+    "brancheId": 32,
+    "description": "doe-het-zelf / gereedschap"
+  },
+  {
+    "brancheId": 33,
+    "description": "lampen"
+  },
+  {
+    "brancheId": 34,
+    "description": "planten en bloemen"
+  },
+  {
+    "brancheId": 35,
+    "description": "partijhandel"
+  }
+]
