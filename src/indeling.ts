@@ -33,6 +33,11 @@ const numberSort = (a: number, b: number): number => (a > b ? 1 : a === b ? 0 : 
 const flatten = <T>(a: T[] = [], b: T[] = []): T[] => [...a, ...b];
 
 /*
+ * Example usage: [1, 2].reduce(sum, 0)
+ */
+const sum = (a: number, b: number): number => a + b;
+
+/*
  * Example usage: [1, 2, 1, 2, 3].reduce(unique, [])
  */
 const unique = <T>(a: T[], b: T): T[] => (a.includes(b) ? a : [...a, b]);
@@ -380,6 +385,55 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
 const heeftVastePlaatsen = (ondernemer: IMarktondernemer): boolean =>
     isVast(ondernemer.status) && count(ondernemer.plaatsen) > 0;
 
+const getBrancheStats = (state: IMarktindeling, brancheId: string) => {
+    const branche = (state.branches || []).find(item => item.brancheId === brancheId);
+
+    const maximumPlaatsen =
+        !!branche && typeof branche.maximumPlaatsen === 'number' ? branche.maximumPlaatsen : Infinity;
+
+    const maximumToewijzingen =
+        !!branche && typeof branche.maximumToewijzingen === 'number' ? branche.maximumToewijzingen : Infinity;
+
+    const currentToewijzingen = state.toewijzingen.filter(toewijzing =>
+        (toewijzing.ondernemer.branches || []).includes(brancheId),
+    );
+
+    const currentPlaatsen = currentToewijzingen.map(toewijzing => toewijzing.plaatsen.length).reduce(sum, 0);
+
+    return {
+        branche,
+        plaatsen: {
+            current: currentPlaatsen,
+            maximum: maximumPlaatsen,
+        },
+        toewijzingen: {
+            current: currentToewijzingen.length,
+            maximum: maximumToewijzingen,
+        },
+    };
+};
+
+const getMaxedOutBranches = (state: IMarktindeling, branches: string[]) =>
+    branches.filter(brancheId => {
+        const { branche, toewijzingen, plaatsen } = getBrancheStats(state, brancheId);
+
+        if (toewijzingen.maximum < Infinity) {
+            console.log(
+                `${toewijzingen.current}/${toewijzingen.maximum} ondernemers in branche ${
+                    branche.brancheId
+                } toegewezen`,
+            );
+        }
+
+        if (plaatsen.maximum < Infinity) {
+            console.log(
+                `${plaatsen.current}/${plaatsen.maximum} marktplaatsen in branche ${branche.brancheId} toegewezen`,
+            );
+        }
+
+        return toewijzingen.current >= toewijzingen.maximum || plaatsen.current >= plaatsen.maximum;
+    });
+
 const findPlaats = (
     state: IMarktindeling,
     ondernemer: IMarktondernemer,
@@ -406,25 +460,7 @@ const findPlaats = (
         reason = FULL_REASON;
     }
 
-    const brancheLimitsExceeded = (ondernemer.branches || []).filter(ondernemerBranche => {
-        const brancheDefinition = (state.branches || []).find(({ brancheId }) => brancheId === ondernemerBranche);
-
-        const brancheMaximum =
-            !!brancheDefinition && typeof brancheDefinition.maximum === 'number' ? brancheDefinition.maximum : Infinity;
-
-        if (brancheMaximum < Infinity) {
-            const currentUsage = state.toewijzingen.filter(toewijzing =>
-                (toewijzing.ondernemer.branches || []).includes(ondernemerBranche),
-            ).length;
-
-            console.log(`${currentUsage}/${brancheMaximum} plaatsen in branche ${ondernemerBranche} toegewezen`);
-        }
-
-        return (
-            state.toewijzingen.filter(toewijzing => (toewijzing.ondernemer.branches || []).includes(ondernemerBranche))
-                .length >= brancheMaximum
-        );
-    });
+    const brancheLimitsExceeded = getMaxedOutBranches(state, ondernemer.branches || []);
 
     if (brancheLimitsExceeded.length > 0) {
         reason = BRANCHE_FULL_REASON;
@@ -681,9 +717,9 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
         ),
     };
 
-    while (indeling.expansionIteration < indeling.expansionLimit) {
+    while (indeling.expansionIteration <= indeling.expansionLimit) {
         console.log(
-            `Uitbreidingsronde naar ${indeling.expansionIteration + 1} plaatsen (later tot maximaal ${
+            `Uitbreidingsronde naar ${indeling.expansionIteration} plaatsen (later tot maximaal ${
                 indeling.expansionLimit
             })`,
         );
@@ -713,6 +749,19 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
 
                 return toewijzing;
             })
+            .filter(toewijzing => {
+                const branches = getMaxedOutBranches(indeling, toewijzing.ondernemer.branches || []);
+
+                if (branches.length > 0) {
+                    console.log(
+                        `Ondernemer ${
+                            toewijzing.ondernemer.erkenningsNummer
+                        } kan niet uitbreiden, branche-limiet bereikt: ${branches.join(', ')}`,
+                    );
+                }
+
+                return branches.length === 0;
+            })
             .reduce(assignUitbreiding, indeling);
 
         /*
@@ -728,8 +777,6 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
             expansionIteration: indeling.expansionIteration + 1,
         };
     }
-
-    indeling = indeling.expansionQueue.reduce(assignUitbreiding, indeling);
 
     console.log(indeling.toewijzingen.map(data => ({ ...data, ondernemer: undefined })));
 

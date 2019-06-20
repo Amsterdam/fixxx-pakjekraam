@@ -121,7 +121,8 @@ export interface IMarktindeling extends IMarkt, IMarktindelingSeed, IMarktindeli
 
 export interface IBranche {
     brancheId: BrancheId;
-    maximum?: number;
+    maximumPlaatsen?: number;
+    maximumToewijzingen?: number;
     verplicht?: boolean;
 }
 

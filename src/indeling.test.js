@@ -313,7 +313,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         expect(indeling.afwijzingen.length).toBe(2);
     });
 
-    it('Een ondernemer die maximalisatie van een branche overschrijdt krijgt geen dagvergunning', () => {
+    it('Een ondernemer die maximalisatie van een branche-plaatsen overschrijdt krijgt geen dagvergunning', () => {
         /*
          * Scenario:
          * - 2 marktplaatsen
@@ -329,7 +329,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
             branches: [
                 {
                     brancheId: 'branche-x',
-                    maximum: 1,
+                    maximumPlaatsen: 1,
                 },
             ],
         }));
@@ -340,6 +340,59 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         expect(indeling.afwijzingen.length).toBe(1);
         expect(indeling.toewijzingen.some(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 42)).toBe(true);
         expect(indeling.afwijzingen.some(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 99)).toBe(true);
+    });
+
+    it('Een ondernemer die maximalisatie van een branche-ondernemers overschrijdt krijgt geen dagvergunning', () => {
+        /*
+         * Scenario:
+         * - 2 marktplaatsen
+         * - 2 ondernemers met dezelfde branchetoewijzing
+         * - de markt staat maximaal 1 ondernemer toe met deze branchetoewijzing
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats }) => ({
+            ondernemers: [
+                ondernemer({ sollicitatieNummer: 99, branches: ['branche-x'] }),
+                ondernemer({ sollicitatieNummer: 42, branches: ['branche-x'] }),
+            ],
+            marktplaatsen: [marktplaats(), marktplaats()],
+            branches: [
+                {
+                    brancheId: 'branche-x',
+                    maximumToewijzingen: 1,
+                },
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(1);
+        expect(indeling.afwijzingen.length).toBe(1);
+        expect(indeling.toewijzingen.some(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 42)).toBe(true);
+        expect(indeling.afwijzingen.some(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 99)).toBe(true);
+    });
+
+    it('Een ondernemer die maximalisatie van een branche-plaatsen overschrijdt kan niet uitbreiden', () => {
+        /*
+         * Scenario:
+         * - 3 marktplaatsen
+         * - 1 ondernemers met branchetoewijzing, wil 3 plaatsen
+         * - de markt staat maximaal 2 plaatsen toe met deze branchetoewijzing
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats }) => ({
+            ondernemers: [ondernemer({ branches: ['branche-x'], voorkeur: { aantalPlaatsen: 3 } })],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats()],
+            branches: [
+                {
+                    brancheId: 'branche-x',
+                    maximumPlaatsen: 2,
+                },
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(1);
+        expect(indeling.toewijzingen[0].plaatsen).toStrictEqual(['1', '2']);
     });
 
     it('Een ondernemer kan niet uitbreiden naar een andere marktkraamrij', () => {
