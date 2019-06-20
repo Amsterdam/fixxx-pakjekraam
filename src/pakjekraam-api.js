@@ -107,7 +107,7 @@ const groupByErkenningsNummer = (groups, voorkeur) => {
 
 const convertVoorkeur = obj => ({
     ...obj,
-    branches: obj.brancheId ? [obj.brancheId] : [],
+    branches: [obj.brancheId, obj.parentBrancheId].filter(Boolean),
     verkoopinrichting: obj.inrichting ? [obj.inrichting] : [],
 });
 
