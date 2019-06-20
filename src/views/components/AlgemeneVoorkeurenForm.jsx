@@ -188,7 +188,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
                         />
                         <input type="hidden" name="marktId" defaultValue={marktId} />
                         <input type="hidden" name="marktDate" defaultValue={marktDate} />
-                        <button className="Button Button--secondary" type="submit" name="next" defaultValue={next}>
+                        <button className="Button Button--secondary" type="submit" name="next" value={next}>
                             Opslaan
                         </button>
                         <a className="Button Button--tertiary" href={next}>
