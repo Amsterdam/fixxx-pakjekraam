@@ -60,6 +60,7 @@ export interface IMarktondernemerVoorkeur {
     anywhere?: boolean;
     inactive?: boolean;
     branches?: BrancheId[];
+    verkoopinrichting?: string[];
 }
 
 export interface IMarktondernemer extends IMarktdeelnemer {
@@ -69,7 +70,6 @@ export interface IMarktondernemer extends IMarktdeelnemer {
     plaatsen?: PlaatsId[];
     status: DeelnemerStatus;
     voorkeur?: IMarktondernemerVoorkeur;
-    verkoopinrichting?: string[];
 }
 
 export interface IMarktplaats {

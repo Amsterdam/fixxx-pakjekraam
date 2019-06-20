@@ -104,8 +104,8 @@
   { "plaatsId": "206" },
   { "plaatsId": "208" },
   { "plaatsId": "210" },
-  { "plaatsId": "212", "kraaminrichting": "eigen-materiaal" },
-  { "plaatsId": "214", "kraaminrichting": "eigen-materiaal" },
+  { "plaatsId": "212", "verkoopinrichting": ["eigen-materieel"] },
+  { "plaatsId": "214", "verkoopinrichting": ["eigen-materieel"] },
   { "plaatsId": "216" },
   { "plaatsId": "218" },
   { "plaatsId": "220" },
@@ -134,12 +134,12 @@
   { "plaatsId": "266", "tags": ["experimentele-zone"], "branches": ["experimentele-zone"] },
   {
     "plaatsId": "268",
-    "kraaminrichting": "eigen-materiaal",
+    "verkoopinrichting": ["eigen-materieel"],
     "branches": ["bakker"]
   },
   {
     "plaatsId": "270",
-    "kraaminrichting": "eigen-materiaal",
+    "verkoopinrichting": ["eigen-materieel"],
     "branches": ["bakker"]
   },
   { "plaatsId": "272" },
@@ -193,8 +193,8 @@
   { "plaatsId": "95" },
   { "plaatsId": "97" },
   { "plaatsId": "99" },
-  { "plaatsId": "101", "kraaminrichting": "eigen-materiaal" },
-  { "plaatsId": "103", "kraaminrichting": "eigen-materiaal" },
+  { "plaatsId": "101", "verkoopinrichting": ["eigen-materieel"] },
+  { "plaatsId": "103", "verkoopinrichting": ["eigen-materieel"] },
   { "plaatsId": "105" },
   { "plaatsId": "107" },
   { "plaatsId": "109" },
@@ -240,15 +240,15 @@
   { "plaatsId": "189" },
   { "plaatsId": "191" },
   { "plaatsId": "193" },
-  { "plaatsId": "195", "kraaminrichting": "eigen-materiaal" },
+  { "plaatsId": "195", "verkoopinrichting": ["eigen-materieel"] },
   {
     "plaatsId": "197",
-    "kraaminrichting": "eigen-materiaal",
+    "verkoopinrichting": ["eigen-materieel"],
     "branches": ["bakker"]
   },
   {
     "plaatsId": "199",
-    "kraaminrichting": "eigen-materiaal",
+    "verkoopinrichting": ["eigen-materieel"],
     "branches": ["bakker"]
   },
   { "plaatsId": "201", "branches": ["bak"] },
@@ -256,16 +256,16 @@
   { "plaatsId": "205" },
   {
     "plaatsId": "207",
-    "kraaminrichting": "eigen-materiaal",
+    "verkoopinrichting": ["eigen-materieel"],
     "branches": ["bak", "gebakken-vis"]
   },
   {
     "plaatsId": "209",
-    "kraaminrichting": "eigen-materiaal",
+    "verkoopinrichting": ["eigen-materieel"],
     "branches": ["bak", "gebakken-vis"]
   },
-  { "plaatsId": "211", "kraaminrichting": "eigen-materiaal" },
-  { "plaatsId": "213", "kraaminrichting": "eigen-materiaal" },
+  { "plaatsId": "211", "verkoopinrichting": ["eigen-materieel"] },
+  { "plaatsId": "213", "verkoopinrichting": ["eigen-materieel"] },
   { "plaatsId": "215" },
   { "plaatsId": "217", "branches": ["bak"] },
   { "plaatsId": "219" },
@@ -281,8 +281,8 @@
   { "plaatsId": "239" },
   { "plaatsId": "241" },
   { "plaatsId": "243" },
-  { "plaatsId": "245", "kraaminrichting": "eigen-materiaal" },
-  { "plaatsId": "247", "kraaminrichting": "eigen-materiaal" },
+  { "plaatsId": "245", "verkoopinrichting": ["eigen-materieel"] },
+  { "plaatsId": "247", "verkoopinrichting": ["eigen-materieel"] },
   { "plaatsId": "249" },
   { "plaatsId": "251" },
   { "plaatsId": "253", "tags": ["experimentele-zone"] },

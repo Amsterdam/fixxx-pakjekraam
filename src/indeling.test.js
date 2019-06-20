@@ -253,7 +253,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         expect(indeling.toewijzingen.some(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 99)).toBe(true);
     });
 
-    it('Een ondernemer met eigen materieel krijgt voorkeur', () => {
+    it.only('Een ondernemer met eigen materieel krijgt voorkeur', () => {
         /*
          * Scenario:
          * - 1 marktplaats met eigen materieel voorkeur
@@ -263,7 +263,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         const markt = marktScenario(({ ondernemer, marktplaats }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 42 }),
-                ondernemer({ sollicitatieNummer: 99, verkoopinrichting: ['eigen-materieel'] }),
+                ondernemer({ sollicitatieNummer: 99, voorkeur: { verkoopinrichting: ['eigen-materieel'] } }),
             ],
             marktplaatsen: [marktplaats({ verkoopinrichting: ['eigen-materieel'] })],
         }));

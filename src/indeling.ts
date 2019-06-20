@@ -626,7 +626,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
      */
     const verkoopinrichtingKramen = initialState.openPlaatsen.filter(plaats => count(plaats.verkoopinrichting) > 0);
     const verkoopinrichtingOndernemers = indeling.toewijzingQueue.filter(
-        ondernemer => count(ondernemer.verkoopinrichting) > 0,
+        ondernemer => count(ondernemer.voorkeur && ondernemer.voorkeur.verkoopinrichting) > 0,
     );
 
     console.log(`Verkoopinrichting-kramen: ${verkoopinrichtingKramen.length}`);
@@ -634,7 +634,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
 
     indeling = verkoopinrichtingOndernemers.reduce((indeling, ondernemer, index, ondernemers) => {
         const ondernemerVerkoopinrichtingPlaatsen = indeling.openPlaatsen.filter(plaats =>
-            intersects(plaats.verkoopinrichting, ondernemer.verkoopinrichting),
+            intersects(plaats.verkoopinrichting, ondernemer.voorkeur ? ondernemer.voorkeur.verkoopinrichting : []),
         );
         console.log(
             `Bijzondere verkoopinrichting-ondernemer ${ondernemer.erkenningsNummer} kan kiezen uit ${
