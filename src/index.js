@@ -506,12 +506,24 @@ app.post('/afmelden/', ensureLoggedIn(), (req, res) => {
     }));
 
     // TODO: Redirect with success code
-    models.rsvp
-        .bulkCreate(responses)
-        .then(
-            () => res.status(HTTP_CREATED_SUCCESS).redirect(next),
-            error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
-        );
+    Promise.all(
+        responses.map(response => {
+            const { marktId, marktDate } = response;
+
+            return upsert(
+                models.rsvp,
+                {
+                    erkenningsNummer,
+                    marktId,
+                    marktDate,
+                },
+                response,
+            );
+        }),
+    ).then(
+        () => res.status(HTTP_CREATED_SUCCESS).redirect(next),
+        error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
+    );
 });
 
 const aanmeldPage = (res, token, erkenningsNummer, marktId, query) => {
