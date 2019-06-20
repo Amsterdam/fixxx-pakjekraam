@@ -59,6 +59,7 @@ export interface IMarktondernemerVoorkeur {
     kraaminrichting?: KraamInrichting;
     anywhere?: boolean;
     inactive?: boolean;
+    branches?: BrancheId[];
 }
 
 export interface IMarktondernemer extends IMarktdeelnemer {
@@ -67,7 +68,6 @@ export interface IMarktondernemer extends IMarktdeelnemer {
     sollicitatieNummer: number;
     plaatsen?: PlaatsId[];
     status: DeelnemerStatus;
-    branches?: BrancheId[];
     voorkeur?: IMarktondernemerVoorkeur;
     verkoopinrichting?: string[];
 }

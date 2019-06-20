@@ -241,7 +241,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         const markt = marktScenario(({ ondernemer, marktplaats }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 42 }),
-                ondernemer({ sollicitatieNummer: 99, branches: ['branche-x'] }),
+                ondernemer({ sollicitatieNummer: 99, voorkeur: { branches: ['branche-x'] } }),
             ],
             marktplaatsen: [marktplaats({ branches: ['branche-x'] })],
         }));
@@ -322,7 +322,10 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          */
 
         const markt = marktScenario(({ ondernemer, marktplaats }) => ({
-            ondernemers: [ondernemer({ branches: ['standwerker'] }), ondernemer({ branches: ['standwerker'] })],
+            ondernemers: [
+                ondernemer({ voorkeur: { branches: ['standwerker'] } }),
+                ondernemer({ voorkeur: { branches: ['standwerker'] } }),
+            ],
             marktplaatsen: [marktplaats(), marktplaats({ branches: ['standwerker'] })],
             branches: [{ brancheId: 'standwerker', verplicht: true }],
         }));
@@ -368,8 +371,8 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          */
         const markt = marktScenario(({ ondernemer, marktplaats }) => ({
             ondernemers: [
-                ondernemer({ sollicitatieNummer: 99, branches: ['branche-x'] }),
-                ondernemer({ sollicitatieNummer: 42, branches: ['branche-x'] }),
+                ondernemer({ sollicitatieNummer: 99, voorkeur: { branches: ['branche-x'] } }),
+                ondernemer({ sollicitatieNummer: 42, voorkeur: { branches: ['branche-x'] } }),
             ],
             marktplaatsen: [marktplaats(), marktplaats()],
             branches: [
@@ -397,8 +400,8 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          */
         const markt = marktScenario(({ ondernemer, marktplaats }) => ({
             ondernemers: [
-                ondernemer({ sollicitatieNummer: 99, branches: ['branche-x'] }),
-                ondernemer({ sollicitatieNummer: 42, branches: ['branche-x'] }),
+                ondernemer({ sollicitatieNummer: 99, voorkeur: { branches: ['branche-x'] } }),
+                ondernemer({ sollicitatieNummer: 42, voorkeur: { branches: ['branche-x'] } }),
             ],
             marktplaatsen: [marktplaats(), marktplaats()],
             branches: [
@@ -425,7 +428,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          * - de markt staat maximaal 2 plaatsen toe met deze branchetoewijzing
          */
         const markt = marktScenario(({ ondernemer, marktplaats }) => ({
-            ondernemers: [ondernemer({ branches: ['branche-x'], voorkeur: { aantalPlaatsen: 3 } })],
+            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 3, branches: ['branche-x'] } })],
             marktplaatsen: [marktplaats(), marktplaats(), marktplaats()],
             branches: [
                 {
@@ -919,7 +922,7 @@ describe('Automatisch toewijzen marktplaatsen: edge cases', () => {
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
-                ondernemer({ branches: ['branche-x'], voorkeur: { aantalPlaatsen: 2 } }),
+                ondernemer({ voorkeur: { aantalPlaatsen: 2, branches: ['branche-x'] } }),
             ],
             marktplaatsen: [
                 marktplaats(),
