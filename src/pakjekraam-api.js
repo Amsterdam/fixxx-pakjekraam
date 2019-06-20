@@ -206,7 +206,7 @@ const getIndelingslijstInput = (token, marktId, date) => {
         const [
             marktProperties,
             ondernemers,
-            locaties,
+            marktplaatsen,
             aanmeldingen,
             voorkeuren,
             branches,
@@ -216,15 +216,8 @@ const getIndelingslijstInput = (token, marktId, date) => {
             aLijst,
         ] = args;
 
-        const marktplaatsen = locaties.map(locatie => ({
-            plaatsId: locatie.plaatsId,
-            branches: locatie.branche,
-            inactive: locatie.inactive,
-        }));
-
         return {
             ...marktProperties,
-            locaties,
             aanmeldingen,
             voorkeuren,
             branches,

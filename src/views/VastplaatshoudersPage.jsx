@@ -21,7 +21,7 @@ class VastplaatshoudersPage extends React.Component {
             aanmeldingen,
             branches,
             geografie,
-            locaties,
+            marktplaatsen,
             ondernemers,
             paginas,
             voorkeuren,
@@ -30,7 +30,7 @@ class VastplaatshoudersPage extends React.Component {
 
         const obstakels = obstakelsToLocatieKeyValue(geografie.obstakels);
         const vphl = ondernemersToLocatieKeyValue(ondernemers);
-        const locatiesObject = arrayToObject(locaties, 'plaatsId');
+        const locatiesObject = arrayToObject(marktplaatsen, 'plaatsId');
         const aanmeldingenOrdered = aanmeldingen.sort((a, b) => b.updatedAt - a.updatedAt);
 
         return (

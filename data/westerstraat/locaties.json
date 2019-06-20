@@ -792,7 +792,7 @@
   },
   {
     "plaatsId": "250",
-    "branche": ["promo"],
+    "branches": ["promo"],
     "properties": ["boom"]
   },
   {
