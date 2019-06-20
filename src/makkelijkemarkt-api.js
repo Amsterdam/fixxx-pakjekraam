@@ -1,4 +1,5 @@
 const axios = require('axios');
+const AxiosLogger = require('axios-logger');
 const { setupCache } = require('axios-cache-adapter');
 const { addDays, MONDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY } = require('./util.js');
 
@@ -21,6 +22,8 @@ const init = config => {
         },
         adapter: process.env.NODE_ENV === 'development' ? cache.adapter : undefined,
     });
+
+    makkelijkeMarktAPI.interceptors.request.use(AxiosLogger.requestLogger);
 };
 
 const trace = arg => {
