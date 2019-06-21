@@ -1,3 +1,4 @@
+const PgPool = require('pg-pool');
 const connectPg = require('connect-pg-simple');
 const express = require('express');
 const reactViews = require('express-react-views');
@@ -7,6 +8,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const models = require('./model/index.js');
 const morgan = require('morgan');
+const url = require('url');
 const { isErkenningsnummer, slugifyMarkt } = require('./domain-knowledge.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
@@ -37,6 +39,21 @@ const HTTP_DEFAULT_PORT = 8080;
 const port = process.env.PORT || HTTP_DEFAULT_PORT;
 const app = express();
 
+const parseDatabaseURL = str => {
+    const params = url.parse(str);
+    const auth = params.auth.split(':');
+
+    return {
+        user: auth[0],
+        password: auth[1],
+        host: params.hostname,
+        port: params.port,
+        database: params.pathname.split('/')[1],
+    };
+};
+
+const pgPool = new PgPool(parseDatabaseURL(process.env.DATABASE_URL));
+
 const errorPage = (res, err) => {
     res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
 };
@@ -61,7 +78,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
     session({
         store: new (connectPg(session))({
-            conString: process.env.DATABASE_URL,
+            pool: pgPool,
         }),
         secret: process.env.APP_SECRET,
         resave: false,
