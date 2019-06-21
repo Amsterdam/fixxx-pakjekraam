@@ -23,7 +23,9 @@ const init = config => {
         adapter: process.env.NODE_ENV === 'development' ? cache.adapter : undefined,
     });
 
-    makkelijkeMarktAPI.interceptors.request.use(AxiosLogger.requestLogger);
+    if (process.env.NODE_ENV === 'development') {
+        makkelijkeMarktAPI.interceptors.request.use(AxiosLogger.requestLogger);
+    }
 };
 
 const trace = arg => {
