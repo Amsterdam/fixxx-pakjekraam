@@ -245,7 +245,16 @@ const getIndelingslijstInput = (token, marktId, date) => {
     });
 };
 
-const getIndelingslijst = (token, marktId, date) => getIndelingslijstInput(token, marktId, date).then(calcToewijzingen);
+const getIndelingslijst = (token, marktId, date) =>
+    getIndelingslijstInput(token, marktId, date).then(data => {
+        const logMessage = `Marktindeling berekenen: ${data.markt.naam}`;
+
+        console.time(logMessage);
+        const indeling = calcToewijzingen(data);
+        console.timeEnd(logMessage);
+
+        return indeling;
+    });
 
 const getSollicitantenlijstInput = (token, marktId, date) =>
     Promise.all([

@@ -42,6 +42,12 @@ const sum = (a: number, b: number): number => a + b;
  */
 const unique = <T>(a: T[], b: T): T[] => (a.includes(b) ? a : [...a, b]);
 
+const log = (...arg: any) => {
+    if (process.env.NODE_ENV !== 'production') {
+        console.log.apply(console, arg);
+    }
+};
+
 const count = <T>(arrayMaybe: T | T[]): number =>
     arrayMaybe ? (Array.isArray(arrayMaybe) ? arrayMaybe.length : 1) : 0;
 
@@ -76,7 +82,7 @@ const createToewijzing = (plaats: IMarktplaats, ondernemer: IMarktondernemer): I
     erkenningsNummer: ondernemer.erkenningsNummer,
 });
 
-const logOpenPlaatsen = (indeling: IMarktindeling) => console.log(`Nog ${indeling.openPlaatsen.length} vrije plaatsen`);
+const logOpenPlaatsen = (indeling: IMarktindeling) => log(`Nog ${indeling.openPlaatsen.length} vrije plaatsen`);
 
 const getAdjacentPlaatsen = (markt: IMarktindeling, plaatsId: PlaatsId): IMarktplaats[] =>
     markt.rows
@@ -114,7 +120,7 @@ const findOptimalSpot = (
 ) => {
     let mogelijkePlaatsen = openPlaatsen;
 
-    // console.debug(`Vind een plaats voor ${ondernemer.id}`);
+    // log(`Vind een plaats voor ${ondernemer.id}`);
 
     const ondernemerBranches = getOndernemerBranches(markt, ondernemer);
 
@@ -128,11 +134,11 @@ const findOptimalSpot = (
                 mogelijkePlaatsen = mogelijkePlaatsen.filter(
                     plaats => plaats.branches && plaats.branches.find(brancheId => brancheId === branche.brancheId),
                 );
-                console.debug(
+                log(
                     `Filter op branche: ${branche.brancheId} (${mogelijkePlaatsen.length}/${openPlaatsen.length} over)`,
                 );
             } else {
-                console.debug(`Sorteer op branche: ${branche.brancheId}`);
+                log(`Sorteer op branche: ${branche.brancheId}`);
                 /*
                  * Een groenteboer wordt bij voorkeur geplaatst op een plaats in de branch AGF.
                  */
@@ -188,7 +194,7 @@ const removeToewijzing = (state: IMarktindeling, toewijzing: IToewijzing) => {
     const { openPlaatsen, toewijzingen } = state;
 
     if (toewijzingen.includes(toewijzing)) {
-        console.log(`Verwijder toewijzing van ${toewijzing.erkenningsNummer} aan ${toewijzing.plaatsen}`);
+        log(`Verwijder toewijzing van ${toewijzing.erkenningsNummer} aan ${toewijzing.plaatsen}`);
 
         const plaatsen = state.marktplaatsen.filter(plaats => toewijzing.plaatsen.includes(plaats.plaatsId));
 
@@ -231,7 +237,7 @@ const assignPlaats = (
     ondernemer: IMarktondernemer,
     conflictResolution: 'merge' | 'reassign' | 'keep-both' = 'keep-both',
 ) => {
-    console.debug(`Plaats toegewezen aan ${ondernemer.erkenningsNummer}: ${toewijzing.plaatsen}`);
+    log(`Plaats toegewezen aan ${ondernemer.erkenningsNummer}: ${toewijzing.plaatsen}`);
     const existingToewijzing = findToewijzing(state, ondernemer);
 
     let newToewijzing = {
@@ -243,7 +249,7 @@ const assignPlaats = (
     };
 
     if (existingToewijzing) {
-        console.log(`Ondernemer is reeds toegwezen aan plaats(en): ${existingToewijzing.plaatsen.join(', ')}`);
+        log(`Ondernemer is reeds toegwezen aan plaats(en): ${existingToewijzing.plaatsen.join(', ')}`);
 
         if (conflictResolution === 'merge') {
             newToewijzing = mergeToewijzing(existingToewijzing, newToewijzing);
@@ -258,9 +264,7 @@ const assignPlaats = (
 };
 
 const rejectOndernemer = (state: IMarktindeling, ondernemer: IMarktondernemer, reason: IAfwijzingReason) => {
-    console.debug(
-        `Aanmelding afgewezen voor ${ondernemer.erkenningsNummer}: ${reason.message} ${state.afwijzingen.length}`,
-    );
+    log(`Aanmelding afgewezen voor ${ondernemer.erkenningsNummer}: ${reason.message} ${state.afwijzingen.length}`);
 
     return {
         ...state,
@@ -306,7 +310,7 @@ const assignVastePlaats = (state: IMarktindeling, ondernemer: IMarktondernemer):
             ),
         )
         .map(plaats => {
-            console.log(`Wijs ondernemer ${ondernemer.erkenningsNummer} toe aan vaste plaats ${plaats.plaatsId}`);
+            log(`Wijs ondernemer ${ondernemer.erkenningsNummer} toe aan vaste plaats ${plaats.plaatsId}`);
 
             return plaats;
         })
@@ -345,7 +349,7 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
         const adjacent = getAdjacentPlaatsenForMultiple(indeling, plaatsen);
         const openAdjacent = intersection(adjacent, indeling.openPlaatsen);
 
-        console.log(
+        log(
             `Er zijn ${openAdjacent.length} open van de ${adjacent.length} aanliggende plaatsen voor ${plaatsen.join(
                 ', ',
             )}: ${openAdjacent.map(({ plaatsId }) => plaatsId).join(', ')}`,
@@ -370,7 +374,7 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
                 plaatsen: [...toewijzing.plaatsen, uitbreidingPlaats.plaatsId],
             };
 
-            console.log(
+            log(
                 `Ondernemer ${ondernemer.erkenningsNummer} kan uitbreiden naar ${uitbreidingPlaats.plaatsId}`,
                 toewijzing,
                 uitbreiding,
@@ -386,7 +390,7 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
             }
             // TODO: Merge `toewijzing` and `uitbreiding` objects, add to `indeling`
         } else {
-            console.log(
+            log(
                 `Geen uitbreiding van ${currentPlaatsen} naar ${currentPlaatsen +
                     1} plaatsen voor ondernemer ${erkenningsNummer}`,
             );
@@ -433,7 +437,7 @@ const getMaxedOutBranches = (state: IMarktindeling, branches: string[]) =>
         const { branche, toewijzingen, plaatsen } = getBrancheStats(state, brancheId);
 
         if (toewijzingen.maximum < Infinity) {
-            console.log(
+            log(
                 `${toewijzingen.current}/${toewijzingen.maximum} ondernemers in branche ${
                     branche.brancheId
                 } toegewezen`,
@@ -441,9 +445,7 @@ const getMaxedOutBranches = (state: IMarktindeling, branches: string[]) =>
         }
 
         if (plaatsen.maximum < Infinity) {
-            console.log(
-                `${plaatsen.current}/${plaatsen.maximum} marktplaatsen in branche ${branche.brancheId} toegewezen`,
-            );
+            log(`${plaatsen.current}/${plaatsen.maximum} marktplaatsen in branche ${branche.brancheId} toegewezen`);
         }
 
         return toewijzingen.current >= toewijzingen.maximum || plaatsen.current >= plaatsen.maximum;
@@ -460,11 +462,7 @@ const findPlaats = (
     const mogelijkePlaatsen = plaatsen || state.openPlaatsen;
 
     const branches = getOndernemerBranches(state, ondernemer);
-    console.log(
-        `Branches van ${ondernemer.erkenningsNummer}: `,
-        branches,
-        ondernemer.voorkeur && ondernemer.voorkeur.branches,
-    );
+    log(`Branches van ${ondernemer.erkenningsNummer}: `, branches, ondernemer.voorkeur && ondernemer.voorkeur.branches);
     // const requiredBranches = branches.filter(branche => branche.verplicht).map(branche => branche.brancheId);
 
     // if (requiredBranches) {
@@ -490,7 +488,7 @@ const findPlaats = (
 
     logOpenPlaatsen(state);
 
-    console.log(`Ondernemer ${ondernemer.erkenningsNummer} heeft ${ondernemerVoorkeuren.length} voorkeuren genoemd`);
+    log(`Ondernemer ${ondernemer.erkenningsNummer} heeft ${ondernemerVoorkeuren.length} voorkeuren genoemd`);
 
     let plaats;
 
@@ -501,7 +499,7 @@ const findPlaats = (
     if (plaats) {
         return assignPlaats(state, createToewijzing(plaats, ondernemer), ondernemer, 'reassign');
     } else {
-        console.debug(`Geen plaats gevonden voor ${ondernemer.erkenningsNummer}`);
+        log(`Geen plaats gevonden voor ${ondernemer.erkenningsNummer}`);
         if (handleRejection === 'reject') {
             return rejectOndernemer(state, ondernemer, reason || { message: 'Geen plaats gevonden' });
         } else {
@@ -516,7 +514,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
 
     let aanwezigen = ondernemers.filter(ondernemer => isAanwezig(aanwezigheid, ondernemer));
 
-    console.debug(`${aanwezigheid.filter(rsvp => !rsvp.attending).length} Afmeldingen`);
+    log(`${aanwezigheid.filter(rsvp => !rsvp.attending).length} Afmeldingen`);
 
     const priorities = ['vpl', 'vkk', 'soll'];
     const LOWEST_STATUS_PRIORITY = priorities.length;
@@ -543,7 +541,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
 
     aanwezigen = [...aanwezigen].sort(ondernemerSort);
 
-    console.debug(
+    log(
         `Aanwezigen: ${aanwezigen.length}/${ondernemers.length} (${(
             (aanwezigen.length / ondernemers.length) *
             100
@@ -585,7 +583,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
 
     const vastePlaatsenQueue = initialState.toewijzingQueue.filter(heeftVastePlaatsen);
 
-    console.log(`Vasteplaatshouders eerst: ${vastePlaatsenQueue.length}`);
+    log(`Vasteplaatshouders eerst: ${vastePlaatsenQueue.length}`);
 
     /*
      * stap 1:
@@ -603,14 +601,14 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
         ondernemer => count(ondernemer.voorkeur && ondernemer.voorkeur.branches) > 0,
     );
 
-    console.log(`Branche-kramen: ${brancheKramen.length}`);
-    console.log(`Branche-ondernemers: ${brancheOndernemers.length}`);
+    log(`Branche-kramen: ${brancheKramen.length}`);
+    log(`Branche-ondernemers: ${brancheOndernemers.length}`);
 
     indeling = brancheOndernemers.reduce((indeling, ondernemer, index, ondernemers) => {
         const ondernemerBranchePlaatsen = indeling.openPlaatsen.filter(plaats =>
             intersects(plaats.branches, ondernemer.voorkeur && ondernemer.voorkeur.branches),
         );
-        console.log(
+        log(
             `Branche-ondernemer ${ondernemer.erkenningsNummer} kan kiezen uit ${
                 ondernemerBranchePlaatsen.length
             } plaatsen`,
@@ -629,14 +627,14 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
         ondernemer => count(ondernemer.voorkeur && ondernemer.voorkeur.verkoopinrichting) > 0,
     );
 
-    console.log(`Verkoopinrichting-kramen: ${verkoopinrichtingKramen.length}`);
-    console.log(`Verkoopinrichting-ondernemers: ${verkoopinrichtingOndernemers.length}`);
+    log(`Verkoopinrichting-kramen: ${verkoopinrichtingKramen.length}`);
+    log(`Verkoopinrichting-ondernemers: ${verkoopinrichtingOndernemers.length}`);
 
     indeling = verkoopinrichtingOndernemers.reduce((indeling, ondernemer, index, ondernemers) => {
         const ondernemerVerkoopinrichtingPlaatsen = indeling.openPlaatsen.filter(plaats =>
             intersects(plaats.verkoopinrichting, ondernemer.voorkeur ? ondernemer.voorkeur.verkoopinrichting : []),
         );
-        console.log(
+        log(
             `Bijzondere verkoopinrichting-ondernemer ${ondernemer.erkenningsNummer} kan kiezen uit ${
                 ondernemerVerkoopinrichtingPlaatsen.length
             } plaatsen`,
@@ -695,7 +693,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
                     openPlaatsen,
                 } = obj;
 
-                console.log(
+                log(
                     `Voor ondernemer ${ondernemer.erkenningsNummer} zijn er nog ${
                         betereVoorkeuren.length
                     } plaatsen die meer gewenst zijn (van de in totaal ${
@@ -714,7 +712,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
     const MOVE_LIMIT = 100;
 
     for (; moveQueue.length > 0 && moveIteration < MOVE_LIMIT; moveIteration++) {
-        console.log(`Move-queue #${moveIteration}: ${moveQueue.length}`);
+        log(`Move-queue #${moveIteration}: ${moveQueue.length}`);
 
         const previousIndeling = indeling;
 
@@ -742,7 +740,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
     };
 
     while (indeling.expansionIteration <= indeling.expansionLimit) {
-        console.log(
+        log(
             `Uitbreidingsronde naar ${indeling.expansionIteration} plaatsen (later tot maximaal ${
                 indeling.expansionLimit
             })`,
@@ -764,7 +762,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
                 const { aantalPlaatsen } = ondernemer.voorkeur;
                 const currentPlaatsen = plaatsen.length;
 
-                console.log(
+                log(
                     `Ondernemer ${
                         ondernemer.erkenningsNummer
                     } wil ${aantalPlaatsen} plaatsen, en heeft nu ${currentPlaatsen} plaats(en)`,
@@ -780,7 +778,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
                 );
 
                 if (branches.length > 0) {
-                    console.log(
+                    log(
                         `Ondernemer ${
                             toewijzing.ondernemer.erkenningsNummer
                         } kan niet uitbreiden, branche-limiet bereikt: ${branches.join(', ')}`,
@@ -805,7 +803,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
         };
     }
 
-    console.log(indeling.toewijzingen.map(data => ({ ...data, ondernemer: undefined })));
+    log(indeling.toewijzingen.map(data => ({ ...data, ondernemer: undefined })));
 
     return indeling;
 };
