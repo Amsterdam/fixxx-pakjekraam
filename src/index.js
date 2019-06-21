@@ -53,15 +53,6 @@ const upsert = (model, where, data) =>
         })
         .spread((inst, created) => (created ? inst : inst.update(data)));
 
-// Ensure the database tables have been created, particularly the session storage.
-models.sequelize.sync().then(
-    () => console.log('Database tables successfully initialized'),
-    err => {
-        console.log(err);
-        process.exit(1);
-    },
-);
-
 app.use(morgan(morgan.compile(':date[iso] :method :status :url :response-time ms')));
 
 // Required for Passport login form
