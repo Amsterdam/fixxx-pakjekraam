@@ -47,13 +47,30 @@ const formatMonth = date => monthName[new Date(date).getMonth()];
 
 const paginate = (arr, count) =>
     arr.reduce((t, a, i) => {
-        if (i % count === 0) {
-            t.push([]);
-        }
+        !(i % count) && t.push([]);
         t[t.length - 1].push(a);
 
         return t;
     }, []);
+
+const splitByValueArray = (arr, valueArr) => {
+    return arr.reduce((total, arrItem) => {
+        const indexArr = valueArr
+            .map(value => arrItem.indexOf(value))
+            .filter(i => i !== -1)
+            .sort((a, b) => a - b);
+        if (indexArr.length > 0) {
+            indexArr.map((indexItem, i, orgArr) => {
+                total.push(arrItem.slice(orgArr[i - 1] + 1 || 0, indexItem));
+            });
+            total.push(arrItem.slice(indexArr[indexArr.length - 1] + 1, arrItem.length));
+        } else {
+            total.push(arrItem);
+        }
+
+        return total;
+    }, []);
+};
 
 const formatDate = date =>
     new Date(date).getDate() +
@@ -122,6 +139,7 @@ const stringSort = (a, b) => (a > b ? 1 : a === b ? 0 : -1);
 const flatten = (a = [], b = []) => [...a, ...b];
 
 module.exports = {
+    splitByValueArray,
     paginate,
     today,
     addDays,
