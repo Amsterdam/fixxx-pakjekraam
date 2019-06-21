@@ -178,11 +178,13 @@ const convertOndernemer = data => {
     };
 };
 
-const getIndelingslijstInput = (token, marktId, date) => {
+const getIndelingslijstInput = (token, marktId, marktDate) => {
     const ondernemersPromise = getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
         ondernemers.filter(ondernemer => !ondernemer.doorgehaald).map(convertOndernemer),
     );
-    const voorkeurenPromise = getIndelingVoorkeuren(marktId, date).then(voorkeuren => voorkeuren.map(convertVoorkeur));
+    const voorkeurenPromise = getIndelingVoorkeuren(marktId, marktDate).then(voorkeuren =>
+        voorkeuren.map(convertVoorkeur),
+    );
 
     // Populate the `ondernemer.voorkeur` field
     const enrichedOndernemers = Promise.all([ondernemersPromise, voorkeurenPromise]).then(([ondernemers, voorkeuren]) =>
@@ -196,13 +198,13 @@ const getIndelingslijstInput = (token, marktId, date) => {
         getMarktProperties(marktId),
         enrichedOndernemers,
         getMarktplaatsen(marktId),
-        getAanmeldingen(marktId, date),
+        getAanmeldingen(marktId, marktDate),
         getPlaatsvoorkeuren(marktId),
         getBranches(marktId),
         getMarktPaginas(marktId),
         getMarktGeografie(marktId),
         getMarkt(token, marktId),
-        getALijst(token, marktId, date),
+        getALijst(token, marktId, marktDate),
     ]).then(args => {
         const [
             marktProperties,
@@ -218,6 +220,8 @@ const getIndelingslijstInput = (token, marktId, date) => {
         ] = args;
 
         return {
+            marktId,
+            marktDate,
             ...marktProperties,
             aanmeldingen,
             voorkeuren,

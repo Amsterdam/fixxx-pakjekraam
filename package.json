@@ -16,6 +16,7 @@
     "start": "ts-node src/index.js",
     "predev": "npm run build && npm run deploy",
     "dev": "ts-node-dev src/index.js",
+    "allocation": "ts-node src/allocation.js",
     "tdd": "jest --watch --verbose --rootDir ./src/",
     "test": "jest --verbose --silent --rootDir ./src/",
     "lint": "concurrently 'npm:lint:*'",

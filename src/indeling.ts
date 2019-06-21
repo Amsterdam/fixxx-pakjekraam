@@ -509,7 +509,7 @@ const findPlaats = (
 };
 
 const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling => {
-    const { marktplaatsen, ondernemers, voorkeuren } = markt;
+    const { marktplaatsen, ondernemers, voorkeuren, marktId } = markt;
     const { aanwezigheid, aLijst } = markt;
 
     let aanwezigen = ondernemers.filter(ondernemer => isAanwezig(aanwezigheid, ondernemer));
@@ -558,7 +558,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
             (plaatsen || []).map(
                 (plaatsId: string): IPlaatsvoorkeur => ({
                     erkenningsNummer,
-                    marktId: markt.id,
+                    marktId,
                     plaatsId,
                     priority: VOORKEUR_MINIMUM_PRIORITY,
                 }),

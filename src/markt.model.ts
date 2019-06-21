@@ -27,7 +27,8 @@ export enum DeelnemerStatus {
 }
 
 export interface IMarkt {
-    id: number;
+    marktId: number;
+    marktDate: string;
     naam: string;
     branches: IBranche[];
     rows: IMarktplaats[][];
