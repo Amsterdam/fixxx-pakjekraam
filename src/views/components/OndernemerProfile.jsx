@@ -28,11 +28,7 @@ class OndernemerProfile extends React.Component {
                         .map(sollicitatie => (
                             <li key={sollicitatie.markt.id}>
                                 <span>
-                                    <a
-                                        href={`/markt/${sollicitatie.markt.id}/${today()}/${
-                                            sollicitatie.status === 'vpl' ? 'vasteplaatshouders' : 'sollicitanten'
-                                        }/#soll-${sollicitatie.sollicitatieNummer}`}
-                                    >
+                                    <a href={`/markt/${sollicitatie.markt.id}/`}>
                                         {sollicitatie.markt.naam} {sollicitatie.status}
                                     </a>{' '}
                                     {sollicitatie.sollicitatieNummer}
