@@ -72,6 +72,11 @@ const upsert = (model, where, data) =>
 
 app.use(morgan(morgan.compile(':date[iso] :method :status :url :response-time ms')));
 
+// This health check page is required for Docker deployments
+app.get('/status/health', function(req, res) {
+    res.end('OK!');
+});
+
 // Required for Passport login form
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -89,11 +94,6 @@ app.use(
 // Initialize Passport and restore authentication state the session.
 app.use(passport.initialize());
 app.use(passport.session());
-
-// This health check page is required for Docker deployments
-app.get('/status/health', function(req, res) {
-    res.end('OK!');
-});
 
 app.use((req, res, next) => {
     if (req.user && req.user.expiry && Date.now() > Date.parse(req.user.expiry)) {
@@ -628,7 +628,6 @@ const algemeneVoorkeurenPage = (req, res, token, erkenningsNummer, marktId, mark
         getAllBranches(),
     ]).then(
         ([ondernemer, markt, voorkeur, branches]) => {
-            console.log(voorkeur);
             res.render('AlgemeneVoorkeurenPage', { ondernemer, markt, marktId, marktDate, voorkeur, branches, next });
         },
         err => errorPage(res, err),
