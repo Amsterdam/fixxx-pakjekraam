@@ -24,6 +24,7 @@ class Page extends React.Component {
                         <Alert key={message.code} message={message.message} type={message.code} />
                     ))}
                     {this.props.children}
+                    <script crossOrigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=Array.from" />
                     <script src="/js/script.js" />
                 </body>
             </html>

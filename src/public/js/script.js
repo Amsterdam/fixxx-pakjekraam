@@ -64,6 +64,122 @@
   };
 
   var decorators = {
+      'plaatsvoorkeur-prototype': function(){
+          var self = this,
+              plaatsSets = this.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
+              form = _closest(this, 'form'),
+              marktId = this.dataset.marktId,
+              usedPlaatsen = this.dataset.usedPlaatsen,
+              count = this.dataset.plaatsvoorkeurCount,
+              plaatsenApi = '/api/0.0.1/markt/'+marktId+'/plaats-count/'+count+'/?' + usedPlaatsen,
+              timeout,
+              _getSelects = function(){
+                return self.querySelectorAll('select');
+              }
+              _updateFirstSelect = function(data){
+                var value = _getSelects()[0].value, i, j, selects = _getSelects();
+                while (selects[0].firstChild) {
+                    selects[0].removeChild(selects[0].firstChild);
+                }
+                for (i = 0; i < data.length; i++){
+                    for (j = 0; j < data[i].length; j++){
+                        selects[0].add(_createOption(data[i][j].plaatsId));
+                    }
+                }
+              }
+              _init = function(){
+                  var i, selects = _getSelects();
+                  helpers.simpleAjax(plaatsenApi ,function(response){
+                        if (response.status >= 200 && response.status < 400) {
+                            _updateFirstSelect(JSON.parse(response.response));
+                        }
+                  })
+                  for(i = 0; i < selects.length; i++){
+                      _setSelectDisabledState(selects[i], i !== 0);
+                  }
+                  form.addEventListener('change', function(e){
+                    _getData(e.target);
+                  });
+              },
+              _nextSelect = function(select) {
+                var selectArray = Array.prototype.slice.call(_getSelects()),
+                    next = selectArray[selectArray.indexOf(select) + 1];
+                    if (next)
+                        return next;
+                    return;
+
+              },
+              _getSelectsData = function(select){
+                var selects = _getSelects(),
+                    a = [], i;
+                for(i = 0; i < selects.length; i++){
+                    if (selects[i].value){
+                        a.push(selects[i].value);
+                    }
+                    if(selects[i] === select){
+                        i = select.length+1;
+                    }
+                }
+                return a;
+              },
+              _getEnableSave = function(){
+                var selects = _getSelects(), i;
+                for(i = 0; i < selects.length; i++){
+                    selects[i].setAttribute('name', selects[i].dataset.name);
+                    selects[i].setAttribute('id', selects[i].dataset.id);
+                }
+              },
+              _getData = function(select){
+                    var next = _nextSelect(select),
+                        plaatsIds = _getSelectsData(select).join('-');
+                    // console.log(_getSelectsData(select));
+                  helpers.simpleAjax('/api/0.0.1/markt/' + marktId + '/plaats/'+plaatsIds ,function(response){
+                        if (response.status >= 200 && response.status < 400) {
+                            _updateSelects(select, JSON.parse(response.response));
+                            if (next){
+                                _getData(next);
+                            }else{
+                                _getEnableSave(select);
+                            }
+                        }
+                  })
+              },
+              _setSelectDisabledState = function(select, disabled){
+                  disabled ? select.setAttribute('disabled', 'disabled') : select.removeAttribute('disabled');
+                  _closest(select, '.Select__wrapper').classList[disabled ? 'add' : 'remove']('Select__wrapper--disabled');
+              },
+              _createOption = function(value){
+                var option = document.createElement('option');
+                option.setAttribute('value', value);
+                option.text = value;
+                return option;
+              },
+              _updateSelects = function(elem, data) {
+                var selects = _getSelects(),
+                    disable = false,
+                    nextSelect,
+                    i, j;
+
+                for (i = 0; i < selects.length; i++){
+                    if (selects[i+1] && elem === selects[i]){
+                        nextSelect = selects[i+1];
+                        i++;
+                        disable = true;
+                    }
+                    _setSelectDisabledState(selects[i], disable);
+                }
+                if(nextSelect){
+                    _setSelectDisabledState(nextSelect, false);
+                    while (nextSelect.firstChild) {
+                        nextSelect.removeChild(nextSelect.firstChild);
+                    }
+                    for (j = 0; j < data.length; j++){
+                        nextSelect.add(_createOption(data[j]));
+                    }
+                }
+              };
+          _init();
+      },
       'voorkeur-form': function(){
           var plaatsSets = this.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
               timeout,

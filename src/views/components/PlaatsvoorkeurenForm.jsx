@@ -61,7 +61,7 @@ class PlaatsvoorkeurenForm extends React.Component {
             )
             .reduce(flatten, []);
 
-        const allEntries = [...marktEntries, ...voorkeurEntries].map((entry, index) => ({
+        const allEntries = [...voorkeurEntries].map((entry, index) => ({
             ...entry,
             index,
         }));
@@ -72,7 +72,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                 method="POST"
                 action="/voorkeuren/"
                 encType="application/x-www-form-urlencoded"
-                data-decorator="voorkeur-form"
+                // data-decorator="voorkeur-form"
             >
                 <h1>Voorkeuren voor {formatOndernemerName(ondernemer)}</h1>
                 <p>
@@ -86,6 +86,8 @@ class PlaatsvoorkeurenForm extends React.Component {
                 </p>
                 {markten.map(markt => {
                     const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id);
+                    const newPlaatsvoorkeurCount =
+                        sollicitatie.vastePlaatsen.length > 0 ? sollicitatie.vastePlaatsen.length : 1;
                     const entriesFiltered = allEntries.filter(entry => entry.marktId === markt.id);
                     // fixme: vastePlaatsen related new item count
                     const entriesSplit = entriesFiltered
@@ -169,26 +171,42 @@ class PlaatsvoorkeurenForm extends React.Component {
                                                 <a href="#" data-handler="remove-voorkeur">
                                                     verwijder
                                                 </a>
-                                                {/* <br/>*/}
-                                                {/* <a*/}
-                                                {/* href="#"*/}
-                                                {/* data-handler="move-voorkeur"*/}
-                                                {/* data-direction="up"*/}
-                                                {/* >*/}
-                                                {/* naar boven*/}
-                                                {/* </a>*/}
-                                                {/* <br/>*/}
-                                                {/* <a*/}
-                                                {/* href="#"*/}
-                                                {/* data-handler="move-voorkeur"*/}
-                                                {/* data-direction="down"*/}
-                                                {/* >*/}
-                                                {/* naar beneden*/}
-                                                {/* </a>*/}
                                             </div>
                                         ) : null}
                                     </div>
                                 ))}
+                            </div>
+                            <div
+                                className="PlaatsvoorkeurenForm__prototype well"
+                                data-plaatsvoorkeur-count={newPlaatsvoorkeurCount}
+                                data-markt-id={markt.id}
+                                data-decorator="plaatsvoorkeur-prototype"
+                                data-used-plaatsen={`p=${entriesFiltered.map(entry => entry.plaatsId).join('&p=')}`}
+                            >
+                                <div className="PlaatsvoorkeurenForm__list-item">
+                                    <h5 className="PlaatsvoorkeurenForm__list-item__heading">1e keuze</h5>
+                                    {Array.from(Array(newPlaatsvoorkeurCount)).map((v, i) => (
+                                        <div key={i} className={`PlaatsvoorkeurenForm__list-item__wrapper`}>
+                                            <input
+                                                type="hidden"
+                                                name={`plaatsvoorkeuren[${entriesFiltered.length + i}][marktId]`}
+                                                defaultValue={markt.id}
+                                            />
+                                            <input
+                                                type="hidden"
+                                                name={`plaatsvoorkeuren[${entriesFiltered.length + i}][priority]`}
+                                                defaultValue={2}
+                                            />
+                                            <MarktplaatsSelect
+                                                name={`plaatsvoorkeuren[${entriesFiltered.length + i}][plaatsId]`}
+                                                id={`voorkeur-${entriesFiltered.length + i}`}
+                                                markt={markt}
+                                                readonly={true}
+                                                newItem={true}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                             <p className="InputField InputField--submit">
                                 <button
