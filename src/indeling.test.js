@@ -945,6 +945,48 @@ describe('Automatisch toewijzen marktplaatsen: edge cases', () => {
          */
     });
 
+    it('Een ondernemer kan uitbreiden in een cirkelvormige marktoptstelling', () => {
+        /*
+         * Scenario:
+         * - 4 marktplaatsen, waarvan 2 brancheplaatsen
+         * - 2 marktondernemers, waarvan 1 in deze branche
+         * - beide ondernemers willen uitbreiden naar dezelfde brancheplaats in het midden,
+         *   en de ondernemer zonder branche heeft betere anceniteit
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 3 } })],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({
+                    sollicitatieNummer: 1,
+                    plaatsId: '4',
+                    priority: FIRST_CHOICE,
+                }),
+                voorkeur({
+                    sollicitatieNummer: 1,
+                    plaatsId: '1',
+                    priority: SECOND_CHOICE,
+                }),
+                voorkeur({
+                    sollicitatieNummer: 1,
+                    plaatsId: '2',
+                    priority: THIRD_CHOICE,
+                }),
+            ],
+            rows: [['1', '2', '3', '4', '1']],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(1);
+        expect(indeling.afwijzingen.length).toBe(0);
+        expect(
+            indeling.toewijzingen
+                .find(({ ondernemer: { sollicitatieNummer } }) => sollicitatieNummer === 1)
+                .plaatsen.sort(),
+        ).toStrictEqual(['1', '2', '4']);
+    });
+
     it.skip('Een branche-ondernemer krijgt voorkeur bij uitbreiden naar een brancheplaats', () => {
         /*
          * Scenario:
