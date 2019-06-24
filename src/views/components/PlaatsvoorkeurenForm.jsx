@@ -101,6 +101,12 @@ class PlaatsvoorkeurenForm extends React.Component {
                     return (
                         <div key={markt.id} className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
                             <h2>{markt.naam}</h2>
+                            {sollicitatie.status === 'vpl' ? (
+                                <div className="well well--dark">
+                                    Je vaste plaats{sollicitatie.vastePlaatsen.length > 1 ? 'en' : null}:{' '}
+                                    <strong>{sollicitatie.vastePlaatsen.join(' & ')}</strong>
+                                </div>
+                            ) : null}
                             <div className="PlaatsvoorkeurenForm__list">
                                 {entriesSplit.map((entries, i, entriesArray) => (
                                     <div
