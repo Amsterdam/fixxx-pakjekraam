@@ -66,6 +66,14 @@ const prioritySort = (voorkeurA?: IPlaatsvoorkeur, voorkeurB?: IPlaatsvoorkeur) 
     return numberSort(-prioA, -prioB);
 };
 
+const PRIORITIES = ['vpl', 'vkk', 'soll'];
+const LOWEST_STATUS_PRIORITY = PRIORITIES.length;
+const statusPriority = (status: DeelnemerStatus): number => {
+    const index = PRIORITIES.indexOf(status);
+
+    return index === -1 ? LOWEST_STATUS_PRIORITY : index;
+};
+
 const sortPlaatsen = (plaatsen: IMarktplaats[], voorkeuren: IPlaatsvoorkeur[]) =>
     [...plaatsen].sort((a, b) => {
         const voorkeurA = voorkeuren.find(voorkeur => voorkeur.plaatsId === a.plaatsId);
@@ -150,6 +158,12 @@ const getOndernemerBranches = (markt: IMarkt, ondernemer: IMarktondernemer) =>
 const getOndernemerVoorkeuren = (markt: IMarkt, ondernemer: IMarktondernemer): IPlaatsvoorkeur[] =>
     markt.voorkeuren.filter(voorkeur => voorkeur.erkenningsNummer === ondernemer.erkenningsNummer) || [];
 
+const onlyVoorkeursPlaatsen = (plaatsen: IMarktplaats[], voorkeuren: IPlaatsvoorkeur[]): IMarktplaats[] => {
+    const voorkeursplaatsen = voorkeuren.map(({ plaatsId }) => plaatsId);
+
+    return plaatsen.filter(({ plaatsId }) => voorkeursplaatsen.includes(plaatsId));
+};
+
 const findOptimalSpot = (
     ondernemer: IMarktondernemer,
     voorkeuren: IPlaatsvoorkeur[],
@@ -196,12 +210,6 @@ const findOptimalSpot = (
         },
         mogelijkePlaatsen,
     );
-
-    const onlyVoorkeursPlaatsen = (plaatsen: IMarktplaats[], voorkeuren: IPlaatsvoorkeur[]): IMarktplaats[] => {
-        const voorkeursplaatsen = voorkeuren.map(({ plaatsId }) => plaatsId);
-
-        return mogelijkePlaatsen.filter(({ plaatsId }) => voorkeursplaatsen.includes(plaatsId));
-    };
 
     if (ondernemer.voorkeur && typeof ondernemer.voorkeur.anywhere === 'boolean' && !ondernemer.voorkeur.anywhere) {
         mogelijkePlaatsen = onlyVoorkeursPlaatsen(mogelijkePlaatsen, voorkeuren);
@@ -488,6 +496,20 @@ const getBrancheStats = (state: IMarktindeling, brancheId: string) => {
     };
 };
 
+const calcDefaultVoorkeuren = (markt: IMarkt, ondernemers: IMarktondernemer[]): IPlaatsvoorkeur[] =>
+    ondernemers
+        .map(({ plaatsen, erkenningsNummer }) =>
+            (plaatsen || []).map(
+                (plaatsId: string): IPlaatsvoorkeur => ({
+                    erkenningsNummer,
+                    marktId: markt.marktId,
+                    plaatsId,
+                    priority: VOORKEUR_MINIMUM_PRIORITY,
+                }),
+            ),
+        )
+        .reduce(flatten, []);
+
 const getMaxedOutBranches = (state: IMarktindeling, branches: string[]) =>
     branches.filter(brancheId => {
         const { branche, toewijzingen, plaatsen } = getBrancheStats(state, brancheId);
@@ -607,20 +629,12 @@ const getPossibleMoves = (state: IMarktindeling, toewijzing: IToewijzing): MoveQ
 };
 
 const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling => {
-    const { marktplaatsen, ondernemers, voorkeuren, marktId } = markt;
+    const { marktplaatsen, ondernemers, voorkeuren } = markt;
     const { aanwezigheid, aLijst } = markt;
 
     let aanwezigen = ondernemers.filter(ondernemer => isAanwezig(aanwezigheid, ondernemer));
 
     log(`${aanwezigheid.filter(rsvp => !rsvp.attending).length} Afmeldingen`);
-
-    const priorities = ['vpl', 'vkk', 'soll'];
-    const LOWEST_STATUS_PRIORITY = priorities.length;
-    const statusPriority = (status: DeelnemerStatus): number => {
-        const index = priorities.indexOf(status);
-
-        return index === -1 ? LOWEST_STATUS_PRIORITY : index;
-    };
 
     const abLijstPriority = (ondernemer: IMarktondernemer): number => (aLijst.includes(ondernemer) ? 1 : 2);
 
@@ -650,19 +664,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
      * De bij een herindeling gekozen marktplaats wordt verwerkt als de initiele voorkeur van de ondernemer.
      * Bij de dagindeling kan een andere voorkeur worden uitgesproken.
      */
-    const defaultVoorkeuren = aanwezigen
-        .filter(({ status }) => isVast(status))
-        .map(({ plaatsen, erkenningsNummer }) =>
-            (plaatsen || []).map(
-                (plaatsId: string): IPlaatsvoorkeur => ({
-                    erkenningsNummer,
-                    marktId,
-                    plaatsId,
-                    priority: VOORKEUR_MINIMUM_PRIORITY,
-                }),
-            ),
-        )
-        .reduce(flatten, []);
+    const defaultVoorkeuren = calcDefaultVoorkeuren(markt, aanwezigen.filter(({ status }) => isVast(status)));
 
     const initialState: IMarktindeling = {
         ...markt,
