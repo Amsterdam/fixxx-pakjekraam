@@ -253,7 +253,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
         expect(indeling.toewijzingen.some(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 99)).toBe(true);
     });
 
-    it.only('Een ondernemer met eigen materieel krijgt voorkeur', () => {
+    it('Een ondernemer met eigen materieel krijgt voorkeur', () => {
         /*
          * Scenario:
          * - 1 marktplaats met eigen materieel voorkeur
@@ -617,6 +617,40 @@ describe('Automatisch toewijzen marktplaatsen: verschuiven', () => {
                 .filter(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 99)
                 .map(toewijzing => toewijzing.plaatsen)[0],
         ).toStrictEqual(['2']);
+    });
+
+    it.skip('Een ondernemer met vaste plaats kan verschuiven voordat sollicitanten worden ingedeeld', () => {
+        /*
+         * Scenario:
+         * - 2 marktplaatsen
+         * - 1 ondernemer met vaste plaats is toegekend aan de eerste plaats
+         *   en heeft een voorkeur geuit om op tweede plaats te staan
+         * - 1 sollicitant wil ook graag op de tweede plaats staan
+         */
+
+        const markt = marktScenario(({ ondernemer, marktplaats, aanmelding, voorkeur }) => ({
+            ondernemers: [ondernemer(), ondernemer({ plaatsen: ['1'], status: 'vpl' })],
+            marktplaatsen: [marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '2' }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '2' }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(2);
+        expect(indeling.afwijzingen.length).toBe(0);
+        expect(
+            indeling.toewijzingen
+                .filter(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 2)
+                .map(toewijzing => toewijzing.plaatsen)[0],
+        ).toStrictEqual(['2']);
+        expect(
+            indeling.toewijzingen
+                .filter(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 1)
+                .map(toewijzing => toewijzing.plaatsen)[0],
+        ).toStrictEqual(['1']);
     });
 
     it.skip('Een vasteplaatshouder kan van plaats ruilen met een andere vasteplaatshouder', () => {

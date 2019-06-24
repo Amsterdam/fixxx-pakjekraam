@@ -13,6 +13,9 @@ import {
     PlaatsId,
 } from './markt.model';
 
+/*
+ * https://decentrale.regelgeving.overheid.nl/cvdr/XHTMLoutput/Actueel/Amsterdam/396119.html#id1-3-2-2-3-4-5
+ */
 const VOORKEUR_MINIMUM_PRIORITY = 0;
 
 const intersects = (a: any[] = [], b: any[] = []) =>
@@ -681,7 +684,9 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
             'ignore',
         );
 
-    const calculateMoveQueue = (state: IMarktindeling) =>
+    type MoveQueueItem = { toewijzing: IToewijzing; betereVoorkeuren: IPlaatsvoorkeur[]; openPlaatsen: IMarktplaats[] };
+
+    const calculateMoveQueue = (state: IMarktindeling): MoveQueueItem[] =>
         state.toewijzingen
             .map(toewijzing => getPossibleMoves(state, toewijzing))
             .filter(obj => obj.betereVoorkeuren.length > 0)
@@ -706,30 +711,46 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
                 return obj;
             });
 
-    let moveQueue = calculateMoveQueue(indeling);
+    const moveQueue = calculateMoveQueue(indeling);
 
-    let moveIteration = 0;
-    const MOVE_LIMIT = 100;
+    const processMoveQueue = (state: IMarktindeling, queue: MoveQueueItem[]): IMarktindeling => {
+        let i = 0;
+        const MOVE_LIMIT = 100;
 
-    for (; moveQueue.length > 0 && moveIteration < MOVE_LIMIT; moveIteration++) {
-        log(`Move-queue #${moveIteration}: ${moveQueue.length}`);
+        for (; queue.length > 0 && i < MOVE_LIMIT; i++) {
+            log(`Move-queue #${i}: ${queue.length}`);
 
-        const previousIndeling = indeling;
+            const previousState = indeling;
 
-        indeling = moveQueue.reduce(move, indeling);
+            indeling = queue.reduce(move, indeling);
 
-        if (previousIndeling === indeling) {
-            // Non-essential optimization: nothing changed, so this was the last iteration.
-            // This could happen when someone wants to move to an open spot, but something is preventing the move.
-            // In this case don't retry the same move until the `MOVE_LIMIT` is exhausted.
-            break;
+            if (previousState === indeling) {
+                // Non-essential optimization: nothing changed, so this was the last iteration.
+                // This could happen when someone wants to move to an open spot, but something is preventing the move.
+                // In this case don't retry the same move until the `MOVE_LIMIT` is exhausted.
+                break;
+            }
+
+            // TODO: the new `queue` should be created as copy or subset of the existing `queue`,
+            // and when all options to move to a better spot have failed and the options are exhausted,
+            // the person should not be included in the new queue.
+            queue = calculateMoveQueue(indeling);
         }
 
-        // TODO: the new `moveQueue` should be created as copy or subset of the existing `moveQueue`,
-        // and when all options to move to a better spot have failed and the options are exhausted,
-        // the person should not be included in the new queue.
-        moveQueue = calculateMoveQueue(indeling);
-    }
+        return indeling;
+    };
+
+    indeling = processMoveQueue(
+        indeling,
+        moveQueue.filter(({ toewijzing: { ondernemer } }) => ondernemer.status === 'vpl'),
+    );
+
+    indeling = processMoveQueue(
+        indeling,
+        moveQueue.filter(({ toewijzing: { ondernemer } }) => ondernemer.status === 'vkk'),
+    );
+
+    indeling = processMoveQueue(indeling, moveQueue);
 
     indeling = {
         ...indeling,
