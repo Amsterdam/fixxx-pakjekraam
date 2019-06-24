@@ -23,10 +23,12 @@ class AlgemeneVoorkeurenForm extends React.Component {
         voorkeur: PropTypes.array,
         branches: PropTypes.array.isRequired,
         next: PropTypes.string,
+        query: PropTypes.string,
     };
 
     render() {
-        const { branches, ondernemer, markt, marktId, marktDate, next } = this.props;
+        const { branches, ondernemer, markt, marktId, marktDate, next, query } = this.props;
+        const advanced = (query && query.advanced) || false;
 
         const defaultVoorkeur = {
             aantalPlaatsen: 1,
@@ -63,7 +65,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
 
         return (
             <form
-                className="Form Form--AlgemeneVoorkeurenForm well well--max-width"
+                className="Form Form--AlgemeneVoorkeurenForm"
                 method="POST"
                 action="/algemene-voorkeuren/"
                 encType="application/x-www-form-urlencoded"
@@ -73,109 +75,121 @@ class AlgemeneVoorkeurenForm extends React.Component {
                     {markt ? ` voor ${markt.naam}` : ''}
                     {marktDate ? ` op ${formatDate(marktDate)}` : ''}
                 </h1>
-                <div className="Fieldset">
-                    <h2 className="Fieldset__header">Wat voor koopwaar verkoop je?</h2>
-                    <div className="InputField">
-                        <div className="Select__wrapper">
-                            <select id="brancheId" name="brancheId" className="Select">
-                                <option />
-                                {branches.map(branche => (
-                                    <option
-                                        key={branche.brancheId}
-                                        value={branche.brancheId}
-                                        selected={branche.brancheId === voorkeur.brancheId}
-                                    >
-                                        {branche.description}
-                                    </option>
-                                ))}
-                            </select>{' '}
+                <div className="well well--max-width">
+                    <div className="Fieldset">
+                        <h2 className="Fieldset__header">Wat voor koopwaar verkoop je?</h2>
+                        <div className="InputField">
+                            <div className="Select__wrapper">
+                                <select id="brancheId" name="brancheId" className="Select">
+                                    <option />
+                                    {branches.map(branche => (
+                                        <option
+                                            key={branche.brancheId}
+                                            value={branche.brancheId}
+                                            selected={branche.brancheId === voorkeur.brancheId}
+                                        >
+                                            {branche.description}
+                                        </option>
+                                    ))}
+                                </select>{' '}
+                            </div>
                         </div>
-                    </div>
-                    <p className="InputField InputField--checkbox">
-                        <input
-                            id="parentBrancheId"
-                            type="checkbox"
-                            name="parentBrancheId"
-                            defaultValue="bak"
-                            defaultChecked={voorkeur.parentBrancheId === 'bak'}
-                        />
-                        <label htmlFor="parentBrancheId">Ik ga koken, bakken, frituren, etc.</label>
-                    </p>
-                </div>
-                <div className="Fieldset">
-                    <h2 className="Fieldset__header">Huur je een kraam of kom je met eigen materieel?</h2>
-
-                    <p className="InputField InputField--checkbox">
-                        <input
-                            id="inrichting"
-                            type="checkbox"
-                            name="inrichting"
-                            defaultValue="eigen-materieel"
-                            defaultChecked={voorkeur.inrichting === 'eigen-materieel'}
-                        />
-                        <label htmlFor="inrichting">Ik kom met eigen materieel.</label>
-                    </p>
-                </div>
-                <div className="Fieldset">
-                    <h2 className="Fieldset__header">
-                        Als er ruimte is, hoeveel plaatsen zou je graag in totaal willen?
-                    </h2>
-
-                    <p>
-                        <label htmlFor="aantalPlaatsen">Aantal kramen:</label>
-                        <input
-                            name="aantalPlaatsen"
-                            id="aantalPlaatsen"
-                            type="number"
-                            defaultValue={voorkeur.aantalPlaatsen}
-                        />
-                    </p>
-                </div>
-                {vast ? (
-                    <div className="Fieldset">
-                        <h2 className="Fieldset__header">Op welke dagen kom je normaal gesproken?</h2>
-
-                        {weekDays.map(day => (
-                            <p key={day} className="InputField InputField--checkbox">
-                                <input
-                                    id={`day${day}`}
-                                    type="checkbox"
-                                    name={dayKey[day]}
-                                    defaultChecked={voorkeur[dayKey[day]]}
-                                    defaultValue={day}
-                                />
-                                <label htmlFor={`day${day}`}>
-                                    Ik kom elke <strong>{formatISODayOfWeek(day)}</strong>
-                                </label>
-                            </p>
-                        ))}
-                    </div>
-                ) : null}
-
-                {vast ? (
-                    <div className="Fieldset">
-                        <h2 className="Fieldset__header">Langdurige afwezigheid</h2>
                         <p className="InputField InputField--checkbox">
-                            <input id="inactive" type="checkbox" name="inactive" defaultChecked={voorkeur.inactive} />
-                            <label htmlFor="inactive">Ik kan voorlopig niet op de markt aanwezig zijn.</label>
+                            <input
+                                id="parentBrancheId"
+                                type="checkbox"
+                                name="parentBrancheId"
+                                defaultValue="bak"
+                                defaultChecked={voorkeur.parentBrancheId === 'bak'}
+                            />
+                            <label htmlFor="parentBrancheId">Ik ga koken, bakken, frituren, etc.</label>
                         </p>
                     </div>
-                ) : null}
+                    <div className="Fieldset">
+                        <h2 className="Fieldset__header">Huur je een kraam of kom je met eigen materieel?</h2>
 
-                <div className="Fieldset">
-                    <h2 className="Fieldset__header">Wil je zekerheid dat je alléén op voorkeursplaatsen staat?</h2>
-                    <p className="InputField InputField--checkbox">
-                        <input
-                            id="anywhere"
-                            type="checkbox"
-                            name="anywhere"
-                            defaultChecked={voorkeur.anywhere !== false}
-                        />
-                        <label htmlFor="anywhere">
-                            Als mijn voorkeurplaatsen niet beschikbaar zijn, wil ik automatisch op een losse plaats
-                            ingedeeld worden.
-                        </label>
-                    </p>
+                        <p className="InputField InputField--checkbox">
+                            <input
+                                id="inrichting"
+                                type="checkbox"
+                                name="inrichting"
+                                defaultValue="eigen-materieel"
+                                defaultChecked={voorkeur.inrichting === 'eigen-materieel'}
+                            />
+                            <label htmlFor="inrichting">Ik kom met eigen materieel.</label>
+                        </p>
+                    </div>
+                    {advanced ? (
+                        <div className="Fieldset">
+                            <h2 className="Fieldset__header">
+                                Als er ruimte is, hoeveel plaatsen zou je graag in totaal willen?
+                            </h2>
+
+                            <p>
+                                <label htmlFor="aantalPlaatsen">Aantal kramen:</label>
+                                <input
+                                    name="aantalPlaatsen"
+                                    id="aantalPlaatsen"
+                                    type="number"
+                                    defaultValue={voorkeur.aantalPlaatsen}
+                                />
+                            </p>
+                        </div>
+                    ) : null}
+                    {vast && advanced ? (
+                        <div className="Fieldset">
+                            <h2 className="Fieldset__header">Op welke dagen kom je normaal gesproken?</h2>
+
+                            {weekDays.map(day => (
+                                <p key={day} className="InputField InputField--checkbox">
+                                    <input
+                                        id={`day${day}`}
+                                        type="checkbox"
+                                        name={dayKey[day]}
+                                        defaultChecked={voorkeur[dayKey[day]]}
+                                        defaultValue={day}
+                                    />
+                                    <label htmlFor={`day${day}`}>
+                                        Ik kom elke <strong>{formatISODayOfWeek(day)}</strong>
+                                    </label>
+                                </p>
+                            ))}
+                        </div>
+                    ) : null}
+
+                    {vast && advanced ? (
+                        <div className="Fieldset">
+                            <h2 className="Fieldset__header">Langdurige afwezigheid</h2>
+                            <p className="InputField InputField--checkbox">
+                                <input
+                                    id="inactive"
+                                    type="checkbox"
+                                    name="inactive"
+                                    defaultChecked={voorkeur.inactive}
+                                />
+                                <label htmlFor="inactive">Ik kan voorlopig niet op de markt aanwezig zijn.</label>
+                            </p>
+                        </div>
+                    ) : null}
+                    {vast && advanced ? (
+                        <div className="Fieldset">
+                            <h2 className="Fieldset__header">
+                                Wil je zekerheid dat je alléén op voorkeursplaatsen staat?
+                            </h2>
+                            <p className="InputField InputField--checkbox">
+                                <input
+                                    id="anywhere"
+                                    type="checkbox"
+                                    name="anywhere"
+                                    defaultChecked={voorkeur.anywhere !== false}
+                                />
+                                <label htmlFor="anywhere">
+                                    Als mijn voorkeurplaatsen niet beschikbaar zijn, wil ik automatisch op een losse
+                                    plaats ingedeeld worden.
+                                </label>
+                            </p>
+                        </div>
+                    ) : null}
                 </div>
 
                 <div className="Fieldset">

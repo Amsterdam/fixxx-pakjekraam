@@ -15,6 +15,7 @@ class AlgemeneVoorkeurenPage extends React.Component {
         voorkeur: PropTypes.object,
         branches: PropTypes.array.isRequired,
         next: PropTypes.string,
+        query: PropTypes.string,
     };
 
     render() {
@@ -33,7 +34,7 @@ class AlgemeneVoorkeurenPage extends React.Component {
                         marktDate={this.props.marktDate}
                         ondernemer={this.props.ondernemer}
                         voorkeur={this.props.voorkeur}
-                        next={this.props.next}
+                        query={this.props.query}
                     />
                 </Content>
             </Page>

@@ -672,6 +672,7 @@ const algemeneVoorkeurenPage = (req, res, token, erkenningsNummer, marktId, mark
 
     // TODO: Only allow relative URLs in `next`, to prevent redirection to 3rd party phishing sites
     const next = req.query.next;
+    const query = req.query;
 
     Promise.all([
         ondernemerPromise,
@@ -680,7 +681,16 @@ const algemeneVoorkeurenPage = (req, res, token, erkenningsNummer, marktId, mark
         getAllBranches(),
     ]).then(
         ([ondernemer, markt, voorkeur, branches]) => {
-            res.render('AlgemeneVoorkeurenPage', { ondernemer, markt, marktId, marktDate, voorkeur, branches, next });
+            res.render('AlgemeneVoorkeurenPage', {
+                ondernemer,
+                markt,
+                marktId,
+                marktDate,
+                voorkeur,
+                branches,
+                next,
+                query,
+            });
         },
         err => errorPage(res, err),
     );
