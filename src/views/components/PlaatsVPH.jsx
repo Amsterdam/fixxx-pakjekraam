@@ -59,7 +59,7 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
 
     let plaatsProps = plaats.properties || [],
         tags = plaats.tags || [];
-    const branches = plaats.branche || [];
+    const branches = plaats.branches || [];
 
     plaatsProps = plaatsProps.filter(word => !['dubble'].includes(word));
     plaatsProps.reverse();
