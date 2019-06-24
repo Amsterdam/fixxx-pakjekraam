@@ -858,6 +858,42 @@ describe('Automatisch toewijzen marktplaatsen: verschuiven', () => {
             indeling.toewijzingen.find(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 2).plaatsen,
         ).toStrictEqual(['3']);
     });
+
+    it('Een ondernemer met dubbele vaste plaats verschuift niet naar een kleinere plaats', () => {
+        /*
+         * Scenario:
+         * - 2 marktplaatsen
+         * - 1 ondernemer met vaste plaats is toegekend aan de eerste plaats
+         *   en heeft een voorkeur geuit om op tweede plaats te staan
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [
+                ondernemer({ status: 'vpl', sollicitatieNummer: 42, plaatsen: ['1', '2'] }),
+                ondernemer({ status: 'vpl', sollicitatieNummer: 99, plaatsen: ['3'] }),
+            ],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 42, plaatsId: '4', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 42, plaatsId: '3', priority: SECOND_CHOICE }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(2);
+        expect(indeling.afwijzingen.length).toBe(0);
+        expect(
+            indeling.toewijzingen
+                .filter(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 42)
+                .map(toewijzing => toewijzing.plaatsen)[0],
+        ).toStrictEqual(['1', '2']);
+
+        expect(
+            indeling.toewijzingen
+                .filter(toewijzing => toewijzing.ondernemer.sollicitatieNummer === 99)
+                .map(toewijzing => toewijzing.plaatsen)[0],
+        ).toStrictEqual(['3']);
+    });
 });
 
 describe('Automatisch toewijzen marktplaatsen: edge cases', () => {

@@ -23,6 +23,8 @@ const intersects = (a: any[] = [], b: any[] = []) =>
 
 const intersection = (a: any[] = [], b: any[] = []) => a.filter(value => b.includes(value));
 
+const exclude = <T>(a: T[] = [], b: any[] = []): T[] => a.filter(value => !b.includes(value));
+
 const isVast = (status: DeelnemerStatus): boolean => status === 'vpl' || status === 'vkk';
 
 /*
@@ -44,6 +46,9 @@ const sum = (a: number, b: number): number => a + b;
  * Example usage: [1, 2, 1, 2, 3].reduce(unique, [])
  */
 const unique = <T>(a: T[], b: T): T[] => (a.includes(b) ? a : [...a, b]);
+
+const isEqualArray = (a: any[], b: any[]): boolean =>
+    Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((value, index) => value === b[index]);
 
 const log = (...arg: any) => {
     if (process.env.NODE_ENV !== 'production') {
@@ -87,8 +92,8 @@ const createToewijzing = (plaats: IMarktplaats, ondernemer: IMarktondernemer): I
 
 const logOpenPlaatsen = (indeling: IMarktindeling) => log(`Nog ${indeling.openPlaatsen.length} vrije plaatsen`);
 
-const getAdjacentPlaatsen = (markt: IMarktindeling, plaatsId: PlaatsId): IMarktplaats[] =>
-    markt.rows
+const getAdjacentPlaatsen = (rows: IMarktplaats[][], plaatsId: PlaatsId): IMarktplaats[] =>
+    rows
         .map(row => {
             const targetIndex = row.findIndex(plaats => plaats.plaatsId === plaatsId);
 
@@ -98,9 +103,39 @@ const getAdjacentPlaatsen = (markt: IMarktindeling, plaatsId: PlaatsId): IMarktp
         })
         .reduce(flatten);
 
-const getAdjacentPlaatsenForMultiple = (markt: IMarktindeling, plaatsIds: PlaatsId[]): IMarktplaats[] =>
+/*
+ * Returns adjacent places in either direction,
+ * `steps` defines the limit of how far to look in either direction.
+ * The number of adjacent spots can be greater than  the number of steps, if a number
+ * of spots is available in either direction.
+ */
+const getAdjacentPlaatsenRecursive = (rows: IMarktplaats[][], plaatsId: string, steps: number = 1): string[] => {
+    let plaatsen: string[] = [plaatsId],
+        prevPlaatsen: string[] = [],
+        i = 0;
+
+    while (i < steps && !isEqualArray(plaatsen, prevPlaatsen)) {
+        const newPlaatsen: string[] = exclude(plaatsen, prevPlaatsen);
+        prevPlaatsen = plaatsen;
+
+        const adjacentPlaatsen = newPlaatsen
+            .map(p => getAdjacentPlaatsen(rows, p))
+            .reduce(flatten, [])
+            .map(({ plaatsId }) => plaatsId);
+
+        plaatsen = [...plaatsen, ...adjacentPlaatsen];
+
+        i++;
+    }
+
+    plaatsen = exclude(plaatsen, [plaatsId]);
+
+    return plaatsen;
+};
+
+const getAdjacentPlaatsenForMultiple = (rows: IMarktplaats[][], plaatsIds: PlaatsId[]): IMarktplaats[] =>
     plaatsIds
-        .map(plaatsId => getAdjacentPlaatsen(markt, plaatsId))
+        .map(plaatsId => getAdjacentPlaatsen(rows, plaatsId))
         .reduce(flatten, [])
         .reduce(unique, []);
 
@@ -120,6 +155,7 @@ const findOptimalSpot = (
     voorkeuren: IPlaatsvoorkeur[],
     openPlaatsen: IMarktplaats[],
     markt: IMarkt,
+    aantalPlaatsen: number = 1,
 ) => {
     let mogelijkePlaatsen = openPlaatsen;
 
@@ -174,6 +210,23 @@ const findOptimalSpot = (
     // voorkeuren.sort((a, b) => numberSort(a.priority, b.priority));
 
     mogelijkePlaatsen = sortPlaatsen(mogelijkePlaatsen, voorkeuren);
+
+    if (aantalPlaatsen > 1) {
+        console.log(`Ondernemer ${ondernemer.erkenningsNummer} wil in één keer ${aantalPlaatsen} plaatsen`);
+        const prevMogelijkePlaatsen = mogelijkePlaatsen;
+        mogelijkePlaatsen = mogelijkePlaatsen.filter(p => {
+            const adjacent = getAdjacentPlaatsenRecursive(markt.rows, p.plaatsId, aantalPlaatsen - 1);
+
+            return adjacent.length >= aantalPlaatsen;
+        });
+
+        console.log(
+            'Van deze plaatsen: ',
+            prevMogelijkePlaatsen.map(({ plaatsId }) => plaatsId),
+            ` hebben de volgende mogelijkheid tot uitbreiden naar ${aantalPlaatsen} plaatsen: `,
+            mogelijkePlaatsen.map(({ plaatsId }) => plaatsId),
+        );
+    }
 
     return mogelijkePlaatsen[0];
 };
@@ -349,7 +402,7 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
     });
 
     if (currentPlaatsen < aantalPlaatsen) {
-        const adjacent = getAdjacentPlaatsenForMultiple(indeling, plaatsen);
+        const adjacent = getAdjacentPlaatsenForMultiple(indeling.rows, plaatsen);
         const openAdjacent = intersection(adjacent, indeling.openPlaatsen);
 
         log(
@@ -461,6 +514,7 @@ const findPlaats = (
     ondernemers: IMarktondernemer[],
     plaatsen?: IMarktplaats[],
     handleRejection: 'reject' | 'ignore' = 'reject',
+    aantalPlaatsen: number = 1,
 ): IMarktindeling => {
     const mogelijkePlaatsen = plaatsen || state.openPlaatsen;
 
@@ -496,7 +550,7 @@ const findPlaats = (
     let plaats;
 
     if (!reason) {
-        plaats = findOptimalSpot(ondernemer, ondernemerVoorkeuren, mogelijkePlaatsen, state);
+        plaats = findOptimalSpot(ondernemer, ondernemerVoorkeuren, mogelijkePlaatsen, state, aantalPlaatsen);
     }
 
     if (plaats) {
@@ -509,6 +563,47 @@ const findPlaats = (
             return state;
         }
     }
+};
+
+type MoveQueueItem = {
+    toewijzing: IToewijzing;
+    betereVoorkeuren: IPlaatsvoorkeur[];
+    openPlaatsen: IMarktplaats[];
+    beterePlaatsen: IMarktplaats[];
+};
+
+const move = (state: IMarktindeling, obj: MoveQueueItem) =>
+    findPlaats(
+        state,
+        obj.toewijzing.ondernemer,
+        0,
+        [],
+        intersection(obj.beterePlaatsen, state.openPlaatsen),
+        'ignore',
+        obj.toewijzing.plaatsen.length,
+    );
+
+const getPossibleMoves = (state: IMarktindeling, toewijzing: IToewijzing): MoveQueueItem => {
+    const { ondernemer } = toewijzing;
+    const voorkeuren = getOndernemerVoorkeuren(state, ondernemer).sort(prioritySort);
+
+    const currentIndex = voorkeuren.findIndex(voorkeur => toewijzing.plaatsen.includes(voorkeur.plaatsId));
+    const betereVoorkeuren = voorkeuren.slice(0, currentIndex === -1 ? voorkeuren.length : currentIndex);
+
+    const beterePlaatsen = betereVoorkeuren
+        .map(voorkeur => state.marktplaatsen.find(({ plaatsId }) => plaatsId === voorkeur.plaatsId))
+        .filter(Boolean);
+
+    const openPlaatsen = betereVoorkeuren
+        .map(voorkeur => state.openPlaatsen.find(({ plaatsId }) => plaatsId === voorkeur.plaatsId))
+        .filter(Boolean);
+
+    return {
+        toewijzing,
+        betereVoorkeuren,
+        beterePlaatsen,
+        openPlaatsen,
+    };
 };
 
 const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling => {
@@ -651,41 +746,6 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
         .filter(ondernemer => !heeftVastePlaatsen(ondernemer))
         .reduce(findPlaats, indeling);
 
-    const getPossibleMoves = (state: IMarktindeling, toewijzing: IToewijzing) => {
-        const { ondernemer } = toewijzing;
-        const voorkeuren = getOndernemerVoorkeuren(state, ondernemer).sort(prioritySort);
-
-        const currentIndex = voorkeuren.findIndex(voorkeur => toewijzing.plaatsen.includes(voorkeur.plaatsId));
-        const betereVoorkeuren = voorkeuren.slice(0, currentIndex === -1 ? voorkeuren.length : currentIndex);
-
-        const beterePlaatsen = betereVoorkeuren
-            .map(voorkeur => state.marktplaatsen.find(({ plaatsId }) => plaatsId === voorkeur.plaatsId))
-            .filter(Boolean);
-
-        const openPlaatsen = betereVoorkeuren
-            .map(voorkeur => state.openPlaatsen.find(({ plaatsId }) => plaatsId === voorkeur.plaatsId))
-            .filter(Boolean);
-
-        return {
-            toewijzing,
-            betereVoorkeuren,
-            beterePlaatsen,
-            openPlaatsen,
-        };
-    };
-
-    const move = (state: IMarktindeling, obj: any) =>
-        findPlaats(
-            state,
-            obj.toewijzing.ondernemer,
-            0,
-            [],
-            intersection(obj.beterePlaatsen, state.openPlaatsen),
-            'ignore',
-        );
-
-    type MoveQueueItem = { toewijzing: IToewijzing; betereVoorkeuren: IPlaatsvoorkeur[]; openPlaatsen: IMarktplaats[] };
-
     const calculateMoveQueue = (state: IMarktindeling): MoveQueueItem[] =>
         state.toewijzingen
             .map(toewijzing => getPossibleMoves(state, toewijzing))
@@ -720,24 +780,23 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
         for (; queue.length > 0 && i < MOVE_LIMIT; i++) {
             log(`Move-queue #${i}: ${queue.length}`);
 
-            const previousState = indeling;
+            const previousState = state;
 
-            indeling = queue.reduce(move, indeling);
+            state = queue.reduce(move, state);
 
-            if (previousState === indeling) {
+            if (previousState === state) {
                 // Non-essential optimization: nothing changed, so this was the last iteration.
                 // This could happen when someone wants to move to an open spot, but something is preventing the move.
                 // In this case don't retry the same move until the `MOVE_LIMIT` is exhausted.
                 break;
             }
-
             // TODO: the new `queue` should be created as copy or subset of the existing `queue`,
             // and when all options to move to a better spot have failed and the options are exhausted,
             // the person should not be included in the new queue.
-            queue = calculateMoveQueue(indeling);
+            queue = calculateMoveQueue(state);
         }
 
-        return indeling;
+        return state;
     };
 
     indeling = processMoveQueue(
@@ -832,5 +891,7 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
 if (typeof module !== 'undefined' && module && module.exports) {
     module.exports = {
         calcToewijzingen,
+        getAdjacentPlaatsen,
+        getAdjacentPlaatsenRecursive,
     };
 }
