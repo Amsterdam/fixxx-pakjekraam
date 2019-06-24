@@ -102,22 +102,26 @@ class PlaatsvoorkeurenForm extends React.Component {
                         .sort((a, b) => b[0].priority - a[0].priority);
 
                     const entriesSplit2 = entriesFiltered.reduce((total, entry, i) => {
-                        // const newCount = sollicitatie.status === 'vpl' ? sollicitatie.vastePlaatsen.length : 1;
-                        //
-                        // return i % newCount === 0
-                        //     ? entriesFiltered.filter((e, j) => j >= i && j < i + newCount)
-                        //     : null;
+                        /*
+                         * const newCount = sollicitatie.status === 'vpl' ? sollicitatie.vastePlaatsen.length : 1;
+                         *
+                         * return i % newCount === 0
+                         *     ? entriesFiltered.filter((e, j) => j >= i && j < i + newCount)
+                         *     : null;
+                         */
 
                         if (!Array.isArray(total[entry.priority])) {
                             total[entry.priority] = [];
                         }
                         total[entry.priority].push(entry);
+
                         return total;
                     }, {});
                     const entriesSplitSorted = Object.keys(entriesSplit2)
                         .sort()
                         .reduce((result, key) => {
                             result[key] = entriesSplit2[key];
+
                             return result;
                         }, {});
                     console.log(entriesSplitSorted);
