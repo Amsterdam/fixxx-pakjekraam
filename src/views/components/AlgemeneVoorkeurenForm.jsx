@@ -28,8 +28,9 @@ class AlgemeneVoorkeurenForm extends React.Component {
 
     render() {
         const { branches, ondernemer, markt, marktId, marktDate, next, query } = this.props;
+        const nextMessage =
+            (query && query.next) || '/markt-detail/' + ondernemer.erkenningsnummer + '/' + marktId + '/';
         const advanced = (query && query.advanced) || false;
-
         const defaultVoorkeur = {
             aantalPlaatsen: 1,
             anwhere: true,
@@ -119,25 +120,27 @@ class AlgemeneVoorkeurenForm extends React.Component {
                             <label htmlFor="inrichting">Ik kom met eigen materieel.</label>
                         </p>
                     </div>
-                    {advanced ? (
-                        <div className="Fieldset">
-                            <h2 className="Fieldset__header">
-                                Als er ruimte is, hoeveel plaatsen zou je graag in totaal willen?
-                            </h2>
+                    <div className={`Fieldset ${advanced ? null : 'hidden'}`}>
+                        <h2 className="Fieldset__header">
+                            Als er ruimte is, hoeveel plaatsen zou je graag in totaal willen?
+                        </h2>
 
-                            <p>
-                                <label htmlFor="aantalPlaatsen">Aantal kramen:</label>
-                                <input
-                                    name="aantalPlaatsen"
-                                    id="aantalPlaatsen"
-                                    type="number"
-                                    defaultValue={voorkeur.aantalPlaatsen}
-                                />
-                            </p>
-                        </div>
-                    ) : null}
-                    {vast && advanced ? (
-                        <div className="Fieldset">
+                        <p className="InputField InputField--number">
+                            <label htmlFor="aantalPlaatsen" className="Label">
+                                Aantal kramen:
+                            </label>
+                            <input
+                                name="aantalPlaatsen"
+                                id="aantalPlaatsen"
+                                type="number"
+                                defaultValue={voorkeur.aantalPlaatsen}
+                                className="Input Input--small"
+                                width={5}
+                            />
+                        </p>
+                    </div>
+                    {vast ? (
+                        <div className={`Fieldset ${advanced ? null : 'hidden'}`}>
                             <h2 className="Fieldset__header">Op welke dagen kom je normaal gesproken?</h2>
 
                             {weekDays.map(day => (
@@ -157,8 +160,8 @@ class AlgemeneVoorkeurenForm extends React.Component {
                         </div>
                     ) : null}
 
-                    {vast && advanced ? (
-                        <div className="Fieldset">
+                    {vast ? (
+                        <div className={`Fieldset ${advanced ? null : 'hidden'}`}>
                             <h2 className="Fieldset__header">Langdurige afwezigheid</h2>
                             <p className="InputField InputField--checkbox">
                                 <input
@@ -171,8 +174,8 @@ class AlgemeneVoorkeurenForm extends React.Component {
                             </p>
                         </div>
                     ) : null}
-                    {vast && advanced ? (
-                        <div className="Fieldset">
+                    {vast ? (
+                        <div className={`Fieldset ${advanced ? null : 'hidden'}`}>
                             <h2 className="Fieldset__header">
                                 Wil je zekerheid dat je alléén op voorkeursplaatsen staat?
                             </h2>
@@ -202,10 +205,19 @@ class AlgemeneVoorkeurenForm extends React.Component {
                         />
                         <input type="hidden" name="marktId" defaultValue={marktId} />
                         <input type="hidden" name="marktDate" defaultValue={marktDate} />
-                        <button className="Button Button--secondary" type="submit" name="next" value={next}>
+                        <button
+                            className="Button Button--secondary"
+                            type="submit"
+                            name="next"
+                            value={`${'/algemene-voorkeuren/' +
+                                ondernemer.erkenningsnummer +
+                                '/' +
+                                marktId +
+                                '/'}?next=${nextMessage}${advanced ? '&advanced=true' : ''}`}
+                        >
                             Opslaan
                         </button>
-                        <a className="Button Button--tertiary" href={next}>
+                        <a className="Button Button--tertiary" href={nextMessage}>
                             Terug
                         </a>
                     </p>

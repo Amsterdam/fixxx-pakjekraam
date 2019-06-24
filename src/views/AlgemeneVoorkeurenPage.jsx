@@ -16,13 +16,14 @@ class AlgemeneVoorkeurenPage extends React.Component {
         branches: PropTypes.array.isRequired,
         next: PropTypes.string,
         query: PropTypes.string,
+        messages: PropTypes.array,
     };
 
     render() {
-        const { ondernemer } = this.props;
+        const { ondernemer, messages } = this.props;
 
         return (
-            <Page>
+            <Page messages={messages}>
                 <Header user={ondernemer} logoUrl={`/dashboard/${ondernemer.erkenningsnummer}`}>
                     <OndernemerProfileHeader user={ondernemer} />
                 </Header>

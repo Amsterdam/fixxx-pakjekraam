@@ -45,7 +45,7 @@ MarktDetailBase.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     bodyClass: PropTypes.string,
     markt: PropTypes.object,
-    user: PropTypes.string,
+    user: PropTypes.object,
     title: PropTypes.string,
     datum: PropTypes.string,
     type: PropTypes.string,

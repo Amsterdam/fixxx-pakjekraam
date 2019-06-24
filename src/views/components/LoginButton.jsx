@@ -14,7 +14,7 @@ const LoginButton = ({ user }) => {
 };
 
 LoginButton.propTypes = {
-    user: PropTypes.string,
+    user: PropTypes.object,
 };
 
 module.exports = LoginButton;

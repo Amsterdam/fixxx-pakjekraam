@@ -5,11 +5,15 @@ const OndernemerMarktHeading = ({ markt, sollicitatie }) => {
     return (
         <h2 className="OndernemerMarktHeading" id={`markt-${markt.id}`}>
             <span className="OndernemerMarktHeading__markt-naam">{markt.naam}</span>
-            <span className="Pil">{sollicitatie.status}</span>
+            {['soll', 'vpl', 'vkk', 'overig'].includes(sollicitatie.status) ? (
+                <span className={`Pil Pil--${sollicitatie.status}`}>{sollicitatie.status}</span>
+            ) : null}
             <span className="Pil">sollnr. {sollicitatie.sollicitatieNummer}</span>
-            <span className="Pil">
-                plaats{sollicitatie.vastePlaatsen.length > 1 ? `en` : ``} {sollicitatie.vastePlaatsen.join(', ')}
-            </span>
+            {sollicitatie.status === 'vpl' ? (
+                <span className="Pil">
+                    plaats{sollicitatie.vastePlaatsen.length > 1 ? `en` : ``} {sollicitatie.vastePlaatsen.join(', ')}
+                </span>
+            ) : null}
         </h2>
     );
 };

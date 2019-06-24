@@ -219,16 +219,32 @@ app.get('/markt/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) =>
     );
 });
 
+app.get('/markt-detail/:erkenningsNummer/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) => {
+    const user = req.user.token;
+    const datum = req.params.datum;
+    const type = 'sollicitanten';
+    getSollicitantenlijstInput(req.user.token, req.params.marktId, req.params.datum).then(
+        ({ ondernemers, aanmeldingen, voorkeuren, markt }) => {
+            res.render('SollicitantenPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type, user });
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
+        },
+    );
+});
+
 const publicErrors = {
     INCORRECT_CREDENTIALS: 'incorrect-credentials',
     AANWEZIGHEID_SAVED: 'aanwezigheid-saved',
-    PLAATSVOORKEUEN_SAVED: 'plaatsvoorkeuren-saved',
+    PLAATSVOORKEUREN_SAVED: 'plaatsvoorkeuren-saved',
+    ALGEMENE_VOORKEUREN_SAVED: 'algemene-voorkeuren-saved',
 };
 
 const humanReadableMessage = {
     [publicErrors.INCORRECT_CREDENTIALS]: 'Uw gebruikersnaam of wachtwoord is incorrect.',
     [publicErrors.AANWEZIGHEID_SAVED]: 'De wijzigingen zijn met success doorgevoerd',
-    [publicErrors.PLAATSVOORKEUEN_SAVED]: 'Je plaatsvoorkeuren zijn met success doorgevoerd',
+    [publicErrors.PLAATSVOORKEUREN_SAVED]: 'Je plaatsvoorkeuren zijn met success doorgevoerd',
+    [publicErrors.ALGEMENE_VOORKEUREN_SAVED]: 'Je algemene voorkeuren zijn met success doorgevoerd',
 };
 
 /*
@@ -256,11 +272,7 @@ app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
     const user = req.user.token;
     const ondernemerPromise = getMarktondernemer(user, req.params.erkenningsNummer);
     const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(req.params.erkenningsNummer);
-    const marktenPromise = ondernemerPromise.then(ondernemer =>
-        Promise.all(
-            ondernemer.sollicitaties.map(sollicitatie => sollicitatie.markt.id).map(marktId => getMarkt(user, marktId)),
-        ),
-    );
+    const marktenPromise = getMarkten(user, req.params.marktId);
     Promise.all([
         ondernemerPromise,
         marktenPromise,
@@ -667,6 +679,7 @@ app.get('/voorkeuren/:erkenningsNummer/:marktId', ensureLoggedIn(), (req, res) =
 });
 
 const algemeneVoorkeurenPage = (req, res, token, erkenningsNummer, marktId, marktDate) => {
+    const messages = getQueryErrors(req.query);
     const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
     const marktPromise = marktId ? getMarkt(token, marktId) : Promise.resolve(null);
 
@@ -685,11 +698,11 @@ const algemeneVoorkeurenPage = (req, res, token, erkenningsNummer, marktId, mark
                 ondernemer,
                 markt,
                 marktId,
-                marktDate,
                 voorkeur,
                 branches,
                 next,
                 query,
+                messages,
             });
         },
         err => errorPage(res, err),
@@ -748,6 +761,40 @@ const algemeneVoorkeurenFormData = body => {
 
     return voorkeur;
 };
+
+app.get('/markt-detail/:erkenningsNummer/:marktId/', ensureLoggedIn(), (req, res) => {
+    const messages = getQueryErrors(req.query);
+    const ondernemerPromise = getMarktondernemer(req.user.token, req.params.erkenningsNummer);
+    const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(req.params.erkenningsNummer);
+    const marktPromise = req.params.marktId ? getMarkt(req.user.token, req.params.marktId) : Promise.resolve(null);
+    const query = req.query;
+    const next = req.query.next;
+
+    Promise.all([
+        ondernemerPromise,
+        ondernemerVoorkeurenPromise,
+        getAanmeldingenByOndernemer(req.params.erkenningsNummer),
+        marktPromise,
+        getIndelingVoorkeur(req.params.erkenningsNummer, req.params.marktId),
+        getAllBranches(),
+    ]).then(
+        ([ondernemer, plaatsvoorkeuren, aanmeldingen, markt, voorkeur, branches]) => {
+            res.render('OndernemerMarktDetailPage', {
+                ondernemer,
+                plaatsvoorkeuren,
+                aanmeldingen,
+                markt,
+                marktId: req.params.marktId,
+                voorkeur,
+                branches,
+                next,
+                query,
+                messages,
+            });
+        },
+        err => errorPage(res, err),
+    );
+});
 
 app.post('/algemene-voorkeuren/', ensureLoggedIn(), (req, res) => {
     const { next } = req.body;

@@ -10,4 +10,16 @@
     background-color: $primary-black;
     border-radius: 10px;
     margin-left: 2px;
+    &--vpl {
+        background-color: $primary-darkblue;
+    }
+    &--soll {
+        background-color: $supplement-darkgreen;
+    }
+    &--vkk {
+        background-color: $supplement-lightblue;
+    }
+    &--overig {
+        background-color: $support-focus;
+    }
 }

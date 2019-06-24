@@ -12,7 +12,7 @@ class VoorkeurenPage extends React.Component {
         ondernemer: PropTypes.object.isRequired,
         messages: PropTypes.array,
         query: PropTypes.string,
-        user: PropTypes.string,
+        user: PropTypes.object,
     };
 
     render() {

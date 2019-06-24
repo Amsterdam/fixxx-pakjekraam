@@ -34,4 +34,7 @@ $inputMaxWidth: 620px;
     &--submit-tertiary {
         @include button-tertiary;
     }
+    &--small {
+        width: 100px;
+    }
 }

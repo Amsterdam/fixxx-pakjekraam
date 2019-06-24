@@ -26,17 +26,6 @@ class PublicProfilePage extends React.Component {
                 <Header user={user} />
                 <Content>
                     <OndernemerProfile ondernemer={ondernemer} />
-                    {ondernemer.sollicitaties.length > 0 ? (
-                        <p>
-                            <a
-                                href={`/voorkeuren/${ondernemer.erkenningsnummer}/?next=/profile/${
-                                    ondernemer.erkenningsnummer
-                                }`}
-                            >
-                                Voorkeuren voor alle markten
-                            </a>
-                        </p>
-                    ) : null}
                 </Content>
             </Page>
         );

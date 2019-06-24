@@ -36,7 +36,7 @@ const Header = ({ user, children, logoUrl }) => {
 };
 
 Header.propTypes = {
-    user: PropTypes.string,
+    user: PropTypes.object,
     logoUrl: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };

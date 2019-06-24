@@ -20,6 +20,9 @@ class OndernemerDashboard extends React.Component {
 
     render() {
         const { ondernemer, messages, plaatsvoorkeuren, markten } = this.props;
+        const sollicitaties = ondernemer.sollicitaties.filter(soll => {
+            return !soll.doorgehaald && markten.map(markt => markt.id).includes(soll.markt.id);
+        });
 
         return (
             <Page messages={messages}>
@@ -27,16 +30,19 @@ class OndernemerDashboard extends React.Component {
                     <OndernemerProfileHeader user={ondernemer} />
                 </Header>
                 <Content>
-                    <a
-                        href={`/algemene-voorkeuren/${ondernemer.erkenningsnummer}/?next=/dashboard/${
-                            ondernemer.erkenningsnummer
-                        }/`}
-                        className="Button Button--secondary"
-                    >
-                        Profiel
-                    </a>
                     <h1 className="h1">Mijn markten</h1>
-                    <OndernemerAanwezigheid {...this.props} />
+                    <ul className="LinkList">
+                        {sollicitaties.map(soll => (
+                            <li key={soll.markt.id} className="LinkList__item">
+                                <a
+                                    className="Link"
+                                    href={`/markt-detail/${ondernemer.erkenningsnummer}/${soll.markt.id}`}
+                                >
+                                    {soll.markt.naam}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
                 </Content>
             </Page>
         );
