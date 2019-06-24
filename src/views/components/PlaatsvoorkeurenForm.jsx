@@ -98,7 +98,30 @@ class PlaatsvoorkeurenForm extends React.Component {
                                 ? entriesFiltered.filter((e, j) => j >= i && j < i + newCount)
                                 : null;
                         })
-                        .filter(entry => !!entry);
+                        .filter(entry => !!entry)
+                        .sort((a, b) => b[0].priority - a[0].priority);
+
+                    const entriesSplit2 = entriesFiltered.reduce((total, entry, i) => {
+                        // const newCount = sollicitatie.status === 'vpl' ? sollicitatie.vastePlaatsen.length : 1;
+                        //
+                        // return i % newCount === 0
+                        //     ? entriesFiltered.filter((e, j) => j >= i && j < i + newCount)
+                        //     : null;
+
+                        if (!Array.isArray(total[entry.priority])) {
+                            total[entry.priority] = [];
+                        }
+                        total[entry.priority].push(entry);
+                        return total;
+                    }, {});
+                    const entriesSplitSorted = Object.keys(entriesSplit2)
+                        .sort()
+                        .reduce((result, key) => {
+                            result[key] = entriesSplit2[key];
+                            return result;
+                        }, {});
+                    console.log(entriesSplitSorted);
+                    // .filter(entry => !!entry).sort((a, b) => b[0].priority - a[0].priority);
 
                     return (
                         <div key={markt.id} className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
@@ -125,11 +148,8 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         key={i}
                                         style={{ ...{ order: entries[0].priority } }}
                                     >
-                                        <h5 className="PlaatsvoorkeurenForm__list-item__heading">
-                                            {entriesArray.length - i}e keuze
-                                        </h5>
+                                        <h5 className="PlaatsvoorkeurenForm__list-item__heading">{i + 1}e keuze</h5>
                                         {entries
-                                            .filter(entry => entry.marktId === markt.id)
                                             .sort((a, b) => b.priority - a.priority)
                                             .map(
                                                 ({ marktId, plaatsId, priority, index, readonly, newItem }, n, arr) => (
@@ -154,25 +174,21 @@ class PlaatsvoorkeurenForm extends React.Component {
                                                             name={`plaatsvoorkeuren[${index}][priority]`}
                                                             defaultValue={priority || arr.length - n}
                                                         />
-                                                        <MarktplaatsSelect
+                                                        <input
+                                                            type="text"
                                                             name={`plaatsvoorkeuren[${index}][plaatsId]`}
-                                                            id={`voorkeur-${index}`}
-                                                            markt={markt}
                                                             value={plaatsId}
-                                                            readonly={newItem ? true : readonly}
-                                                            optional={true}
-                                                            newItem={newItem}
+                                                            size="50"
+                                                            className="PlaatsvoorkeurenForm__plaatsId"
                                                         />
                                                     </div>
                                                 ),
                                             )}
-                                        {entries[0].priority !== 1 && entries[0].priority !== 2 ? (
-                                            <div>
-                                                <a href="#" data-handler="remove-voorkeur">
-                                                    verwijder
-                                                </a>
-                                            </div>
-                                        ) : null}
+                                        <div>
+                                            <a href="#" data-handler="remove-voorkeur">
+                                                verwijder
+                                            </a>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -184,7 +200,9 @@ class PlaatsvoorkeurenForm extends React.Component {
                                 data-used-plaatsen={`p=${entriesFiltered.map(entry => entry.plaatsId).join('&p=')}`}
                             >
                                 <div className="PlaatsvoorkeurenForm__list-item">
-                                    <h5 className="PlaatsvoorkeurenForm__list-item__heading">1e keuze</h5>
+                                    <h5 className="PlaatsvoorkeurenForm__list-item__heading">
+                                        {entriesSplit.length + 1}e keuze
+                                    </h5>
                                     {Array.from(Array(newPlaatsvoorkeurCount)).map((v, i) => (
                                         <div key={i} className={`PlaatsvoorkeurenForm__list-item__wrapper`}>
                                             <input
@@ -203,6 +221,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                                                 markt={markt}
                                                 readonly={true}
                                                 newItem={true}
+                                                optional={true}
                                             />
                                         </div>
                                     ))}

@@ -39,13 +39,22 @@
         display: flex;
     }
     &__list-item__wrapper + &__list-item__wrapper {
-        margin-left: 5px;
-        padding-left: 5px;
         &:before {
             content: "en";
-            margin-right: 5px;
             display: inline-block;
         }
+    }
+    &__plaatsId {
+        pointer-events: none;
+        border: none;
+        @include fontBold;
+        background-color: transparent;
+        text-align: center;
+        width: 50px;
+        font-size: $fs-50;
+    }
+    &__list-item__label {
+        display: none;
     }
     @media screen and (min-width: $screenMedium) {
         &__list-item {

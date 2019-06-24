@@ -13,12 +13,12 @@ const MarktplaatsSelect = ({ id, name, markt, value, optional, readonly, newItem
             }`}
         >
             <select className="Select Select--MarktplaatsSelect" {...attrs} disabled={readonly}>
-                {optional ? <option value="">Plaats</option> : null}
-                {(markt.marktplaatsen || []).sort(marktplaatsSort).map(plaats => (
-                    <option key={plaats.plaatsId} value={plaats.plaatsId} selected={plaats.plaatsId === value}>
-                        {plaats.plaatsId}
-                    </option>
-                ))}
+                {/*{optional ? <option value="">Plaats</option> : null}*/}
+                {/*{(markt.marktplaatsen || []).sort(marktplaatsSort).map(plaats => (*/}
+                {/*<option key={plaats.plaatsId} value={plaats.plaatsId} selected={plaats.plaatsId === value}>*/}
+                {/*{plaats.plaatsId}*/}
+                {/*</option>*/}
+                {/*))}*/}
             </select>
         </div>
     );

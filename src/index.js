@@ -14,7 +14,7 @@ const { isErkenningsnummer, slugifyMarkt } = require('./domain-knowledge.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
 const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
-const { tomorrow, nextWeek } = require('./util.js');
+const { splitByValueArray, tomorrow, nextWeek } = require('./util.js');
 const { mail } = require('./mail.js');
 const IndelingMail = require('./views/IndelingMail.jsx');
 const {
@@ -425,52 +425,6 @@ app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', ensureLoggedIn(), (req, res
     );
 });
 
-app.get('/api/0.0.1/markt/:marktId/plaats/:plaatsIds', ensureLoggedIn(), (req, res) => {
-    const plaatsIds = req.params.plaatsIds.split('-');
-
-    Promise.all([
-        getMarktPaginas(req.params.marktId),
-        getMarktProperties(req.params.marktId),
-        getMarktplaatsen(req.params.marktId),
-    ]).then(
-        ([paginas, marktProperties, marktplaatsen]) => {
-            res.set({
-                'Content-Type': 'application/json; charset=UTF-8',
-            });
-            const rows = (
-                marktProperties.rows ||
-                paginas.reduce(
-                    (list, pagina) => [
-                        ...list,
-                        ...pagina.indelingslijstGroup.map(group => group.plaatsList).filter(Array.isArray),
-                    ],
-                    [],
-                )
-            ).map(row => row.map(plaatsId => marktplaatsen.find(plaats => plaats.plaatsId === plaatsId)));
-
-            const expandable = rows
-                .reduce((total, row) => {
-                    row.reduce((t, plaats, i) => {
-                        if (plaatsIds.includes(plaats.plaatsId)) {
-                            row[i - 1] && total.push(row[i - 1].plaatsId);
-                            row[i + 1] && total.push(row[i + 1].plaatsId);
-                        }
-
-                        return t;
-                    }, []);
-
-                    return total;
-                }, [])
-                .filter(plaatsId => !plaatsIds.includes(plaatsId));
-
-            res.send(JSON.stringify(expandable));
-        },
-        err => {
-            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
-        },
-    );
-});
-
 app.get('/api/0.0.1/markt/:marktId/plaats-count/:count/', ensureLoggedIn(), (req, res) => {
     Promise.all([
         getMarktPaginas(req.params.marktId),
@@ -490,10 +444,14 @@ app.get('/api/0.0.1/markt/:marktId/plaats-count/:count/', ensureLoggedIn(), (req
                     ],
                     [],
                 )
-            ).map(row => row.map(plaatsId => marktplaatsen.find(plaats => plaats.plaatsId === plaatsId)));
+            ).map(row =>
+                row
+                    .map(plaatsId => marktplaatsen.find(plaats => plaats.plaatsId === plaatsId))
+                    .map(plaats => plaats.plaatsId),
+            );
 
-            // const rowFilterUserPlaatsen = req.query.p ?
-            const rowMinLength = rows.filter(row => row.length >= req.params.count);
+            const rowFilterUserPlaatsen = req.query.p ? splitByValueArray(rows, req.query.p) : rows;
+            const rowMinLength = rowFilterUserPlaatsen.filter(row => row.length >= req.params.count);
 
             res.send(JSON.stringify(rowMinLength));
         },
