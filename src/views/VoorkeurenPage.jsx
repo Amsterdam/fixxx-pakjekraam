@@ -10,13 +10,14 @@ class VoorkeurenPage extends React.Component {
         plaatsvoorkeuren: PropTypes.array.isRequired,
         markten: PropTypes.array.isRequired,
         ondernemer: PropTypes.object.isRequired,
+        messages: PropTypes.array,
         query: PropTypes.string,
         user: PropTypes.string,
     };
 
     render() {
         return (
-            <Page>
+            <Page messages={this.props.messages}>
                 <Content>
                     <PlaatsvoorkeurenForm
                         plaatsvoorkeuren={this.props.plaatsvoorkeuren}

@@ -15,7 +15,9 @@ class PlaatsvoorkeurenForm extends React.Component {
 
     render() {
         const { markten, ondernemer, plaatsvoorkeuren, query } = this.props;
-        const next = query.next ? query.next : `/voorkeuren/${ondernemer.erkenningsnummer}/`;
+        let next = query.next ? query.next : `/voorkeuren/${ondernemer.erkenningsnummer}/`;
+        next += '&error=plaatsvoorkeuren-saved';
+
         const hasVoorkeur = (marktId, plaatsId) =>
             plaatsvoorkeuren.some(voorkeur => voorkeur.marktId === marktId && voorkeur.plaatsId === plaatsId) ||
             ondernemer.sollicitaties.some(

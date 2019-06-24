@@ -222,11 +222,13 @@ app.get('/markt/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) =>
 const publicErrors = {
     INCORRECT_CREDENTIALS: 'incorrect-credentials',
     AANWEZIGHEID_SAVED: 'aanwezigheid-saved',
+    PLAATSVOORKEUEN_SAVED: 'plaatsvoorkeuren-saved',
 };
 
 const humanReadableMessage = {
     [publicErrors.INCORRECT_CREDENTIALS]: 'Uw gebruikersnaam of wachtwoord is incorrect.',
     [publicErrors.AANWEZIGHEID_SAVED]: 'De wijzigingen zijn met success doorgevoerd',
+    [publicErrors.PLAATSVOORKEUEN_SAVED]: 'Je plaatsvoorkeuren zijn met success doorgevoerd',
 };
 
 /*
@@ -625,7 +627,8 @@ app.post('/aanmelden/', ensureLoggedIn(), (req, res) => {
         );
 });
 
-const voorkeurenPage = (res, token, erkenningsNummer, query, currentMarktId) => {
+const voorkeurenPage = (req, res, token, erkenningsNummer, query, currentMarktId) => {
+    const messages = getQueryErrors(req.query);
     const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
     const marktenPromise = ondernemerPromise
         .then(ondernemer =>
@@ -649,18 +652,18 @@ const voorkeurenPage = (res, token, erkenningsNummer, query, currentMarktId) => 
 
     Promise.all([ondernemerPromise, marktenPromise, getOndernemerVoorkeuren(erkenningsNummer)]).then(
         ([ondernemer, markten, plaatsvoorkeuren]) => {
-            res.render('VoorkeurenPage', { ondernemer, markten, plaatsvoorkeuren, query, user: token });
+            res.render('VoorkeurenPage', { ondernemer, markten, plaatsvoorkeuren, query, user: token, messages });
         },
         err => errorPage(res, err),
     );
 };
 
 app.get('/voorkeuren/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
-    voorkeurenPage(res, req.user.token, req.params.erkenningsNummer, req.query);
+    voorkeurenPage(req, res, req.user.token, req.params.erkenningsNummer, req.query);
 });
 
 app.get('/voorkeuren/:erkenningsNummer/:marktId', ensureLoggedIn(), (req, res) => {
-    voorkeurenPage(res, req.user.token, req.params.erkenningsNummer, req.query, req.params.marktId);
+    voorkeurenPage(req, res, req.user.token, req.params.erkenningsNummer, req.query, req.params.marktId);
 });
 
 const algemeneVoorkeurenPage = (req, res, token, erkenningsNummer, marktId, marktDate) => {
