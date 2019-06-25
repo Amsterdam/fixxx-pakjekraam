@@ -7,6 +7,7 @@ import {
     IMarktindelingSeed,
     IMarktondernemer,
     IMarktplaats,
+    IObstakelBetween,
     IPlaatsvoorkeur,
     IRSVP,
     IToewijzing,
@@ -98,9 +99,17 @@ const createToewijzing = (plaats: IMarktplaats, ondernemer: IMarktondernemer): I
     erkenningsNummer: ondernemer.erkenningsNummer,
 });
 
+const matchesObstakel = (plaatsA: string, plaatsB: string, obstakel: IObstakelBetween): boolean =>
+    (obstakel.kraamA === plaatsA && obstakel.kraamB === plaatsB) ||
+    (obstakel.kraamA === plaatsB && obstakel.kraamB === plaatsA);
+
 const logOpenPlaatsen = (indeling: IMarktindeling) => log(`Nog ${indeling.openPlaatsen.length} vrije plaatsen`);
 
-const getAdjacentPlaatsen = (rows: IMarktplaats[][], plaatsId: PlaatsId): IMarktplaats[] =>
+const getAdjacentPlaatsen = (
+    rows: IMarktplaats[][],
+    plaatsId: PlaatsId,
+    obstakels: IObstakelBetween[] = [],
+): IMarktplaats[] =>
     rows
         .map(row => {
             const targetIndex = row.findIndex(plaats => plaats.plaatsId === plaatsId);
@@ -109,7 +118,8 @@ const getAdjacentPlaatsen = (rows: IMarktplaats[][], plaatsId: PlaatsId): IMarkt
                 ? row.filter((_, index) => index === targetIndex - 1 || index === targetIndex + 1)
                 : [];
         })
-        .reduce(flatten);
+        .reduce(flatten, [])
+        .filter(plaatsB => !obstakels.some(obstakel => matchesObstakel(plaatsId, plaatsB.plaatsId, obstakel)));
 
 /*
  * Returns adjacent places in either direction,
@@ -117,7 +127,12 @@ const getAdjacentPlaatsen = (rows: IMarktplaats[][], plaatsId: PlaatsId): IMarkt
  * The number of adjacent spots can be greater than  the number of steps, if a number
  * of spots is available in either direction.
  */
-const getAdjacentPlaatsenRecursive = (rows: IMarktplaats[][], plaatsId: string, steps: number = 1): string[] => {
+const getAdjacentPlaatsenRecursive = (
+    rows: IMarktplaats[][],
+    plaatsId: string,
+    steps: number = 1,
+    obstakels: IObstakelBetween[] = [],
+): string[] => {
     let plaatsen: string[] = [plaatsId],
         prevPlaatsen: string[] = [],
         i = 0;
@@ -127,7 +142,7 @@ const getAdjacentPlaatsenRecursive = (rows: IMarktplaats[][], plaatsId: string, 
         prevPlaatsen = plaatsen;
 
         const adjacentPlaatsen = newPlaatsen
-            .map(p => getAdjacentPlaatsen(rows, p))
+            .map(p => getAdjacentPlaatsen(rows, p, obstakels))
             .reduce(flatten, [])
             .map(({ plaatsId }) => plaatsId);
 
@@ -141,9 +156,13 @@ const getAdjacentPlaatsenRecursive = (rows: IMarktplaats[][], plaatsId: string, 
     return plaatsen;
 };
 
-const getAdjacentPlaatsenForMultiple = (rows: IMarktplaats[][], plaatsIds: PlaatsId[]): IMarktplaats[] =>
+const getAdjacentPlaatsenForMultiple = (
+    rows: IMarktplaats[][],
+    plaatsIds: PlaatsId[],
+    obstakels: IObstakelBetween[] = [],
+): IMarktplaats[] =>
     plaatsIds
-        .map(plaatsId => getAdjacentPlaatsen(rows, plaatsId))
+        .map(plaatsId => getAdjacentPlaatsen(rows, plaatsId, obstakels))
         .reduce(flatten, [])
         .reduce(unique, []);
 
@@ -223,9 +242,10 @@ const findOptimalSpot = (
         console.log(`Ondernemer ${ondernemer.erkenningsNummer} wil in één keer ${aantalPlaatsen} plaatsen`);
         const prevMogelijkePlaatsen = mogelijkePlaatsen;
         mogelijkePlaatsen = mogelijkePlaatsen.filter(p => {
-            const adjacent = getAdjacentPlaatsenRecursive(markt.rows, p.plaatsId, aantalPlaatsen - 1);
+            const expansionSize = aantalPlaatsen - 1;
+            const adjacent = getAdjacentPlaatsenRecursive(markt.rows, p.plaatsId, expansionSize, markt.obstakels);
 
-            return adjacent.length >= aantalPlaatsen;
+            return adjacent.length >= expansionSize;
         });
 
         console.log(
@@ -410,7 +430,7 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
     });
 
     if (currentPlaatsen < aantalPlaatsen) {
-        const adjacent = getAdjacentPlaatsenForMultiple(indeling.rows, plaatsen);
+        const adjacent = getAdjacentPlaatsenForMultiple(indeling.rows, plaatsen, indeling.obstakels);
         const openAdjacent = intersection(adjacent, indeling.openPlaatsen);
 
         log(

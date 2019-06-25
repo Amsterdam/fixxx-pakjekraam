@@ -5,6 +5,7 @@ import {
     IMarktondernemerVoorkeur,
     IPlaatsvoorkeur,
     IMarktplaats,
+    IObstakelBetween,
     IRSVP,
 } from './markt.model';
 
@@ -18,6 +19,7 @@ export interface IMarktScenario {
     aLijst: IMarktondernemer[];
     branches: IBranche[];
     rows: IMarktplaats[][];
+    obstakels: IObstakelBetween[];
     expansionLimit?: number;
 }
 
@@ -29,6 +31,7 @@ export interface IMarktScenarioStub {
     aLijst?: IMarktondernemer[];
     branches?: IBranche[];
     rows?: string[][];
+    obstakels?: IObstakelBetween[];
     expansionLimit?: number;
 }
 

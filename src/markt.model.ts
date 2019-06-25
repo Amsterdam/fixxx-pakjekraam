@@ -35,6 +35,7 @@ export interface IMarkt {
     marktplaatsen: IMarktplaats[];
     voorkeuren: IPlaatsvoorkeur[];
     ondernemers: IMarktondernemer[];
+    obstakels: IObstakelBetween[];
     expansionLimit: number;
 }
 

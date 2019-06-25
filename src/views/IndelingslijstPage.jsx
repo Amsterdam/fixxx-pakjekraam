@@ -21,7 +21,7 @@ class IndelingslijstenPage extends React.Component {
         const {
             aanmeldingen,
             branches,
-            geografie,
+            obstakels,
             marktplaatsen,
             ondernemers,
             paginas,
@@ -32,7 +32,7 @@ class IndelingslijstenPage extends React.Component {
         const { datum, type, user } = this.props;
         const plaatsList = arrayToObject(marktplaatsen, 'plaatsId');
         const vphl = ondernemersToLocatieKeyValue(ondernemers);
-        const obstakels = obstakelsToLocatieKeyValue(geografie.obstakels);
+        const obstakelList = obstakelsToLocatieKeyValue(obstakels);
         const aanmeldingenOrdered = aanmeldingen.sort((a, b) => b.updatedAt - a.updatedAt);
 
         return (
@@ -63,7 +63,7 @@ class IndelingslijstenPage extends React.Component {
                                             page={pageItem}
                                             plaatsList={plaatsList}
                                             vphl={vphl}
-                                            obstakelList={obstakels}
+                                            obstakelList={obstakelList}
                                             aanmeldingen={aanmeldingenOrdered}
                                             toewijzingen={toewijzingen}
                                             markt={markt}

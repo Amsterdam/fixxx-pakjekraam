@@ -231,7 +231,7 @@ const getIndelingslijstInput = (token, marktId, marktDate) => {
             branches,
             ondernemers,
             paginas,
-            geografie,
+            obstakels: geografie.obstakels || [],
             markt,
             marktplaatsen,
             aanwezigheid: aanmeldingen,
