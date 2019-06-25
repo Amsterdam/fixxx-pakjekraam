@@ -76,8 +76,8 @@ const formatDate = date =>
     new Date(date).getDate() +
     ' ' +
     formatMonth(date).slice(0, shortMonthCharCount) +
-    ' ' +
-    new Date(date).getFullYear();
+    " '" +
+    String(new Date(date).getFullYear()).substr(2, 2);
 
 const today = () => new Date().toISOString().replace(/T.+/, '');
 

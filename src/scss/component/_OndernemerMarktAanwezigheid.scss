@@ -13,12 +13,20 @@ $itemMinWidth: 265px;
         &--not-attending {
             .OndernemerMarktAanwezigheid__date,
             .OndernemerMarktAanwezigheid__week-day {
-                text-decoration: line-through;
                 color: $neutral-grey3;
             }
             .OndernemerMarktAanwezigheid__attending {
-                font-weight: 100;
             }
+        }
+        &--today:before {
+            content: "";
+            position: absolute;
+            left: -18px;
+            bottom: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: $neutral-grey5;
         }
     }
     &__list-item-wrapper {
@@ -29,30 +37,14 @@ $itemMinWidth: 265px;
         margin: 0 0 $vm4;
     }
     &__attending {
-        width: 80px;
+        width: 100px;
         text-align: right;
         display: inline-block;
     }
     &__divider {
-        display: flex;
-        margin: 15px 0;
-        position: relative;
-        color: $neutral-grey4;
+        @include fontBold;
+        display: inline-block;
+        margin: $vm4 0 $vm1 0;
         white-space: nowrap;
-        &:after,
-        &:before {
-            content: "";
-            display: block;
-            height: 1px;
-            width: 50%;
-            margin-top: 12px;
-            background-color: $neutral-grey4;
-        }
-        &:after {
-            margin-left: 2%;
-        }
-        &:before {
-            margin-right: 2%;
-        }
     }
 }
