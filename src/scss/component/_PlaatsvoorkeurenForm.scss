@@ -4,10 +4,13 @@
         flex-direction: column-reverse;
     }
     &__list-item {
-        display: flex;
+        //display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
-        margin-bottom: $vm2;
+        margin-bottom: $vm4;
+        .well {
+            position: relative;
+            padding-right: 50px;
+        }
         &--hidden {
             display: none;
         }
@@ -31,17 +34,47 @@
     }
     &__list-item__label {
         display: block;
+        margin-bottom: 5px;
     }
     &__list-item__heading {
         width: 100%;
+        margin: 0;
+    }
+    &__list-item__value {
+        @include fontBold;
     }
     &__list-item__wrapper {
-        display: flex;
+        //display: flex;
+        display: inline-block;
+    }
+    &__list-item__tools {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    &__list-item__tools-del {
+        display: block;
+        font-size: 0;
+        text-decoration: none;
+        width: 40px;
+        height: 40px;
+        &:hover {
+            background-color: $support-focus;
+        }
+    }
+    &__list-item__tools-del:after {
+        @include icon($icon-Trash-Bin);
+        font-size: 18px;
+        display: inline-block;
+        line-height: 40px;
+        width: 40px;
+        text-align: center;
     }
     &__list-item__wrapper + &__list-item__wrapper {
         &:before {
             content: "en";
             display: inline-block;
+            margin: 0 10px;
         }
     }
     &__plaatsId {
@@ -52,9 +85,6 @@
         text-align: center;
         width: 50px;
         font-size: $fs-50;
-    }
-    &__list-item__label {
-        display: none;
     }
     @media screen and (min-width: $screenMedium) {
         &__list-item {

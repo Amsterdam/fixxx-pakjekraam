@@ -4,6 +4,7 @@ const { formatOndernemerName } = require('../../domain-knowledge.js');
 const { flatten } = require('../../util.js');
 const MarktplaatsSelect = require('./MarktplaatsSelect');
 const Button = require('./Button');
+const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 
 class PlaatsvoorkeurenForm extends React.Component {
     propTypes = {
@@ -74,22 +75,11 @@ class PlaatsvoorkeurenForm extends React.Component {
                 encType="application/x-www-form-urlencoded"
                 // data-decorator="voorkeur-form"
             >
-                <h1>Voorkeuren voor {formatOndernemerName(ondernemer)}</h1>
-                <p>
-                    Erkenningsnummer: <strong>{ondernemer.erkenningsnummer}</strong>
-                    <input
-                        id="erkenningsNummer"
-                        type="hidden"
-                        name="erkenningsNummer"
-                        defaultValue={ondernemer.erkenningsnummer}
-                    />
-                </p>
                 {markten.map(markt => {
                     const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id);
                     const newPlaatsvoorkeurCount =
                         sollicitatie.vastePlaatsen.length > 0 ? sollicitatie.vastePlaatsen.length : 1;
                     const entriesFiltered = allEntries.filter(entry => entry.marktId === markt.id);
-                    // fixme: vastePlaatsen related new item count
                     const entriesSplit = entriesFiltered
                         .map((entry, i) => {
                             const newCount = sollicitatie.status === 'vpl' ? sollicitatie.vastePlaatsen.length : 1;
@@ -101,35 +91,9 @@ class PlaatsvoorkeurenForm extends React.Component {
                         .filter(entry => !!entry)
                         .sort((a, b) => b[0].priority - a[0].priority);
 
-                    const entriesSplit2 = entriesFiltered.reduce((total, entry, i) => {
-                        /*
-                         * const newCount = sollicitatie.status === 'vpl' ? sollicitatie.vastePlaatsen.length : 1;
-                         *
-                         * return i % newCount === 0
-                         *     ? entriesFiltered.filter((e, j) => j >= i && j < i + newCount)
-                         *     : null;
-                         */
-
-                        if (!Array.isArray(total[entry.priority])) {
-                            total[entry.priority] = [];
-                        }
-                        total[entry.priority].push(entry);
-
-                        return total;
-                    }, {});
-                    const entriesSplitSorted = Object.keys(entriesSplit2)
-                        .sort()
-                        .reduce((result, key) => {
-                            result[key] = entriesSplit2[key];
-
-                            return result;
-                        }, {});
-                    console.log(entriesSplitSorted);
-                    // .filter(entry => !!entry).sort((a, b) => b[0].priority - a[0].priority);
-
                     return (
                         <div key={markt.id} className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
-                            <h2>{markt.naam}</h2>
+                            <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
                             {sollicitatie.status === 'vpl' ? (
                                 <div className="well well--dark">
                                     Je vaste plaats{sollicitatie.vastePlaatsen.length > 1 ? 'en' : null}:{' '}
@@ -139,7 +103,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                             <div className="PlaatsvoorkeurenForm__list">
                                 {entriesSplit.map((entries, i, entriesArray) => (
                                     <div
-                                        className={`PlaatsvoorkeurenForm__list-item well ${
+                                        className={`PlaatsvoorkeurenForm__list-item ${
                                             entries[0].priority !== 1 && entries[0].priority !== 2
                                                 ? 'PlaatsvoorkeurenForm__list-item--sortable'
                                                 : null
@@ -153,51 +117,56 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         style={{ ...{ order: entries[0].priority } }}
                                     >
                                         <h5 className="PlaatsvoorkeurenForm__list-item__heading">{i + 1}e keuze</h5>
-                                        {entries
-                                            .sort((a, b) => b.priority - a.priority)
-                                            .map(
-                                                ({ marktId, plaatsId, priority, index, readonly, newItem }, n, arr) => (
-                                                    <div
-                                                        key={index}
-                                                        className={`PlaatsvoorkeurenForm__list-item__wrapper`}
-                                                    >
-                                                        <label
-                                                            className="PlaatsvoorkeurenForm__list-item__label"
-                                                            htmlFor={`voorkeur-${index}`}
-                                                            style={{ display: 'none' }}
+                                        <div className="well">
+                                            <span className="PlaatsvoorkeurenForm__list-item__label">Plaatsen:</span>
+                                            {entries
+                                                .sort((a, b) => b.priority - a.priority)
+                                                .map(
+                                                    (
+                                                        { marktId, plaatsId, priority, index, readonly, newItem },
+                                                        n,
+                                                        arr,
+                                                    ) => (
+                                                        <div
+                                                            key={index}
+                                                            className={`PlaatsvoorkeurenForm__list-item__wrapper`}
                                                         >
-                                                            Voorkeursplaats {n + 1}:
-                                                        </label>
-                                                        <input
-                                                            type="hidden"
-                                                            name={`plaatsvoorkeuren[${index}][marktId]`}
-                                                            defaultValue={markt.id}
-                                                        />
-                                                        <input
-                                                            type="hidden"
-                                                            name={`plaatsvoorkeuren[${index}][priority]`}
-                                                            defaultValue={priority || arr.length - n}
-                                                        />
-                                                        <input
-                                                            type="text"
-                                                            name={`plaatsvoorkeuren[${index}][plaatsId]`}
-                                                            value={plaatsId}
-                                                            size="50"
-                                                            className="PlaatsvoorkeurenForm__plaatsId"
-                                                        />
-                                                    </div>
-                                                ),
-                                            )}
-                                        <div>
-                                            <a href="#" data-handler="remove-voorkeur">
-                                                verwijder
-                                            </a>
+                                                            <input
+                                                                type="hidden"
+                                                                name={`plaatsvoorkeuren[${index}][marktId]`}
+                                                                defaultValue={markt.id}
+                                                            />
+                                                            <input
+                                                                type="hidden"
+                                                                name={`plaatsvoorkeuren[${index}][priority]`}
+                                                                defaultValue={priority || arr.length - n}
+                                                            />
+                                                            <input
+                                                                type="hidden"
+                                                                name={`plaatsvoorkeuren[${index}][plaatsId]`}
+                                                                value={plaatsId}
+                                                            />
+                                                            <span className="PlaatsvoorkeurenForm__list-item__value">
+                                                                {plaatsId}
+                                                            </span>
+                                                        </div>
+                                                    ),
+                                                )}
+                                            <div className="PlaatsvoorkeurenForm__list-item__tools">
+                                                <a
+                                                    href="#"
+                                                    data-handler="remove-voorkeur"
+                                                    className="PlaatsvoorkeurenForm__list-item__tools-del"
+                                                >
+                                                    verwijder
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                             <div
-                                className="PlaatsvoorkeurenForm__prototype well"
+                                className="PlaatsvoorkeurenForm__prototype"
                                 data-plaatsvoorkeur-count={newPlaatsvoorkeurCount}
                                 data-markt-id={markt.id}
                                 data-decorator="plaatsvoorkeur-prototype"
@@ -207,28 +176,34 @@ class PlaatsvoorkeurenForm extends React.Component {
                                     <h5 className="PlaatsvoorkeurenForm__list-item__heading">
                                         {entriesSplit.length + 1}e keuze
                                     </h5>
-                                    {Array.from(Array(newPlaatsvoorkeurCount)).map((v, i) => (
-                                        <div key={i} className={`PlaatsvoorkeurenForm__list-item__wrapper`}>
-                                            <input
-                                                type="hidden"
-                                                name={`plaatsvoorkeuren[${entriesFiltered.length + i}][marktId]`}
-                                                defaultValue={markt.id}
-                                            />
-                                            <input
-                                                type="hidden"
-                                                name={`plaatsvoorkeuren[${entriesFiltered.length + i}][priority]`}
-                                                defaultValue={2}
-                                            />
-                                            <MarktplaatsSelect
-                                                name={`plaatsvoorkeuren[${entriesFiltered.length + i}][plaatsId]`}
-                                                id={`voorkeur-${entriesFiltered.length + i}`}
-                                                markt={markt}
-                                                readonly={true}
-                                                newItem={true}
-                                                optional={true}
-                                            />
-                                        </div>
-                                    ))}
+                                    <div className="well">
+                                        <span className="PlaatsvoorkeurenForm__list-item__label">
+                                            Kies een marktplaats
+                                        </span>
+
+                                        {Array.from(Array(newPlaatsvoorkeurCount)).map((v, i) => (
+                                            <div key={i} className={`PlaatsvoorkeurenForm__list-item__wrapper`}>
+                                                <input
+                                                    type="hidden"
+                                                    name={`plaatsvoorkeuren[${entriesFiltered.length + i}][marktId]`}
+                                                    defaultValue={markt.id}
+                                                />
+                                                <input
+                                                    type="hidden"
+                                                    name={`plaatsvoorkeuren[${entriesFiltered.length + i}][priority]`}
+                                                    defaultValue={2}
+                                                />
+                                                <MarktplaatsSelect
+                                                    name={`plaatsvoorkeuren[${entriesFiltered.length + i}][plaatsId]`}
+                                                    id={`voorkeur-${entriesFiltered.length + i}`}
+                                                    markt={markt}
+                                                    readonly={true}
+                                                    newItem={true}
+                                                    optional={true}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                             <p className="InputField InputField--submit">

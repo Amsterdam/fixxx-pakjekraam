@@ -4,6 +4,7 @@ const Page = require('./components/Page.jsx');
 const PlaatsvoorkeurenForm = require('./components/PlaatsvoorkeurenForm.jsx');
 const PropTypes = require('prop-types');
 const Header = require('./components/Header');
+const OndernemerProfileHeader = require('./components/OndernemerProfileHeader');
 
 class VoorkeurenPage extends React.Component {
     propTypes = {
@@ -18,6 +19,9 @@ class VoorkeurenPage extends React.Component {
     render() {
         return (
             <Page messages={this.props.messages}>
+                <Header user={this.props.user}>
+                    <OndernemerProfileHeader user={this.props.ondernemer} />
+                </Header>
                 <Content>
                     <PlaatsvoorkeurenForm
                         plaatsvoorkeuren={this.props.plaatsvoorkeuren}

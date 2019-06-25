@@ -4,6 +4,7 @@
     'remove-voorkeur': function(e){
         var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
             container = _closest(this, '.PlaatsvoorkeurenForm__list'),
+            prototype = _closest(this, '.PlaatsvoorkeurenForm__markt').querySelector('.PlaatsvoorkeurenForm__prototype .PlaatsvoorkeurenForm__list-item__heading'),
             _resetCopy = function(){
                 var i,
                     plaatsSetsList = container.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
@@ -11,6 +12,7 @@
                 for (i = 0;i < plaatsSetsListArray.length; i++){
                     plaatsSetsListArray[i].querySelector('.PlaatsvoorkeurenForm__list-item__heading').textContent = (i + 1) + 'e keuze';
                 }
+                prototype.textContent = (i + 1) + 'e keuze';
             };
         voorkeur.parentNode.removeChild(voorkeur);
         _resetCopy();
@@ -29,38 +31,7 @@
             next.querySelector('input[name*="[priority]"]').value = priority;
             next.style.order = priority;
         }
-    },
-    'add-voorkeur': function(e){
-        var prototype = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
-            voorkeurContainer = _closest(this, '.PlaatsvoorkeurenForm__list'),
-            newVoorkeur = prototype.cloneNode(true),
-            i,
-            _resetPrototype = function(prototype){
-
-            },
-            _addNew = function(voorkeur){
-                var selects = voorkeur.querySelectorAll('select');
-                voorkeurContainer.appendChild(voorkeur);
-                for(i = 0; i < selects.length; i++){
-                    selects[i].setAttribute('name', selects[i].dataset.name);
-                    selects[i].setAttribute('id', selects[i].dataset.id);
-                }
-                voorkeur.classList.add('PlaatsvoorkeurenForm__list-item--sortable');
-            },
-            _setPrioroty = function () {
-
-            }
-
-        _resetPrototype(prototype);
-        _addNew(newVoorkeur);
-        _setPrioroty();
-
-        console.log(prototype);
-        console.log(voorkeurContainer);
-        console.log(newVoorkeur);
-
-
-    },
+    }
   };
 
   var decorators = {
@@ -190,7 +161,7 @@
                 }
                 if(nextSelect){
                     _setSelectDisabledState(nextSelect, false);
-                    _clearOPtion(nextSelect);
+                    _clearOption(nextSelect);
                     for (j = 0; j < data.length; j++){
                         nextSelect.add(_createOption(data[j]));
                     }
