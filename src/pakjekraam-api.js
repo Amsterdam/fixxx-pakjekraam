@@ -190,7 +190,10 @@ const getIndelingslijstInput = (token, marktId, marktDate) => {
     const enrichedOndernemers = Promise.all([ondernemersPromise, voorkeurenPromise]).then(([ondernemers, voorkeuren]) =>
         ondernemers.map(ondernemer => ({
             ...ondernemer,
-            voorkeur: voorkeuren.find(voorkeur => voorkeur.erkenningsNummer === ondernemer.erkenningsNummer),
+            voorkeur: {
+                ...ondernemer.voorkeur,
+                ...voorkeuren.find(voorkeur => voorkeur.erkenningsNummer === ondernemer.erkenningsNummer),
+            },
         })),
     );
 
