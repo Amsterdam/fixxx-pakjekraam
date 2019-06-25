@@ -23,8 +23,12 @@ const OndernemerMarktAlgVoorkeuren = ({ markt, sollicitatie, ondernemer, voorkeu
                         <dt>Eigen materiaal</dt>
                         <dd>{voorkeur.inrichting ? voorkeur.inrichting : 'geen'}</dd>
                     </dl>
-                ) : null}
-                <span className="font-gray">
+                ) : (
+                    <p>
+                        <strong>Je hebt nog geen marktprofiel ingesteld.</strong>
+                    </p>
+                )}
+                <span>
                     Bij het indienen houden we rekening met voorrang op brancheplaatsen, bakplaatsen en eigen materiaal
                     plaatsen
                 </span>

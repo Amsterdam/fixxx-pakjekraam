@@ -50,8 +50,12 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query 
                             ))}
                         </ul>
                     </div>
-                ) : null}
-                <span className="font-gray">
+                ) : (
+                    <p>
+                        <strong>Je hebt nog geen plaatsvoorkeuren doorgeven</strong>
+                    </p>
+                )}
+                <span>
                     Je krijgt deze plaats{sollicitatie.vastePlaatsen.length > 1 ? 'en' : null} automatisch op de dagen
                     die je als &apos;aanwezig&apos; aangeeft.
                 </span>

@@ -2,6 +2,9 @@
     padding: $vm2 $hm2;
     background-color: $neutral-grey1;
 
+    & > *:first-child {
+        margin-top: 0;
+    }
     &--dark {
         background-color: $primary-darkblue;
         color: $primary-white;
