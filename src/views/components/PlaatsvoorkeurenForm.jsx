@@ -16,8 +16,6 @@ class PlaatsvoorkeurenForm extends React.Component {
 
     render() {
         const { markten, ondernemer, plaatsvoorkeuren, query } = this.props;
-        let next = query.next ? query.next : `/voorkeuren/${ondernemer.erkenningsnummer}/`;
-        next += '&error=plaatsvoorkeuren-saved';
 
         const hasVoorkeur = (marktId, plaatsId) =>
             plaatsvoorkeuren.some(voorkeur => voorkeur.marktId === marktId && voorkeur.plaatsId === plaatsId) ||
@@ -75,7 +73,14 @@ class PlaatsvoorkeurenForm extends React.Component {
                 encType="application/x-www-form-urlencoded"
                 // data-decorator="voorkeur-form"
             >
+                <input
+                    id="erkenningsNummer"
+                    type="hidden"
+                    name="erkenningsNummer"
+                    defaultValue={ondernemer.erkenningsnummer}
+                />
                 {markten.map(markt => {
+                    const next = query.next ? query.next : `/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/`;
                     const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id);
                     const newPlaatsvoorkeurCount =
                         sollicitatie.vastePlaatsen.length > 0 ? sollicitatie.vastePlaatsen.length : 1;
@@ -95,9 +100,9 @@ class PlaatsvoorkeurenForm extends React.Component {
                         <div key={markt.id} className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
                             <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
                             {sollicitatie.status === 'vpl' ? (
-                                <div className="well well--dark">
+                                <div className="well well--dark margin-bottom">
                                     Je vaste plaats{sollicitatie.vastePlaatsen.length > 1 ? 'en' : null}:{' '}
-                                    <strong>{sollicitatie.vastePlaatsen.join(' & ')}</strong>
+                                    <strong>{sollicitatie.vastePlaatsen.join(' en ')}</strong>
                                 </div>
                             ) : null}
                             <div className="PlaatsvoorkeurenForm__list">
@@ -211,11 +216,23 @@ class PlaatsvoorkeurenForm extends React.Component {
                                     className="Button Button--secondary"
                                     type="submit"
                                     name="redirectTo"
-                                    value={`/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=${next}`}
+                                    value={`/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=${
+                                        query.next
+                                            ? query.next
+                                            : `/markt-detail/${ondernemer.erkenningsnummer}/${markt.id}/`
+                                    }`}
                                 >
                                     Opslaan
                                 </button>
-                                <Button label="terug" href={next} type="tertiary" />
+                                <Button
+                                    label="terug"
+                                    href={
+                                        query.next
+                                            ? query.next
+                                            : `/markt-detail/${ondernemer.erkenningsnummer}/${markt.id}/`
+                                    }
+                                    type="tertiary"
+                                />
                             </p>
                         </div>
                     );

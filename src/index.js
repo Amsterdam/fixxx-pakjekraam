@@ -845,7 +845,7 @@ app.post('/voorkeuren/', ensureLoggedIn(), (req, res) => {
     };
 
     // TODO: Remove and insert in one transaction
-
+    console.log(redirectTo);
     removeExisting()
         .then(insertFormData)
         .then(

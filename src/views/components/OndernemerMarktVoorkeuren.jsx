@@ -43,9 +43,9 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query 
                     <Button
                         label="Wijzig plaatsvoorkeuren"
                         type={`secondary`}
-                        href={`/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=/dashboard/${
+                        href={`/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=/markt-detail/${
                             ondernemer.erkenningsnummer
-                        }`}
+                        }/${markt.id}`}
                     />
                 </div>
             ) : null}
