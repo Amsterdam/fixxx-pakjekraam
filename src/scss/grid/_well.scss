@@ -7,7 +7,7 @@
         color: $primary-white;
     }
     & + & {
-        margin-top: 20px;
+        margin-top: $vm4;
     }
     &--max-width {
         max-width: $fieldsetMaxWidth - (2 * $hm2);

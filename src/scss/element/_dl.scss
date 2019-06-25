@@ -1,0 +1,15 @@
+dl {
+    display: flex;
+    flex-wrap: wrap;
+    dd,
+    dt {
+        margin: 0;
+    }
+    dd {
+        width: 60%;
+        @include fontBold;
+    }
+    dt {
+        width: 40%;
+    }
+}

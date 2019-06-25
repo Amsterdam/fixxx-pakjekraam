@@ -1,6 +1,12 @@
 .hidden {
     display: none;
 }
+.margin-top {
+    margin-top: $vm4;
+}
 .margin-bottom {
     margin-bottom: $vm4;
+}
+.font-gray {
+    color: $neutral-grey4;
 }

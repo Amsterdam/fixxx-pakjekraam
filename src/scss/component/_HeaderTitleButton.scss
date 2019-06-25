@@ -1,0 +1,10 @@
+.HeaderTitleButton {
+    margin-top: $vm5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    *:last-child {
+        margin-left: $hm4;
+    }
+}

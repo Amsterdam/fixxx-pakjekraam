@@ -10,7 +10,7 @@
             width: 100%;
         }
     }
-    @media screen and (min-width: $screenMedium) {
+    @media screen and (min-width: $screenMediumPlus) {
         &--responsive {
             justify-content: space-between;
             flex-direction: row;
