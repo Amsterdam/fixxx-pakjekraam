@@ -449,9 +449,7 @@ app.get('/api/0.0.1/markt/:marktId/plaats-count/:count/', ensureLoggedIn(), (req
                     .map(plaatsId => marktplaatsen.find(plaats => plaats.plaatsId === plaatsId))
                     .map(plaats => plaats.plaatsId),
             );
-
-            const rowFilterUserPlaatsen = req.query.p ? splitByValueArray(rows, req.query.p) : rows;
-            const rowMinLength = rowFilterUserPlaatsen.filter(row => row.length >= req.params.count);
+            const rowMinLength = rows.filter(row => row.length >= req.params.count);
 
             res.send(JSON.stringify(rowMinLength));
         },
