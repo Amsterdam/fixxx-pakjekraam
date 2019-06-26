@@ -60,6 +60,59 @@
                     }
                 }
               }
+              _getAvailableOptions = function (data) {
+                  var newData = [];
+                  var skip = [];
+                  var intersected = [];
+                  var input = [
+                      ['34', '33'],
+                      ['51', '52', '53'],
+                      ['51', '49', '50'],
+                      ['56', '57', '58'],
+                      ['140', '141'],
+                  ];
+                  input = input.filter(function(i){return i.length === 3});
+                  var sorted = input;
+                  for (var i = 0; i < data.length; i++) {
+                      var indexs  = [];
+                      intersected.push([]);
+                      //for (var j = 0; j < data[i].length; j++){
+                      for (var k = 0; k < input.length; k++) {
+                          // console.log(data[i].filter(function(s){return -1 !== input[k].indexOf(s)}));
+                          if (data[i].filter(function(s){return -1 !== input[k].indexOf(s)}).length > 0){
+                            intersected[i] = intersected[i].concat(input[k]).unique();
+                          }
+
+                          for (var l = 0; l < input[k].length; l++) {
+                              //console.log(data[i].indexOf(input[k][l]) === data[i].length-1);
+                              if (data[i].indexOf(input[k][l]) === data[i].length-1){
+                                skip.push([i, data[i].length-1, input[k][l]]);
+                              }
+                              if (data[i].indexOf(input[k][l]) === 0){
+                                skip.push([i, 0, input[k][l]]);
+                              }
+                              // data[i].indexOf(input[k][l]) >= 0 && indexs.push(input[k][l]);
+                          }
+                      }
+                      //sorted.push(indexs.sort());
+                      // }
+                  }
+                  for(var i = 0; i < sorted.length; i++){
+                    for(var j = 0; j < sorted.length; j++){
+                              if (i !== j){
+                                  // console.log(sorted[i]);
+                                  // console.log(sorted[j]);
+                                  // console.log(i + ' - ' + j);
+                                  // console.log('---');
+                                  //console.log(sorted[i].filter(function(s){return -1 !== sorted[j].indexOf(s)}));
+                              }
+
+                  }
+                  }
+                  console.log(skip);
+                  console.log(intersected);
+
+              },
               _init = function(){
                   var i, selects = _getSelects();
                   for(i = 0; i < selects.length; i++){
@@ -69,7 +122,8 @@
                   helpers.simpleAjax(plaatsenApi ,function(response){
                         if (response.status >= 200 && response.status < 400) {
                             plaatsen = JSON.parse(response.response);
-                            _updateFirstSelect(plaatsen);
+                            //_updateFirstSelect(plaatsen);
+                            _getAvailableOptions(plaatsen);
                         }
                   })
                   form.addEventListener('change', function(e){
@@ -279,3 +333,22 @@ if (!String.prototype.includes) {
     }
   };
 }
+if (!Array.prototype.indexOf) {
+  Array.prototype.indexOf = function(obj, start) {
+    for (var i = (start || 0), j = this.length; i < j; i += 1) {
+      if (this[i] === obj) { return i; }
+    }
+    return -1;
+  }
+}
+Array.prototype.unique = function() {
+    var a = this.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+};
