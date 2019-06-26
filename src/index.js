@@ -102,6 +102,9 @@ const keycloak = new Keycloak(
     },
 );
 
+// Trick `keycloak-connect` into thinking we're running on HTTPS
+app.set('trust proxy', true);
+
 app.use(
     session({
         store: sessionStore,
