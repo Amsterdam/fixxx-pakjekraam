@@ -1,3 +1,4 @@
+const ReactDOMServer = require('react-dom/server');
 const PgPool = require('pg-pool');
 const React = require('react');
 const connectPg = require('connect-pg-simple');
@@ -18,7 +19,9 @@ const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = requ
 const { splitByValueArray, tomorrow, nextWeek } = require('./util.js');
 const { mail } = require('./mail.js');
 const IndelingMail = require('./views/IndelingMail.jsx');
+
 const {
+    getMailContext,
     getAllBranches,
     getMarktProperties,
     getMarktPaginas,
@@ -26,6 +29,7 @@ const {
     getIndelingslijstInput,
     getIndelingVoorkeur,
     getIndelingVoorkeuren,
+    getVoorkeurenByMarktByOndernemer,
     getAanmeldingen,
     getAanmeldingenByOndernemer,
     getOndernemerVoorkeuren,
@@ -155,54 +159,107 @@ app.get('/permission/marktondernemer', keycloak.protect('marktondernemer'), (req
     res.end('marktondernemer: OK!');
 });
 
-app.get('/email/', ensureLoggedIn(), function(req, res) {
-    res.render('EmailPage');
+app.get('/mail/:marktId/:marktDate/:erkenningsNummer/voorkeuren', ensureLoggedIn(), function(req, res) {
+    const mailContextPromise = getMailContext(
+        req.user.token,
+        req.params.marktId,
+        req.params.erkenningsNummer,
+        req.params.marktDate,
+    );
+    console.log(mailContextPromise);
+    mailContextPromise.then(
+        ([markt, voorkeuren]) => {
+            //const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id);
+            // const Comp = (sollicitatie.status === 'vpl')
+            res.send('IndelingMail');
+
+            // res.render('IndelingMail', props);
+
+            // if (req.query.mailto) {
+            //     const to = req.query.mailto;
+            //     mail({
+            //         from: to,
+            //         to,
+            //         subject: 'Marktindeling',
+            //         react: <IndelingMail {...props} />,
+            //     }).then(
+            //         () => {
+            //             console.log(`E-mail is verstuurd naar ${to}`);
+            //         },
+            //         err => {
+            //             console.error(`E-mail sturen naar ${to} is mislukt`, err);
+            //         },
+            //     );
+            // }
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+        },
+    );
 });
 
 app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', ensureLoggedIn(), function(req, res) {
-    getIndelingslijst(req.user.token, req.params.marktId, req.params.marktDate).then(markt => {
-        const { marktDate } = req.params;
-        const ondernemer = markt.ondernemers.find(
-            ({ erkenningsNummer }) => erkenningsNummer === req.params.erkenningsNummer,
-        );
-        const inschrijving = markt.aanwezigheid.find(
-            ({ erkenningsNummer }) => erkenningsNummer === req.params.erkenningsNummer,
-        );
-        const toewijzing = markt.toewijzingen.find(
-            ({ erkenningsNummer }) => erkenningsNummer === req.params.erkenningsNummer,
-        );
-        const afwijzing = markt.afwijzingen.find(
-            ({ erkenningsNummer }) => erkenningsNummer === req.params.erkenningsNummer,
-        );
+    const voorkeurenPromise = getVoorkeurenByMarktByOndernemer(req.params.marktId, req.params.erkenningsNummer);
+    const indelingslijsPromise = getIndelingslijst(req.user.token, req.params.marktId, req.params.marktDate);
 
-        const props = {
-            markt,
-            marktDate,
-            ondernemer,
-            inschrijving,
-            toewijzing,
-            afwijzing,
-        };
-
-        res.render('IndelingMail', props);
-
-        if (req.query.mailto) {
-            const to = req.query.mailto;
-            mail({
-                from: to,
-                to,
-                subject: 'Marktindeling',
-                react: <IndelingMail {...props} />,
-            }).then(
-                () => {
-                    console.log(`E-mail is verstuurd naar ${to}`);
-                },
-                err => {
-                    console.error(`E-mail sturen naar ${to} is mislukt`, err);
-                },
+    Promise.all([indelingslijsPromise, voorkeurenPromise]).then(
+        ([markt, voorkeuren]) => {
+            const { marktDate } = req.params;
+            const ondernemer = markt.ondernemers.find(
+                ({ erkenningsNummer }) => erkenningsNummer === req.params.erkenningsNummer,
             );
-        }
-    });
+            const inschrijving = markt.aanwezigheid.find(
+                ({ erkenningsNummer }) => erkenningsNummer === req.params.erkenningsNummer,
+            );
+            const toewijzing = markt.toewijzingen.find(
+                ({ erkenningsNummer }) => erkenningsNummer === req.params.erkenningsNummer,
+            );
+            const afwijzing = markt.afwijzingen.find(
+                ({ erkenningsNummer }) => erkenningsNummer === req.params.erkenningsNummer,
+            );
+
+            const props = {
+                markt,
+                marktDate,
+                ondernemer,
+                inschrijving,
+                toewijzing,
+                afwijzing,
+                voorkeuren,
+            };
+
+            const emailTypes = {
+                mail01: 'EmailVplPlaatsConfirm',
+                mail02: 'EmailVplVoorkeurConfirm',
+                mail03: 'EmailVplAfgemeldConfirm',
+                mail04: 'EmailSollNoPlaatsConfirm',
+                mail05: 'EmailSollPlaatsGuaranteeConfirm',
+                mail06: 'EmailSollVoorkeurConfirm',
+                mail07: 'EmailSollRandomPlaatsConfirm',
+                mail08: 'EmailSollDayConfirm',
+                mail09: 'EmailOndernemerVoorkeurChangeConfirm',
+            };
+            res.render(emailTypes[req.query.type] || 'IndelingMail', props);
+
+            if (req.query.mailto) {
+                const to = req.query.mailto;
+                mail({
+                    from: to,
+                    to,
+                    subject: 'Marktindeling',
+                    react: <IndelingMail {...props} />,
+                }).then(
+                    () => {
+                        console.log(`E-mail is verstuurd naar ${to}`);
+                    },
+                    err => {
+                        console.error(`E-mail sturen naar ${to} is mislukt`, err);
+                    },
+                );
+            }
+        },
+        err => errorPage(res, err),
+    );
 });
 
 app.get('/markt/', ensureLoggedIn(), function(req, res) {

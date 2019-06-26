@@ -51,6 +51,12 @@ const getPlaatsvoorkeuren = marktId => {
     });
 };
 
+const getVoorkeurenByMarktByOndernemer = (marktId, erkenningsNummer) => {
+    return models.plaatsvoorkeur.findAll({
+        where: { marktId, erkenningsNummer },
+    });
+};
+
 const indelingVoorkeurPrio = voorkeur => (voorkeur.marktId ? 1 : 0) | (voorkeur.marktDate ? 2 : 0);
 const indelingVoorkeurSort = (a, b) => numberSort(indelingVoorkeurPrio(a), indelingVoorkeurPrio(b));
 
@@ -263,6 +269,37 @@ const getIndelingslijst = (token, marktId, date) =>
         return indeling;
     });
 
+const getMailContext = (token, marktId, erkenningsNummer, marktDate) =>
+    Promise.all([
+        getIndelingslijst(token, marktId, marktDate),
+        getVoorkeurenByMarktByOndernemer(marktId, erkenningsNummer),
+    ]).then(([markt, voorkeuren]) => {
+        console.log('markt');
+        //console.log(markt);
+        // const ondernemer = markt.ondernemers.find(
+        //     ({ erkenningsNr }) => erkenningsNr === erkenningsNummer,
+        // );
+        // const inschrijving = markt.aanwezigheid.find(
+        //     ({ erkenningsNr }) => erkenningsNr === erkenningsNummer,
+        // );
+        // const toewijzing = markt.toewijzingen.find(
+        //     ({ erkenningsNr }) => erkenningsNr === erkenningsNummer,
+        // );
+        // const afwijzing = markt.afwijzingen.find(
+        //     ({ erkenningsNr }) => erkenningsNr === erkenningsNummer,
+        // );
+
+        return {
+            markt,
+            // marktDate,
+            // ondernemer,
+            // inschrijving,
+            // toewijzing,
+            // afwijzing,
+            voorkeuren,
+        };
+    });
+
 const getSollicitantenlijstInput = (token, marktId, date) =>
     Promise.all([
         getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
@@ -290,6 +327,7 @@ const getMarkten = token =>
         .then(markten => markten.filter(markt => fs.existsSync(`data/${slugifyMarkt(markt.id)}/locaties.json`)));
 
 module.exports = {
+    getMailContext,
     getAllBranches,
     getMarktPaginas,
     getMarktProperties,
@@ -297,6 +335,7 @@ module.exports = {
     getAanmeldingenByOndernemer,
     getPlaatsvoorkeuren,
     getOndernemerVoorkeuren,
+    getVoorkeurenByMarktByOndernemer,
     getBranches,
     getMarktplaatsen,
     getIndelingVoorkeur,

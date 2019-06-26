@@ -7,7 +7,7 @@ const { isVast } = require('../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
 
-class IndelingMail extends React.Component {
+class EmailVplPlaatsConfirm extends React.Component {
     propTypes = {
         markt: PropTypes.object.isRequired,
         marktDate: PropTypes.string.isRequired,
@@ -15,12 +15,10 @@ class IndelingMail extends React.Component {
         toewijzing: PropTypes.object,
         afwijzing: PropTypes.object,
         inschrijving: PropTypes.object,
-        voorkeuren: PropTypes.object,
     };
 
     render() {
-        const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
-        console.log(toewijzing);
+        const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving } = this.props;
 
         return (
             <EmailBase
@@ -66,4 +64,4 @@ class IndelingMail extends React.Component {
     }
 }
 
-module.exports = IndelingMail;
+module.exports = EmailVplPlaatsConfirm;

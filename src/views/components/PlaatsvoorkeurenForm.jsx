@@ -80,6 +80,10 @@ class PlaatsvoorkeurenForm extends React.Component {
                     name="erkenningsNummer"
                     defaultValue={ondernemer.erkenningsnummer}
                 />
+                <p>
+                    Je kunt de plaatsvoorkeuren voor morgen tot 21.00 wijzigen. Wijzig je de plaatsvoorkeuren na 21.00
+                    uur dan gelden deze voor de dagen na morgen.
+                </p>
                 {markten.map(markt => {
                     const next = query.next ? query.next : `/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/`;
                     const sollicitatie = ondernemer.sollicitaties.find(
