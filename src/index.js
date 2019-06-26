@@ -2,6 +2,7 @@ const PgPool = require('pg-pool');
 const React = require('react');
 const connectPg = require('connect-pg-simple');
 const express = require('express');
+const Keycloak = require('keycloak-connect');
 const reactViews = require('express-react-views');
 const session = require('express-session');
 const passport = require('passport');
@@ -83,11 +84,27 @@ app.get('/status/health', function(req, res) {
 // Required for Passport login form
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const sessionStore = new (connectPg(session))({
+    pool: pgPool,
+});
+
+const keycloak = new Keycloak(
+    { store: sessionStore },
+    {
+        realm: process.env.IAM_REALM,
+        'auth-server-url': process.env.IAM_URL,
+        'ssl-required': 'external',
+        resource: process.env.IAM_CLIENT_ID,
+        credentials: {
+            secret: process.env.IAM_CLIENT_SECRET,
+        },
+        'confidential-port': 0,
+    },
+);
+
 app.use(
     session({
-        store: new (connectPg(session))({
-            pool: pgPool,
-        }),
+        store: sessionStore,
         secret: process.env.APP_SECRET,
         resave: false,
         saveUninitialized: false,
@@ -97,6 +114,8 @@ app.use(
 // Initialize Passport and restore authentication state the session.
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(keycloak.middleware());
 
 app.use((req, res, next) => {
     if (req.user && req.user.expiry && Date.now() > Date.parse(req.user.expiry)) {
@@ -115,6 +134,22 @@ app.engine('jsx', reactViews.createEngine({ beautify: true }));
 
 app.get('/', function(req, res) {
     res.redirect('/markt/');
+});
+
+app.get('/permission/any', keycloak.protect(), (req, res) => {
+    res.end('OK!');
+});
+
+app.get('/permission/marktbureau', keycloak.protect('marktbureau'), (req, res) => {
+    res.end('marktbureau: OK!');
+});
+
+app.get('/permission/marktmeester', keycloak.protect('marktmeester'), (req, res) => {
+    res.end('marktmeester: OK!');
+});
+
+app.get('/permission/marktondernemer', keycloak.protect('marktondernemer'), (req, res) => {
+    res.end('marktondernemer: OK!');
 });
 
 app.get('/email/', ensureLoggedIn(), function(req, res) {

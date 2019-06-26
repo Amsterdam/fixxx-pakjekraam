@@ -77,6 +77,7 @@
     "express": "4.17.1",
     "express-react-views": "0.11.0",
     "express-session": "1.16.1",
+    "keycloak-connect": "6.0.1",
     "morgan": "1.9.1",
     "nodemailer": "6.2.1",
     "nodemailer-sendgrid-transport": "0.2.0",

@@ -1,0 +1,63 @@
+[
+  {
+    "realm": "master",
+    "users": [
+      {
+        "username": "pakjekraam",
+        "enabled": true,
+        "credentials": [
+          {
+            "type": "password",
+            "hashedSaltedValue": "cy2Q5RUrGKNSa/YcDS73T62eg8ZiAaFg+u1kuJijLxDPMq+kxjcJsKF+rbXXwErsZ9eaIJ4i6XM+lESII+7SiA==",
+            "salt": "XtyGNx4xdcDIlnvb5PnTYA==",
+            "hashIterations": 100000,
+            "algorithm": "pbkdf2-sha256"
+          }
+        ],
+        "realmRoles": ["admin"]
+      },
+      {
+        "username": "example-marktbureau",
+        "enabled": true,
+        "credentials": [
+          {
+            "type": "password",
+            "hashedSaltedValue": "cy2Q5RUrGKNSa/YcDS73T62eg8ZiAaFg+u1kuJijLxDPMq+kxjcJsKF+rbXXwErsZ9eaIJ4i6XM+lESII+7SiA==",
+            "salt": "XtyGNx4xdcDIlnvb5PnTYA==",
+            "hashIterations": 100000,
+            "algorithm": "pbkdf2-sha256"
+          }
+        ],
+        "realmRoles": ["marktbureau"]
+      },
+      {
+        "username": "example-marktmeester",
+        "enabled": true,
+        "credentials": [
+          {
+            "type": "password",
+            "hashedSaltedValue": "cy2Q5RUrGKNSa/YcDS73T62eg8ZiAaFg+u1kuJijLxDPMq+kxjcJsKF+rbXXwErsZ9eaIJ4i6XM+lESII+7SiA==",
+            "salt": "XtyGNx4xdcDIlnvb5PnTYA==",
+            "hashIterations": 100000,
+            "algorithm": "pbkdf2-sha256"
+          }
+        ],
+        "realmRoles": ["marktmeester"]
+      },
+      {
+        "username": "example-marktondernemer",
+        "enabled": true,
+        "credentials": [
+          {
+            "type": "password",
+            "hashedSaltedValue": "cy2Q5RUrGKNSa/YcDS73T62eg8ZiAaFg+u1kuJijLxDPMq+kxjcJsKF+rbXXwErsZ9eaIJ4i6XM+lESII+7SiA==",
+            "salt": "XtyGNx4xdcDIlnvb5PnTYA==",
+            "hashIterations": 100000,
+            "algorithm": "pbkdf2-sha256"
+          }
+        ],
+        "realmRoles": ["marktondernemer"]
+      }
+    ]
+  }
+]

@@ -22,6 +22,11 @@ services:
       - APP_NOTIFICATIE_FROM=tester@test.com
       - APP_SECRET=secret
       - DATABASE_URL=pgsql://pakjekraam:insecure@database:5432/pakjekraam
+      - IAM_CLIENT_ID=pakjekraam
+      - IAM_CLIENT_SECRET=insecure
+      - IAM_REALM=pakjekraam
+      - IAM_REALM_PUBKEY=
+      - IAM_URL=http://keycloak:8081/auth/
       - NODE_ENV=development
       - SWIFT_AUTH_URL=
       - SWIFT_CONTAINER_PREFIX=
@@ -41,3 +46,17 @@ services:
     volumes:
       - ./:/srv
       - /srv/node_modules
+  keycloak:
+    image: jboss/keycloak:6.0.1
+    environment:
+      DB_ADDR: database
+      DB_DATABASE: pakjekraam
+      DB_PASSWORD: insecure
+      DB_USER: pakjekraam
+      DB_VENDOR: postgres
+      KEYCLOAK_PASSWORD: insecure
+      KEYCLOAK_USER: pakjekraam
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./keycloak-add-user.json:/opt/jboss/keycloak/standalone/configuration/keycloak-add-user.json
