@@ -11,12 +11,31 @@ class VoorkeurenPage extends React.Component {
         plaatsvoorkeuren: PropTypes.array.isRequired,
         markten: PropTypes.array.isRequired,
         ondernemer: PropTypes.object.isRequired,
+        marktPaginas: PropTypes.object,
+        marktProperties: PropTypes.object,
+        marktPlaatsen: PropTypes.object,
         messages: PropTypes.array,
         query: PropTypes.string,
         user: PropTypes.object,
     };
 
     render() {
+        const { marktProperties, marktPaginas, marktPlaatsen } = this.props;
+        const rows = (
+            marktProperties.rows ||
+            marktPaginas.reduce(
+                (list, pagina) => [
+                    ...list,
+                    ...pagina.indelingslijstGroup.map(group => group.plaatsList).filter(Array.isArray),
+                ],
+                [],
+            )
+        ).map(row =>
+            row
+                .map(plaatsId => marktPlaatsen.find(plaats => plaats.plaatsId === plaatsId))
+                .map(plaats => plaats.plaatsId),
+        );
+
         return (
             <Page messages={this.props.messages}>
                 <Header user={this.props.user}>
@@ -27,6 +46,7 @@ class VoorkeurenPage extends React.Component {
                         plaatsvoorkeuren={this.props.plaatsvoorkeuren}
                         ondernemer={this.props.ondernemer}
                         markten={this.props.markten}
+                        rows={rows}
                         query={this.props.query}
                     />
                 </Content>

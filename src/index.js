@@ -450,18 +450,20 @@ app.get('/api/0.0.1/markt/:marktId/plaats-count/:count/', ensureLoggedIn(), (req
                     .map(plaats => plaats.plaatsId),
             );
             const rowMinLength = rows.filter(row => row.length >= req.params.count);
-            console.log(rowMinLength);
-            // const rowsObj = rowMinLength.reduce((total, row, i) => {
-            //     row.map((plaatsId, j) => {
-            //         let n = [];
-            //         (row[j - 1]) && n.push(row[j - 1]);
-            //         (row[j + 1]) && n.push(row[j + 1]);
-            //         if (n.length) {
-            //             total[plaatsId] = n;
-            //         }
-            //     })
-            //     return total;
-            // }, {})
+            /*
+             *console.log(rowMinLength);
+             * const rowsObj = rowMinLength.reduce((total, row, i) => {
+             *     row.map((plaatsId, j) => {
+             *         let n = [];
+             *         (row[j - 1]) && n.push(row[j - 1]);
+             *         (row[j + 1]) && n.push(row[j + 1]);
+             *         if (n.length) {
+             *             total[plaatsId] = n;
+             *         }
+             *     })
+             *     return total;
+             * }, {})
+             */
 
             res.send(JSON.stringify(rowMinLength));
         },
@@ -631,17 +633,30 @@ const voorkeurenPage = (req, res, token, erkenningsNummer, query, currentMarktId
             ),
         );
 
-    Promise.all([ondernemerPromise, marktenPromise, getOndernemerVoorkeuren(erkenningsNummer)]).then(
-        ([ondernemer, markten, plaatsvoorkeuren]) => {
-            res.render('VoorkeurenPage', { ondernemer, markten, plaatsvoorkeuren, query, user: token, messages });
+    Promise.all([
+        ondernemerPromise,
+        marktenPromise,
+        getOndernemerVoorkeuren(erkenningsNummer),
+        getMarktPaginas(currentMarktId),
+        getMarktProperties(currentMarktId),
+        getMarktplaatsen(currentMarktId),
+    ]).then(
+        ([ondernemer, markten, plaatsvoorkeuren, marktPaginas, marktProperties, marktPlaatsen]) => {
+            res.render('VoorkeurenPage', {
+                ondernemer,
+                markten,
+                plaatsvoorkeuren,
+                marktPaginas,
+                marktProperties,
+                marktPlaatsen,
+                query,
+                user: token,
+                messages,
+            });
         },
         err => errorPage(res, err),
     );
 };
-
-app.get('/voorkeuren/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
-    voorkeurenPage(req, res, req.user.token, req.params.erkenningsNummer, req.query);
-});
 
 app.get('/voorkeuren/:erkenningsNummer/:marktId', ensureLoggedIn(), (req, res) => {
     voorkeurenPage(req, res, req.user.token, req.params.erkenningsNummer, req.query, req.params.marktId);

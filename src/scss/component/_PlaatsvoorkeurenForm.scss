@@ -9,7 +9,8 @@
         margin-bottom: $vm4;
         .well {
             position: relative;
-            padding-right: 50px;
+            display: flex;
+            flex-wrap: wrap;
         }
         &--hidden {
             display: none;
@@ -32,9 +33,13 @@
             }
         }
     }
+    &__list-item--sortable .well {
+        padding-right: 50px;
+    }
     &__list-item__label {
         display: block;
         margin-bottom: 5px;
+        width: 100%;
     }
     &__list-item__heading {
         width: 100%;
@@ -43,14 +48,132 @@
     &__list-item__value {
         @include fontBold;
     }
-    &__list-item__wrapper {
-        //display: flex;
-        display: inline-block;
+    &__list-item__wrapper__add {
+        .no-options & {
+            display: none;
+            pointer-events: none;
+        }
     }
-    &__list-item__tools {
+    &__remove-wrapper,
+    &__add-wrapper {
+        display: inline-block;
+        width: 129px;
+        height: 36px;
+        background-color: $primary-darkblue;
+        font-size: 0;
+        text-decoration: none;
+        transition: all 0.3s;
+        padding: 3px 0;
+        position: relative;
+        &:after {
+            content: "plaats uitbreiding";
+            color: $primary-white;
+            font-size: $fs-40;
+            line-height: 17px;
+            @include fontBold;
+            padding: 0 0 0 40px;
+            display: inline-block;
+            width: 40px;
+        }
+        &:before {
+            content: "+";
+            color: $primary-white;
+            font-size: $fs-90;
+            line-height: 40px;
+            @include fontBold;
+            padding: 0;
+            display: inline-block;
+            text-align: center;
+            width: 40px;
+            position: absolute;
+            height: 38px;
+            top: 0;
+        }
+        &:hover {
+            background-color: $primary-darkblue-darker;
+        }
+        &.disabled {
+            pointer-events: none;
+            background-color: $neutral-grey3;
+            &:after,
+            &:before {
+                color: $neutral-grey4;
+            }
+        }
+    }
+    &__remove-wrapper {
+        &:after {
+            content: "plaats verkleinen";
+        }
+        &:before {
+            content: "-";
+        }
+    }
+    &__list__tools {
+        width: 100%;
+        margin-top: 20px;
+        * + * {
+            margin-left: 10px;
+        }
+    }
+    &__list-item__wrapper__add {
+        width: 100%;
+    }
+    &__list-item__wrapper__remove {
+        display: none;
+        font-size: 0;
+        text-decoration: none;
         position: absolute;
         right: 0;
         top: 0;
+        text-align: center;
+        width: 44px;
+        height: 44px;
+        background-color: $primary-darkblue;
+
+        color: $primary-white;
+        &:after {
+            @include icon($icon-Close);
+            color: $primary-white;
+            font-size: $fs-80;
+            line-height: 42px;
+        }
+        &:hover {
+            background-color: $primary-darkblue;
+            &:after {
+                color: $primary-white;
+            }
+        }
+    }
+    &__list-item__wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        &:after {
+            content: "en";
+            display: inline-block;
+            width: 50px;
+            text-align: center;
+        }
+
+        &:nth-last-child(2):after {
+            display: none;
+        }
+        &:nth-last-child(2) .PlaatsvoorkeurenForm__list-item__wrapper__remove {
+            display: inline-block;
+        }
+        &:nth-child(2) {
+            padding-right: 0;
+        }
+        &:nth-child(2) .PlaatsvoorkeurenForm__list-item__wrapper__remove {
+            display: none !important;
+        }
+    }
+    &__list-item__tools {
+        position: absolute;
+        right: 10px;
+        top: 10px;
     }
     &__list-item__tools-del {
         display: block;
@@ -58,24 +181,24 @@
         text-decoration: none;
         width: 40px;
         height: 40px;
+        background-color: $primary-darkblue;
         &:hover {
-            background-color: $support-focus;
+            background-color: $primary-darkblue-darker;
         }
     }
     &__list-item__tools-del:after {
         @include icon($icon-Trash-Bin);
-        font-size: 18px;
+        font-size: 20px;
         display: inline-block;
         line-height: 40px;
         width: 40px;
         text-align: center;
+        color: $primary-white;
     }
-    &__list-item__wrapper + &__list-item__wrapper {
-        &:before {
-            content: "en";
-            display: inline-block;
-            margin: 0 10px;
-        }
+    &__list-item__wrapper {
+    }
+    &__list-item__wrapper:last-child:after {
+        display: none;
     }
     &__plaatsId {
         pointer-events: none;
@@ -89,6 +212,13 @@
     @media screen and (min-width: $screenMedium) {
         &__list-item {
             justify-content: normal;
+        }
+        &__list-item--sortable .well {
+            padding-right: 70px;
+        }
+        &__list-item__tools {
+            right: 30px;
+            top: 30px;
         }
     }
 }

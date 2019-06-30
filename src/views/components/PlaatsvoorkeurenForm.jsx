@@ -11,11 +11,12 @@ class PlaatsvoorkeurenForm extends React.Component {
         plaatsvoorkeuren: PropTypes.array.isRequired,
         markten: PropTypes.array.isRequired,
         ondernemer: PropTypes.object.isRequired,
+        rows: PropTypes.array.isRequired,
         query: PropTypes.string,
     };
 
     render() {
-        const { markten, ondernemer, plaatsvoorkeuren, query } = this.props;
+        const { markten, ondernemer, plaatsvoorkeuren, query, rows } = this.props;
 
         const hasVoorkeur = (marktId, plaatsId) =>
             plaatsvoorkeuren.some(voorkeur => voorkeur.marktId === marktId && voorkeur.plaatsId === plaatsId) ||
@@ -86,18 +87,30 @@ class PlaatsvoorkeurenForm extends React.Component {
                         sollicitatie.vastePlaatsen.length > 0 ? sollicitatie.vastePlaatsen.length : 1;
                     const entriesFiltered = allEntries.filter(entry => entry.marktId === markt.id);
                     const entriesSplit = entriesFiltered
-                        .map((entry, i) => {
-                            const newCount = sollicitatie.status === 'vpl' ? sollicitatie.vastePlaatsen.length : 1;
+                        .sort((a, b) => b.priority - a.priority)
+                        .reduce((t, e) => {
+                            !t.includes(e.priority) && t.push(e.priority);
 
-                            return i % newCount === 0
-                                ? entriesFiltered.filter((e, j) => j >= i && j < i + newCount)
-                                : null;
-                        })
-                        .filter(entry => !!entry)
-                        .sort((a, b) => b[0].priority - a[0].priority);
+                            return t;
+                        }, [])
+                        .reduce((t, p) => {
+                            t.push(entriesFiltered.filter(e => e.priority === p));
+
+                            return t;
+                        }, []);
+                    const plaatsSets = entriesSplit.map(entry => entry.map(e => e.plaatsId));
+
+                    const marktRowsJSOM = () => {
+                        return { __html: 'var marktRows = ' + JSON.stringify(rows) + ';' };
+                    };
+                    const plaatsSetsJSON = () => {
+                        return { __html: 'var plaatsenSets = ' + JSON.stringify(plaatsSets) + ';' };
+                    };
 
                     return (
                         <div key={markt.id} className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
+                            <script dangerouslySetInnerHTML={marktRowsJSOM()} />
+                            <script dangerouslySetInnerHTML={plaatsSetsJSON()} />
                             <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
                             {sollicitatie.status === 'vpl' ? (
                                 <div className="well well--dark margin-bottom">
@@ -176,6 +189,8 @@ class PlaatsvoorkeurenForm extends React.Component {
                                 data-markt-id={markt.id}
                                 data-decorator="plaatsvoorkeur-prototype"
                                 data-used-plaatsen={`p=${entriesFiltered.map(entry => entry.plaatsId).join('&p=')}`}
+                                data-select-base-id={entriesFiltered.length}
+                                data-max-uitbreidingen={1}
                             >
                                 <div className="PlaatsvoorkeurenForm__list-item">
                                     <h5 className="PlaatsvoorkeurenForm__list-item__heading">
@@ -208,6 +223,22 @@ class PlaatsvoorkeurenForm extends React.Component {
                                                 />
                                             </div>
                                         ))}
+                                        <div className={`PlaatsvoorkeurenForm__list__tools`}>
+                                            <a
+                                                data-handler="add-plaats"
+                                                href="#"
+                                                className="PlaatsvoorkeurenForm__add-wrapper"
+                                            >
+                                                add
+                                            </a>
+                                            <a
+                                                data-handler="remove-plaats"
+                                                href="#"
+                                                className="PlaatsvoorkeurenForm__remove-wrapper"
+                                            >
+                                                remove
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

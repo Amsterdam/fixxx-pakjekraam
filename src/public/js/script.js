@@ -1,10 +1,118 @@
+if (!String.prototype.includes) {
+  String.prototype.includes = function(search, start) {
+    'use strict';
+    if (typeof start !== 'number') {
+      start = 0;
+    }
+
+    if (start + search.length > this.length) {
+      return false;
+    } else {
+      return this.indexOf(search, start) !== -1;
+    }
+  };
+}
+if (!Array.prototype.indexOf) {
+  Array.prototype.indexOf = function(obj, start) {
+    for (var i = (start || 0), j = this.length; i < j; i += 1) {
+      if (this[i] === obj) { return i; }
+    }
+    return -1;
+  }
+}
+Array.prototype.unique = function() {
+    var a = this.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i] === a[j])
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+};
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
+
+var splitArrayByGap = function (orgArr) {
+    var arr = [[]],
+        i;
+    for (i = 0; i < orgArr.length; i++) {
+        arr[arr.length - 1].push(orgArr[i]);
+        if (orgArr.indexOf(orgArr[i] + 1) === -1 && i < orgArr.length - 1) {
+            arr.push([]);
+        }
+    }
+    return arr;
+};
+var splitArrayByIndexes = function (orgArr, indexes) {
+    var arr = [[]], i;
+    for (i = 0; i < orgArr.length; i++) {
+        var currentIndex = orgArr.indexOf(orgArr[i]);
+        for (j = 0; j < indexes.length; j++){
+            if (currentIndex === indexes[j]){
+                arr.push([]);
+            }
+        }
+        arr[arr.length - 1].push(orgArr[i]);
+        if (orgArr.indexOf(orgArr[i] + 1) === -1 && i < orgArr.length - 1) {
+            arr.push([]);
+        }
+    }
+    return arr;
+};
+function topscore(arr, top) {
+    var current = null, cnt = 0, out = [];
+    arr = arr.sort();
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] != current) {
+            if (cnt >= top) {
+                out.push(arr[i - 1]);
+            }
+            current = arr[i];
+            cnt = 1;
+        } else {
+            cnt++;
+        }
+    }
+    return out;
+}
+
+function splitByArray(orgArr, valueArr) {
+    var newArr = [[]],
+        i;
+    for (i = 0; i < orgArr.length; i++) {
+        if (valueArr.indexOf(orgArr[i]) !== -1) {
+            newArr.push([]);
+        } else {
+            newArr[newArr.length - 1].push(orgArr[i]);
+        }
+    }
+    newArr = newArr.filter(function (i) {
+        return i.length;
+    });
+    return newArr;
+}
+
+
 !function (w, d) {
 
   var handlers = {
     'remove-voorkeur': function(e){
         var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
+            plaatsIdsInputs = voorkeur.querySelectorAll('[name*="[plaatsId]"]'),
             container = _closest(this, '.PlaatsvoorkeurenForm__list'),
-            prototype = _closest(this, '.PlaatsvoorkeurenForm__markt').querySelector('.PlaatsvoorkeurenForm__prototype .PlaatsvoorkeurenForm__list-item__heading'),
+            items = container.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
+            prototype = _closest(this, '.PlaatsvoorkeurenForm__markt').querySelector('.PlaatsvoorkeurenForm__prototype'),
+            prototypeHeading = _closest(this, '.PlaatsvoorkeurenForm__markt').querySelector('.PlaatsvoorkeurenForm__prototype .PlaatsvoorkeurenForm__list-item__heading'),
             _resetCopy = function(){
                 var i,
                     plaatsSetsList = container.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
@@ -12,10 +120,23 @@
                 for (i = 0;i < plaatsSetsListArray.length; i++){
                     plaatsSetsListArray[i].querySelector('.PlaatsvoorkeurenForm__list-item__heading').textContent = (i + 1) + 'e keuze';
                 }
-                prototype.textContent = (i + 1) + 'e keuze';
+                prototypeHeading.textContent = (i + 1) + 'e keuze';
             };
+        e && e.preventDefault();
+        var arr = [];
+        for (var i = 0; i < plaatsIdsInputs.length; i++){
+            arr.push(String(plaatsIdsInputs[i].value));
+        }
+        for (i = 0; i < plaatsenSets.length; i++){
+            if (arr.sort().join('-') === plaatsenSets[i].sort().join('-')){
+                break;
+            }
+        }
+        plaatsenSets.splice(i, 1);
         voorkeur.parentNode.removeChild(voorkeur);
         _resetCopy();
+
+        decorators['plaatsvoorkeur-prototype'].call(prototype);
     },
     'move-voorkeur': function(e){
         var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
@@ -24,27 +145,76 @@
             nodes = Array.prototype.slice.call(all).sort(function(a, b){return b.style.order - a.style.order}),
             index = nodes.indexOf(voorkeur),
             next = nodes[this.dataset.direction === 'up' ? index-1 : index+1];
-
         if (next) {
             voorkeur.querySelector('input[name*="[priority]"]').value = next.querySelector('input[name*="[priority]"]').value;
             voorkeur.style.order = next.querySelector('input[name*="[priority]"]').value;
             next.querySelector('input[name*="[priority]"]').value = priority;
             next.style.order = priority;
         }
+    },
+    'remove-plaats': function(e){
+        var self = this,
+            prototype = _closest(self, '.PlaatsvoorkeurenForm__prototype'),
+            wrappers = prototype.querySelectorAll('.PlaatsvoorkeurenForm__list-item__wrapper');
+        e && e.preventDefault();
+        wrappers[wrappers.length - 1].parentNode.removeChild(wrappers[wrappers.length - 1]);
+        decorators['plaatsvoorkeur-prototype'].call(prototype);
+    },
+    'add-plaats': function(e){
+        var self = this,
+            newWrapper = document.createElement('div'),
+            newSelectWrapper = document.createElement('div'),
+            prioInput = document.createElement('input'),
+            marktInput = document.createElement('input'),
+            plaatsIdSelect = document.createElement('select'),
+            prototype = _closest(self, '.PlaatsvoorkeurenForm__prototype'),
+            wrapper = _closest(self, '.PlaatsvoorkeurenForm__list__tools'),
+            list = prototype.querySelector('.PlaatsvoorkeurenForm__list'),
+            selectsCount = prototype.querySelectorAll('select').length,
+            marktId = prototype.dataset.marktId;
+            selectId = parseInt(prototype.dataset.selectBaseId) + selectsCount;
+        e && e.preventDefault();
+
+        newWrapper.classList.add('PlaatsvoorkeurenForm__list-item__wrapper');
+        newSelectWrapper.classList.add('Select__wrapper');
+        newSelectWrapper.classList.add('Select__wrapper--MarktplaatsSelect');
+        prioInput.setAttribute('type', 'hidden');
+        prioInput.setAttribute('name', 'plaatsvoorkeuren['+selectId+'][priority]');
+        prioInput.setAttribute('value', 2);
+        marktInput.setAttribute('type', 'hidden');
+        marktInput.setAttribute('name', 'plaatsvoorkeuren['+selectId+'][marktId]');
+        marktInput.setAttribute('value', marktId);
+        plaatsIdSelect.setAttribute('data-name', 'plaatsvoorkeuren['+selectId+'][plaatsId]');
+        plaatsIdSelect.setAttribute('data-id', 'voorkeur-'+selectId);
+        plaatsIdSelect.classList.add('Select');
+        plaatsIdSelect.classList.add('Select--MarktplaatsSelect');
+
+        newSelectWrapper.appendChild(plaatsIdSelect);
+        newWrapper.appendChild(prioInput);
+        newWrapper.appendChild(marktInput);
+        newWrapper.appendChild(newSelectWrapper);
+
+        wrapper.parentNode.insertBefore(newWrapper, wrapper);
+
+
+        decorators['plaatsvoorkeur-prototype'].call(prototype);
     }
   };
 
   var decorators = {
       'plaatsvoorkeur-prototype': function(){
           var self = this,
-              plaatsSets = this.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
+              removeBtn = this.querySelector('.PlaatsvoorkeurenForm__remove-wrapper'),
+              addBtn = this.querySelector('.PlaatsvoorkeurenForm__add-wrapper'),
               form = _closest(this, 'form'),
               marktId = this.dataset.marktId,
               usedPlaatsen = this.dataset.usedPlaatsen,
               count = this.dataset.plaatsvoorkeurCount,
-              plaatsenApi = '/api/0.0.1/markt/'+marktId+'/plaats-count/'+count+'/?' + usedPlaatsen,
+              maxUitbreidingen = this.dataset.maxUitbreidingen,
+              selects = [],
               plaatsen = [],
-              timeout,
+              currentPlaatsSets = plaatsenSets;
+              selectLoopCounter = 0,
               _getSelects = function(){
                 return self.querySelectorAll('select');
               }
@@ -59,134 +229,169 @@
                         selects[0].add(_createOption(data[i][j]));
                     }
                 }
+                selects[0].value = '';
               }
-              _getAvailableOptions = function (data) {
-                  var newData = [];
+              _setPlaatsen = function (data) {
+                  plaatsen = [];
+                  var plaatsCount = _getSelects().length;
                   var skip = [];
-                  var intersected = [];
                   var input = [
                       ['34', '33'],
                       ['51', '52', '53'],
                       ['51', '49', '50'],
+                      ['54', '55', '56'],
                       ['56', '57', '58'],
+                      ['122', '123', '124'],
                       ['140', '141'],
+                      ['136', '137', '138'],
+                      ['148', '149', '150'],
+                      ['140', '141', '142'],
+                      ['143', '144', '142'],
+                      ['141', '143', '142'],
+                      ["147", "148", "149"],
+                      ["147", "148", "146"],
+                      ["147", "145", "146"],
+                      ["144", "145", "146"],
                   ];
-                  input = input.filter(function(i){return i.length === 3});
-                  var sorted = input;
-                  for (var i = 0; i < data.length; i++) {
-                      var indexs  = [];
-                      intersected.push([]);
-                      //for (var j = 0; j < data[i].length; j++){
-                      for (var k = 0; k < input.length; k++) {
-                          // console.log(data[i].filter(function(s){return -1 !== input[k].indexOf(s)}));
-                          if (data[i].filter(function(s){return -1 !== input[k].indexOf(s)}).length > 0){
-                            intersected[i] = intersected[i].concat(input[k]).unique();
-                          }
+                  input = currentPlaatsSets;
+                  input = input.filter(function (i) {
+                      console.log(i);
+                      return i.length === plaatsCount;
+                  });
+                  var allPlaatsIds = [];
+                  for (i = 0; i < input.length; i++){
+                     var inputItem = input[i];
+                     allPlaatsIds = allPlaatsIds.concat(input[i]);
+                  }
+                  skip = skip.concat(topscore(allPlaatsIds, plaatsCount));
 
-                          for (var l = 0; l < input[k].length; l++) {
-                              //console.log(data[i].indexOf(input[k][l]) === data[i].length-1);
-                              if (data[i].indexOf(input[k][l]) === data[i].length-1){
-                                skip.push([i, data[i].length-1, input[k][l]]);
-                              }
-                              if (data[i].indexOf(input[k][l]) === 0){
-                                skip.push([i, 0, input[k][l]]);
-                              }
-                              // data[i].indexOf(input[k][l]) >= 0 && indexs.push(input[k][l]);
+                  for (i = 0; i < data.length; i++){
+                      var d = data[i], remove = [];
+                      for (j = 0; j < allPlaatsIds.length; j++){
+                          var index = d.indexOf(allPlaatsIds[j]);
+                          if (index === 0 || index === d.length - 1){
+                              remove.push(allPlaatsIds[j]);
                           }
                       }
-                      //sorted.push(indexs.sort());
-                      // }
+                      for (j = 0; j < remove.length; j++){
+                          d.remove(remove[j]);
+                      }
+                      var split = splitByArray(d, skip);
+                      for (j = 0; j < split.length; j++){
+                        plaatsen.push(split[j]);
+                      }
                   }
-                  for(var i = 0; i < sorted.length; i++){
-                    for(var j = 0; j < sorted.length; j++){
-                              if (i !== j){
-                                  // console.log(sorted[i]);
-                                  // console.log(sorted[j]);
-                                  // console.log(i + ' - ' + j);
-                                  // console.log('---');
-                                  //console.log(sorted[i].filter(function(s){return -1 !== sorted[j].indexOf(s)}));
-                              }
-
-                  }
-                  }
-                  console.log(skip);
-                  console.log(intersected);
-
+                  plaatsen = plaatsen.filter(function (i) {
+                      return i.length >= plaatsCount;
+                  });
               },
-              _init = function(){
-                  var i, selects = _getSelects();
-                  for(i = 0; i < selects.length; i++){
+              _init = function () {
+                  selects = _getSelects();
+                  var i,
+                      initialValue = selects[0].value;
+                  selectLoopCounter = 0;
+                  for (i = 0; i < selects.length; i++) {
                       _clearOption(selects[i]);
                       _setSelectDisabledState(selects[i], i !== 0);
                   }
-                  helpers.simpleAjax(plaatsenApi ,function(response){
-                        if (response.status >= 200 && response.status < 400) {
-                            plaatsen = JSON.parse(response.response);
-                            //_updateFirstSelect(plaatsen);
-                            _getAvailableOptions(plaatsen);
-                        }
-                  })
-                  form.addEventListener('change', function(e){
-                    _getData(e.target);
-                  });
+                  if (self.dataset.init !== 'set') {
+                      form.addEventListener('change', function (e) {
+                          _getData(e.target);
+                      });
+                  }
+                  self.dataset.init = 'set';
+                  _setPlaatsen(marktRows);
+                  console.log(plaatsen);
+                  removeBtn.classList[selects.length <= 1 ? 'add' : 'remove']('disabled');
+                  addBtn.classList[selects.length >= parseInt(count) + parseInt(maxUitbreidingen) ? 'add' : 'remove']('disabled');
+                  _updateFirstSelect(plaatsen);
+                  if (initialValue && selects[0]) {
+                      selects[0].value = initialValue;
+                      _getData(selects[0]);
+                  }
               },
               _clearOption = function(select) {
                     while (select.firstChild) {
                         select.removeChild(select.firstChild);
                     }
               },
-              _getNeigbours = function(existingPlaatsen){
-                var i, j, result = [];
-                for (i = 0; i < plaatsen.length; i++){
-                    for (j = 0; j < plaatsen[i].length; j++){
-                        if (existingPlaatsen.includes(plaatsen[i][j])){
-                            (plaatsen[i][j + 1]) && result.push(plaatsen[i][j + 1]);
-                            (plaatsen[i][j - 1]) && result.push(plaatsen[i][j - 1]);
-                        }
-                    }
-                }
-                return result.filter(function(x) { return !existingPlaatsen.includes(x); });
+              _getNeigbours = function (existingPlaatsen) {
+                  var i,
+                      j,
+                      result = [],
+                      skip = [];
+                  for (i = 0; i < plaatsen.length; i++) {
+                      for (j = 0; j < plaatsen[i].length; j++) {
+                          if (existingPlaatsen.includes(plaatsen[i][j])) {
+                              (plaatsen[i][j + 1]) && result.push(plaatsen[i][j + 1]);
+                              (plaatsen[i][j - 1]) && result.push(plaatsen[i][j - 1]);
+                          }
+                      }
+                  }
+                  result = result.filter(function (x) {
+                      return !existingPlaatsen.includes(x);
+                  });
+                  if (existingPlaatsen.length >= selects.length - 1) {
+                      for (j = 0; j < result.length; j++) {
+                          var newSet = existingPlaatsen.slice(0);
+                          newSet.push(result[j]);
+                          newSet = newSet.sort().join('-');
+                          for (i = 0; i < currentPlaatsSets.length; i++) {
+                              if (currentPlaatsSets[i].length === selects.length && currentPlaatsSets[i].sort().join('-') === newSet) {
+                                  skip.push(result[j]);
+                              }
+
+                          }
+
+                      }
+
+                  }
+                  result = result.filter(function (x) {
+                      return !skip.includes(x);
+                  });
+                  return result;
               },
               _nextSelect = function(select) {
-                var selectArray = Array.prototype.slice.call(_getSelects()),
+                var selectArray = Array.prototype.slice.call(selects),
                     next = selectArray[selectArray.indexOf(select) + 1];
-                    if (next)
-                        return next;
-                    return;
+
+                if (next)
+                    return next;
+                return;
 
               },
               _getSelectsData = function(select){
-                var selects = _getSelects(),
                     a = [], i;
                 for(i = 0; i < selects.length; i++){
                     if (selects[i].value){
                         a.push(selects[i].value);
                     }
                     if(selects[i] === select){
-                        i = select.length+1;
+                        i = selects.length+1;
                     }
                 }
                 return a;
               },
               _getEnableSave = function(){
-                var selects = _getSelects(), i;
+                var i;
                 for(i = 0; i < selects.length; i++){
                     selects[i].setAttribute('name', selects[i].dataset.name);
                     selects[i].setAttribute('id', selects[i].dataset.id);
                 }
               },
               _getData = function(select){
-                    var next = _nextSelect(select);
-                    if (select.value === ''){
-                        _init();
+                    var nextSelect = _nextSelect(select);
+                    if (select.value === '') {
                     }else{
-
-                     _updateSelects(select, _getNeigbours(_getSelectsData(select)));
-                    if (next){
-                        _getData(next);
-                    }else{
-                        _getEnableSave(select);
-                    }
+                        var options = _getNeigbours(_getSelectsData(select))
+                        self.classList[options.length ? 'remove' : 'add']('no-options');
+                        _updateSelects(select, nextSelect, options);
+                        if (nextSelect && options.length) {
+                            selectLoopCounter++;
+                            _getData(nextSelect);
+                        }else{
+                            _getEnableSave(select);
+                        }
                     }
               },
               _setSelectDisabledState = function(select, disabled){
@@ -199,22 +404,19 @@
                 option.text = value;
                 return option;
               },
-              _updateSelects = function(elem, data) {
-                var selects = _getSelects(),
-                    disable = false,
-                    nextSelect,
+              _updateSelects = function(select, nextSelect, data) {
+                var disable = false,
                     i, j;
-
                 for (i = 0; i < selects.length; i++){
-                    if (selects[i+1] && elem === selects[i]){
-                        nextSelect = selects[i+1];
+                    if (selects[i+1] && select === selects[i]){
                         i++;
                         disable = true;
                     }
                     _setSelectDisabledState(selects[i], disable);
                 }
-                if(nextSelect){
+                if(nextSelect && data.length){
                     _setSelectDisabledState(nextSelect, false);
+                    var nextSelectValue = nextSelect.value;
                     _clearOption(nextSelect);
                     for (j = 0; j < data.length; j++){
                         nextSelect.add(_createOption(data[j]));
@@ -319,36 +521,4 @@
 
 }(window, document.documentElement);
 
-if (!String.prototype.includes) {
-  String.prototype.includes = function(search, start) {
-    'use strict';
-    if (typeof start !== 'number') {
-      start = 0;
-    }
 
-    if (start + search.length > this.length) {
-      return false;
-    } else {
-      return this.indexOf(search, start) !== -1;
-    }
-  };
-}
-if (!Array.prototype.indexOf) {
-  Array.prototype.indexOf = function(obj, start) {
-    for (var i = (start || 0), j = this.length; i < j; i += 1) {
-      if (this[i] === obj) { return i; }
-    }
-    return -1;
-  }
-}
-Array.prototype.unique = function() {
-    var a = this.concat();
-    for(var i=0; i<a.length; ++i) {
-        for(var j=i+1; j<a.length; ++j) {
-            if(a[i] === a[j])
-                a.splice(j--, 1);
-        }
-    }
-
-    return a;
-};
