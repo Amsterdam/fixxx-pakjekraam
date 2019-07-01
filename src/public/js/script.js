@@ -12,6 +12,24 @@ if (!String.prototype.includes) {
     }
   };
 }
+if (!Array.prototype.filter) {
+  Array.prototype.filter = function(fun /*, thisp*/) {
+    var len = this.length >>> 0;
+    if (typeof fun != "function")
+    throw new TypeError();
+
+    var res = [];
+    var thisp = arguments[1];
+    for (var i = 0; i < len; i++) {
+      if (i in this) {
+        var val = this[i];
+        if (fun.call(thisp, val, i, this))
+        res.push(val);
+      }
+    }
+    return res;
+  };
+}
 if (!Array.prototype.indexOf) {
   Array.prototype.indexOf = function(obj, start) {
     for (var i = (start || 0), j = this.length; i < j; i += 1) {
@@ -70,20 +88,19 @@ var splitArrayByIndexes = function (orgArr, indexes) {
     return arr;
 };
 function topscore(arr, top) {
-    var current = null, cnt = 0, out = [];
-    arr = arr.sort();
+    var out = {}, outArr = [];
     for (var i = 0; i < arr.length; i++) {
-        if (arr[i] != current) {
-            if (cnt >= top) {
-                out.push(arr[i - 1]);
-            }
-            current = arr[i];
-            cnt = 1;
-        } else {
-            cnt++;
+        if (!out[arr[i]]){
+            out[arr[i]] = 0
+        }
+        out[arr[i]]++;
+    }
+    for (var k in out){
+        if (out.hasOwnProperty(k)){
+            (out[k] === top) && outArr.push(k);
         }
     }
-    return out;
+    return outArr;
 }
 
 function splitByArray(orgArr, valueArr) {
@@ -233,16 +250,23 @@ function splitByArray(orgArr, valueArr) {
               }
               _setPlaatsen = function (data) {
                   plaatsen = [];
-                  var plaatsCount = _getSelects().length;
+                  var plaatsCount = _getSelects().length, i, j;
                   var skip = [];
                   var input = [
+                      ['34'],
                       ['34', '33'],
+                      ['32', '33'],
+                      ['140', '141'],
                       ['51', '52', '53'],
                       ['51', '49', '50'],
                       ['54', '55', '56'],
                       ['56', '57', '58'],
+                      ['1', '2', '3', '4'],
+                      ['2', '3', '4', '5'],
+                      ['3', '4', '5', '6'],
+                      ['1', '2', '3'],
+                      ['2', '3', '4'],
                       ['122', '123', '124'],
-                      ['140', '141'],
                       ['136', '137', '138'],
                       ['148', '149', '150'],
                       ['140', '141', '142'],
@@ -255,18 +279,17 @@ function splitByArray(orgArr, valueArr) {
                   ];
                   input = currentPlaatsSets;
                   input = input.filter(function (i) {
-                      console.log(i);
                       return i.length === plaatsCount;
                   });
+                  console.log(input);
                   var allPlaatsIds = [];
                   for (i = 0; i < input.length; i++){
                      var inputItem = input[i];
                      allPlaatsIds = allPlaatsIds.concat(input[i]);
                   }
                   skip = skip.concat(topscore(allPlaatsIds, plaatsCount));
-
                   for (i = 0; i < data.length; i++){
-                      var d = data[i], remove = [];
+                      var d = data[i].slice(0), remove = [];
                       for (j = 0; j < allPlaatsIds.length; j++){
                           var index = d.indexOf(allPlaatsIds[j]);
                           if (index === 0 || index === d.length - 1){
@@ -361,7 +384,7 @@ function splitByArray(orgArr, valueArr) {
 
               },
               _getSelectsData = function(select){
-                    a = [], i;
+                  var a = [], i;
                 for(i = 0; i < selects.length; i++){
                     if (selects[i].value){
                         a.push(selects[i].value);

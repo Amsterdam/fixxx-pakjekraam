@@ -104,8 +104,8 @@ class PlaatsvoorkeurenForm extends React.Component {
 
                             return t;
                         }, []);
-                    const plaatsSets = entriesSplit.map(entry => entry.map(e => e.plaatsId));
-
+                    let plaatsSets = entriesSplit.map(entry => entry.map(e => e.plaatsId));
+                    sollicitatie.vastePlaatsen.length && plaatsSets.push(sollicitatie.vastePlaatsen);
                     const marktRowsJSOM = () => {
                         return { __html: 'var marktRows = ' + JSON.stringify(rows) + ';' };
                     };
