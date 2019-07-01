@@ -1,9 +1,9 @@
 const PropTypes = require('prop-types');
 const React = require('react');
-const EmailBase = require('./components/EmailBase.jsx');
-const EmailContent = require('./components/EmailContent.jsx');
-const { formatDate } = require('../util.js');
-const { isVast } = require('../domain-knowledge.js');
+const EmailContent = require('../EmailContent.jsx');
+const EmailTable = require('../EmailTable.jsx');
+const { formatDate } = require('../../../util.js');
+const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
 
@@ -20,52 +20,47 @@ class EmailVplVoorkeurConfirm extends React.Component {
 
     render() {
         const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
-        const voorkeurenObjectGroupedByPrio = (voorkeuren || []).reduce(function(hash, voorkeur) {
-            if (!hash.hasOwnProperty(voorkeur.dataValues.priority)) hash[voorkeur.dataValues.priority] = [];
-            hash[voorkeur.dataValues.priority].push(voorkeur.dataValues);
-            return hash;
-        }, {});
-        const voorkeurenGroupedByPrio = Object.keys(voorkeurenObjectGroupedByPrio)
-            .map(function(key) {
-                return voorkeurenObjectGroupedByPrio[key];
-            })
-            .sort((a, b) => b[0].priority - a[0].priority);
-        return (
-            <EmailBase
-                lang="nl"
-                appName={`Pak je kraam`}
-                domain={`pakjekraam.amsterdam.nl`}
-                subject={`Indeling ${markt.markt.naam} ${formatDate(marktDate)}`}
-            >
-                <EmailContent>
-                    <h2>Plaatsvoorkeur wijziging voor {markt.markt.naam}</h2>
-                    <p>Beste {ondernemer.description},</p>
-                    {voorkeurenGroupedByPrio.length ? (
-                        <EmailContent>
-                            <p>Uw nieuwe plaatsvoorkeurenlijst ziet er volgt uit.</p>
-                            <ul>
-                                {voorkeurenGroupedByPrio.map((voorkeurenPrio, i) => (
-                                    <li key={voorkeurenPrio[0].priority}>
-                                        {i + 1}e keuze: {voorkeurenPrio.map(plaats => plaats.plaatsId).join(' en ')}
-                                    </li>
-                                ))}
-                            </ul>
-                        </EmailContent>
-                    ) : (
-                        <EmailContent>
-                            <p>
-                                <strong>U heeft al uw plaatsvoorkeuren verwijderd!</strong>
-                            </p>
-                        </EmailContent>
-                    )}
+        console.log(markt.branches);
+        const bijzonderheden = markt.marktplaatsen
+            .reduce((t, plaats) => {
+                ondernemer.plaatsen.map(p => {
+                    p === plaats.plaatsId && plaats.properties && t.push(plaats.properties);
+                });
+                return t;
+            }, [])
+            .reduce((t, props) => {
+                props.map(prop => {
+                    t.push(prop);
+                });
+                return t;
+            }, []);
 
+        const tableData = [
+            ['Plaats nrs:', `${ondernemer.plaatsen.join(', ')} (je vaste plaatsen)`],
+            ['Soortplaats:', 'fixme'],
+            ['Bijzonderheden:', `${bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}`],
+            ['Markt:', `${markt.markt.naam}`],
+            ['Datum:', `${formatDate(marktDate)}`],
+        ];
+
+        return (
+            <EmailContent>
+                <h2>Indeling voor {markt.markt.naam}</h2>
+                <p>Beste {ondernemer.description},</p>
+
+                <EmailContent>
                     <p>
-                        Met vriendelijke groet,
-                        <br />
-                        Marktbureau Amsterdam
+                        {formatDate(marktDate)} is jouw plaats op de {markt.markt.naam}
                     </p>
+                    <EmailTable data={tableData} />
                 </EmailContent>
-            </EmailBase>
+
+                <p>
+                    Met vriendelijke groet,
+                    <br />
+                    Marktbureau Amsterdam
+                </p>
+            </EmailContent>
         );
     }
 }

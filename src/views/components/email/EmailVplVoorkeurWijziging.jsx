@@ -6,7 +6,7 @@ const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
 
-class EmailOndernemerVoorkeurChangeConfirm extends React.Component {
+class EmailVplVoorkeurWijziging extends React.Component {
     propTypes = {
         markt: PropTypes.object.isRequired,
         marktDate: PropTypes.string.isRequired,
@@ -14,12 +14,11 @@ class EmailOndernemerVoorkeurChangeConfirm extends React.Component {
         toewijzing: PropTypes.object,
         afwijzing: PropTypes.object,
         inschrijving: PropTypes.object,
-        voorkeuren: PropTypes.array,
+        voorkeuren: PropTypes.object,
     };
 
     render() {
         const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
-
         return (
             <EmailContent>
                 <h2>Plaatsvoorkeur wijziging voor {markt.markt.naam}</h2>
@@ -42,6 +41,14 @@ class EmailOndernemerVoorkeurChangeConfirm extends React.Component {
                         </p>
                     </EmailContent>
                 )}
+                <EmailContent>
+                    <p>
+                        <strong>
+                            U vaste plaats{ondernemer.plaatsen.length > 1 ? 'en' : null} zijn:{' '}
+                            {ondernemer.plaatsen.join(', ')}
+                        </strong>
+                    </p>
+                </EmailContent>
 
                 <p>
                     Met vriendelijke groet,
@@ -53,4 +60,4 @@ class EmailOndernemerVoorkeurChangeConfirm extends React.Component {
     }
 }
 
-module.exports = EmailOndernemerVoorkeurChangeConfirm;
+module.exports = EmailVplVoorkeurWijziging;

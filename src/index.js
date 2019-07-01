@@ -12,7 +12,7 @@ const bodyParser = require('body-parser');
 const models = require('./model/index.js');
 const morgan = require('morgan');
 const url = require('url');
-const { isErkenningsnummer, slugifyMarkt } = require('./domain-knowledge.js');
+const { isErkenningsnummer, slugifyMarkt, isVast } = require('./domain-knowledge.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
 const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
@@ -166,80 +166,11 @@ app.get('/mail/:marktId/:marktDate/:erkenningsNummer/voorkeuren', ensureLoggedIn
         req.params.erkenningsNummer,
         req.params.marktDate,
     );
-    console.log(mailContextPromise);
     mailContextPromise.then(
-        ([markt, voorkeuren]) => {
-            //const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id);
-            // const Comp = (sollicitatie.status === 'vpl')
-            res.send('IndelingMail');
+        props => {
+            props['template'] = isVast(props.ondernemer.status) ? emailTypes.mail10 : emailTypes.mail09;
 
-            // res.render('IndelingMail', props);
-
-            // if (req.query.mailto) {
-            //     const to = req.query.mailto;
-            //     mail({
-            //         from: to,
-            //         to,
-            //         subject: 'Marktindeling',
-            //         react: <IndelingMail {...props} />,
-            //     }).then(
-            //         () => {
-            //             console.log(`E-mail is verstuurd naar ${to}`);
-            //         },
-            //         err => {
-            //             console.error(`E-mail sturen naar ${to} is mislukt`, err);
-            //         },
-            //     );
-            // }
-        },
-        err => {
-            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
-        },
-    );
-});
-
-app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', ensureLoggedIn(), function(req, res) {
-    const voorkeurenPromise = getVoorkeurenByMarktByOndernemer(req.params.marktId, req.params.erkenningsNummer);
-    const indelingslijsPromise = getIndelingslijst(req.user.token, req.params.marktId, req.params.marktDate);
-
-    Promise.all([indelingslijsPromise, voorkeurenPromise]).then(
-        ([markt, voorkeuren]) => {
-            const { marktDate } = req.params;
-            const ondernemer = markt.ondernemers.find(
-                ({ erkenningsNummer }) => erkenningsNummer === req.params.erkenningsNummer,
-            );
-            const inschrijving = markt.aanwezigheid.find(
-                ({ erkenningsNummer }) => erkenningsNummer === req.params.erkenningsNummer,
-            );
-            const toewijzing = markt.toewijzingen.find(
-                ({ erkenningsNummer }) => erkenningsNummer === req.params.erkenningsNummer,
-            );
-            const afwijzing = markt.afwijzingen.find(
-                ({ erkenningsNummer }) => erkenningsNummer === req.params.erkenningsNummer,
-            );
-
-            const props = {
-                markt,
-                marktDate,
-                ondernemer,
-                inschrijving,
-                toewijzing,
-                afwijzing,
-                voorkeuren,
-            };
-
-            const emailTypes = {
-                mail01: 'EmailVplPlaatsConfirm',
-                mail02: 'EmailVplVoorkeurConfirm',
-                mail03: 'EmailVplAfgemeldConfirm',
-                mail04: 'EmailSollNoPlaatsConfirm',
-                mail05: 'EmailSollPlaatsGuaranteeConfirm',
-                mail06: 'EmailSollVoorkeurConfirm',
-                mail07: 'EmailSollRandomPlaatsConfirm',
-                mail08: 'EmailSollDayConfirm',
-                mail09: 'EmailOndernemerVoorkeurChangeConfirm',
-            };
-            res.render(emailTypes[req.query.type] || 'IndelingMail', props);
+            res.render('IndelingMail', props);
 
             if (req.query.mailto) {
                 const to = req.query.mailto;
@@ -258,7 +189,70 @@ app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', ensureLoggedIn()
                 );
             }
         },
-        err => errorPage(res, err),
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+        },
+    );
+});
+
+app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', ensureLoggedIn(), function(req, res) {
+    const mailContextPromise = getMailContext(
+        req.user.token,
+        req.params.marktId,
+        req.params.erkenningsNummer,
+        req.params.marktDate,
+    );
+    mailContextPromise.then(
+        props => {
+            console.log(props.toewijzing);
+            // console.log(props.afwijzing);
+            // console.log(props.inschrijving);
+            console.log('inschrijving');
+            console.log(props.inschrijving);
+            const didGetPlaatsvoorkeur = (props.toewijzing ? props.voorkeuren : []).find(voorkeur => {
+                console.log(voorkeur.sort().join('-') === props.toewijzing.plaatsen.sort().join('-'));
+                return voorkeur.sort().join('-') === props.toewijzing.plaatsen.sort().join('-');
+            });
+            console.log(didGetPlaatsvoorkeur);
+            let template = emailTypes.mail01;
+            if (isVast(props.ondernemer.status)) {
+                if (!props.voorkeuren && !didGetPlaatsvoorkeur) {
+                    template = emailTypes.mail01;
+                } else if (props.voorkeuren && !didGetPlaatsvoorkeur) {
+                    template = emailTypes.mail02;
+                } else if (props.voorkeuren && didGetPlaatsvoorkeur) {
+                    template = emailTypes.mail03;
+                }
+            }
+
+            if (!isVast(props.ondernemer.status)) {
+                template = emailTypes.mail01;
+            }
+
+            props['template'] = template;
+
+            res.render('IndelingMail', props);
+
+            if (req.query.mailto) {
+                const to = req.query.mailto;
+                mail({
+                    from: to,
+                    to,
+                    subject: 'Marktindeling',
+                    react: <IndelingMail {...props} />,
+                }).then(
+                    () => {
+                        console.log(`E-mail is verstuurd naar ${to}`);
+                    },
+                    err => {
+                        console.error(`E-mail sturen naar ${to} is mislukt`, err);
+                    },
+                );
+            }
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+        },
     );
 });
 
@@ -340,6 +334,19 @@ const humanReadableMessage = {
     [publicErrors.AANWEZIGHEID_SAVED]: 'De wijzigingen zijn met success doorgevoerd',
     [publicErrors.PLAATSVOORKEUREN_SAVED]: 'Je plaatsvoorkeuren zijn met success doorgevoerd',
     [publicErrors.ALGEMENE_VOORKEUREN_SAVED]: 'Je algemene voorkeuren zijn met success doorgevoerd',
+};
+
+const emailTypes = {
+    mail01: 'EmailVplPlaatsConfirm',
+    mail02: 'EmailVplVoorkeurConfirm',
+    mail03: 'EmailVplAfgemeldConfirm',
+    mail04: 'EmailSollNoPlaatsConfirm',
+    mail05: 'EmailSollPlaatsGuaranteeConfirm',
+    mail06: 'EmailSollVoorkeurConfirm',
+    mail07: 'EmailSollRandomPlaatsConfirm',
+    mail08: 'EmailSollDayConfirm',
+    mail09: 'EmailOndernemerVoorkeurChangeConfirm',
+    mail10: 'EmailVplVoorkeurWijziging',
 };
 
 /*

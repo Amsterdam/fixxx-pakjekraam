@@ -1,9 +1,8 @@
 const PropTypes = require('prop-types');
 const React = require('react');
-const EmailBase = require('./components/EmailBase.jsx');
-const EmailContent = require('./components/EmailContent.jsx');
-const { formatDate } = require('../util.js');
-const { isVast } = require('../domain-knowledge.js');
+const EmailContent = require('../EmailContent.jsx');
+const { formatDate } = require('../../../util.js');
+const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
 
@@ -21,28 +20,21 @@ class EmailSollRandomPlaatsConfirm extends React.Component {
         const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving } = this.props;
         console.log(toewijzing);
         return (
-            <EmailBase
-                lang="nl"
-                appName={`Pak je kraam`}
-                domain={`pakjekraam.amsterdam.nl`}
-                subject={`Indeling ${markt.markt.naam} ${formatDate(marktDate)}`}
-            >
-                <EmailContent>
-                    <h2>Plaats nr. op de markt {markt.markt.naam} voor morgen</h2>
-                    <p>Beste {ondernemer.description},</p>
+            <EmailContent>
+                <h2>Plaats nr. op de markt {markt.markt.naam} voor morgen</h2>
+                <p>Beste {ondernemer.description},</p>
 
-                    <p>
-                        Goed nieuws, u kunt morgen terecht op de markt {markt.markt.naam}.
-                        <br />U kunt staan op plek: <strong>42</strong>(fixme: geen echte data)
-                    </p>
+                <p>
+                    Goed nieuws, u kunt morgen terecht op de markt {markt.markt.naam}.
+                    <br />U kunt staan op plek: <strong>42</strong>(fixme: geen echte data)
+                </p>
 
-                    <p>
-                        Met vriendelijke groet,
-                        <br />
-                        Marktbureau Amsterdam
-                    </p>
-                </EmailContent>
-            </EmailBase>
+                <p>
+                    Met vriendelijke groet,
+                    <br />
+                    Marktbureau Amsterdam
+                </p>
+            </EmailContent>
         );
     }
 }
