@@ -14,38 +14,57 @@ class EmailVplPlaatsConfirm extends React.Component {
         toewijzing: PropTypes.object,
         afwijzing: PropTypes.object,
         inschrijving: PropTypes.object,
+        voorkeuren: PropTypes.array,
     };
 
     render() {
-        const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving } = this.props;
+        const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
+        const bijzonderheden = markt.marktplaatsen
+            .reduce((t, plaats) => {
+                ondernemer.plaatsen.map(p => {
+                    p === plaats.plaatsId && plaats.properties && t.push(plaats.properties);
+                });
+                return t;
+            }, [])
+            .reduce((t, props) => {
+                props.map(prop => {
+                    t.push(prop);
+                });
+                return t;
+            }, []);
+
+        const tableData = [
+            [
+                'Plaats nrs:',
+                `${ondernemer.plaatsen.join(', ')} (je vaste plaatsen)${
+                    voorkeuren ? 'Je hebt helaas niet 1 van je voorkeuren gekregen' : null
+                }`,
+            ],
+            ['Soortplaats:', 'fixme'],
+            ['Bijzonderheden:', `${bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}`],
+            ['Markt:', `${markt.markt.naam}`],
+            ['Datum:', `${formatDate(marktDate)}`],
+        ];
 
         return (
             <EmailContent>
-                <h2>
-                    Indeling {markt.markt.naam} {formatDate(marktDate)}
-                </h2>
+                <h2>Indeling voor {markt.markt.naam}</h2>
                 <p>Beste {ondernemer.description},</p>
-                {inschrijving && inschrijving.attending ? (
-                    <p>U heeft zich ingeschreven voor de markt vandaag.</p>
-                ) : isVast(ondernemer.status) ? (
-                    <p>U bent (tijdelijke) vasteplaatshouder op deze markt.</p>
-                ) : (
-                    <p>U heeft zich niet ingeschreven voor de markt van {formatDate(marktDate)}.</p>
-                )}
-                {afwijzing ? <p>U bent niet ingedeeld</p> : null}
-                {!toewijzing ? (
-                    markt.openPlaatsen.length > 0 ? (
-                        <p>
-                            Er zijn nog losse marktplaatsen, u maakt bij aanvang van de markt mogelijk nog kans op een
-                            marktplaats.
-                        </p>
-                    ) : (
-                        <p>Alle marktplaatsen zijn vergeven.</p>
-                    )
-                ) : null}
-                {toewijzing ? (
-                    <p>U bent ingedeeld voor de markt. Uw plaats(en): {formatPlaatsen(toewijzing.plaatsen)}</p>
-                ) : null}
+
+                <EmailContent>
+                    <p>
+                        {formatDate(marktDate)} is jouw plaats op de {markt.markt.naam}
+                    </p>
+                    <EmailTable data={tableData} />
+                </EmailContent>
+                <EmailContent>
+                    <p>
+                        Je vasteplaats{ondernemer.plaatsen.length > 1 ? 'en' : ''}{' '}
+                        {ondernemer.plaatsen.length > 1 ? 'zijn' : 'is'}:{' '}
+                        <strong>{ondernemer.plaatsen.join(', ')}</strong>
+                    </p>
+                </EmailContent>
+
                 <p>
                     Met vriendelijke groet,
                     <br />

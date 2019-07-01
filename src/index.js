@@ -206,22 +206,17 @@ app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', ensureLoggedIn()
         props => {
             console.log(props.toewijzing);
             // console.log(props.afwijzing);
-            // console.log(props.inschrijving);
             console.log('inschrijving');
             console.log(props.inschrijving);
-            const didGetPlaatsvoorkeur = (props.toewijzing ? props.voorkeuren : []).find(voorkeur => {
-                console.log(voorkeur.sort().join('-') === props.toewijzing.plaatsen.sort().join('-'));
-                return voorkeur.sort().join('-') === props.toewijzing.plaatsen.sort().join('-');
-            });
-            console.log(didGetPlaatsvoorkeur);
+
             let template = emailTypes.mail01;
-            if (isVast(props.ondernemer.status)) {
-                if (!props.voorkeuren && !didGetPlaatsvoorkeur) {
+            if (isVast(props.ondernemer.status) && props.inschrijving) {
+                if (!props.voorkeuren.length && !props.toewijzing) {
                     template = emailTypes.mail01;
-                } else if (props.voorkeuren && !didGetPlaatsvoorkeur) {
+                } else if (props.voorkeuren.length && !props.toewijzing) {
+                    template = emailTypes.mail01;
+                } else if (props.voorkeuren.length && props.toewijzing) {
                     template = emailTypes.mail02;
-                } else if (props.voorkeuren && didGetPlaatsvoorkeur) {
-                    template = emailTypes.mail03;
                 }
             }
 
