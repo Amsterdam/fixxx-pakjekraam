@@ -28,7 +28,7 @@ class OndernemerMarktDetailPage extends React.Component {
 
     render() {
         const { ondernemer, plaatsvoorkeuren, aanmeldingen, messages, markt, marktId, voorkeur } = this.props;
-        const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id);
+        const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
         const rsvpEntries = filterRsvpList(aanmeldingen.filter(aanmelding => aanmelding.marktId === markt.id), markt);
 
         return (

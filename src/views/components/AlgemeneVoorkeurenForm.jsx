@@ -13,6 +13,7 @@ const {
     formatISODayOfWeek,
 } = require('../../util.js');
 const Button = require('./Button');
+const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 
 class AlgemeneVoorkeurenForm extends React.Component {
     propTypes = {
@@ -28,6 +29,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
 
     render() {
         const { branches, ondernemer, markt, marktId, marktDate, next, query } = this.props;
+        const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
         const nextMessage =
             (query && query.next) || '/markt-detail/' + ondernemer.erkenningsnummer + '/' + marktId + '/';
         const advanced = (query && query.advanced) || false;
@@ -71,11 +73,8 @@ class AlgemeneVoorkeurenForm extends React.Component {
                 action="/algemene-voorkeuren/"
                 encType="application/x-www-form-urlencoded"
             >
-                <h1>
-                    Voorkeuren van {formatOndernemerName(ondernemer)}
-                    {markt ? ` voor ${markt.naam}` : ''}
-                    {marktDate ? ` op ${formatDate(marktDate)}` : ''}
-                </h1>
+                <h1>Marktprofiel</h1>
+                <OndernemerMarktHeading sollicitatie={sollicitatie} markt={markt} />
                 <div className="well well--max-width">
                     <div className="Fieldset">
                         <h2 className="Fieldset__header">Wat voor koopwaar verkoop je?</h2>

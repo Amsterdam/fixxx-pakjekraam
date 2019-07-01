@@ -82,7 +82,9 @@ class PlaatsvoorkeurenForm extends React.Component {
                 />
                 {markten.map(markt => {
                     const next = query.next ? query.next : `/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/`;
-                    const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id);
+                    const sollicitatie = ondernemer.sollicitaties.find(
+                        soll => soll.markt.id === markt.id && !soll.doorgehaald,
+                    );
                     const newPlaatsvoorkeurCount =
                         sollicitatie.vastePlaatsen.length > 0 ? sollicitatie.vastePlaatsen.length : 1;
                     const entriesFiltered = allEntries.filter(entry => entry.marktId === markt.id);
