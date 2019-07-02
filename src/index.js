@@ -769,7 +769,7 @@ const algemeneVoorkeurenFormData = body => {
         aantalPlaatsen,
         brancheId: brancheId || null,
         parentBrancheId: parentBrancheId || null,
-        inrichting,
+        inrichting: inrichting || null,
         inactive,
 
         monday: !!body.monday,
