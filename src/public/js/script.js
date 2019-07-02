@@ -248,6 +248,66 @@ function splitByArray(orgArr, valueArr) {
                 }
                 selects[0].value = '';
               }
+              // _setPlaatsen = function (data) {
+              //     plaatsen = [];
+              //     var plaatsCount = _getSelects().length, i, j;
+              //     var skip = [];
+              //     var input = [
+              //         ['34'],
+              //         ['34', '33'],
+              //         ['32', '33'],
+              //         ['140', '141'],
+              //         ['51', '52', '53'],
+              //         ['51', '49', '50'],
+              //         ['54', '55', '56'],
+              //         ['56', '57', '58'],
+              //         ['1', '2', '3', '4'],
+              //         ['2', '3', '4', '5'],
+              //         ['3', '4', '5', '6'],
+              //         ['1', '2', '3'],
+              //         ['2', '3', '4'],
+              //         ['122', '123', '124'],
+              //         ['136', '137', '138'],
+              //         ['148', '149', '150'],
+              //         ['140', '141', '142'],
+              //         ['143', '144', '142'],
+              //         ['141', '143', '142'],
+              //         ["147", "148", "149"],
+              //         ["147", "148", "146"],
+              //         ["147", "145", "146"],
+              //         ["144", "145", "146"],
+              //     ];
+              //     input = currentPlaatsSets;
+              //     input = input.filter(function (i) {
+              //         return i.length === plaatsCount;
+              //     });
+              //     console.log(input);
+              //     var allPlaatsIds = [];
+              //     for (i = 0; i < input.length; i++){
+              //        var inputItem = input[i];
+              //        allPlaatsIds = allPlaatsIds.concat(input[i]);
+              //     }
+              //     skip = skip.concat(topscore(allPlaatsIds, plaatsCount));
+              //     for (i = 0; i < data.length; i++){
+              //         var d = data[i].slice(0), remove = [];
+              //         for (j = 0; j < allPlaatsIds.length; j++){
+              //             var index = d.indexOf(allPlaatsIds[j]);
+              //             if (index === 0 || index === d.length - 1){
+              //                 remove.push(allPlaatsIds[j]);
+              //             }
+              //         }
+              //         for (j = 0; j < remove.length; j++){
+              //             d.remove(remove[j]);
+              //         }
+              //         var split = splitByArray(d, skip);
+              //         for (j = 0; j < split.length; j++){
+              //           plaatsen.push(split[j]);
+              //         }
+              //     }
+              //     plaatsen = plaatsen.filter(function (i) {
+              //         return i.length >= plaatsCount;
+              //     });
+              // },
               _setPlaatsen = function (data) {
                   plaatsen = [];
                   var plaatsCount = _getSelects().length, i, j;
@@ -287,22 +347,37 @@ function splitByArray(orgArr, valueArr) {
                      var inputItem = input[i];
                      allPlaatsIds = allPlaatsIds.concat(input[i]);
                   }
-                  skip = skip.concat(topscore(allPlaatsIds, plaatsCount));
+                  // skip = skip.concat(topscore(allPlaatsIds, plaatsCount));
                   for (i = 0; i < data.length; i++){
-                      var d = data[i].slice(0), remove = [];
+                      var d = data[i].slice(0), remove = [], idexes = [], indexesSpit = [], dl = d.length;
                       for (j = 0; j < allPlaatsIds.length; j++){
                           var index = d.indexOf(allPlaatsIds[j]);
-                          if (index === 0 || index === d.length - 1){
-                              remove.push(allPlaatsIds[j]);
+                          if (index !== -1){
+                              idexes.push(allPlaatsIds[j]);
                           }
                       }
-                      for (j = 0; j < remove.length; j++){
-                          d.remove(remove[j]);
+                      indexes.sort();
+                      indexesSpit = splitArrayByGap(indexes);
+                      indexesSpit = indexesSpit.filter(function(f) {
+                          return f.length => (plaatsCount * 2) - 1;
+                      })
+                      if (indexesPlit.length){
+                          var start = (indexesSpit[0] === 0) ?
+                          for (j = 0; j < indexesSpit.length; j++){
+                              var ind = indexesSpit[j], l = ind.length,
+                                  start = (indexesSpit[0] === 0) ? : ind[plaatsCount-1],
+                                  end = l - ((plaatsCount - 1) * 2), ild = d.length;
+                              if(ind[0] === 0){
+                                  start = 0;
+                              }
+                              if(ind[j][l - 1] === d.length - 1){
+                                  end = l - (plaatsCount - 1);
+                              }
+
+                              d.splice(start - (dl - ild), end);
+                          }
                       }
-                      var split = splitByArray(d, skip);
-                      for (j = 0; j < split.length; j++){
-                        plaatsen.push(split[j]);
-                      }
+                      plaatsen.push(d);
                   }
                   plaatsen = plaatsen.filter(function (i) {
                       return i.length >= plaatsCount;
