@@ -5,9 +5,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: insecure
-      POSTGRES_USER: pakjekraam
-      POSTGRES_DB: pakjekraam
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
   web:
     build:
       args:
@@ -17,27 +17,20 @@ services:
     command: dev
     environment:
       - API_MMAPPKEY
+      - API_READONLY_PASS
+      - API_READONLY_USER
       - API_URL
-      - APP_ENV=dev
-      - APP_NOTIFICATIE_FROM=tester@test.com
-      - APP_SECRET=secret
-      - DATABASE_URL=pgsql://pakjekraam:insecure@database:5432/pakjekraam
-      - IAM_CLIENT_ID=pakjekraam
-      - IAM_CLIENT_SECRET=insecure
-      - IAM_REALM=pakjekraam
-      - IAM_REALM_PUBKEY=
-      - IAM_URL=http://keycloak:8081/auth/
-      - NODE_ENV=development
-      - SWIFT_AUTH_URL=
-      - SWIFT_CONTAINER_PREFIX=
-      - SWIFT_EXTERNAL_DOMAIN=
-      - SWIFT_PROJECT_ID=
-      - SWIFT_REGION=
-      - SWIFT_TEMP_URL_KEY=
-      - SWIFT_USER_DOMAIN_ID=
-      - SWIFT_USER_NAME=
-      - SWIFT_USER_PASSWORD=
-      - THUMBNAILSERVICE_URL=https://thumbnail.service/
+      - APP_SECRET
+      - DATABASE_URL
+      - IAM_ADMIN_PASS
+      - IAM_ADMIN_USER
+      - IAM_CLIENT_ID
+      - IAM_CLIENT_SECRET
+      - IAM_REALM
+      - IAM_URL
+      - MAILER_FROM
+      - MAILER_URL
+      - NODE_ENV
     links:
       - database
     ports:
@@ -49,13 +42,13 @@ services:
   keycloak:
     image: jboss/keycloak:6.0.1
     environment:
-      DB_ADDR: database
-      DB_DATABASE: pakjekraam
-      DB_PASSWORD: insecure
-      DB_USER: pakjekraam
-      DB_VENDOR: postgres
-      KEYCLOAK_PASSWORD: insecure
-      KEYCLOAK_USER: pakjekraam
+      - DB_ADDR
+      - DB_DATABASE
+      - DB_PASSWORD
+      - DB_USER
+      - DB_VENDOR
+      - KEYCLOAK_PASSWORD
+      - KEYCLOAK_USER
     ports:
       - "8081:8080"
     volumes:
