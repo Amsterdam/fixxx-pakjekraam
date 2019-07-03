@@ -12,6 +12,38 @@ if (!String.prototype.includes) {
     }
   };
 }
+if (!Array.prototype.includes) {
+    Object.defineProperty(Array.prototype, "includes", {
+        enumerable: false,
+        writable: true,
+        value: function(searchElement /*, fromIndex*/ ) {
+            'use strict';
+            var O = Object(this);
+            var len = parseInt(O.length) || 0;
+            if (len === 0) {
+                return false;
+            }
+            var n = parseInt(arguments[1]) || 0;
+            var k;
+            if (n >= 0) {
+                k = n;
+            } else {
+                k = len + n;
+                if (k < 0) {k = 0;}
+            }
+            var currentElement;
+            while (k < len) {
+                currentElement = O[k];
+                if (searchElement === currentElement ||
+                    (searchElement !== searchElement && currentElement !== currentElement)) { // NaN !== NaN
+                        return true;
+                    }
+                    k++;
+                }
+                return false;
+            }
+        });
+    }
 if (!Array.prototype.filter) {
   Array.prototype.filter = function(fun /*, thisp*/) {
     var len = this.length >>> 0;
@@ -236,78 +268,22 @@ function splitByArray(orgArr, valueArr) {
                 return self.querySelectorAll('select');
               }
               _updateFirstSelect = function(data){
-                var value = _getSelects()[0].value, i, j, selects = _getSelects();
+                var value = _getSelects()[0].value, i, j, selects = _getSelects(), all = [];
                 while (selects[0].firstChild) {
                     selects[0].removeChild(selects[0].firstChild);
                 }
                 selects[0].add(_createOption('Plaats'));
                 for (i = 0; i < data.length; i++){
                     for (j = 0; j < data[i].length; j++){
+                        all.push(data[i][j]);
                         selects[0].add(_createOption(data[i][j]));
                     }
                 }
+                all = all.sort(function(a, b) {
+                    return
+                })
                 selects[0].value = '';
               }
-              // _setPlaatsen = function (data) {
-              //     plaatsen = [];
-              //     var plaatsCount = _getSelects().length, i, j;
-              //     var skip = [];
-              //     var input = [
-              //         ['34'],
-              //         ['34', '33'],
-              //         ['32', '33'],
-              //         ['140', '141'],
-              //         ['51', '52', '53'],
-              //         ['51', '49', '50'],
-              //         ['54', '55', '56'],
-              //         ['56', '57', '58'],
-              //         ['1', '2', '3', '4'],
-              //         ['2', '3', '4', '5'],
-              //         ['3', '4', '5', '6'],
-              //         ['1', '2', '3'],
-              //         ['2', '3', '4'],
-              //         ['122', '123', '124'],
-              //         ['136', '137', '138'],
-              //         ['148', '149', '150'],
-              //         ['140', '141', '142'],
-              //         ['143', '144', '142'],
-              //         ['141', '143', '142'],
-              //         ["147", "148", "149"],
-              //         ["147", "148", "146"],
-              //         ["147", "145", "146"],
-              //         ["144", "145", "146"],
-              //     ];
-              //     input = currentPlaatsSets;
-              //     input = input.filter(function (i) {
-              //         return i.length === plaatsCount;
-              //     });
-              //     console.log(input);
-              //     var allPlaatsIds = [];
-              //     for (i = 0; i < input.length; i++){
-              //        var inputItem = input[i];
-              //        allPlaatsIds = allPlaatsIds.concat(input[i]);
-              //     }
-              //     skip = skip.concat(topscore(allPlaatsIds, plaatsCount));
-              //     for (i = 0; i < data.length; i++){
-              //         var d = data[i].slice(0), remove = [];
-              //         for (j = 0; j < allPlaatsIds.length; j++){
-              //             var index = d.indexOf(allPlaatsIds[j]);
-              //             if (index === 0 || index === d.length - 1){
-              //                 remove.push(allPlaatsIds[j]);
-              //             }
-              //         }
-              //         for (j = 0; j < remove.length; j++){
-              //             d.remove(remove[j]);
-              //         }
-              //         var split = splitByArray(d, skip);
-              //         for (j = 0; j < split.length; j++){
-              //           plaatsen.push(split[j]);
-              //         }
-              //     }
-              //     plaatsen = plaatsen.filter(function (i) {
-              //         return i.length >= plaatsCount;
-              //     });
-              // },
               _setPlaatsen = function (data) {
                   plaatsen = [];
                   var plaatsCount = _getSelects().length, i, j;
@@ -326,6 +302,8 @@ function splitByArray(orgArr, valueArr) {
                       ['3', '4', '5', '6'],
                       ['1', '2', '3'],
                       ['2', '3', '4'],
+                      ['3', '4', '5'],
+                      ['5', '6', '7'],
                       ['122', '123', '124'],
                       ['136', '137', '138'],
                       ['148', '149', '150'],
@@ -347,37 +325,26 @@ function splitByArray(orgArr, valueArr) {
                      var inputItem = input[i];
                      allPlaatsIds = allPlaatsIds.concat(input[i]);
                   }
-                  // skip = skip.concat(topscore(allPlaatsIds, plaatsCount));
+                  skip = skip.concat(topscore(allPlaatsIds, plaatsCount));
                   for (i = 0; i < data.length; i++){
-                      var d = data[i].slice(0), remove = [], idexes = [], indexesSpit = [], dl = d.length;
-                      for (j = 0; j < allPlaatsIds.length; j++){
-                          var index = d.indexOf(allPlaatsIds[j]);
-                          if (index !== -1){
-                              idexes.push(allPlaatsIds[j]);
+                      var d = data[i].slice(0), remove = [], limit = 0;
+                      do {
+                          for (j = 0; j < input.length; j++){
+                              var indexFirst = d.indexOf(input[j][0]);
+                              var indexLast = d.indexOf(input[j][input[j].length - 1]);
+                              if (indexFirst === 0){
+                                  d.shift();
+                              }else if(indexLast === d.length - 1){
+                                  d.pop();
+                              }
                           }
-                      }
-                      indexes.sort();
-                      indexesSpit = splitArrayByGap(indexes);
-                      indexesSpit = indexesSpit.filter(function(f) {
-                          return f.length => (plaatsCount * 2) - 1;
-                      })
-                      if (indexesPlit.length){
-                          var start = (indexesSpit[0] === 0) ?
-                          for (j = 0; j < indexesSpit.length; j++){
-                              var ind = indexesSpit[j], l = ind.length,
-                                  start = (indexesSpit[0] === 0) ? : ind[plaatsCount-1],
-                                  end = l - ((plaatsCount - 1) * 2), ild = d.length;
-                              if(ind[0] === 0){
-                                  start = 0;
-                              }
-                              if(ind[j][l - 1] === d.length - 1){
-                                  end = l - (plaatsCount - 1);
-                              }
+                          limit++;
+                      } while(!d.length);
 
-                              d.splice(start - (dl - ild), end);
-                          }
+                      var split = splitByArray(d, skip);
+                      for (j = 0; j < split.length; j++){
+                        plaatsen.push(split[j]);
                       }
-                      plaatsen.push(d);
                   }
                   plaatsen = plaatsen.filter(function (i) {
                       return i.length >= plaatsCount;

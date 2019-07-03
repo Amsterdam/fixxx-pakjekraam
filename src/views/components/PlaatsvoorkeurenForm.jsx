@@ -1,6 +1,6 @@
 const React = require('react');
 const PropTypes = require('prop-types');
-const { formatOndernemerName } = require('../../domain-knowledge.js');
+const { formatOndernemerName, plaatsSort } = require('../../domain-knowledge.js');
 const { flatten } = require('../../util.js');
 const MarktplaatsSelect = require('./MarktplaatsSelect');
 const Button = require('./Button');
@@ -103,8 +103,13 @@ class PlaatsvoorkeurenForm extends React.Component {
                             t.push(entriesFiltered.filter(e => e.priority === p));
 
                             return t;
-                        }, []);
-                    let plaatsSets = entriesSplit.map(entry => entry.map(e => e.plaatsId));
+                        }, [])
+                        .map(e =>
+                            e.map(p => {
+                                return p;
+                            }),
+                        );
+                    const plaatsSets = entriesSplit.map(entry => entry.map(e => e.plaatsId));
                     sollicitatie.vastePlaatsen.length && plaatsSets.push(sollicitatie.vastePlaatsen);
                     const marktRowsJSOM = () => {
                         return { __html: 'var marktRows = ' + JSON.stringify(rows) + ';' };
@@ -112,11 +117,28 @@ class PlaatsvoorkeurenForm extends React.Component {
                     const plaatsSetsJSON = () => {
                         return { __html: 'var plaatsenSets = ' + JSON.stringify(plaatsSets) + ';' };
                     };
+                    const marktRowsFlatJSOM = () => {
+                        return {
+                            __html:
+                                'var marktRowsFlat = ' +
+                                JSON.stringify(
+                                    rows
+                                        .reduce((t, r) => {
+                                            r.map(p => t.push(p)), [];
+
+                                            return t;
+                                        })
+                                        .sort((a, b) => plaatsSort(a, b)),
+                                ) +
+                                ';',
+                        };
+                    };
 
                     return (
                         <div key={markt.id} className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
                             <script dangerouslySetInnerHTML={marktRowsJSOM()} />
                             <script dangerouslySetInnerHTML={plaatsSetsJSON()} />
+                            <script dangerouslySetInnerHTML={marktRowsFlatJSOM()} />
                             <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
                             {sollicitatie.status === 'vpl' ? (
                                 <div className="well well--dark margin-bottom">
