@@ -10,7 +10,11 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
     let lastDivider = false;
 
     return (
-        <div className="OndernemerMarktAanwezigheid">
+        <div className="OndernemerMarktAanwezigheid background-link-parent">
+            <a
+                href={`/afmelden/${ondernemer.erkenningsnummer}/${markt.id}/?next=${next}`}
+                className="background-link"
+            />
             <HeaderTitleButton
                 title="Aanwezigheid"
                 url={`/afmelden/${ondernemer.erkenningsnummer}/${markt.id}/?next=${next}`}

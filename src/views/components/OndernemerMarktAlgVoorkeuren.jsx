@@ -6,7 +6,13 @@ const { formatDayOfWeek, formatDate, WEEK_DAYS } = require('../../util.js');
 
 const OndernemerMarktAlgVoorkeuren = ({ markt, sollicitatie, ondernemer, voorkeur }) => {
     return (
-        <div className="OndernemerMarktAlgVoorkeuren">
+        <div className="OndernemerMarktAlgVoorkeuren background-link-parent">
+            <a
+                href={`/algemene-voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=/markt-detail/${
+                    ondernemer.erkenningsnummer
+                }/${markt.id}/`}
+                className="background-link"
+            />
             <HeaderTitleButton
                 title="Marktprofiel"
                 url={`/algemene-voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=/markt-detail/${

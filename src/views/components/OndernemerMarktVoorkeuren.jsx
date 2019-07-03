@@ -23,7 +23,13 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query 
     );
 
     return (
-        <div className="OndernemerVoorkeuren">
+        <div className="OndernemerVoorkeuren background-link-parent">
+            <a
+                href={`/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=/markt-detail/${
+                    ondernemer.erkenningsnummer
+                }/${markt.id}`}
+                className="background-link"
+            />
             <HeaderTitleButton
                 title="Plaatsvoorkeuren"
                 url={`/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=/markt-detail/${

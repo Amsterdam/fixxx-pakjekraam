@@ -10,3 +10,21 @@
 .font-gray {
     color: $neutral-grey4;
 }
+.background-link-parent {
+    position: relative;
+}
+.background-link {
+    position: absolute;
+    z-index: 1;
+    left: -$vm2;
+    top: -$hm2;
+    right: -$vm2;
+    bottom: -$hm2;
+    background-color: $primary-black;
+    opacity: 0;
+    transition: 0.3s;
+
+    &:hover {
+        opacity: 0.05;
+    }
+}
