@@ -52,6 +52,7 @@ class OndernemerMarktDetailPage extends React.Component {
                                 ondernemer={ondernemer}
                                 markt={markt}
                                 plaatsvoorkeuren={plaatsvoorkeuren}
+                                sollicitatie={sollicitatie}
                             />
                             <OndernemerMarktAlgVoorkeuren
                                 sollicitatie={sollicitatie}
