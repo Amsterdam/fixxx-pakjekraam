@@ -429,9 +429,11 @@ app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
         const propsPromise = markten.map(markt => {
             return getMarktProperties(markt.id).then(props => {
                 markt.properties = props;
+
                 return markt;
             });
         });
+
         return Promise.all(propsPromise);
     });
     Promise.all([
