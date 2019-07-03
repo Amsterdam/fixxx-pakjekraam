@@ -12,13 +12,15 @@ const bodyParser = require('body-parser');
 const models = require('./model/index.js');
 const morgan = require('morgan');
 const url = require('url');
-const { isErkenningsnummer, slugifyMarkt, isVast } = require('./domain-knowledge.js');
+const { isErkenningsnummer, slugifyMarkt, isVast, filterRsvpList } = require('./domain-knowledge.js');
 const { ensureLoggedIn } = require('connect-ensure-login');
 const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
 const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
-const { splitByValueArray, tomorrow, nextWeek } = require('./util.js');
+const { splitByValueArray, tomorrow, nextWeek, addDays, endOfWeek, toISODate } = require('./util.js');
 const { mail } = require('./mail.js');
-const IndelingMail = require('./views/IndelingMail.jsx');
+const EmailIndeling = require('./views/EmailIndeling.jsx');
+const EmailWijzigingAanmeldingen = require('./views/EmailWijzigingAanmeldingen.jsx');
+const EmailWijzigingVoorkeuren = require('./views/EmailWijzigingVoorkeuren.jsx');
 
 const {
     getMailContext,
@@ -29,7 +31,8 @@ const {
     getIndelingslijstInput,
     getIndelingVoorkeur,
     getIndelingVoorkeuren,
-    getVoorkeurenByMarktByOndernemer,
+    getVoorkeurenMarktOndern,
+    getAanmeldingenMarktOndern,
     getAanmeldingen,
     getAanmeldingenByOndernemer,
     getOndernemerVoorkeuren,
@@ -159,26 +162,28 @@ app.get('/permission/marktondernemer', keycloak.protect('marktondernemer'), (req
     res.end('marktondernemer: OK!');
 });
 
-app.get('/mail/:marktId/:marktDate/:erkenningsNummer/voorkeuren', ensureLoggedIn(), function(req, res) {
-    const mailContextPromise = getMailContext(
-        req.user.token,
-        req.params.marktId,
-        req.params.erkenningsNummer,
-        req.params.marktDate,
-    );
-    mailContextPromise.then(
-        props => {
-            props['template'] = isVast(props.ondernemer.status) ? emailTypes.mail10 : emailTypes.mail09;
-
-            res.render('IndelingMail', props);
+app.get('/mail/:marktId/:marktDate/:erkenningsNummer/aanmeldingen', ensureLoggedIn(), function(req, res) {
+    const ondernemerPromise = getMarktondernemer(req.user.token, req.params.erkenningsNummer);
+    const marktPromise = getMarkt(req.user.token, req.params.marktId);
+    const aanmeldingenPromise = getAanmeldingenMarktOndern(req.params.marktId, req.params.erkenningsNummer);
+    Promise.all([ondernemerPromise, marktPromise, aanmeldingenPromise]).then(
+        ([ondernemer, markt, aanmeldingen]) => {
+            const marktDate = new Date(req.params.marktDate);
+            const aanmeldingenFiltered = filterRsvpList(aanmeldingen, markt, marktDate);
+            const subject =
+                `Markt ${markt.naam} - ` + isVast(ondernemer.status)
+                    ? 'aanwezigheid wijziging'
+                    : 'aanmelding wijziging';
+            const props = { markt, marktDate, ondernemer, aanmeldingen: aanmeldingenFiltered };
+            res.render('EmailWijzigingAanmeldingen', props);
 
             if (req.query.mailto) {
                 const to = req.query.mailto;
                 mail({
                     from: to,
                     to,
-                    subject: 'Marktindeling',
-                    react: <IndelingMail {...props} />,
+                    subject,
+                    react: <EmailWijzigingAanmeldingen {...props} />,
                 }).then(
                     () => {
                         console.log(`E-mail is verstuurd naar ${to}`);
@@ -195,6 +200,70 @@ app.get('/mail/:marktId/:marktDate/:erkenningsNummer/voorkeuren', ensureLoggedIn
     );
 });
 
+app.get('/mail/:marktId/:marktDate/:erkenningsNummer/voorkeuren', ensureLoggedIn(), function(req, res) {
+    const mailContextPromise = getMailContext(
+        req.user.token,
+        req.params.marktId,
+        req.params.erkenningsNummer,
+        req.params.marktDate,
+    );
+    const ondernemerPromise = getMarktondernemer(req.user.token, req.params.erkenningsNummer);
+    const marktPromise = getMarkt(req.user.token, req.params.marktId);
+    const voorkeurenPromise = getVoorkeurenMarktOndern(req.params.marktId, req.params.erkenningsNummer);
+    Promise.all([ondernemerPromise, marktPromise, voorkeurenPromise]).then(
+        ([ondernemer, markt, voorkeuren]) => {
+            const marktDate = new Date(req.params.marktDate);
+            const subject = `Markt ${markt.naam} - plaatsvoorkeur wijziging`;
+
+            const voorkeurenObjPrio = (voorkeuren || []).reduce(function(hash, voorkeur) {
+                if (!hash.hasOwnProperty(voorkeur.dataValues.priority)) hash[voorkeur.dataValues.priority] = [];
+                hash[voorkeur.dataValues.priority].push(voorkeur.dataValues);
+
+                return hash;
+            }, {});
+            const voorkeurenPrio = Object.keys(voorkeurenObjPrio)
+                .map(function(key) {
+                    return voorkeurenObjPrio[key];
+                })
+                .sort((a, b) => b[0].priority - a[0].priority)
+                .map(voorkeurList => voorkeurList.map(voorkeur => voorkeur.plaatsId));
+
+            const props = { ondernemer, markt, voorkeuren: voorkeurenPrio, marktDate };
+
+            res.render('EmailWijzigingVoorkeuren', props);
+
+            if (req.query.mailto) {
+                const to = req.query.mailto;
+                mail({
+                    from: to,
+                    to,
+                    subject,
+                    react: <EmailWijzigingVoorkeuren {...props} />,
+                }).then(
+                    () => {
+                        console.log(`E-mail is verstuurd naar ${to}`);
+                    },
+                    err => {
+                        console.error(`E-mail sturen naar ${to} is mislukt`, err);
+                    },
+                );
+            }
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+        },
+    );
+});
+
+const emailTypes = {
+    mail01: 'EmailVplPlaatsConfirm',
+    mail02: 'EmailVplVoorkeurConfirm',
+    mail04: 'EmailSollNoPlaatsConfirm',
+    mail05: 'EmailSollPlaatsConfirm',
+    mail06: 'EmailSollVoorkeurConfirm',
+    mail07: 'EmailSollRandomPlaatsConfirm',
+};
+
 app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', ensureLoggedIn(), function(req, res) {
     const mailContextPromise = getMailContext(
         req.user.token,
@@ -204,37 +273,36 @@ app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', ensureLoggedIn()
     );
     mailContextPromise.then(
         props => {
-            console.log(props.toewijzing);
-            // console.log(props.afwijzing);
-            console.log('inschrijving');
-            console.log(props.inschrijving);
+            const subject = `Marktindeling ${props.markt.naam}`;
 
-            let template = emailTypes.mail01;
+            let template;
             if (isVast(props.ondernemer.status) && props.inschrijving) {
-                if (!props.voorkeuren.length && !props.toewijzing) {
-                    template = emailTypes.mail01;
-                } else if (props.voorkeuren.length && !props.toewijzing) {
+                template = emailTypes.mail01;
+                if (props.voorkeuren.length && !props.toewijzing) {
                     template = emailTypes.mail01;
                 } else if (props.voorkeuren.length && props.toewijzing) {
                     template = emailTypes.mail02;
                 }
+            } else if (props.inschrijving) {
+                template = emailTypes.mail04;
+                if (props.voorkeuren.length && !props.afwijzing && !props.toewijzing) {
+                    template = emailTypes.mail05;
+                } else if (props.voorkeuren.length && !props.afwijzing && props.toewijzing) {
+                    template = emailTypes.mail06;
+                }
             }
 
-            if (!isVast(props.ondernemer.status)) {
-                template = emailTypes.mail01;
-            }
+            props.template = template;
 
-            props['template'] = template;
-
-            res.render('IndelingMail', props);
+            res.render('EmailIndeling', props);
 
             if (req.query.mailto) {
                 const to = req.query.mailto;
                 mail({
                     from: to,
                     to,
-                    subject: 'Marktindeling',
-                    react: <IndelingMail {...props} />,
+                    subject,
+                    react: <EmailIndeling {...props} />,
                 }).then(
                     () => {
                         console.log(`E-mail is verstuurd naar ${to}`);
@@ -329,19 +397,6 @@ const humanReadableMessage = {
     [publicErrors.AANWEZIGHEID_SAVED]: 'De wijzigingen zijn met success doorgevoerd',
     [publicErrors.PLAATSVOORKEUREN_SAVED]: 'Je plaatsvoorkeuren zijn met success doorgevoerd',
     [publicErrors.ALGEMENE_VOORKEUREN_SAVED]: 'Je algemene voorkeuren zijn met success doorgevoerd',
-};
-
-const emailTypes = {
-    mail01: 'EmailVplPlaatsConfirm',
-    mail02: 'EmailVplVoorkeurConfirm',
-    mail03: 'EmailVplAfgemeldConfirm',
-    mail04: 'EmailSollNoPlaatsConfirm',
-    mail05: 'EmailSollPlaatsGuaranteeConfirm',
-    mail06: 'EmailSollVoorkeurConfirm',
-    mail07: 'EmailSollRandomPlaatsConfirm',
-    mail08: 'EmailSollDayConfirm',
-    mail09: 'EmailOndernemerVoorkeurChangeConfirm',
-    mail10: 'EmailVplVoorkeurWijziging',
 };
 
 /*

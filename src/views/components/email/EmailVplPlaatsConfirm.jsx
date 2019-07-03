@@ -1,7 +1,8 @@
 const PropTypes = require('prop-types');
 const React = require('react');
 const EmailContent = require('../EmailContent.jsx');
-const { formatDate } = require('../../../util.js');
+const EmailTable = require('../EmailTable.jsx');
+const { formatDate, fullRelativeHumanDate, capitalize } = require('../../../util.js');
 const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
@@ -24,45 +25,43 @@ class EmailVplPlaatsConfirm extends React.Component {
                 ondernemer.plaatsen.map(p => {
                     p === plaats.plaatsId && plaats.properties && t.push(plaats.properties);
                 });
+
                 return t;
             }, [])
             .reduce((t, props) => {
                 props.map(prop => {
                     t.push(prop);
                 });
+
                 return t;
             }, []);
 
         const tableData = [
             [
                 'Plaats nrs:',
-                `${ondernemer.plaatsen.join(', ')} (je vaste plaatsen)${
-                    voorkeuren ? 'Je hebt helaas niet 1 van je voorkeuren gekregen' : null
-                }`,
+                <span key={`plaats`}>
+                    <strong>{ondernemer.plaatsen.join(', ')}</strong> (je vaste plaatsen)
+                    <br /> {voorkeuren ? 'Je hebt helaas geen van je voorkeuren gekregen' : null}
+                </span>,
             ],
-            ['Soortplaats:', 'fixme'],
-            ['Bijzonderheden:', `${bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}`],
-            ['Markt:', `${markt.markt.naam}`],
-            ['Datum:', `${formatDate(marktDate)}`],
+            ['Soortplaats:', <strong key={`branche`}>fixme</strong>],
+            [
+                'Bijzonderheden:',
+                <strong key={`remarks`}>{bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}</strong>,
+            ],
+            ['Markt:', <strong key={`markt`}>{markt.markt.naam}</strong>],
+            ['Datum:', <strong key={`date`}>{formatDate(marktDate)}</strong>],
         ];
 
         return (
             <EmailContent>
-                <h2>Indeling voor {markt.markt.naam}</h2>
                 <p>Beste {ondernemer.description},</p>
 
                 <EmailContent>
                     <p>
-                        {formatDate(marktDate)} is jouw plaats op de {markt.markt.naam}
+                        {capitalize(fullRelativeHumanDate(marktDate))} is jouw plaats op de {markt.markt.naam}
                     </p>
                     <EmailTable data={tableData} />
-                </EmailContent>
-                <EmailContent>
-                    <p>
-                        Je vasteplaats{ondernemer.plaatsen.length > 1 ? 'en' : ''}{' '}
-                        {ondernemer.plaatsen.length > 1 ? 'zijn' : 'is'}:{' '}
-                        <strong>{ondernemer.plaatsen.join(', ')}</strong>
-                    </p>
                 </EmailContent>
 
                 <p>

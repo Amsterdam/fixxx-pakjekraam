@@ -79,6 +79,9 @@ const formatDate = date =>
     " '" +
     String(new Date(date).getFullYear()).substr(2, 2);
 
+const formatDateFull = date =>
+    new Date(date).getDate() + ' ' + formatMonth(date) + ' ' + String(new Date(date).getFullYear());
+
 const today = () => new Date().toISOString().replace(/T.+/, '');
 
 const dateDiffInDays = (date1, date2) => {
@@ -92,6 +95,12 @@ const dateDiffInDays = (date1, date2) => {
     );
 };
 
+const capitalize = s => {
+    if (typeof s !== 'string') return '';
+
+    return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
 const relativeHumanDay = date => {
     const dayOptions = { '0': 'vandaag', '1': 'morgen', '-1': 'gisteren' };
     const diff = String(dateDiffInDays(today(), date));
@@ -99,12 +108,14 @@ const relativeHumanDay = date => {
     return dayOptions[diff] ? dayOptions[diff] : '';
 };
 
-const capitalize = s => {
-    if (typeof s !== 'string') return '';
-
-    return s.charAt(0).toUpperCase() + s.slice(1);
+const fullRelativeHumanDate = date => {
+    return (
+        (relativeHumanDay(date) ? relativeHumanDay(date) + ', ' : null) +
+        formatDayOfWeek(date) +
+        ' ' +
+        formatDateFull(date)
+    );
 };
-
 const addDays = (offsetDate, days) => {
     const date = new Date(offsetDate);
 
@@ -139,6 +150,7 @@ const stringSort = (a, b) => (a > b ? 1 : a === b ? 0 : -1);
 const flatten = (a = [], b = []) => [...a, ...b];
 
 module.exports = {
+    fullRelativeHumanDate,
     splitByValueArray,
     paginate,
     today,

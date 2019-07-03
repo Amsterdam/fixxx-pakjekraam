@@ -39,6 +39,12 @@ const getAanmeldingen = (marktId, marktDate) => {
     });
 };
 
+const getAanmeldingenMarktOndern = (marktId, erkenningsNummer) => {
+    return models.rsvp.findAll({
+        where: { marktId, erkenningsNummer },
+    });
+};
+
 const getAanmeldingenByOndernemer = erkenningsNummer => {
     return models.rsvp.findAll({
         where: { erkenningsNummer },
@@ -51,7 +57,7 @@ const getPlaatsvoorkeuren = marktId => {
     });
 };
 
-const getVoorkeurenByMarktByOndernemer = (marktId, erkenningsNummer) => {
+const getVoorkeurenMarktOndern = (marktId, erkenningsNummer) => {
     return models.plaatsvoorkeur.findAll({
         where: { marktId, erkenningsNummer },
     });
@@ -273,22 +279,25 @@ const getMailContext = (token, marktId, erkenningsNr, marktDate) =>
     Promise.all([
         getIndelingslijst(token, marktId, marktDate),
         getVoorkeurenByMarktByOndernemer(marktId, erkenningsNr),
-    ]).then(([markt, voorkeuren]) => {
+        getAanmeldingenByMarktByOndernemer(marktId, erkenningsNr),
+    ]).then(([markt, voorkeuren, aanmeldingen]) => {
         const ondernemer = markt.ondernemers.find(({ erkenningsNummer }) => erkenningsNummer === erkenningsNr);
         const inschrijving = markt.aanwezigheid.find(({ erkenningsNummer }) => erkenningsNummer === erkenningsNr);
         const toewijzing = markt.toewijzingen.find(({ erkenningsNummer }) => erkenningsNummer === erkenningsNr);
         const afwijzing = markt.afwijzingen.find(({ erkenningsNummer }) => erkenningsNummer === erkenningsNr);
-        const voorkeurenObjectGroupedByPrio = (voorkeuren || []).reduce(function(hash, voorkeur) {
+        const voorkeurenObjPrio = (voorkeuren || []).reduce(function(hash, voorkeur) {
             if (!hash.hasOwnProperty(voorkeur.dataValues.priority)) hash[voorkeur.dataValues.priority] = [];
             hash[voorkeur.dataValues.priority].push(voorkeur.dataValues);
+
             return hash;
         }, {});
-        const voorkeurenGroupedByPrio = Object.keys(voorkeurenObjectGroupedByPrio)
+        const voorkeurenPrio = Object.keys(voorkeurenObjPrio)
             .map(function(key) {
-                return voorkeurenObjectGroupedByPrio[key];
+                return voorkeurenObjPrio[key];
             })
             .sort((a, b) => b[0].priority - a[0].priority)
-            .map(voorkeuren => voorkeuren.map(voorkeur => voorkeur.plaatsId));
+            .map(voorkeurList => voorkeurList.map(voorkeur => voorkeur.plaatsId));
+
         return {
             markt,
             marktDate,
@@ -296,7 +305,8 @@ const getMailContext = (token, marktId, erkenningsNr, marktDate) =>
             inschrijving,
             toewijzing,
             afwijzing,
-            voorkeuren: voorkeurenGroupedByPrio,
+            voorkeuren: voorkeurenPrio,
+            aanmeldingen,
         };
     });
 
@@ -333,9 +343,10 @@ module.exports = {
     getMarktProperties,
     getAanmeldingen,
     getAanmeldingenByOndernemer,
+    getAanmeldingenMarktOndern,
     getPlaatsvoorkeuren,
     getOndernemerVoorkeuren,
-    getVoorkeurenByMarktByOndernemer,
+    getVoorkeurenMarktOndern,
     getBranches,
     getMarktplaatsen,
     getIndelingVoorkeur,

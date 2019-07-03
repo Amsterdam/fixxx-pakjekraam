@@ -2,12 +2,12 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const EmailContent = require('../EmailContent.jsx');
 const EmailTable = require('../EmailTable.jsx');
-const { formatDate, fullRelativeHumanDate, capitalize } = require('../../../util.js');
+const { formatDate, formatDayOfWeek } = require('../../../util.js');
 const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
 
-class EmailSollVoorkeurConfirm extends React.Component {
+class EmailSollPlaatsConfirm extends React.Component {
     propTypes = {
         markt: PropTypes.object.isRequired,
         marktDate: PropTypes.string.isRequired,
@@ -22,36 +22,9 @@ class EmailSollVoorkeurConfirm extends React.Component {
         const fontGray = { color: '#767676' };
         const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
 
-        const bijzonderheden = markt.marktplaatsen
-            .reduce((t, plaats) => {
-                ondernemer.plaatsen.map(p => {
-                    p === plaats.plaatsId && plaats.properties && t.push(plaats.properties);
-                });
-
-                return t;
-            }, [])
-            .reduce((t, props) => {
-                props.map(prop => {
-                    t.push(prop);
-                });
-
-                return t;
-            }, []);
-
         const tableData = [
-            [
-                'Plaats nrs:',
-                <span key={`plaats`}>
-                    <strong>{toewijzing.plaatsen.join(', ')}</strong>
-                    <br />
-                    Dit is een voorkeursplaats die je hebt aangevraagd
-                </span>,
-            ],
-            ['Soortplaats:', <strong key={`branche`}>fixme</strong>],
-            [
-                'Bijzonderheden:',
-                <strong key={`remarks`}>{bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}</strong>,
-            ],
+            ['Plaats nrs:', <strong key={`plaats`}>Wordt tijdens loting om 09:00 uur bepaald</strong>],
+            ['Soortplaats:', <strong key={`branche`}>fixme: ondernemer branche</strong>],
             ['Markt:', <strong key={`markt`}>{markt.markt.naam}</strong>],
             [
                 'Datum:',
@@ -64,14 +37,18 @@ class EmailSollVoorkeurConfirm extends React.Component {
         return (
             <EmailContent>
                 <p>Beste {ondernemer.description},</p>
+                <p>
+                    Je hebt je aangemeld voor een plaats op de markt {markt.markt.naam} op {formatDayOfWeek(marktDate)}{' '}
+                    {formatDate(marktDate)}.
+                </p>
+                <p>Geen van je voorkeuren is beschikbaar maar er zijn nog vrije plaatsen.</p>
+                <p>
+                    Je bent dus zeker van een plek. Kom naar de loting dan krijg je voorrang op koopmannen die zich niet
+                    hebben aangemeld.{' '}
+                </p>
 
-                <EmailContent>
-                    <p>
-                        {capitalize(fullRelativeHumanDate(marktDate))} is er plaats voor je op de markt{' '}
-                        {markt.markt.naam}
-                    </p>
-                    <EmailTable data={tableData} />
-                </EmailContent>
+                <EmailTable data={tableData} />
+
                 <EmailContent>
                     <p style={fontGray}>
                         Als je bijvoorbeeld door ziekte toch niet kunt komen verzoeken wij je dit uiterlijk 08:45 aan de
@@ -88,4 +65,4 @@ class EmailSollVoorkeurConfirm extends React.Component {
     }
 }
 
-module.exports = EmailSollVoorkeurConfirm;
+module.exports = EmailSollPlaatsConfirm;

@@ -1,7 +1,7 @@
 const PropTypes = require('prop-types');
 const React = require('react');
 const EmailContent = require('../EmailContent.jsx');
-const { formatDate } = require('../../../util.js');
+const { formatDate, formatDayOfWeek } = require('../../../util.js');
 const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
@@ -14,6 +14,7 @@ class EmailSollNoPlaatsConfirm extends React.Component {
         toewijzing: PropTypes.object,
         afwijzing: PropTypes.object,
         inschrijving: PropTypes.object,
+        voorkeuren: PropTypes.array,
     };
 
     render() {
@@ -21,11 +22,13 @@ class EmailSollNoPlaatsConfirm extends React.Component {
 
         return (
             <EmailContent>
-                <h2>Geen plek op {markt.markt.naam} voor morgen</h2>
                 <p>Beste {ondernemer.description},</p>
 
                 <p>
-                    Er is voor u helaas voor morgen <strong>geen</strong> plek op de markt {markt.markt.naam}.
+                    Er is morgen ({formatDayOfWeek(marktDate)} {formatDate(marktDate)}) helaas GEEN plaats op de markt{' '}
+                    {markt.markt.naam} voor je.
+                    <br />
+                    De markt is vol.
                 </p>
 
                 <p>
