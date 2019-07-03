@@ -283,7 +283,7 @@ function splitByArray(orgArr, valueArr) {
                     return
                 })
                 selects[0].value = '';
-              }
+              },
               _setPlaatsen = function (data) {
                   plaatsen = [];
                   var plaatsCount = _getSelects().length, i, j;
