@@ -425,9 +425,18 @@ app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
     const ondernemerPromise = getMarktondernemer(user, req.params.erkenningsNummer);
     const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(req.params.erkenningsNummer);
     const marktenPromise = getMarkten(user, req.params.marktId);
+    const marktenPromiseProps = marktenPromise.then(markten => {
+        const propsPromise = markten.map(markt => {
+            return getMarktProperties(markt.id).then(props => {
+                markt.properties = props;
+                return markt;
+            });
+        });
+        return Promise.all(propsPromise);
+    });
     Promise.all([
         ondernemerPromise,
-        marktenPromise,
+        marktenPromiseProps,
         ondernemerVoorkeurenPromise,
         getAanmeldingenByOndernemer(req.params.erkenningsNummer),
     ]).then(
