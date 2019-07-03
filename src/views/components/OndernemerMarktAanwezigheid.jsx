@@ -5,20 +5,16 @@ const { formatDayOfWeek, formatDate, relativeHumanDay, WEEK_DAYS } = require('..
 const HeaderTitleButton = require('./HeaderTitleButton');
 
 const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, ondernemer }) => {
-    const next = `/dashboard/${ondernemer.erkenningsnummer}/#markt-${markt.id}`;
+    const blockUrl = `/afmelden/${ondernemer.erkenningsnummer}/${markt.id}/?next=/markt-detail/${
+        ondernemer.erkenningsnummer
+    }/${markt.id}/#aanwezigheid`;
 
     let lastDivider = false;
 
     return (
-        <div className="OndernemerMarktAanwezigheid background-link-parent">
-            <a
-                href={`/afmelden/${ondernemer.erkenningsnummer}/${markt.id}/?next=${next}`}
-                className="background-link"
-            />
-            <HeaderTitleButton
-                title="Aanwezigheid"
-                url={`/afmelden/${ondernemer.erkenningsnummer}/${markt.id}/?next=${next}`}
-            />
+        <div className="OndernemerMarktAanwezigheid background-link-parent" id="aanwezigheid">
+            <a href={blockUrl} className="background-link" />
+            <HeaderTitleButton title="Aanwezigheid" url={blockUrl} />
             <div className="well">
                 <span>Op welke dagen staat er iemand (vergunninghouder of vervanger) in de kraam?</span>
                 <ul className="OndernemerMarktAanwezigheid__list">

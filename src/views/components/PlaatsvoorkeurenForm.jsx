@@ -223,9 +223,9 @@ class PlaatsvoorkeurenForm extends React.Component {
                                                     name={`plaatsvoorkeuren[${entriesFiltered.length + i}][plaatsId]`}
                                                     id={`voorkeur-${entriesFiltered.length + i}`}
                                                     markt={markt}
-                                                    readonly={true}
-                                                    newItem={true}
-                                                    optional={true}
+                                                    readonly={`disabled`}
+                                                    newItem={`true`}
+                                                    optional={`true`}
                                                 />
                                             </div>
                                         ))}
@@ -248,28 +248,18 @@ class PlaatsvoorkeurenForm extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <p className="InputField InputField--submit">
+                            <p className="InputField InputField--submit" id="bottom-buttons">
                                 <button
                                     className="Button Button--secondary"
                                     type="submit"
                                     name="redirectTo"
-                                    value={`/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=${
-                                        query.next
-                                            ? query.next
-                                            : `/markt-detail/${ondernemer.erkenningsnummer}/${markt.id}/`
-                                    }`}
+                                    value={`/voorkeuren/${ondernemer.erkenningsnummer}/${
+                                        markt.id
+                                    }/?error=plaatsvoorkeuren-saved&next=${next}#bottom-buttons`}
                                 >
-                                    Opslaan
+                                    Bewaar
                                 </button>
-                                <Button
-                                    label="terug"
-                                    href={
-                                        query.next
-                                            ? query.next
-                                            : `/markt-detail/${ondernemer.erkenningsnummer}/${markt.id}/`
-                                    }
-                                    type="tertiary"
-                                />
+                                <Button label="terug" href={`${next}#plaatsvoorkeuren`} type="tertiary" />
                             </p>
                         </div>
                     );

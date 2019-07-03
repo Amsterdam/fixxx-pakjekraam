@@ -394,9 +394,9 @@ const publicErrors = {
 
 const humanReadableMessage = {
     [publicErrors.INCORRECT_CREDENTIALS]: 'Uw gebruikersnaam of wachtwoord is incorrect.',
-    [publicErrors.AANWEZIGHEID_SAVED]: 'De wijzigingen zijn met success doorgevoerd',
-    [publicErrors.PLAATSVOORKEUREN_SAVED]: 'Je plaatsvoorkeuren zijn met success doorgevoerd',
-    [publicErrors.ALGEMENE_VOORKEUREN_SAVED]: 'Je algemene voorkeuren zijn met success doorgevoerd',
+    [publicErrors.AANWEZIGHEID_SAVED]: 'Je aan- of afmeldingen zijn met success gewijzigd.',
+    [publicErrors.PLAATSVOORKEUREN_SAVED]: 'Je plaatsvoorkeuren zijn met success gewijzigd.',
+    [publicErrors.ALGEMENE_VOORKEUREN_SAVED]: 'Je marktprofiel is met success gewijzigd.',
 };
 
 /*
@@ -813,7 +813,7 @@ const voorkeurenPage = (req, res, token, erkenningsNummer, query, currentMarktId
                 marktProperties,
                 marktPlaatsen,
                 query,
-                user: token,
+                user: req.user,
                 messages,
             });
         },

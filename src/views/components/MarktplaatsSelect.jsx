@@ -29,9 +29,9 @@ MarktplaatsSelect.propTypes = {
     value: PropTypes.string,
     id: PropTypes.string,
     name: PropTypes.string,
-    optional: PropTypes.boolean,
-    readonly: PropTypes.boolean,
-    newItem: PropTypes.boolean,
+    optional: PropTypes.string,
+    readonly: PropTypes.string,
+    newItem: PropTypes.string,
 };
 
 module.exports = MarktplaatsSelect;

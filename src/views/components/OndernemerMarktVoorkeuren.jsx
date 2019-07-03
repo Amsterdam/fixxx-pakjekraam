@@ -5,6 +5,9 @@ const Button = require('./Button');
 const HeaderTitleButton = require('./HeaderTitleButton');
 
 const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query, sollicitatie }) => {
+    const blockUrl = `/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=/markt-detail/${
+        ondernemer.erkenningsnummer
+    }/${markt.id}/#plaatsvoorkeuren`;
     const entriesFiltered = plaatsvoorkeuren.filter(entry => entry.marktId === markt.id);
     const entriesSplit = entriesFiltered
         .sort((a, b) => b.priority - a.priority)
@@ -21,19 +24,9 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query,
         .map(e => e.map(p => p.dataValues));
 
     return (
-        <div className="OndernemerVoorkeuren background-link-parent">
-            <a
-                href={`/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=/markt-detail/${
-                    ondernemer.erkenningsnummer
-                }/${markt.id}`}
-                className="background-link"
-            />
-            <HeaderTitleButton
-                title="Plaatsvoorkeuren"
-                url={`/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=/markt-detail/${
-                    ondernemer.erkenningsnummer
-                }/${markt.id}`}
-            />
+        <div className="OndernemerVoorkeuren background-link-parent" id="plaatsvoorkeuren">
+            <a href={blockUrl} className="background-link" />
+            <HeaderTitleButton title="Plaatsvoorkeuren" url={blockUrl} />
             <div className="well">
                 {sollicitatie.status === 'vpl' ? (
                     <div className="margin-bottom">

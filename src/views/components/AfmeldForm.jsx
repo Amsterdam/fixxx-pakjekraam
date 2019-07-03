@@ -49,8 +49,8 @@ class AfmeldForm extends React.Component {
                 ).map(({ sollicitatie, markt, rsvpEntries }) => {
                     let lastDivider = false;
                     const next = query.next
-                        ? `${query.next}?error=aanwezigheid-saved`
-                        : `/markt/${markt.id}/${query.datum}/${query.type}/#soll-${sollicitatie.sollicitatieNummer}`;
+                        ? query.next
+                        : `/markt-detail/${ondernemer.erkenningsnummer}/${markt.id}/#aanwezigheid`;
 
                     return (
                         <section className="Fieldset" key={sollicitatie.markt.id}>
@@ -105,11 +105,16 @@ class AfmeldForm extends React.Component {
                             </ul>
                             {currentMarktId && (
                                 <p className="InputField InputField--submit">
-                                    <button className="Button Button--secondary" type="submit" name="next" value={next}>
-                                        Opslaan en terug
+                                    <button
+                                        className="Button Button--secondary"
+                                        type="submit"
+                                        name="next"
+                                        value={`${next}?error=aanwezigheid-saved#aanwezigheid`}
+                                    >
+                                        Bewaren en terug
                                     </button>
                                     {currentMarktId && (
-                                        <a className="Button Button--tertiary" href={next}>
+                                        <a className="Button Button--tertiary" href={`${next}#aanwezigheid`}>
                                             Terug
                                         </a>
                                     )}

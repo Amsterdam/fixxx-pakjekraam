@@ -82,15 +82,24 @@ class AlgemeneVoorkeurenForm extends React.Component {
                             <div className="Select__wrapper">
                                 <select id="brancheId" name="brancheId" className="Select">
                                     <option />
-                                    {branches.map(branche => (
-                                        <option
-                                            key={branche.brancheId}
-                                            value={branche.brancheId}
-                                            selected={branche.brancheId === voorkeur.brancheId}
-                                        >
-                                            {branche.description}
-                                        </option>
-                                    ))}
+                                    {branches
+                                        .sort((a, b) => {
+                                            const nameA = a.description.toLowerCase(),
+                                                nameB = b.description.toLowerCase();
+                                            if (nameA < nameB) return -1;
+                                            if (nameA > nameB) return 1;
+
+                                            return 0;
+                                        })
+                                        .map(branche => (
+                                            <option
+                                                key={branche.brancheId}
+                                                value={branche.brancheId}
+                                                selected={branche.brancheId === voorkeur.brancheId}
+                                            >
+                                                {branche.description}
+                                            </option>
+                                        ))}
                                 </select>{' '}
                             </div>
                         </div>
@@ -208,15 +217,11 @@ class AlgemeneVoorkeurenForm extends React.Component {
                             className="Button Button--secondary"
                             type="submit"
                             name="next"
-                            value={`${'/algemene-voorkeuren/' +
-                                ondernemer.erkenningsnummer +
-                                '/' +
-                                marktId +
-                                '/'}?next=${nextMessage}${advanced ? '&advanced=true' : ''}`}
+                            value={`${query.next ? query.next : '.'}?error=aanwezigheid-saved#marktprofiel`}
                         >
                             Opslaan
                         </button>
-                        <a className="Button Button--tertiary" href={nextMessage}>
+                        <a className="Button Button--tertiary" href={`${query.next ? query.next : '.'}#marktprofiel`}>
                             Terug
                         </a>
                     </p>
