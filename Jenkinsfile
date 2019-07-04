@@ -30,7 +30,7 @@ node {
 //    }
 
     stage("Install") {
-        sh 'npm install'
+        sh 'NODE_ENV=development npm ci'
     }
 
     stage("Lint") {
