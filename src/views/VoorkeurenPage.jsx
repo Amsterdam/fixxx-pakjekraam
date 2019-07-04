@@ -31,9 +31,7 @@ class VoorkeurenPage extends React.Component {
                 [],
             )
         ).map(row =>
-            row
-                .map(plaatsId => marktPlaatsen.find(plaats => plaats.plaatsId === plaatsId))
-                .map(plaats => plaats.plaatsId),
+            row.map(plaatsId => marktPlaatsen.find(plaats => plaats.plaatsId === plaatsId)).map(plaats => plaats),
         );
 
         return (
@@ -45,7 +43,7 @@ class VoorkeurenPage extends React.Component {
                     <PlaatsvoorkeurenForm
                         plaatsvoorkeuren={this.props.plaatsvoorkeuren}
                         ondernemer={this.props.ondernemer}
-                        markten={this.props.markten}
+                        markt={this.props.markten[0]}
                         rows={rows}
                         query={this.props.query}
                     />

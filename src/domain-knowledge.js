@@ -122,9 +122,9 @@ const filterRsvpList = (aanmeldingen, markt, startDate, endDate) => {
 };
 
 const plaatsParts = plaatsId => plaatsId.replace(/([^0-9])([0-9])|([0-9])([^0-9])/g, '$1$3 $2$4').split(/\s+/);
-const plaatsSort = (plaatsA, plaatsB) => {
-    const partsA = plaatsParts(plaatsA),
-        partsB = plaatsParts(plaatsB),
+const plaatsSort = (plaatsA, plaatsB, byKey) => {
+    const partsA = plaatsParts(byKey ? plaatsA[byKey] : plaatsA),
+        partsB = plaatsParts(byKey ? plaatsB[byKey] : plaatsB),
         l = Math.min(partsA.length, partsB.length);
 
     let i = 0,

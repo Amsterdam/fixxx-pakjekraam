@@ -136,7 +136,7 @@ function splitByArray(orgArr, valueArr) {
         voorkeur.parentNode.removeChild(voorkeur);
         _resetCopy();
 
-        decorators['plaatsvoorkeur-prototype'].call(prototype);
+        //decorators['plaatsvoorkeur-prototype'].call(prototype);
     },
     'move-voorkeur': function(e){
         var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
@@ -158,7 +158,7 @@ function splitByArray(orgArr, valueArr) {
             wrappers = prototype.querySelectorAll('.PlaatsvoorkeurenForm__list-item__wrapper');
         e && e.preventDefault();
         wrappers[wrappers.length - 1].parentNode.removeChild(wrappers[wrappers.length - 1]);
-        decorators['plaatsvoorkeur-prototype'].call(prototype);
+        //decorators['plaatsvoorkeur-prototype'].call(prototype);
     },
     'add-plaats': function(e){
         var self = this,
@@ -197,7 +197,7 @@ function splitByArray(orgArr, valueArr) {
         wrapper.parentNode.insertBefore(newWrapper, wrapper);
 
 
-        decorators['plaatsvoorkeur-prototype'].call(prototype);
+        //decorators['plaatsvoorkeur-prototype'].call(prototype);
     }
   };
 
