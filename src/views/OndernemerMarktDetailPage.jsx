@@ -34,6 +34,9 @@ class OndernemerMarktDetailPage extends React.Component {
         return (
             <Page messages={messages}>
                 <Header user={ondernemer} logoUrl={`/dashboard/${ondernemer.erkenningsnummer}`}>
+                    <a className="Header__nav-item" href={`/dashboard/${ondernemer.erkenningsnummer}`}>
+                        Mijn markten
+                    </a>
                     <OndernemerProfileHeader user={ondernemer} />
                 </Header>
                 <Content>

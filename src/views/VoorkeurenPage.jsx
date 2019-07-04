@@ -39,6 +39,9 @@ class VoorkeurenPage extends React.Component {
         return (
             <Page messages={this.props.messages}>
                 <Header user={this.props.user}>
+                    <a className="Header__nav-item" href={`/dashboard/${this.props.ondernemer.erkenningsnummer}`}>
+                        Mijn markten
+                    </a>
                     <OndernemerProfileHeader user={this.props.ondernemer} />
                 </Header>
                 <Content>

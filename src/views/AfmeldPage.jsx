@@ -22,6 +22,9 @@ class AfmeldPage extends React.Component {
         return (
             <Page>
                 <Header user={this.props.ondernemer} logoUrl={`/dashboard/${this.props.ondernemer.erkenningsnummer}`}>
+                    <a className="Header__nav-item" href={`/dashboard/${this.props.ondernemer.erkenningsnummer}`}>
+                        Mijn markten
+                    </a>
                     <OndernemerProfileHeader user={this.props.ondernemer} />
                 </Header>
                 <Content>
