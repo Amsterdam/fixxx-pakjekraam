@@ -189,8 +189,8 @@ app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'jsx');
 app.engine('jsx', reactViews.createEngine({ beautify: true }));
 
-app.get('/', function(req, res) {
-    res.redirect('/markt/');
+app.get('/', (req, res) => {
+    res.render('HomePage');
 });
 
 app.get(
