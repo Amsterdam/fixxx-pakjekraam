@@ -6,17 +6,27 @@ const express = require('express');
 const Keycloak = require('keycloak-connect');
 const reactViews = require('express-react-views');
 const session = require('express-session');
-const passport = require('passport');
 const path = require('path');
 const bodyParser = require('body-parser');
 const models = require('./model/index.js');
 const morgan = require('morgan');
 const url = require('url');
+const qs = require('qs');
 const { isErkenningsnummer, slugifyMarkt, isVast, filterRsvpList } = require('./domain-knowledge.js');
-const { ensureLoggedIn } = require('connect-ensure-login');
-const { requireAuthorization } = require('./makkelijkemarkt-auth.js');
+const { checkActivationCode, readOnlyLogin } = require('./makkelijkemarkt-auth.js');
 const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
-const { splitByValueArray, tomorrow, nextWeek, addDays, endOfWeek, toISODate } = require('./util.js');
+const {
+    splitByValueArray,
+    tomorrow,
+    nextWeek,
+    addDays,
+    endOfWeek,
+    requireOne,
+    toISODate,
+    trace,
+    traceError,
+} = require('./util.js');
+const { getKeycloakAdmin, userExists } = require('./keycloak-api.js');
 const { mail } = require('./mail.js');
 const EmailIndeling = require('./views/EmailIndeling.jsx');
 const EmailWijzigingAanmeldingen = require('./views/EmailWijzigingAanmeldingen.jsx');
@@ -44,8 +54,20 @@ const {
 } = require('./pakjekraam-api.js');
 
 const HTTP_CREATED_SUCCESS = 201;
+const HTTP_BAD_REQUEST = 400;
+const HTTP_FORBIDDEN_ERROR = 403;
+const HTTP_PAGE_NOT_FOUND = 404;
 const HTTP_INTERNAL_SERVER_ERROR = 500;
 const HTTP_DEFAULT_PORT = 8080;
+
+const httpErrorPage = (res, errorCode) => err => {
+    console.log(err);
+    res.status(errorCode).end(`${err}`);
+};
+
+const internalServerErrorPage = res => httpErrorPage(HTTP_INTERNAL_SERVER_ERROR);
+
+const forbiddenErrorPage = res => httpErrorPage(HTTP_FORBIDDEN_ERROR);
 
 const port = process.env.PORT || HTTP_DEFAULT_PORT;
 const app = express();
@@ -109,6 +131,12 @@ const keycloak = new Keycloak(
     },
 );
 
+const KeycloakRoles = {
+    MARKTBUREAU: 'marktbureau',
+    MARKTMEESTER: 'marktmeester',
+    MARKTONDERNEMER: 'marktondernemer',
+};
+
 // Trick `keycloak-connect` into thinking we're running on HTTPS
 app.set('trust proxy', true);
 
@@ -121,16 +149,35 @@ app.use(
     }),
 );
 
-// Initialize Passport and restore authentication state the session.
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(
+    keycloak.middleware({
+        logout: '/logout',
+    }),
+);
 
-app.use(keycloak.middleware());
+const isMarktondernemer = req => {
+    const accessToken = req.kauth.grant.access_token.content;
+
+    return (
+        !!accessToken.resource_access[process.env.IAM_CLIENT_ID] &&
+        accessToken.resource_access[process.env.IAM_CLIENT_ID].roles.includes(KeycloakRoles.MARKTONDERNEMER)
+    );
+};
+
+const isMarktmeester = req => {
+    const accessToken = req.kauth.grant.access_token.content;
+
+    return (
+        !!accessToken.resource_access[process.env.IAM_CLIENT_ID] &&
+        accessToken.resource_access[process.env.IAM_CLIENT_ID].roles.includes(KeycloakRoles.MARKTMEESTER)
+    );
+};
+
+const getErkenningsNummer = req => isMarktondernemer(req) && req.kauth.grant.access_token.content.preferred_username;
 
 app.use((req, res, next) => {
-    if (req.user && req.user.expiry && Date.now() > Date.parse(req.user.expiry)) {
+    if (req.user && req.session.expiry && Date.now() > Date.parse(req.session.expiry)) {
         console.log('Token is expired, logout user');
-        req.logout();
         res.redirect('/login');
     } else {
         next();
@@ -146,125 +193,115 @@ app.get('/', function(req, res) {
     res.redirect('/markt/');
 });
 
-app.get('/permission/any', keycloak.protect(), (req, res) => {
-    res.end('OK!');
+app.get(
+    '/mail/:marktId/:marktDate/:erkenningsNummer/aanmeldingen',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    function(req, res) {
+        const ondernemerPromise = getMarktondernemer(req.user.token, req.params.erkenningsNummer);
+        const marktPromise = getMarkt(req.user.token, req.params.marktId);
+        const aanmeldingenPromise = getAanmeldingenMarktOndern(req.params.marktId, req.params.erkenningsNummer);
+        Promise.all([ondernemerPromise, marktPromise, aanmeldingenPromise]).then(
+            ([ondernemer, markt, aanmeldingen]) => {
+                const marktDate = new Date(req.params.marktDate);
+                const aanmeldingenFiltered = filterRsvpList(aanmeldingen, markt, marktDate);
+                const subject =
+                    `Markt ${markt.naam} - ` + isVast(ondernemer.status)
+                        ? 'aanwezigheid wijziging'
+                        : 'aanmelding wijziging';
+                const props = { markt, marktDate, ondernemer, aanmeldingen: aanmeldingenFiltered };
+                res.render('EmailWijzigingAanmeldingen', props);
+
+                if (req.query.mailto) {
+                    const to = req.query.mailto;
+                    mail({
+                        from: to,
+                        to,
+                        subject,
+                        react: <EmailWijzigingAanmeldingen {...props} />,
+                    }).then(
+                        () => {
+                            console.log(`E-mail is verstuurd naar ${to}`);
+                        },
+                        err => {
+                            console.error(`E-mail sturen naar ${to} is mislukt`, err);
+                        },
+                    );
+                }
+            },
+            err => {
+                res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+            },
+        );
+    },
+);
+
+app.get(
+    '/mail/:marktId/:marktDate/:erkenningsNummer/voorkeuren',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    function(req, res) {
+        const mailContextPromise = getMailContext(
+            req.user.token,
+            req.params.marktId,
+            req.params.erkenningsNummer,
+            req.params.marktDate,
+        );
+        const ondernemerPromise = getMarktondernemer(req.user.token, req.params.erkenningsNummer);
+        const marktPromise = getMarkt(req.user.token, req.params.marktId);
+        const voorkeurenPromise = getVoorkeurenMarktOndern(req.params.marktId, req.params.erkenningsNummer);
+        Promise.all([ondernemerPromise, marktPromise, voorkeurenPromise]).then(
+            ([ondernemer, markt, voorkeuren]) => {
+                const marktDate = new Date(req.params.marktDate);
+                const subject = `Markt ${markt.naam} - plaatsvoorkeur wijziging`;
+
+                const voorkeurenObjPrio = (voorkeuren || []).reduce(function(hash, voorkeur) {
+                    if (!hash.hasOwnProperty(voorkeur.dataValues.priority)) hash[voorkeur.dataValues.priority] = [];
+                    hash[voorkeur.dataValues.priority].push(voorkeur.dataValues);
+
+                    return hash;
+                }, {});
+                const voorkeurenPrio = Object.keys(voorkeurenObjPrio)
+                    .map(function(key) {
+                        return voorkeurenObjPrio[key];
+                    })
+                    .sort((a, b) => b[0].priority - a[0].priority)
+                    .map(voorkeurList => voorkeurList.map(voorkeur => voorkeur.plaatsId));
+
+                const props = { ondernemer, markt, voorkeuren: voorkeurenPrio, marktDate };
+
+                res.render('EmailWijzigingVoorkeuren', props);
+
+                if (req.query.mailto) {
+                    const to = req.query.mailto;
+                    mail({
+                        from: to,
+                        to,
+                        subject,
+                        react: <EmailWijzigingVoorkeuren {...props} />,
+                    }).then(
+                        () => {
+                            console.log(`E-mail is verstuurd naar ${to}`);
+                        },
+                        err => {
+                            console.error(`E-mail sturen naar ${to} is mislukt`, err);
+                        },
+                    );
+                }
+            },
+            err => {
+                res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+            },
+        );
+    },
+);
+
+app.get('/email/', keycloak.protect(KeycloakRoles.MARKTMEESTER), function(req, res) {
+    res.render('EmailPage');
 });
 
-app.get('/permission/marktbureau', keycloak.protect('marktbureau'), (req, res) => {
-    res.end('marktbureau: OK!');
-});
-
-app.get('/permission/marktmeester', keycloak.protect('marktmeester'), (req, res) => {
-    res.end('marktmeester: OK!');
-});
-
-app.get('/permission/marktondernemer', keycloak.protect('marktondernemer'), (req, res) => {
-    res.end('marktondernemer: OK!');
-});
-
-app.get('/mail/:marktId/:marktDate/:erkenningsNummer/aanmeldingen', ensureLoggedIn(), function(req, res) {
-    const ondernemerPromise = getMarktondernemer(req.user.token, req.params.erkenningsNummer);
-    const marktPromise = getMarkt(req.user.token, req.params.marktId);
-    const aanmeldingenPromise = getAanmeldingenMarktOndern(req.params.marktId, req.params.erkenningsNummer);
-    Promise.all([ondernemerPromise, marktPromise, aanmeldingenPromise]).then(
-        ([ondernemer, markt, aanmeldingen]) => {
-            const marktDate = new Date(req.params.marktDate);
-            const aanmeldingenFiltered = filterRsvpList(aanmeldingen, markt, marktDate);
-            const subject =
-                `Markt ${markt.naam} - ` + isVast(ondernemer.status)
-                    ? 'aanwezigheid wijziging'
-                    : 'aanmelding wijziging';
-            const props = { markt, marktDate, ondernemer, aanmeldingen: aanmeldingenFiltered };
-            res.render('EmailWijzigingAanmeldingen', props);
-
-            if (req.query.mailto) {
-                const to = req.query.mailto;
-                mail({
-                    from: to,
-                    to,
-                    subject,
-                    react: <EmailWijzigingAanmeldingen {...props} />,
-                }).then(
-                    () => {
-                        console.log(`E-mail is verstuurd naar ${to}`);
-                    },
-                    err => {
-                        console.error(`E-mail sturen naar ${to} is mislukt`, err);
-                    },
-                );
-            }
-        },
-        err => {
-            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
-        },
-    );
-});
-
-app.get('/mail/:marktId/:marktDate/:erkenningsNummer/voorkeuren', ensureLoggedIn(), function(req, res) {
-    const mailContextPromise = getMailContext(
-        req.user.token,
-        req.params.marktId,
-        req.params.erkenningsNummer,
-        req.params.marktDate,
-    );
-    const ondernemerPromise = getMarktondernemer(req.user.token, req.params.erkenningsNummer);
-    const marktPromise = getMarkt(req.user.token, req.params.marktId);
-    const voorkeurenPromise = getVoorkeurenMarktOndern(req.params.marktId, req.params.erkenningsNummer);
-    Promise.all([ondernemerPromise, marktPromise, voorkeurenPromise]).then(
-        ([ondernemer, markt, voorkeuren]) => {
-            const marktDate = new Date(req.params.marktDate);
-            const subject = `Markt ${markt.naam} - plaatsvoorkeur wijziging`;
-
-            const voorkeurenObjPrio = (voorkeuren || []).reduce(function(hash, voorkeur) {
-                if (!hash.hasOwnProperty(voorkeur.dataValues.priority)) hash[voorkeur.dataValues.priority] = [];
-                hash[voorkeur.dataValues.priority].push(voorkeur.dataValues);
-
-                return hash;
-            }, {});
-            const voorkeurenPrio = Object.keys(voorkeurenObjPrio)
-                .map(function(key) {
-                    return voorkeurenObjPrio[key];
-                })
-                .sort((a, b) => b[0].priority - a[0].priority)
-                .map(voorkeurList => voorkeurList.map(voorkeur => voorkeur.plaatsId));
-
-            const props = { ondernemer, markt, voorkeuren: voorkeurenPrio, marktDate };
-
-            res.render('EmailWijzigingVoorkeuren', props);
-
-            if (req.query.mailto) {
-                const to = req.query.mailto;
-                mail({
-                    from: to,
-                    to,
-                    subject,
-                    react: <EmailWijzigingVoorkeuren {...props} />,
-                }).then(
-                    () => {
-                        console.log(`E-mail is verstuurd naar ${to}`);
-                    },
-                    err => {
-                        console.error(`E-mail sturen naar ${to} is mislukt`, err);
-                    },
-                );
-            }
-        },
-        err => {
-            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
-        },
-    );
-});
-
-const emailTypes = {
-    mail01: 'EmailVplPlaatsConfirm',
-    mail02: 'EmailVplVoorkeurConfirm',
-    mail04: 'EmailSollNoPlaatsConfirm',
-    mail05: 'EmailSollPlaatsConfirm',
-    mail06: 'EmailSollVoorkeurConfirm',
-    mail07: 'EmailSollRandomPlaatsConfirm',
-};
-
-app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', ensureLoggedIn(), function(req, res) {
+app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', keycloak.protect(KeycloakRoles.MARKTMEESTER), function(
+    req,
+    res,
+) {
     const mailContextPromise = getMailContext(
         req.user.token,
         req.params.marktId,
@@ -319,21 +356,21 @@ app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', ensureLoggedIn()
     );
 });
 
-app.get('/markt/', ensureLoggedIn(), function(req, res) {
-    const user = req.user.token;
-    getMarkten(req.user.token).then(markten => res.render('MarktenPage', { markten, user }));
+app.get('/markt/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    const user = req.session.token;
+    getMarkten(req.session.token).then(markten => res.render('MarktenPage', { markten, user }));
 });
 
-app.get('/markt/:marktId/', ensureLoggedIn(), function(req, res) {
-    const user = req.user.token;
-    getMarkt(req.user.token, req.params.marktId).then(markt => res.render('MarktDetailPage', { markt, user }));
+app.get('/markt/:marktId/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    const user = req.session.token;
+    getMarkt(req.session.token, req.params.marktId).then(markt => res.render('MarktDetailPage', { markt, user }));
 });
 
-app.get('/markt/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) => {
-    const user = req.user.token;
+app.get('/markt/:marktId/:datum/indelingslijst/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    const user = req.session.token;
     const datum = req.params.datum;
     const type = 'indelingslijst';
-    getIndelingslijst(req.user.token, req.params.marktId, datum).then(
+    getIndelingslijst(req.session.token, req.params.marktId, datum).then(
         data => {
             res.render('IndelingslijstPage', { data, datum, type, user });
         },
@@ -343,11 +380,11 @@ app.get('/markt/:marktId/:datum/indelingslijst/', ensureLoggedIn(), (req, res) =
     );
 });
 
-app.get('/markt/:marktId/:datum/vasteplaatshouders/', ensureLoggedIn(), (req, res) => {
-    const user = req.user.token;
+app.get('/markt/:marktId/:datum/vasteplaatshouders/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    const user = req.session.token;
     const datum = req.params.datum;
     const type = 'vasteplaatshouders';
-    getIndelingslijstInput(req.user.token, req.params.marktId, datum).then(
+    getIndelingslijstInput(req.session.token, req.params.marktId, datum).then(
         data => {
             res.render('VastplaatshoudersPage', { data, datum, type, user });
         },
@@ -357,11 +394,11 @@ app.get('/markt/:marktId/:datum/vasteplaatshouders/', ensureLoggedIn(), (req, re
     );
 });
 
-app.get('/markt/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) => {
-    const user = req.user.token;
+app.get('/markt/:marktId/:datum/sollicitanten/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    const user = req.session.token;
     const datum = req.params.datum;
     const type = 'sollicitanten';
-    getSollicitantenlijstInput(req.user.token, req.params.marktId, req.params.datum).then(
+    getSollicitantenlijstInput(req.session.token, req.params.marktId, req.params.datum).then(
         ({ ondernemers, aanmeldingen, voorkeuren, markt }) => {
             res.render('SollicitantenPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type, user });
         },
@@ -371,25 +408,31 @@ app.get('/markt/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) =>
     );
 });
 
-app.get('/markt-detail/:erkenningsNummer/:marktId/:datum/sollicitanten/', ensureLoggedIn(), (req, res) => {
-    const user = req.user.token;
-    const datum = req.params.datum;
-    const type = 'sollicitanten';
-    getSollicitantenlijstInput(req.user.token, req.params.marktId, req.params.datum).then(
-        ({ ondernemers, aanmeldingen, voorkeuren, markt }) => {
-            res.render('SollicitantenPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type, user });
-        },
-        err => {
-            res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
-        },
-    );
-});
+app.get(
+    '/markt-detail/:erkenningsNummer/:marktId/:datum/sollicitanten/',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    (req, res) => {
+        const user = req.session.token;
+        const datum = req.params.datum;
+        const type = 'sollicitanten';
+        getSollicitantenlijstInput(req.session.token, req.params.marktId, req.params.datum).then(
+            ({ ondernemers, aanmeldingen, voorkeuren, markt }) => {
+                res.render('SollicitantenPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type, user });
+            },
+            err => {
+                res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
+            },
+        );
+    },
+);
 
 const publicErrors = {
     INCORRECT_CREDENTIALS: 'incorrect-credentials',
     AANWEZIGHEID_SAVED: 'aanwezigheid-saved',
     PLAATSVOORKEUREN_SAVED: 'plaatsvoorkeuren-saved',
     ALGEMENE_VOORKEUREN_SAVED: 'algemene-voorkeuren-saved',
+    ACTIVATION_FAILED: 'activation-failed',
+    NON_MATCHING_PASSWORDS: 'non-matching-passwords',
 };
 
 const humanReadableMessage = {
@@ -397,6 +440,10 @@ const humanReadableMessage = {
     [publicErrors.AANWEZIGHEID_SAVED]: 'Je aan- of afmeldingen zijn met success gewijzigd.',
     [publicErrors.PLAATSVOORKEUREN_SAVED]: 'Je plaatsvoorkeuren zijn met success gewijzigd.',
     [publicErrors.ALGEMENE_VOORKEUREN_SAVED]: 'Je marktprofiel is met success gewijzigd.',
+    [publicErrors.ACTIVATION_FAILED]:
+        'De ingevoerde activatie-code klopt niet of is verlopen. Controleer de ingevulde gegevens.',
+    [publicErrors.NON_MATCHING_PASSWORDS]:
+        'De ingevoerde wachtwoorden komen niet overeen. Let op dat je geen fout maakt bij het kiezen van een wachtwoord.',
 };
 
 /*
@@ -419,9 +466,9 @@ const getQueryErrors = queryParams => {
     }));
 };
 
-app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
+const dashboardPage = (req, res, erkenningsNummer) => {
     const messages = getQueryErrors(req.query);
-    const user = req.user.token;
+    const user = req.session.token;
     const ondernemerPromise = getMarktondernemer(user, req.params.erkenningsNummer);
     const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(req.params.erkenningsNummer);
     const marktenPromise = getMarkten(user, req.params.marktId);
@@ -440,7 +487,7 @@ app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
         ondernemerPromise,
         marktenPromiseProps,
         ondernemerVoorkeurenPromise,
-        getAanmeldingenByOndernemer(req.params.erkenningsNummer),
+        getAanmeldingenByOndernemer(erkenningsNummer),
     ]).then(
         ([ondernemer, markten, plaatsvoorkeuren, aanmeldingen]) => {
             res.render('OndernemerDashboard', {
@@ -455,43 +502,255 @@ app.get('/dashboard/:erkenningsNummer/', ensureLoggedIn(), function(req, res) {
         },
         err => errorPage(res, err),
     );
+};
+
+app.get('/dashboard/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
+    dashboardPage(req, res, getErkenningsNummer(req));
 });
 
-app.get('/login', function(req, res) {
-    const messages = getQueryErrors(req.query);
+app.get('/dashboard/:erkenningsNummer/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    dashboardPage(req, res, req.params.erkenningsNummer);
+});
 
-    res.render('LoginPage', {
-        messages,
+app.get('/login', keycloak.protect(), (req, res) => {
+    readOnlyLogin().then(sessionData => {
+        Object.assign(req.session, sessionData);
+
+        if (isMarktondernemer(req)) {
+            res.redirect('/dashboard');
+        } else if (isMarktmeester(req)) {
+            res.redirect('/markt/');
+        } else {
+            res.redirect('/');
+        }
     });
 });
 
-app.get('/ondernemer-login', function(req, res) {
-    const messages = getQueryErrors(req.query);
+app.get('/ondernemer/:erkenningsNummer/activatie-qr.svg', keycloak.protect(KeycloakRoles.MARKTMEESTER), function(
+    req,
+    res,
+) {
+    getMarktondernemer(req.session.token, req.params.erkenningsNummer).then(ondernemer => {
+        const params = {
+            username: req.params.erkenningsNummer,
+            code: ondernemer.pasUid,
+        };
 
-    res.render('OndernemerLoginPage', {
-        messages,
-    });
-});
+        const activationURL = `${req.protocol}://${req.headers.host}/activeren${qs.stringify(params, {
+            addQueryPrefix: true,
+        })}`;
 
-app.post(
-    '/login',
-    passport.authenticate('local', { failureRedirect: `/login?error=${publicErrors.INCORRECT_CREDENTIALS}` }),
-    function(req, res) {
         /*
-         * TODO: Redirect to URL specified in URL query parameter,
-         * so you go back to the page you intended to visit.
+         * FIXME: The <QRCode> React component doesn't output the `xmlns` attribute,
+         * image only get's displayed as `text/html`.
          */
-        res.redirect(req.user.userType === 'ondernemer' ? '/dashboard/' + req.user.username : '/');
-    },
-);
+        res.set({
+            // 'Content-Type': 'image/svg+xml; charset=UTF-8',
+        });
 
-app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
+        res.render('QRCodeImage', {
+            value: activationURL,
+        });
+    }, httpErrorPage(res, HTTP_PAGE_NOT_FOUND));
 });
 
-app.get('/makkelijkemarkt/api/1.1.0/markt/:marktId', ensureLoggedIn(), (req, res) => {
-    getMarkt(req.user.token, req.params.marktId).then(
+app.get('/activeren', (req, res) => {
+    res.render('ActivatePage', {
+        username: req.query.username,
+        code: req.query.code,
+        messages: getQueryErrors(req.query),
+    });
+});
+
+app.post('/activeren', (req, res) => {
+    const { username, code } = req.body;
+    checkActivationCode(username, code)
+        .then(ondernemer => userExists(username))
+        .then(isExistingUser => {
+            console.log(username, isExistingUser);
+            if (isExistingUser) {
+                // Go to the activation failed page
+                throw new Error();
+            }
+
+            return isExistingUser;
+        })
+        .then(
+            () => {
+                req.session.activation = {
+                    username,
+                };
+                res.redirect('/registreren');
+            },
+            () => {
+                res.redirect(
+                    `/activeren${qs.stringify(
+                        {
+                            username,
+                            code,
+                            error: publicErrors.ACTIVATION_FAILED,
+                        },
+                        { addQueryPrefix: true },
+                    )}`,
+                );
+            },
+        );
+});
+
+app.get('/registreren', (req, res) => {
+    if (req.session.activation) {
+        res.render('RegistrationPage', {
+            code: req.session.activation.code,
+            email: req.query.email,
+            messages: getQueryErrors(req.query),
+            username: req.session.activation.username,
+        });
+    } else {
+        res.redirect('/activeren');
+    }
+});
+
+app.post('/registreren', (req, res) => {
+    if (req.session.activation) {
+        const { password, email } = req.body;
+
+        if (req.body.password !== req.body.passwordRepeat) {
+            res.redirect(
+                `/registreren${qs.stringify(
+                    { email, error: publicErrors.NON_MATCHING_PASSWORDS },
+                    {
+                        addQueryPrefix: true,
+                    },
+                )}`,
+            );
+        }
+
+        const userDefinition = {
+            username: req.session.activation.username,
+            email,
+            enabled: true,
+        };
+
+        getKeycloakAdmin().then(kcAdminClient => {
+            // const clientId = process.env.IAM_CLIENT_ID;
+            const clientId = 'fea49ab9-656f-436c-a804-7925b4bfa08b';
+
+            const clientPromise = kcAdminClient.clients
+                .findOne({
+                    clientId: process.env.IAM_CLIENT_ID,
+                })
+                .then(clients => clients[0]);
+
+            const rolePromise = clientPromise.then(client =>
+                kcAdminClient.clients.findRole(
+                    trace({
+                        id: client.id,
+                        roleName: KeycloakRoles.MARKTONDERNEMER,
+                    }),
+                ),
+            );
+
+            const userPromise = kcAdminClient.users.create(userDefinition);
+
+            Promise.all([clientPromise, rolePromise, userPromise])
+                .then(([client, role, user]) => {
+                    const passwordPromise = kcAdminClient.users.resetPassword({
+                        id: user.id,
+                        credential: {
+                            temporary: false,
+                            type: 'password',
+                            value: password,
+                        },
+                    });
+
+                    if (user.email) {
+                        // TODO: How should we handle failure here?
+                        kcAdminClient.users
+                            .sendVerifyEmail({
+                                id: user.id,
+                            })
+                            .then(
+                                () => console.log('Verification e-mail sent.'),
+                                () => console.log('Failed to send verification e-mail.'),
+                            );
+                    }
+
+                    /*
+                     * TODO: Currently `Keycloak.MARKTONDERNEMER` is the default role
+                     * for all users, but we should ensure in this stage we add
+                     * the role in case someone deletes this default setting.
+                     * return rolePromise.then(role =>
+                     *     kcAdminClient.users.addClientRoleMappings({
+                     *         id: user.id,
+                     *         clientUniqueId: client.id,
+                     *         roles: [
+                     *             {
+                     *                 id: role.id,
+                     *                 name: role.name,
+                     *             },
+                     *         ],
+                     *     }),
+                     * );
+                     */
+
+                    /*
+                     * TODO: When setting up the initial password fails,
+                     * should we roll back and delete the new user?
+                     */
+
+                    return passwordPromise.then(result => {
+                        console.log('Password reset', result);
+                    });
+                })
+                .then(x => {
+                    delete req.session.activation;
+                    res.redirect('/welkom');
+                })
+                .catch(httpErrorPage(res, HTTP_INTERNAL_SERVER_ERROR));
+        });
+    } else {
+        forbiddenErrorPage(res);
+    }
+});
+
+app.get('/herstellen', (req, res) => {
+    res.render('PasswordRecoveryPage', {
+        username: req.query.username,
+    });
+});
+
+app.post('/herstellen', (req, res) => {
+    if (req.body && req.body.username) {
+        const { username } = req.body;
+        getKeycloakAdmin()
+            .then(
+                kcAdminClient =>
+                    kcAdminClient.users
+                        .findOne({ username })
+                        .then(requireOne)
+                        .then(user =>
+                            kcAdminClient.users.executeActionsEmail({
+                                id: trace(user, 'Recovery user:').id,
+                                lifespan: 3600,
+                                actions: ['UPDATE_PASSWORD'],
+                            }),
+                        ),
+                traceError(`Password reset for unknown user: ${username}`),
+            )
+            .then(() => {
+                res.redirect('/login?message=password-recovery-mail');
+            }, httpErrorPage(res, HTTP_INTERNAL_SERVER_ERROR)('Password reset failed'));
+    } else {
+        httpErrorPage(res, HTTP_PAGE_NOT_FOUND)('Missing username');
+    }
+});
+
+app.get('/welkom', (req, res) => {
+    res.render('AccountCreatedPage', {});
+});
+
+app.get('/makkelijkemarkt/api/1.1.0/markt/:marktId', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    getMarkt(req.session.token, req.params.marktId).then(
         markt => {
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -504,8 +763,8 @@ app.get('/makkelijkemarkt/api/1.1.0/markt/:marktId', ensureLoggedIn(), (req, res
     );
 });
 
-app.get('/makkelijkemarkt/api/1.1.0/markt/', ensureLoggedIn(), (req, res) => {
-    getMarkten(req.user.token).then(
+app.get('/makkelijkemarkt/api/1.1.0/markt/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    getMarkten(req.session.token).then(
         markten => {
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -518,22 +777,26 @@ app.get('/makkelijkemarkt/api/1.1.0/markt/', ensureLoggedIn(), (req, res) => {
     );
 });
 
-app.get('/makkelijkemarkt/api/1.1.0/marktondernemer/erkenningsnummer/:id', ensureLoggedIn(), (req, res) => {
-    getMarktondernemer(req.user.token, req.params.id).then(
-        ondernemer => {
-            res.set({
-                'Content-Type': 'application/json; charset=UTF-8',
-            });
-            res.send(JSON.stringify(ondernemer));
-        },
-        err => {
-            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
-        },
-    );
-});
+app.get(
+    '/makkelijkemarkt/api/1.1.0/marktondernemer/erkenningsnummer/:id',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    (req, res) => {
+        getMarktondernemer(req.session.token, req.params.id).then(
+            ondernemer => {
+                res.set({
+                    'Content-Type': 'application/json; charset=UTF-8',
+                });
+                res.send(JSON.stringify(ondernemer));
+            },
+            err => {
+                res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+            },
+        );
+    },
+);
 
-app.get('/makkelijkemarkt/api/1.1.0/lijst/week/:marktId', ensureLoggedIn(), (req, res) => {
-    getMarktondernemersByMarkt(req.user.token, req.params.marktId).then(
+app.get('/makkelijkemarkt/api/1.1.0/lijst/week/:marktId', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    getMarktondernemersByMarkt(req.session.token, req.params.marktId).then(
         markten => {
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -546,7 +809,7 @@ app.get('/makkelijkemarkt/api/1.1.0/lijst/week/:marktId', ensureLoggedIn(), (req
     );
 });
 
-app.get('/api/0.0.1/markt/:marktId/branches.json', ensureLoggedIn(), (req, res) => {
+app.get('/api/0.0.1/markt/:marktId/branches.json', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
     getBranches(req.params.marktId).then(
         branches => {
             res.set({
@@ -560,21 +823,25 @@ app.get('/api/0.0.1/markt/:marktId/branches.json', ensureLoggedIn(), (req, res) 
     );
 });
 
-app.get('/api/0.0.1/markt/:marktId/:date/aanmeldingen.json', ensureLoggedIn(), (req, res) => {
-    getAanmeldingen(req.params.marktId, req.params.date).then(
-        branches => {
-            res.set({
-                'Content-Type': 'application/json; charset=UTF-8',
-            });
-            res.send(JSON.stringify(branches));
-        },
-        err => {
-            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
-        },
-    );
-});
+app.get(
+    '/api/0.0.1/markt/:marktId/:date/aanmeldingen.json',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    (req, res) => {
+        getAanmeldingen(req.params.marktId, req.params.date).then(
+            branches => {
+                res.set({
+                    'Content-Type': 'application/json; charset=UTF-8',
+                });
+                res.send(JSON.stringify(branches));
+            },
+            err => {
+                res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+            },
+        );
+    },
+);
 
-app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', ensureLoggedIn(), (req, res) => {
+app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
     getPlaatsvoorkeuren(req.params.marktId).then(
         branches => {
             res.set({
@@ -588,7 +855,7 @@ app.get('/api/0.0.1/markt/:marktId/voorkeuren.json', ensureLoggedIn(), (req, res
     );
 });
 
-app.get('/api/0.0.1/markt/:marktId/plaats-count/:count/', ensureLoggedIn(), (req, res) => {
+app.get('/api/0.0.1/markt/:marktId/plaats-count/:count/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
     Promise.all([
         getMarktPaginas(req.params.marktId),
         getMarktProperties(req.params.marktId),
@@ -660,8 +927,8 @@ const ondernemerChangeBranchePage = (res, token, erkenningsNummer, query) => {
     );
 };
 
-app.get('/branche/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
-    ondernemerChangeBranchePage(res, req.user.token, req.params.erkenningsNummer, req.query);
+app.get('/branche/:erkenningsNummer/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    ondernemerChangeBranchePage(res, req.session.token, req.params.erkenningsNummer, req.query);
 });
 
 const afmeldPage = (res, token, erkenningsNummer, currentMarktId, query) => {
@@ -689,15 +956,15 @@ const afmeldPage = (res, token, erkenningsNummer, currentMarktId, query) => {
     );
 };
 
-app.get('/afmelden/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
-    afmeldPage(res, req.user.token, req.params.erkenningsNummer, req.query);
+app.get('/afmelden/:erkenningsNummer/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
+    afmeldPage(res, req.session.token, req.params.erkenningsNummer, req.query);
 });
 
-app.get('/afmelden/:erkenningsNummer/:marktId', ensureLoggedIn(), (req, res) => {
-    afmeldPage(res, req.user.token, req.params.erkenningsNummer, req.params.marktId, req.query);
+app.get('/afmelden/:erkenningsNummer/:marktId', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
+    afmeldPage(res, req.session.token, req.params.erkenningsNummer, req.params.marktId, req.query);
 });
 
-app.post('/afmelden/', ensureLoggedIn(), (req, res) => {
+app.post('/afmelden/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
     /*
      * TODO: Form data format validation
      * TODO: Business logic validation
@@ -744,16 +1011,16 @@ const aanmeldPage = (res, token, erkenningsNummer, marktId, query) => {
     );
 };
 
-app.get('/aanmelden/', ensureLoggedIn(), (req, res) => {
-    aanmeldPage(res, req.user.token, req.user.erkenningsNummer);
+app.get('/aanmelden/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
+    aanmeldPage(res, req.session.token, req.user.erkenningsNummer);
 });
 
-app.get('/aanmelden/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
-    aanmeldPage(res, req.user.token, req.params.erkenningsNummer);
+app.get('/aanmelden/:erkenningsNummer/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
+    aanmeldPage(res, req.session.token, req.params.erkenningsNummer);
 });
 
-app.get('/aanmelden/:erkenningsNummer/:marktId', ensureLoggedIn(), (req, res) => {
-    aanmeldPage(res, req.user.token, req.params.erkenningsNummer, req.params.marktId, req.query);
+app.get('/aanmelden/:erkenningsNummer/:marktId', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
+    aanmeldPage(res, req.session.token, req.params.erkenningsNummer, req.params.marktId, req.query);
 });
 
 const aanmeldFormDataToRSVP = formData => ({
@@ -763,7 +1030,7 @@ const aanmeldFormDataToRSVP = formData => ({
     attending: true,
 });
 
-app.post('/aanmelden/', ensureLoggedIn(), (req, res) => {
+app.post('/aanmelden/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
     const { next } = req.body;
     models.rsvp
         .create(aanmeldFormDataToRSVP(req.body))
@@ -821,8 +1088,8 @@ const voorkeurenPage = (req, res, token, erkenningsNummer, query, currentMarktId
     );
 };
 
-app.get('/voorkeuren/:erkenningsNummer/:marktId', ensureLoggedIn(), (req, res) => {
-    voorkeurenPage(req, res, req.user.token, req.params.erkenningsNummer, req.query, req.params.marktId);
+app.get('/voorkeuren/:erkenningsNummer/:marktId', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
+    voorkeurenPage(req, res, req.session.token, req.params.erkenningsNummer, req.query, req.params.marktId);
 });
 
 const algemeneVoorkeurenPage = (req, res, token, erkenningsNummer, marktId, marktDate) => {
@@ -863,21 +1130,32 @@ const jsonPage = res => data => {
     res.send(JSON.stringify(data, null, '  '));
 };
 
-const internalServerErrorPage = res => err => {
-    res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
-};
+app.get(
+    '/algemene-voorkeuren/:erkenningsNummer/voorkeuren.json',
+    keycloak.protect(KeycloakRoles.MARKTONDERNEMER),
+    (req, res) => {
+        getIndelingVoorkeur(req.params.erkenningsNummer).then(jsonPage(res), internalServerErrorPage(res));
+    },
+);
 
-app.get('/algemene-voorkeuren/:erkenningsNummer/voorkeuren.json', ensureLoggedIn(), (req, res) => {
-    getIndelingVoorkeur(req.params.erkenningsNummer).then(jsonPage(res), internalServerErrorPage(res));
-});
+app.get(
+    '/algemene-voorkeuren/:marktId/markt-voorkeuren.json',
+    keycloak.protect(KeycloakRoles.MARKTONDERNEMER),
+    (req, res) => {
+        getIndelingVoorkeuren(req.params.marktId).then(jsonPage(res), internalServerErrorPage(res));
+    },
+);
 
-app.get('/algemene-voorkeuren/:marktId/markt-voorkeuren.json', ensureLoggedIn(), (req, res) => {
-    getIndelingVoorkeuren(req.params.marktId).then(jsonPage(res), internalServerErrorPage(res));
-});
-
-app.get('/algemene-voorkeuren/:marktId/:marktDate/markt-voorkeuren.json', ensureLoggedIn(), (req, res) => {
-    getIndelingVoorkeuren(req.params.marktId, req.params.marktDate).then(jsonPage(res), internalServerErrorPage(res));
-});
+app.get(
+    '/algemene-voorkeuren/:marktId/:marktDate/markt-voorkeuren.json',
+    keycloak.protect(KeycloakRoles.MARKTONDERNEMER),
+    (req, res) => {
+        getIndelingVoorkeuren(req.params.marktId, req.params.marktDate).then(
+            jsonPage(res),
+            internalServerErrorPage(res),
+        );
+    },
+);
 
 const algemeneVoorkeurenFormData = body => {
     const { erkenningsNummer, marktId, marktDate, brancheId, parentBrancheId, inrichting } = body;
@@ -909,11 +1187,11 @@ const algemeneVoorkeurenFormData = body => {
     return voorkeur;
 };
 
-app.get('/markt-detail/:erkenningsNummer/:marktId/', ensureLoggedIn(), (req, res) => {
+app.get('/markt-detail/:erkenningsNummer/:marktId/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
     const messages = getQueryErrors(req.query);
-    const ondernemerPromise = getMarktondernemer(req.user.token, req.params.erkenningsNummer);
+    const ondernemerPromise = getMarktondernemer(req.session.token, req.params.erkenningsNummer);
     const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(req.params.erkenningsNummer);
-    const marktPromise = req.params.marktId ? getMarkt(req.user.token, req.params.marktId) : Promise.resolve(null);
+    const marktPromise = req.params.marktId ? getMarkt(req.session.token, req.params.marktId) : Promise.resolve(null);
     const query = req.query;
     const next = req.query.next;
 
@@ -943,7 +1221,7 @@ app.get('/markt-detail/:erkenningsNummer/:marktId/', ensureLoggedIn(), (req, res
     );
 });
 
-app.post('/algemene-voorkeuren/', ensureLoggedIn(), (req, res) => {
+app.post('/algemene-voorkeuren/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
     const { next } = req.body;
 
     const data = algemeneVoorkeurenFormData(req.body);
@@ -964,33 +1242,41 @@ app.post('/algemene-voorkeuren/', ensureLoggedIn(), (req, res) => {
     );
 });
 
-app.get('/algemene-voorkeuren/', ensureLoggedIn(), (req, res, next) => {
+app.get('/algemene-voorkeuren/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res, next) => {
     // TODO: Only allow access for role "marktondernemer"
     if (isErkenningsnummer(req.user.username)) {
-        algemeneVoorkeurenPage(res, req.user.token, req.user.username);
+        algemeneVoorkeurenPage(res, req.session.token, req.user.username);
     } else {
         next();
     }
 });
 
-app.get('/algemene-voorkeuren/:erkenningsNummer/', ensureLoggedIn(), (req, res) => {
-    algemeneVoorkeurenPage(req, res, req.user.token, req.params.erkenningsNummer);
+app.get('/algemene-voorkeuren/:erkenningsNummer/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
+    algemeneVoorkeurenPage(req, res, req.session.token, req.params.erkenningsNummer);
 });
 
-app.get('/algemene-voorkeuren/:erkenningsNummer/:marktId/', ensureLoggedIn(), (req, res) => {
-    algemeneVoorkeurenPage(req, res, req.user.token, req.params.erkenningsNummer, req.params.marktId);
-});
+app.get(
+    '/algemene-voorkeuren/:erkenningsNummer/:marktId/',
+    keycloak.protect(KeycloakRoles.MARKTONDERNEMER),
+    (req, res) => {
+        algemeneVoorkeurenPage(req, res, req.session.token, req.params.erkenningsNummer, req.params.marktId);
+    },
+);
 
-app.get('/algemene-voorkeuren/:erkenningsNummer/:marktId/:marktDate/', ensureLoggedIn(), (req, res) => {
-    algemeneVoorkeurenPage(
-        req,
-        res,
-        req.user.token,
-        req.params.erkenningsNummer,
-        req.params.marktId,
-        req.params.marktDate,
-    );
-});
+app.get(
+    '/algemene-voorkeuren/:erkenningsNummer/:marktId/:marktDate/',
+    keycloak.protect(KeycloakRoles.MARKTONDERNEMER),
+    (req, res) => {
+        algemeneVoorkeurenPage(
+            req,
+            res,
+            req.session.token,
+            req.params.erkenningsNummer,
+            req.params.marktId,
+            req.params.marktDate,
+        );
+    },
+);
 
 const voorkeurenFormDataToObject = formData => ({
     marktId: parseInt(formData.marktId, 10),
@@ -999,7 +1285,7 @@ const voorkeurenFormDataToObject = formData => ({
     priority: parseInt(formData.priority, 10),
 });
 
-app.post('/voorkeuren/', ensureLoggedIn(), (req, res) => {
+app.post('/voorkeuren/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
     /*
      * TODO: Form data format validation
      * TODO: Business logic validation
@@ -1042,18 +1328,19 @@ app.post('/voorkeuren/', ensureLoggedIn(), (req, res) => {
         );
 });
 
-app.get('/profile', ensureLoggedIn(), (req, res) => {
-    if (req.user.userType === 'ondernemer') {
-        getMarktondernemer(req.user.token, req.user.erkenningsNummer).then(ondernemer => {
-            res.render('ProfilePage', { user: req.user, ondernemer });
+app.get('/profile', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
+    getMarktondernemer(req.session.token, getErkenningsNummer(req)).then(ondernemer => {
+        res.render('ProfilePage', {
+            user: {
+                userType: 'marktondernemer',
+            },
+            ondernemer,
         });
-    } else {
-        res.render('ProfilePage', { user: req.user });
-    }
+    });
 });
 
-app.get('/profile/:erkenningsNummer', ensureLoggedIn(), (req, res) => {
-    getMarktondernemer(req.user.token, req.params.erkenningsNummer).then(
+app.get('/profile/:erkenningsNummer', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    getMarktondernemer(req.session.token, req.params.erkenningsNummer).then(
         ondernemer => {
             res.render('PublicProfilePage', { ondernemer, user: req.user });
         },
@@ -1061,8 +1348,8 @@ app.get('/profile/:erkenningsNummer', ensureLoggedIn(), (req, res) => {
     );
 });
 
-app.get('/markt/:marktId/:marktDate/markt.json', ensureLoggedIn(), (req, res) => {
-    getIndelingslijstInput(req.user.token, req.params.marktId, req.params.marktDate).then(
+app.get('/markt/:marktId/:marktDate/markt.json', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    getIndelingslijstInput(req.session.token, req.params.marktId, req.params.marktDate).then(
         data => {
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -1075,8 +1362,8 @@ app.get('/markt/:marktId/:marktDate/markt.json', ensureLoggedIn(), (req, res) =>
     );
 });
 
-app.get('/markt/:marktId/:marktDate/markt-indeling.json', ensureLoggedIn(), (req, res) => {
-    getIndelingslijst(req.user.token, req.params.marktId, req.params.marktDate).then(
+app.get('/markt/:marktId/:marktDate/markt-indeling.json', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    getIndelingslijst(req.session.token, req.params.marktId, req.params.marktDate).then(
         markt => {
             res.set({
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -1089,7 +1376,7 @@ app.get('/markt/:marktId/:marktDate/markt-indeling.json', ensureLoggedIn(), (req
     );
 });
 
-app.get('/markt-indeling/:marktId/:datum/', ensureLoggedIn(), (req, res) => {
+app.get('/markt-indeling/:marktId/:datum/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
     res.render('MarktIndelingPage', {});
 });
 
@@ -1098,7 +1385,7 @@ app.use(express.static('./src/public/'));
 app.use(express.static('./dist/public/'));
 
 // Static files that require authorization (business logic scripts for example)
-app.use(ensureLoggedIn(), express.static('./src/www/'));
+app.use(keycloak.protect(), express.static('./src/www/'));
 
 app.listen(port, err => {
     if (err) {

@@ -149,6 +149,28 @@ const stringSort = (a, b) => (a > b ? 1 : a === b ? 0 : -1);
 
 const flatten = (a = [], b = []) => [...a, ...b];
 
+const requireOne = arg => {
+    if (Array.isArray(arg) && arg.length >= 1) {
+        return arg[0];
+    } else if (!Array.isArray(arg) && typeof arg !== 'undefined' && arg !== null) {
+        return arg;
+    } else {
+        throw new TypeError('Must be exactly one');
+    }
+};
+
+const trace = arg => {
+    console.log(arg);
+
+    return arg;
+};
+
+const traceError = message => err => {
+    console.error(message, err);
+
+    throw err;
+};
+
 module.exports = {
     fullRelativeHumanDate,
     splitByValueArray,
@@ -169,6 +191,9 @@ module.exports = {
     formatDate,
     relativeHumanDay,
     capitalize,
+    requireOne,
+    trace,
+    traceError,
     DAYS_IN_WEEK,
     WEEK_DAYS,
     MILLISECONDS_IN_SECOND,
