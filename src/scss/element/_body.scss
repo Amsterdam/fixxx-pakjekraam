@@ -7,3 +7,11 @@ body {
     font-family: $ff-regular;
     @include p1;
 }
+html {
+    box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}

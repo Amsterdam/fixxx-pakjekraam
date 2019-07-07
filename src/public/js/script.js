@@ -106,6 +106,62 @@ function splitByArray(orgArr, valueArr) {
 !function (w, d) {
 
   var handlers = {
+    'modal-close': function(e){
+      var modal = _closest(this, '.modal');
+      if (modal) {
+        this.handled = true;
+        modal.parentNode.removeChild(modal);
+      }
+      document.body.classList.remove('modal-active');
+    },
+    'modal': function(e){
+      e && e.preventDefault();
+      var
+        el = this.hash && document.getElementById(this.hash.substring(1)) || this.dataset.contentId && document.getElementById(this.dataset.contentId),
+        url = this.href,
+        form = _closest(this, 'form'),
+        rootElem = this.dataset.root && document.querySelector(this.dataset.root) || document.body,
+        template = '<div class="modal-inner">[[CONTENT]]</div><a href="#" class="modal-close" data-handler="modal-close">SLUITEN</a><a href="#" class="modal-close--bg" data-handler="modal-close"></a>';
+        var content = false;
+
+      var _render = function(content){
+        var modal = document.createElement('div');
+        modal.classList.add('modal');
+        modal.innerHTML = template.replace('[[CONTENT]]', content);
+        var fields = modal.querySelectorAll('select, input');
+        for (var i = 0; i < fields.length; i++){
+          var f = fields[i];
+          f.dataset.id && f.setAttribute('id', f.dataset.id);
+          f.dataset.name && f.setAttribute('name', f.dataset.name);
+        }
+        rootElem.appendChild(modal);
+        // form && changers['change'].call(form);
+        setTimeout(function(){
+          modal.classList.add('active');
+        }, 300);
+      };
+
+      if (el) {
+          console.log('redner');
+        content = el.innerHTML;
+        _render(content);
+      } else if (url) {
+        helpers.ajax(url, function(response){
+          if (response.status >= 200 && response.status < 400) {
+            var r = document.createElement('div');
+            r.innerHTML = response.responseText;
+
+            (content = r.querySelector('main')) && _render(content.innerHTML);
+          } else {
+            w.location = url;
+          }
+        });
+      } else {
+        w.location = url;
+      }
+      document.body.classList.add('modal-active');
+
+    },
     'remove-voorkeur': function(e){
         var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
             plaatsIdsInputs = voorkeur.querySelectorAll('[name*="[plaatsId]"]'),
@@ -202,6 +258,15 @@ function splitByArray(orgArr, valueArr) {
   };
 
   var decorators = {
+      'initial-modal': function(){
+          var self = this,
+              el = window.location.hash && window.location.hash.split('modal-').length == 2 && document.getElementById(window.location.hash.split('modal-')[1]);
+            console.log(window.location.hash.split('modal-'));
+            console.log(el);
+            if (el){
+                handlers['modal'].call(el);
+            }
+      },
       'plaatsvoorkeur-prototype': function(){
           var self = this,
               removeBtn = this.querySelector('.PlaatsvoorkeurenForm__remove-wrapper'),

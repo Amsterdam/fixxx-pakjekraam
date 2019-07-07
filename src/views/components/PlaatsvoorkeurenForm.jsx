@@ -101,7 +101,25 @@ class PlaatsvoorkeurenForm extends React.Component {
                     Je kunt de plaatsvoorkeuren voor morgen tot 21.00 wijzigen. Wijzig je de plaatsvoorkeuren na 21.00
                     uur dan gelden deze voor de dagen na morgen.
                 </p>
-                <div key={markt.id} className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
+                <div className="PlaatsvoorkeurenForm__plaats-count-limit">
+                    <div className="InputField InputField--range">
+                        <div className="InputField--range__wrapper">
+                            <input
+                                name="min"
+                                type="range"
+                                min="1"
+                                max={newPlaatsvoorkeurCount}
+                                value={newPlaatsvoorkeurCount}
+                            />
+                            <ul className="InputField--range__value-list">
+                                {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
+                                    <li className="InputField--range__value-list-item">{i + 1}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
                     <script dangerouslySetInnerHTML={marktRowsJSOM()} />
                     <script dangerouslySetInnerHTML={plaatsSetsJSON()} />
                     <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
@@ -211,11 +229,31 @@ class PlaatsvoorkeurenForm extends React.Component {
                             name="redirectTo"
                             value={`/voorkeuren/${ondernemer.erkenningsnummer}/${
                                 markt.id
-                            }/?error=plaatsvoorkeuren-saved&next=${next}#bottom-buttons`}
+                            }/?&next=${next}#modal-submit-buttons`}
                         >
                             Bewaar
                         </button>
                         <Button label="terug" href={`${next}#plaatsvoorkeuren`} type="tertiary" />
+                    </p>
+                </div>
+                <div
+                    data-decorator="initial-modal"
+                    className="hidden"
+                    id="submit-buttons"
+                    data-content-id="submit-buttons"
+                >
+                    <h2>Je keuze is bewaard</h2>
+                    <p>Je kunt meerdere keuzes toevoegen om je kans op een gewenste plaats te vergroten.</p>
+                    <p className="InputField InputField--submit">
+                        <a className="Button Button--secondary" href="#" data-handler="modal-close">
+                            + Voeg nog een keuze toe
+                        </a>
+                        <a
+                            className="Button Button--tertiary"
+                            href={`/markt-detail/${ondernemer.erkenningsnummer}/${markt.id}/#plaatsvoorkeuren`}
+                        >
+                            Terug naar marktoverzicht
+                        </a>
                     </p>
                 </div>
             </form>

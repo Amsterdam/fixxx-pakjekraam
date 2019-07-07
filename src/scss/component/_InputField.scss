@@ -7,14 +7,18 @@ $radiobutton-left: 0px;
     &--submit {
         background-color: $neutral-grey2;
         min-height: 44px;
-        padding: 10px;
+        padding: $vm1;
         flex-direction: column-reverse;
         align-items: flex-start;
+        flex-wrap: wrap;
         & > * {
-            margin-bottom: 10px;
+            margin: $vm1;
+        }
+        & > * {
+            //margin-bottom: 10px;
         }
         & > :first-child {
-            margin-bottom: 0;
+            //margin-bottom: 0;
         }
     }
     &--checkbox {
@@ -174,17 +178,56 @@ $radiobutton-left: 0px;
             margin: 20px 0;
         }
     }
+    &--range {
+        line-height: 0;
+        &__wrapper {
+            position: relative;
+            width: 100%;
+            input {
+                display: inline-block;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+        }
+        &__value-list {
+            display: flex;
+            justify-content: space-between;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            font-size: 0;
+            line-height: 0;
+            margin-top: -44px;
+            pointer-events: none;
+            position: relative;
+            z-index: 1;
+        }
+        &__value-list-item {
+            padding: 0;
+            font-size: $fs-70;
+            line-height: 44px;
+            display: inline-block;
+            color: $primary-white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid $primary-black;
+            text-align: center;
+        }
+    }
     @media screen and (min-width: $screenMedium) {
         &--submit {
             display: flex;
             flex-direction: row-reverse;
             align-content: flex-end;
-            & > * {
-                margin: 0 10px 0;
-            }
-            & > :first-child {
-                margin: 0;
-            }
+            //& > * {
+            //    margin: 0 10px 0;
+            //}
+            //& > :first-child {
+            //    margin: 0;
+            //}
         }
     }
 }
