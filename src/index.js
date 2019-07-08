@@ -234,8 +234,8 @@ app.get(
     '/mail/:marktId/:marktDate/:erkenningsNummer/aanmeldingen',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     function(req, res) {
-        const ondernemerPromise = getMarktondernemer(req.user.token, req.params.erkenningsNummer);
-        const marktPromise = getMarkt(req.user.token, req.params.marktId);
+        const ondernemerPromise = getMarktondernemer(req.session.token, req.params.erkenningsNummer);
+        const marktPromise = getMarkt(req.session.token, req.params.marktId);
         const aanmeldingenPromise = getAanmeldingenMarktOndern(req.params.marktId, req.params.erkenningsNummer);
         Promise.all([ondernemerPromise, marktPromise, aanmeldingenPromise]).then(
             ([ondernemer, markt, aanmeldingen]) => {
@@ -277,13 +277,13 @@ app.get(
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     function(req, res) {
         const mailContextPromise = getMailContext(
-            req.user.token,
+            req.session.token,
             req.params.marktId,
             req.params.erkenningsNummer,
             req.params.marktDate,
         );
-        const ondernemerPromise = getMarktondernemer(req.user.token, req.params.erkenningsNummer);
-        const marktPromise = getMarkt(req.user.token, req.params.marktId);
+        const ondernemerPromise = getMarktondernemer(req.session.token, req.params.erkenningsNummer);
+        const marktPromise = getMarkt(req.session.token, req.params.marktId);
         const voorkeurenPromise = getVoorkeurenMarktOndern(req.params.marktId, req.params.erkenningsNummer);
         Promise.all([ondernemerPromise, marktPromise, voorkeurenPromise]).then(
             ([ondernemer, markt, voorkeuren]) => {
@@ -335,12 +335,21 @@ app.get('/email/', keycloak.protect(KeycloakRoles.MARKTMEESTER), function(req, r
     res.render('EmailPage');
 });
 
+const emailTypes = {
+    mail01: 'EmailVplPlaatsConfirm',
+    mail02: 'EmailVplVoorkeurConfirm',
+    mail04: 'EmailSollNoPlaatsConfirm',
+    mail05: 'EmailSollPlaatsConfirm',
+    mail06: 'EmailSollVoorkeurConfirm',
+    mail07: 'EmailSollRandomPlaatsConfirm',
+};
+
 app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', keycloak.protect(KeycloakRoles.MARKTMEESTER), function(
     req,
     res,
 ) {
     const mailContextPromise = getMailContext(
-        req.user.token,
+        req.session.token,
         req.params.marktId,
         req.params.erkenningsNummer,
         req.params.marktDate,
