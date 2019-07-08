@@ -37,25 +37,48 @@
       <div id="kc-header-wrapper" class="${properties.kcHeaderWrapperClass!}">${kcSanitize(msg("loginTitleHtml",(realm.displayNameHtml!'')))?no_esc}</div>
     </div>
     <div class="${properties.kcFormCardClass!} <#if displayWide>${properties.kcFormCardAccountClass!}</#if>">
-      <header class="${properties.kcFormHeaderClass!}">
-        <#if realm.internationalizationEnabled  && locale.supported?size gt 1>
-            <div id="kc-locale">
-                <div id="kc-locale-wrapper" class="${properties.kcLocaleWrapperClass!}">
-                    <div class="kc-dropdown" id="kc-locale-dropdown">
-                        <a href="#" id="kc-current-locale-link">${locale.current}</a>
-                        <ul>
-                            <#list locale.supported as l>
-                                <li class="kc-dropdown-item"><a href="${l.url}">${l.label}</a></li>
-                            </#list>
-                        </ul>
+
+
+     <header class="Header">
+            <div class="Header__top">
+                <div class="container">
+                    <div class="container__content">
+                        <div class="Header__top-container"><a class="Header__logo-link" href="/">
+                                <picture class="Header__logo">
+                                    <source srcSet="/images/logo-desktop.svg" media="(min-width: 540px)" />
+                                    <source srcSet="/images/logo-mobile.svg" media="(min-width: 0)" /><img srcSet="/images/logo-desktop.svg" alt="…" /></picture>
+                            </a>
+                            <h1 class="Header__heading">Pak je kraam</h1>
+                            <#if realm.internationalizationEnabled  && locale.supported?size gt 1>
+                                <div id="kc-locale">
+                                    <div id="kc-locale-wrapper" class="${properties.kcLocaleWrapperClass!}">
+                                        <div class="kc-dropdown" id="kc-locale-dropdown">
+                                            <a href="#" id="kc-current-locale-link">${locale.current}</a>
+                                            <ul>
+                                                <#list locale.supported as l>
+                                                    <li class="kc-dropdown-item"><a href="${l.url}">${l.label}</a></li>
+                                                </#list>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </#if>
+                        </div>
                     </div>
                 </div>
             </div>
-        </#if>
+            <div class="Header__bottom">
+                <div class="container">
+                    <div class="container__content">
+                        <div class="Header__bottom-container"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
         <h1 id="kc-page-title"><#nested "header"></h1>
-      </header>
-      <div id="kc-content">
-        <div id="kc-content-wrapper">
+
+    <main class="content container">
+        <div class="container__content">
 
           <#if displayMessage && message?has_content>
               <div class="alert alert-${message.type}">
@@ -77,7 +100,7 @@
               </div>
           </#if>
         </div>
-      </div>
+      </main>
 
     </div>
   </div>
