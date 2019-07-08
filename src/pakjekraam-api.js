@@ -278,8 +278,8 @@ const getIndelingslijst = (token, marktId, date) =>
 const getMailContext = (token, marktId, erkenningsNr, marktDate) =>
     Promise.all([
         getIndelingslijst(token, marktId, marktDate),
-        getVoorkeurenByMarktByOndernemer(marktId, erkenningsNr),
-        getAanmeldingenByMarktByOndernemer(marktId, erkenningsNr),
+        getVoorkeurenMarktOndern(marktId, erkenningsNr),
+        getAanmeldingenMarktOndern(marktId, erkenningsNr),
     ]).then(([markt, voorkeuren, aanmeldingen]) => {
         const ondernemer = markt.ondernemers.find(({ erkenningsNummer }) => erkenningsNummer === erkenningsNr);
         const inschrijving = markt.aanwezigheid.find(({ erkenningsNummer }) => erkenningsNummer === erkenningsNr);
