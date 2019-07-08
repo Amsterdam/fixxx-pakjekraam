@@ -21,12 +21,6 @@ class EmailVplVoorkeurConfirm extends React.Component {
     render() {
         const fontGray = { color: '#767676' };
         const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
-        const verplaatsText = 'Dit is een voorkeursplaats die je hebt aangevraagd.';
-        const uitbreidingText = `Dit is inlcusief een extra plaats die je hebt aangevraagd. Dit is een voorkeursplaats met extra plaats die je hebt aangevraagd`;
-
-        const uitbreidingVerplaatsText = `Dit is inlcusief een extra plaats die je hebt aangevraagd. Dit is een voorkeursplaats met extra plaats die je hebt aangevraagd`;
-        const verplaatsGeenUitbreidingText = `Dit is inlcusief een extra plaats die je hebt aangevraagd. Dit is een voorkeursplaats met extra plaats die je hebt aangevraagd`;
-
         const bijzonderheden = markt.marktplaatsen
             .reduce((t, plaats) => {
                 ondernemer.plaatsen.map(p => {
@@ -42,16 +36,34 @@ class EmailVplVoorkeurConfirm extends React.Component {
 
                 return t;
             }, []);
-        const uitbreiding = toewijzing.plaatsen.length > ondernemer.plaatsen;
+
+        const uitbreiding = toewijzing.plaatsen.length > ondernemer.plaatsen.length;
+        const verkleining = toewijzing.plaatsen.length < ondernemer.plaatsen.length;
+        const isVastePlaats = toewijzing.plaatsen.sort().join('-') === ondernemer.plaatsen.sort().join('-');
         const uitbreidingVastePlaatsen = toewijzing.plaatsen
             .sort()
             .join('-')
             .includes(ondernemer.plaatsen.sort().join('-'));
-        const toewijzingsText = !uitbreiding
-            ? verplaatsText
-            : voorkeuren.length === 1 && uitbreidingVastePlaatsen
-            ? uitbreidingText
-            : uitbreidingVerplaatsText;
+        const verkleiningVastePlaatsen = ondernemer.plaatsen
+            .sort()
+            .join('-')
+            .includes(toewijzing.plaatsen.sort().join('-'));
+
+        const defaultText = 'Dit zijn je vaste plaatsen.';
+        const verplaatsText = 'Dit is een voorkeursplaats die je hebt aangevraagd.';
+        const vekleiningText = `Dit is een verkleining van je vaste plaats die je hebt aangevraagd`;
+        const vekleiningVerplaatsText = `Dit is een verplaatsing en verkleining die je hebt aangevraagd`;
+        const uitbreidingVerplaatsText = `Dit is een voorkeursplaats met extra plaats(en) die je hebt aangevraagd`;
+        const uitbreidingNietVerplaatsText = `Dit is je vaste plaats met extra plaats(en) die je hebt aangevraagd`;
+        const verplaatsGeenUitbreidingText = `Dit is een voorkeursplaats die je hebt aangevraagd`;
+
+        let toewijzingsText = isVastePlaats ? defaultText : verplaatsText;
+        if (uitbreiding) {
+            toewijzingsText = uitbreidingVastePlaatsen ? uitbreidingNietVerplaatsText : uitbreidingVerplaatsText;
+        } else if (verkleining) {
+            toewijzingsText = verkleiningVastePlaatsen ? vekleiningText : vekleiningVerplaatsText;
+        }
+
         const tableData = [
             [
                 'Plaats nrs:',

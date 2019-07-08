@@ -349,7 +349,7 @@ app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', keycloak.protect
     mailContextPromise.then(
         props => {
             const subject = `Martindeling ${props.markt.naam} ${formatDate(props.marktDate)}`;
-            props['subject'] = subject;
+            props.subject = subject;
 
             res.render('EmailIndeling', props);
 
