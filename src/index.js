@@ -122,6 +122,21 @@ app.get('/status/database', function(req, res) {
         });
 });
 
+app.get('/status/keycloak', function(req, res) {
+    getKeycloakAdmin()
+        .then(kcAdminClient =>
+            kcAdminClient.realms.findOne({
+                realm: process.env.IAM_REALM,
+            }),
+        )
+        .then(() => {
+            res.end('Keycloak OK!');
+        })
+        .catch(err => {
+            errorPage(res, 'Unable to connect to the Keycloak');
+        });
+});
+
 app.get('/status/makkelijkemarkt', function(req, res) {
     readOnlyLogin()
         .then(() => {
