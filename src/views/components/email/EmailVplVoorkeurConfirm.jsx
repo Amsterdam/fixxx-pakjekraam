@@ -10,6 +10,7 @@ const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
 class EmailVplVoorkeurConfirm extends React.Component {
     propTypes = {
         markt: PropTypes.object.isRequired,
+        marktplaatsen: PropTypes.array.isRequired,
         marktDate: PropTypes.string.isRequired,
         ondernemer: PropTypes.object.isRequired,
         toewijzing: PropTypes.object,
@@ -20,7 +21,17 @@ class EmailVplVoorkeurConfirm extends React.Component {
     };
 
     render() {
-        const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren, branches } = this.props;
+        const {
+            markt,
+            marktplaatsen,
+            marktDate,
+            ondernemer,
+            toewijzing,
+            afwijzing,
+            inschrijving,
+            voorkeuren,
+            branches,
+        } = this.props;
         const fontGray = { color: '#767676' };
         const branchesObj = arrayToObject(branches, 'brancheId');
         const ondernemerPlaatsBranches = toewijzing.plaatsen.map(plaatsId => {
@@ -35,7 +46,7 @@ class EmailVplVoorkeurConfirm extends React.Component {
             return plaatsBranches ? plaatsBranches : 'geen';
         });
 
-        const bijzonderheden = markt.marktplaatsen
+        const bijzonderheden = marktplaatsen
             .reduce((t, plaats) => {
                 ondernemer.plaatsen.map(p => {
                     p === plaats.plaatsId && plaats.properties && t.push(plaats.properties);
@@ -92,7 +103,7 @@ class EmailVplVoorkeurConfirm extends React.Component {
                 'Bijzonderheden:',
                 <strong key={`remarks`}>{bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}</strong>,
             ],
-            ['Markt:', <strong key={`markt`}>{markt.markt.naam}</strong>],
+            ['Markt:', <strong key={`markt`}>{markt.naam}</strong>],
             ['Datum:', <strong key={`date`}>{formatDate(marktDate)}</strong>],
         ];
 
@@ -102,7 +113,7 @@ class EmailVplVoorkeurConfirm extends React.Component {
 
                 <EmailContent>
                     <p>
-                        {capitalize(fullRelativeHumanDate(marktDate))} is uw plaats op de markt {markt.markt.naam}
+                        {capitalize(fullRelativeHumanDate(marktDate))} is uw plaats op de markt {markt.naam}
                     </p>
                     <EmailTable data={tableData} />
                 </EmailContent>

@@ -93,7 +93,9 @@ const BRANCHE_FULL_REASON: IAfwijzingReason = {
     message: 'Alle marktplaatsen voor deze branch zijn reeds ingedeeld',
 };
 
-const createToewijzing = (plaats: IMarktplaats, ondernemer: IMarktondernemer): IToewijzing => ({
+const createToewijzing = (markt: IMarkt, plaats: IMarktplaats, ondernemer: IMarktondernemer): IToewijzing => ({
+    marktId: markt.marktId,
+    marktDate: markt.marktDate,
     plaatsen: [plaats.plaatsId],
     ondernemer,
     erkenningsNummer: ondernemer.erkenningsNummer,
@@ -316,15 +318,17 @@ const mergeToewijzing = (a: IToewijzing, b: IToewijzing): IToewijzing => ({
 });
 
 const assignPlaats = (
-    state: IMarktindeling,
+    markt: IMarktindeling,
     toewijzing: IToewijzing,
     ondernemer: IMarktondernemer,
     conflictResolution: 'merge' | 'reassign' | 'keep-both' = 'keep-both',
 ) => {
     log(`Plaats toegewezen aan ${ondernemer.erkenningsNummer}: ${toewijzing.plaatsen}`);
-    const existingToewijzing = findToewijzing(state, ondernemer);
+    const existingToewijzing = findToewijzing(markt, ondernemer);
 
     let newToewijzing: IToewijzing = {
+        marktId: markt.marktId,
+        marktDate: markt.marktDate,
         plaatsen: [...toewijzing.plaatsen],
         erkenningsNummer: ondernemer.erkenningsNummer,
 
@@ -340,11 +344,11 @@ const assignPlaats = (
         }
 
         if (conflictResolution !== 'keep-both') {
-            state = removeToewijzing(state, existingToewijzing);
+            markt = removeToewijzing(markt, existingToewijzing);
         }
     }
 
-    return addToewijzing(state, newToewijzing);
+    return addToewijzing(markt, newToewijzing);
 };
 
 const rejectOndernemer = (state: IMarktindeling, ondernemer: IMarktondernemer, reason: IAfwijzingReason) => {
@@ -405,7 +409,7 @@ const assignVastePlaats = (state: IMarktindeling, ondernemer: IMarktondernemer):
             const openPlaats = openPlaatsen.find(openPlaats => openPlaats.plaatsId === plaats.plaatsId);
 
             if (openPlaats) {
-                return assignPlaats(state, createToewijzing(plaats, ondernemer), ondernemer, 'merge');
+                return assignPlaats(state, createToewijzing(state, plaats, ondernemer), ondernemer, 'merge');
             } else {
                 return rejectOndernemer(state, ondernemer, {
                     message: `Een van de vaste plaatsen is niet beschikbaar: ${plaats.plaatsId}`,
@@ -599,7 +603,7 @@ const findPlaats = (
     }
 
     if (plaats) {
-        return assignPlaats(state, createToewijzing(plaats, ondernemer), ondernemer, 'reassign');
+        return assignPlaats(state, createToewijzing(state, plaats, ondernemer), ondernemer, 'reassign');
     } else {
         log(`Geen plaats gevonden voor ${ondernemer.erkenningsNummer}`);
         if (handleRejection === 'reject') {

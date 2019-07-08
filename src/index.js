@@ -28,7 +28,7 @@ const {
     trace,
     traceError,
 } = require('./util.js');
-const { getKeycloakAdmin, userExists } = require('./keycloak-api.js');
+const { getKeycloakAdmin, userExists } = require('./keycloak-api.ts');
 const { mail } = require('./mail.js');
 const EmailIndeling = require('./views/EmailIndeling.jsx');
 const EmailWijzigingAanmeldingen = require('./views/EmailWijzigingAanmeldingen.jsx');
@@ -522,7 +522,7 @@ app.post('/herstellen', (req, res) => {
                         .then(requireOne)
                         .then(user =>
                             kcAdminClient.users.executeActionsEmail({
-                                id: trace(user, 'Recovery user:').id,
+                                id: trace(user).id,
                                 lifespan: 3600,
                                 actions: ['UPDATE_PASSWORD'],
                             }),

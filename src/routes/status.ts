@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../model/index';
-import { getKeycloakAdmin } from '../keycloak-api.js';
+import { getKeycloakAdmin } from '../keycloak-api';
 import { readOnlyLogin } from '../makkelijkemarkt-auth';
 import { internalServerErrorPage } from '../express-util';
 

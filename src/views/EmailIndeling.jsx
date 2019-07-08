@@ -15,9 +15,10 @@ const EmailVplDefault = require('./components/email/EmailVplDefault.jsx');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
 
-class IndelingMail extends React.Component {
+class EmailIndeling extends React.Component {
     propTypes = {
         markt: PropTypes.object.isRequired,
+        marktplaatsen: PropTypes.array.isRequired,
         marktDate: PropTypes.string.isRequired,
         ondernemer: PropTypes.object.isRequired,
         toewijzing: PropTypes.object,
@@ -66,7 +67,7 @@ class IndelingMail extends React.Component {
                 ) : (
                     <EmailContent>
                         {/* <h2>*/}
-                        {/* Indeling {markt.markt.naam} {formatDate(marktDate)}*/}
+                        {/* Indeling {markt.naam} {formatDate(marktDate)}*/}
                         {/* </h2>*/}
                         {/* <p>Beste {ondernemer.description},</p>*/}
                         {/* {inschrijving && inschrijving.attending ? (*/}
@@ -102,4 +103,4 @@ class IndelingMail extends React.Component {
     }
 }
 
-module.exports = IndelingMail;
+module.exports = EmailIndeling;

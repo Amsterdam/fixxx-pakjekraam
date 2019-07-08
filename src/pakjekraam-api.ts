@@ -2,7 +2,9 @@ import {
     getALijst,
     getMarkt,
     getMarkten as getMakkelijkeMarkten,
-    getMarktondernemersByMarkt,
+    getMarktondernemer as getMarktondernemerMM,
+    getMarktondernemers as getMarktondernemersMM,
+    getMarktondernemersByMarkt as getMarktondernemersByMarktMM,
 } from './makkelijkemarkt-api';
 import { formatOndernemerName, slugifyMarkt } from './domain-knowledge.js';
 import { numberSort, stringSort } from './util.js';
@@ -20,6 +22,7 @@ import {
     IObstakelBetween,
     IPlaatsvoorkeur,
     IRSVP,
+    IToewijzing,
 } from './markt.model';
 import { IAllocationPrintout, IAllocationPrintoutPage, IMarketRow } from './model/printout.model';
 import { RSVP } from './model/rsvp.model';
@@ -27,7 +30,7 @@ import { Allocation } from './model/allocation.model';
 import { Plaatsvoorkeur } from './model/plaatsvoorkeur.model';
 import { Voorkeur } from './model/voorkeur.model';
 
-import { MMSollicitatieStandalone } from './makkelijkemarkt.model';
+import { MMOndernemerStandalone, MMSollicitatieStandalone } from './makkelijkemarkt.model';
 
 import * as fs from 'fs';
 
@@ -46,6 +49,25 @@ const loadJSON = <T>(path: string, defaultValue: T = null): Promise<T> =>
             }
         });
     });
+
+const groupAllocationRows = (toewijzingen: IToewijzing[], row: Allocation): IToewijzing[] => {
+    const { marktId, marktDate, erkenningsNummer } = row;
+
+    const existing = toewijzingen.find(toewijzing => toewijzing.erkenningsNummer === erkenningsNummer);
+
+    const voorkeur: IToewijzing = {
+        marktId,
+        marktDate,
+        erkenningsNummer,
+        plaatsen: [...(existing ? existing.plaatsen : []), row.plaatsId],
+    };
+
+    if (existing) {
+        return [...toewijzingen.filter(toewijzing => toewijzing.erkenningsNummer !== erkenningsNummer), voorkeur];
+    } else {
+        return [...toewijzingen, voorkeur];
+    }
+};
 
 export const getAanmeldingen = (marktId: string, marktDate: string): Promise<IRSVP[]> =>
     rsvp
@@ -68,12 +90,12 @@ export const getAanmeldingenByOndernemer = (erkenningsNummer: string): Promise<I
         })
         .then(aanmeldingen => aanmeldingen);
 
-export const getToewijzingen = (marktId: string, marktDate: string): Promise<Allocation[]> =>
+export const getToewijzingen = (marktId: string, marktDate: string): Promise<IToewijzing[]> =>
     allocation
         .findAll<Allocation>({
             where: { marktId, marktDate },
         })
-        .then(toewijzingen => toewijzingen);
+        .then(toewijzingen => toewijzingen.reduce(groupAllocationRows, []));
 
 export const getPlaatsvoorkeuren = (marktId: string): Promise<IPlaatsvoorkeur[]> =>
     plaatsvoorkeur
@@ -222,7 +244,7 @@ export const getMarktGeografie = (marktId: string): Promise<{ obstakels: IObstak
 /*
  * Convert an object from Makkelijke Markt to our own type of `IMarktondernemer` object
  */
-const convertOndernemer = (data: MMSollicitatieStandalone): IMarktondernemer => {
+const convertSollicitatie = (data: MMSollicitatieStandalone): IMarktondernemer => {
     const {
         koopman: { erkenningsnummer },
         sollicitatieNummer,
@@ -244,9 +266,28 @@ const convertOndernemer = (data: MMSollicitatieStandalone): IMarktondernemer => 
     };
 };
 
+/*
+ * Convert an object from Makkelijke Markt to our own type of `IMarktondernemer` object
+ */
+const convertOndernemer = (data: MMOndernemerStandalone): IMarktondernemer => ({
+    description: formatOndernemerName(data),
+    erkenningsNummer: data.erkenningsnummer,
+    status: '' as any,
+    sollicitatieNummer: 0,
+});
+
+export const getMarktondernemer = (token: string, erkenningsNummer: string) =>
+    getMarktondernemerMM(token, erkenningsNummer).then(ondernemer => convertOndernemer(ondernemer));
+
+export const getMarktondernemers = (token: string) =>
+    getMarktondernemersMM(token).then(sollictaties => sollictaties.map(convertSollicitatie));
+
+export const getMarktondernemersByMarkt = (token: string, marktId: string) =>
+    getMarktondernemersByMarktMM(token, marktId).then(sollictaties => sollictaties.map(convertSollicitatie));
+
 export const getIndelingslijstInput = (token: string, marktId: string, marktDate: string) => {
-    const ondernemersPromise = getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
-        ondernemers.filter(ondernemer => !ondernemer.doorgehaald).map(convertOndernemer),
+    const ondernemersPromise = getMarktondernemersByMarktMM(token, marktId).then(ondernemers =>
+        ondernemers.filter(ondernemer => !ondernemer.doorgehaald).map(convertSollicitatie),
     );
     const voorkeurenPromise = getIndelingVoorkeuren(marktId, marktDate).then(voorkeuren =>
         voorkeuren.map(convertVoorkeur),
@@ -374,7 +415,7 @@ export const getMailContext = (token: string, marktId: string, erkenningsNr: str
 
 export const getSollicitantenlijstInput = (token: string, marktId: string, date: string) =>
     Promise.all([
-        getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
+        getMarktondernemersByMarktMM(token, marktId).then(ondernemers =>
             ondernemers.filter(
                 ondernemer => !ondernemer.doorgehaald && (ondernemer.status === 'soll' || ondernemer.status === 'vkk'),
             ),

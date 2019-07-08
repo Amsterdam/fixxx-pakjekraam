@@ -10,6 +10,7 @@ const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
 class EmailVplDefault extends React.Component {
     propTypes = {
         markt: PropTypes.object.isRequired,
+        marktplaatsen: PropTypes.array,
         marktDate: PropTypes.string.isRequired,
         ondernemer: PropTypes.object.isRequired,
         toewijzing: PropTypes.object,
@@ -26,7 +27,7 @@ class EmailVplDefault extends React.Component {
                 <p>Beste {ondernemer.description},</p>
 
                 <EmailContent>
-                    <p>Je hebt je morgen voor de mark {markt.markt.naam} niet aangemeld.</p>
+                    <p>Je hebt je morgen voor de mark {markt.naam} niet aangemeld.</p>
                 </EmailContent>
 
                 <p>

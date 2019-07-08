@@ -1,6 +1,6 @@
 import ClientRepresentation from 'keycloak-admin/lib/defs/clientRepresentation';
 import { Request, Response } from 'express';
-import { getKeycloakAdmin } from '../keycloak-api.js';
+import { getKeycloakAdmin } from '../keycloak-api';
 import { forbiddenErrorPage, internalServerErrorPage, publicErrors, getQueryErrors } from '../express-util';
 import { stringify } from 'qs';
 import { trace } from '../util.js';

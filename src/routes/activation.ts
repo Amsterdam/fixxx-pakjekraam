@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { checkActivationCode } from '../makkelijkemarkt-auth';
-import { userExists } from '../keycloak-api.js';
+import { userExists } from '../keycloak-api';
 import { publicErrors, getQueryErrors } from '../express-util';
 import { stringify } from 'qs';
 

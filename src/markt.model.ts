@@ -128,6 +128,8 @@ export interface IObstakelBetween {
 }
 
 export interface IToewijzing {
+    marktId: string;
+    marktDate: string;
     plaatsen: PlaatsId[];
     erkenningsNummer: ErkenningsNummer;
 

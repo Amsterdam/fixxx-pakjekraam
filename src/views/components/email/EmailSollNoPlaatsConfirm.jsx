@@ -9,6 +9,7 @@ const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
 class EmailSollNoPlaatsConfirm extends React.Component {
     propTypes = {
         markt: PropTypes.object.isRequired,
+        marktplaatsen: PropTypes.array,
         marktDate: PropTypes.string.isRequired,
         ondernemer: PropTypes.object.isRequired,
         toewijzing: PropTypes.object,
@@ -26,7 +27,7 @@ class EmailSollNoPlaatsConfirm extends React.Component {
 
                 <p>
                     Er is morgen ({formatDayOfWeek(marktDate)} {formatDate(marktDate)}) helaas GEEN plaats op de markt{' '}
-                    {markt.markt.naam} voor u.
+                    {markt.naam} voor u.
                     <br />
                     De markt is vol.
                 </p>

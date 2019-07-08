@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios';
+import { AxiosInstance, AxiosResponse } from 'axios';
 // import AxiosLogger from 'axios-logger';
 // import { setupCache } from 'axios-cache-adapter';
 import { addDays, MONDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY } from './util.js';
@@ -57,7 +57,7 @@ export const login = (data: LoginArgs) =>
 export const getMarktondernemers = (token: string): Promise<MMSollicitatieStandalone[]> =>
     makkelijkeMarktAPI
         .then(api =>
-            api.get('koopman/', {
+            api.get<any, AxiosResponse<MMSollicitatieStandalone[]>>('koopman/', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -68,7 +68,7 @@ export const getMarktondernemers = (token: string): Promise<MMSollicitatieStanda
 export const getMarktondernemer = (token: string, id: string): Promise<MMOndernemerStandalone> =>
     makkelijkeMarktAPI
         .then(api =>
-            api.get(`koopman/erkenningsnummer/${id}`, {
+            api.get<any, AxiosResponse<MMOndernemerStandalone>>(`koopman/erkenningsnummer/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -79,7 +79,7 @@ export const getMarktondernemer = (token: string, id: string): Promise<MMOnderne
 export const getMarktondernemersByMarkt = (token: string, marktId: string): Promise<MMSollicitatieStandalone[]> =>
     makkelijkeMarktAPI
         .then(api =>
-            api.get(`lijst/week/${marktId}`, {
+            api.get<any, AxiosResponse<MMSollicitatieStandalone[]>>(`lijst/week/${marktId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

@@ -10,6 +10,7 @@ const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
 class EmailSollPlaatsConfirm extends React.Component {
     propTypes = {
         markt: PropTypes.object.isRequired,
+        marktplaatsen: PropTypes.array.isRequired,
         marktDate: PropTypes.string.isRequired,
         ondernemer: PropTypes.object.isRequired,
         toewijzing: PropTypes.object,
@@ -20,11 +21,20 @@ class EmailSollPlaatsConfirm extends React.Component {
 
     render() {
         const fontGray = { color: '#767676' };
-        const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
-        const branches = arrayToObject(markt.marktplaatsen.filter(plaats => plaats.branches), 'plaatsId');
+        const {
+            markt,
+            marktplaatsen,
+            marktDate,
+            ondernemer,
+            toewijzing,
+            afwijzing,
+            inschrijving,
+            voorkeuren,
+        } = this.props;
+        const branches = arrayToObject(marktplaatsen.filter(plaats => plaats.branches), 'plaatsId');
         const tableData = [
             ['Plaats nrs:', <strong key={`plaats`}>Wordt tijdens loting om 09:00 uur bepaald</strong>],
-            ['Markt:', <strong key={`markt`}>{markt.markt.naam}</strong>],
+            ['Markt:', <strong key={`markt`}>{markt.naam}</strong>],
             [
                 'Datum:',
                 <strong key={`date`}>
@@ -37,7 +47,7 @@ class EmailSollPlaatsConfirm extends React.Component {
             <EmailContent>
                 <p>Beste {ondernemer.description},</p>
                 <p>
-                    U hebt u aangemeld voor een plaats op de markt {markt.markt.naam} op {formatDayOfWeek(marktDate)}{' '}
+                    U hebt u aangemeld voor een plaats op de markt {markt.naam} op {formatDayOfWeek(marktDate)}{' '}
                     {formatDate(marktDate)}.
                 </p>
                 {voorkeuren.length ? (
