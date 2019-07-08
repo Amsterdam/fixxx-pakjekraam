@@ -17,6 +17,7 @@ const { isErkenningsnummer, slugifyMarkt, isVast, filterRsvpList } = require('./
 const { checkActivationCode, readOnlyLogin } = require('./makkelijkemarkt-auth.js');
 const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
 const {
+    formatDate,
     splitByValueArray,
     tomorrow,
     nextWeek,
@@ -335,15 +336,6 @@ app.get('/email/', keycloak.protect(KeycloakRoles.MARKTMEESTER), function(req, r
     res.render('EmailPage');
 });
 
-const emailTypes = {
-    mail01: 'EmailVplPlaatsConfirm',
-    mail02: 'EmailVplVoorkeurConfirm',
-    mail04: 'EmailSollNoPlaatsConfirm',
-    mail05: 'EmailSollPlaatsConfirm',
-    mail06: 'EmailSollVoorkeurConfirm',
-    mail07: 'EmailSollRandomPlaatsConfirm',
-};
-
 app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', keycloak.protect(KeycloakRoles.MARKTMEESTER), function(
     req,
     res,
@@ -356,26 +348,8 @@ app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', keycloak.protect
     );
     mailContextPromise.then(
         props => {
-            const subject = `Marktindeling ${props.markt.naam}`;
-
-            let template;
-            if (isVast(props.ondernemer.status) && props.inschrijving) {
-                template = emailTypes.mail01;
-                if (props.voorkeuren.length && !props.toewijzing) {
-                    template = emailTypes.mail01;
-                } else if (props.voorkeuren.length && props.toewijzing) {
-                    template = emailTypes.mail02;
-                }
-            } else if (props.inschrijving) {
-                template = emailTypes.mail04;
-                if (props.voorkeuren.length && !props.afwijzing && !props.toewijzing) {
-                    template = emailTypes.mail05;
-                } else if (props.voorkeuren.length && !props.afwijzing && props.toewijzing) {
-                    template = emailTypes.mail06;
-                }
-            }
-
-            props.template = template;
+            const subject = `Martindeling ${props.markt.naam} ${formatDate(props.marktDate)}`;
+            props['subject'] = subject;
 
             res.render('EmailIndeling', props);
 
@@ -544,6 +518,7 @@ const dashboardPage = (req, res, erkenningsNummer) => {
                 startDate: tomorrow(),
                 endDate: nextWeek(),
                 messages,
+                user,
             });
         },
         err => errorPage(res, err),

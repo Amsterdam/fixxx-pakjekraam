@@ -19,7 +19,7 @@ class OndernemerDashboard extends React.Component {
     };
 
     render() {
-        const { ondernemer, messages, plaatsvoorkeuren, markten } = this.props;
+        const { ondernemer, messages, plaatsvoorkeuren, markten, user } = this.props;
         const marktenEnabled = markten.filter(m => m.properties.enabled);
         const sollicitaties = ondernemer.sollicitaties.filter(soll => {
             return !soll.doorgehaald && marktenEnabled.map(markt => markt.id).includes(soll.markt.id);

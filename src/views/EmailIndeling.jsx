@@ -11,6 +11,7 @@ const EmailSollPlaatsConfirm = require('./components/email/EmailSollPlaatsConfir
 const EmailSollRandomPlaatsConfirm = require('./components/email/EmailSollRandomPlaatsConfirm.jsx');
 const EmailSollVoorkeurConfirm = require('./components/email/EmailSollVoorkeurConfirm.jsx');
 const EmailVplPlaatsConfirm = require('./components/email/EmailVplPlaatsConfirm.jsx');
+const EmailVplDefault = require('./components/email/EmailVplDefault.jsx');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
 
@@ -24,7 +25,7 @@ class IndelingMail extends React.Component {
         inschrijving: PropTypes.object,
         voorkeuren: PropTypes.object,
         aanmeldingen: PropTypes.object,
-        template: PropTypes.object,
+        subject: PropTypes.string,
     };
 
     render() {
@@ -36,39 +37,32 @@ class IndelingMail extends React.Component {
             afwijzing,
             inschrijving,
             voorkeuren,
-            template,
             aanmeldingen,
+            subject,
         } = this.props;
-        const templProps = {
-            markt,
-            marktDate,
-            ondernemer,
-            toewijzing,
-            afwijzing,
-            inschrijving,
-            voorkeuren,
-            aanmeldingen,
-        };
 
-        const templates = {
-            EmailVplVoorkeurConfirm,
-            EmailSollNoPlaatsConfirm,
-            EmailSollPlaatsConfirm,
-            EmailSollRandomPlaatsConfirm,
-            EmailSollVoorkeurConfirm,
-            EmailVplPlaatsConfirm,
-        };
-        const Template = templates[template];
+        let template;
+
+        if (isVast(ondernemer.status)) {
+            template = <EmailVplDefault {...this.props} />;
+            if (!voorkeuren.length) {
+                template = <EmailVplPlaatsConfirm {...this.props} />;
+            } else {
+                template = <EmailVplVoorkeurConfirm {...this.props} />;
+            }
+        } else {
+            template = <EmailSollNoPlaatsConfirm {...this.props} />;
+            if (voorkeuren.length && !props.afwijzing && !toewijzing) {
+                template = <EmailSollPlaatsConfirm {...this.props} />;
+            } else if (voorkeuren.length && !afwijzing && toewijzing) {
+                template = <EmailSollVoorkeurConfirm {...this.props} />;
+            }
+        }
 
         return (
-            <EmailBase
-                lang="nl"
-                appName={`Pak je kraam`}
-                domain={`pakjekraam.amsterdam.nl`}
-                subject={`Indeling ${markt.naam} ${formatDate(marktDate)}`}
-            >
+            <EmailBase lang="nl" appName={`Pak je kraam`} domain={`pakjekraam.amsterdam.nl`} subject={subject}>
                 {template ? (
-                    <Template {...templProps} />
+                    template
                 ) : (
                     <EmailContent>
                         {/* <h2>*/}

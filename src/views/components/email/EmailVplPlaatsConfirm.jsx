@@ -41,7 +41,7 @@ class EmailVplPlaatsConfirm extends React.Component {
                 'Plaats nrs:',
                 <span key={`plaats`}>
                     <strong>{ondernemer.plaatsen.join(', ')}</strong> (je vaste plaatsen)
-                    <br /> {voorkeuren ? 'Je hebt helaas geen van je voorkeuren gekregen' : null}
+                    <br /> {voorkeuren.length ? 'Je hebt helaas geen van je voorkeuren gekregen' : null}
                 </span>,
             ],
             ['Soortplaats:', <strong key={`branche`}>fixme</strong>],
