@@ -9,6 +9,7 @@ const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
 const models = require('./model/index.js');
+const { sequelize } = require('./model/index.js');
 const morgan = require('morgan');
 const url = require('url');
 const qs = require('qs');
@@ -108,6 +109,17 @@ app.use(morgan(morgan.compile(':date[iso] :method :status :url :response-time ms
 // This health check page is required for Docker deployments
 app.get('/status/health', function(req, res) {
     res.end('OK!');
+});
+
+app.get('/status/database', function(req, res) {
+    sequelize
+        .authenticate()
+        .then(() => {
+            res.end('Database OK!');
+        })
+        .catch(err => {
+            errorPage(res, 'Unable to connect to the database');
+        });
 });
 
 // Required for Passport login form
