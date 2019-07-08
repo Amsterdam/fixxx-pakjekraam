@@ -162,6 +162,16 @@ function splitByArray(orgArr, valueArr) {
       document.body.classList.add('modal-active');
 
     },
+    'clear-select': function(e){
+        var parent = this.parentNode,
+            select = parent.querySelector('select'),
+            _click = function(){
+                select.value = '';
+            };
+        e && e.preventDefault();
+        _click();
+
+    },
     'remove-voorkeur': function(e){
         var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
             plaatsIdsInputs = voorkeur.querySelectorAll('[name*="[plaatsId]"]'),

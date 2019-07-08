@@ -101,28 +101,36 @@ class PlaatsvoorkeurenForm extends React.Component {
                     Je kunt de plaatsvoorkeuren voor morgen tot 21.00 wijzigen. Wijzig je de plaatsvoorkeuren na 21.00
                     uur dan gelden deze voor de dagen na morgen.
                 </p>
-                <div className="PlaatsvoorkeurenForm__plaats-count-limit">
-                    <div className="InputField InputField--range">
-                        <div className="InputField--range__wrapper">
-                            <input
-                                name="min"
-                                type="range"
-                                min="1"
-                                max={newPlaatsvoorkeurCount}
-                                value={newPlaatsvoorkeurCount}
-                            />
-                            <ul className="InputField--range__value-list">
-                                {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
-                                    <li className="InputField--range__value-list-item">{i + 1}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+
                 <div className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
                     <script dangerouslySetInnerHTML={marktRowsJSOM()} />
                     <script dangerouslySetInnerHTML={plaatsSetsJSON()} />
                     <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
+                    <div className="PlaatsvoorkeurenForm__plaats-count-limit">
+                        <div className="InputField InputField--range">
+                            <label>Minimaal aantal plaatsen</label>
+                            <div className="InputField--range__wrapper">
+                                <input name="min" type="range" min="0" max={newPlaatsvoorkeurCount} value={0} />
+                                <ul className="InputField--range__value-list">
+                                    {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
+                                        <li className="InputField--range__value-list-item">{i + 1}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="InputField InputField--range">
+                            <label>Maximaal aantal plaatsen</label>
+                            <div className="InputField--range__wrapper">
+                                <input name="max" type="range" min="0" max={newPlaatsvoorkeurCount} value={0} />
+                                <ul className="InputField--range__value-list">
+                                    {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
+                                        <li className="InputField--range__value-list-item">{i + 1}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
                     {isVast(sollicitatie.status) ? (
                         <p>
                             Je vaste plaats{sollicitatie.vastePlaatsen.length > 1 ? 'en' : null}:{' '}
@@ -219,6 +227,13 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         optional={true}
                                     />
                                 </div>
+                                <a
+                                    href="#"
+                                    data-handler="clear-select"
+                                    className="PlaatsvoorkeurenForm__list-item__clear"
+                                >
+                                    leeg maken
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -53,8 +53,6 @@ $radiobutton-left: 0px;
                 @include icon($icon-Check-Mark);
                 position: absolute;
                 left: 0;
-                width: 22px;
-                height: 15px;
                 font-size: 10px;
                 text-align: center;
                 padding-top: 7px;
@@ -179,8 +177,8 @@ $radiobutton-left: 0px;
         }
     }
     &--range {
-        line-height: 0;
         &__wrapper {
+            line-height: 0;
             position: relative;
             width: 100%;
             input {
@@ -199,22 +197,25 @@ $radiobutton-left: 0px;
 
             font-size: 0;
             line-height: 0;
-            margin-top: -44px;
+            margin-top: -42px;
             pointer-events: none;
             position: relative;
             z-index: 1;
+            margin-left: 3px;
+            margin-right: 3px;
         }
         &__value-list-item {
+            @include fontBold;
             padding: 0;
-            font-size: $fs-70;
-            line-height: 44px;
+            font-size: $fs-50;
+            line-height: 36px;
             display: inline-block;
-            color: $primary-white;
-            width: 44px;
-            height: 44px;
+            color: $primary-black;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            border: 1px solid $primary-black;
             text-align: center;
+            background-color: $neutral-grey2;
         }
     }
     @media screen and (min-width: $screenMedium) {

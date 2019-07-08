@@ -183,7 +183,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
                         </div>
                     ) : null}
                     {vast ? (
-                        <div className={`Fieldset ${advanced ? null : 'hidden'}`}>
+                        <div className={`Fieldset`}>
                             <h2 className="Fieldset__header">
                                 Wil je zekerheid dat je alléén op voorkeursplaatsen staat?
                             </h2>

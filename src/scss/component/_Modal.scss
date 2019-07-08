@@ -101,14 +101,22 @@ $lightColor: $neutral-grey4;
     margin: 100px 20px 20px 20px;
     max-width: 600px;
     padding: 20px;
-
+    text-align: center;
     background-color: #fff;
-
+    h2 {
+        text-align: center;
+    }
     > *:last-child {
         margin-bottom: 0;
     }
     > *:first-child {
         margin-top: 0;
+    }
+    @media screen and (min-width: $screenMedium) {
+        text-align: left;
+        h2 {
+            text-align: left;
+        }
     }
 }
 

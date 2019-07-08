@@ -32,6 +32,29 @@
                 display: none;
             }
         }
+        &__clear {
+            display: inline-block;
+            width: 44px;
+            height: 44px;
+            text-decoration: none;
+            text-align: center;
+            border: 1px solid $neutral-grey4;
+            font-size: 0;
+            color: transparent;
+            &:after {
+                font-size: $fs-80;
+                color: $neutral-grey5;
+                @include icon($icon-Close);
+                line-height: 42px;
+            }
+            &:hover {
+                background-color: $primary-darkblue;
+                border-color: $primary-darkblue;
+                &:after {
+                    color: $primary-white;
+                }
+            }
+        }
     }
     &__list-item--sortable .well {
         padding-right: 50px;

@@ -20,15 +20,15 @@ input[type="range"] {
     }
 }
 
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
-    width: 36px; /* Set a specific slider handle width */
-    height: 36px; /* Slider handle height */
+    width: 42px; /* Set a specific slider handle width */
+    height: 42px; /* Slider handle height */
     background: $primary-black; /* Green background */
     cursor: pointer; /* Cursor on hover */
     border-radius: 50%;
+    margin-top: -18px;
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -39,10 +39,10 @@ input[type="range"]::-webkit-slider-runnable-track {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
     width: 100%;
-    height: 36px;
-    background-color: $neutral-grey3;
+    height: 10px;
+    background-color: $neutral-grey2;
     cursor: pointer; /* Cursor on hover */
-    margin: 4px;
+    margin: 17px 0;
     border-radius: 36px;
 }
 
@@ -71,7 +71,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 }
 
 ::-ms-track {
-    height: 44px;
+    height: 36px;
 }
 
 ::-ms-ticks-before {
