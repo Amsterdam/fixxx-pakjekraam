@@ -113,7 +113,9 @@ class PlaatsvoorkeurenForm extends React.Component {
                                 <input name="min" type="range" min="0" max={newPlaatsvoorkeurCount} value={0} />
                                 <ul className="InputField--range__value-list">
                                     {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
-                                        <li className="InputField--range__value-list-item">{i + 1}</li>
+                                        <li key={i} className="InputField--range__value-list-item">
+                                            {i + 1}
+                                        </li>
                                     ))}
                                 </ul>
                             </div>
@@ -124,7 +126,9 @@ class PlaatsvoorkeurenForm extends React.Component {
                                 <input name="max" type="range" min="0" max={newPlaatsvoorkeurCount} value={0} />
                                 <ul className="InputField--range__value-list">
                                     {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
-                                        <li className="InputField--range__value-list-item">{i + 1}</li>
+                                        <li key={i} className="InputField--range__value-list-item">
+                                            {i + 1}
+                                        </li>
                                     ))}
                                 </ul>
                             </div>
