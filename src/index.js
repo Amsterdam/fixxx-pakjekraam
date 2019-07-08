@@ -122,6 +122,16 @@ app.get('/status/database', function(req, res) {
         });
 });
 
+app.get('/status/makkelijkemarkt', function(req, res) {
+    readOnlyLogin()
+        .then(() => {
+            res.end('Makkelijke Markt API OK!');
+        })
+        .catch(err => {
+            errorPage(res, 'Unable to connect to Makkelijke Markt API');
+        });
+});
+
 // Required for Passport login form
 app.use(bodyParser.urlencoded({ extended: true }));
 
