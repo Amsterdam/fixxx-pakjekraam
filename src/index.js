@@ -488,10 +488,9 @@ const getQueryErrors = queryParams => {
 
 const dashboardPage = (req, res, erkenningsNummer) => {
     const messages = getQueryErrors(req.query);
-    const user = req.session.token;
-    const ondernemerPromise = getMarktondernemer(user, req.params.erkenningsNummer);
-    const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(req.params.erkenningsNummer);
-    const marktenPromise = getMarkten(user, req.params.marktId);
+    const ondernemerPromise = getMarktondernemer(req.session.token, erkenningsNummer);
+    const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(erkenningsNummer);
+    const marktenPromise = getMarkten(req.session.token);
     const marktenPromiseProps = marktenPromise.then(markten => {
         const propsPromise = markten.map(markt => {
             return getMarktProperties(markt.id).then(props => {
@@ -518,7 +517,7 @@ const dashboardPage = (req, res, erkenningsNummer) => {
                 startDate: tomorrow(),
                 endDate: nextWeek(),
                 messages,
-                user,
+                user: req.session.token,
             });
         },
         err => errorPage(res, err),
