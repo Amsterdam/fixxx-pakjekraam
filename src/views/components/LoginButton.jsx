@@ -5,7 +5,7 @@ const LoginButton = ({ user }) => {
     return (
         <a
             className={`LoginButton LoginButton--${user ? 'logout' : 'login'}`}
-            href={`${!user ? '/logout/' : '/login/'}`}
+            href={`${!user ? '/login/' : '/logout/'}`}
             role="button"
         >
             {user ? 'Uitloggen' : 'Inloggen'}
