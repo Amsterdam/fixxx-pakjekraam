@@ -19,7 +19,7 @@ class OndernemerBranchePage extends React.Component {
 
         return (
             <Page>
-                <Header user={ondernemer} logoUrl={`/dashboard/${ondernemer.erkenningsnummer}`}>
+                <Header user={ondernemer} logoUrl="/dashboard/">
                     <OndernemerProfileHeader user={ondernemer} />
                 </Header>
                 <Content>

@@ -5,9 +5,7 @@ const React = require('react');
 const { formatDayOfWeek, formatDate, WEEK_DAYS } = require('../../util.js');
 
 const OndernemerMarktAlgVoorkeuren = ({ markt, sollicitatie, ondernemer, voorkeur }) => {
-    const blockUrl = `/algemene-voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/?next=/markt-detail/${
-        ondernemer.erkenningsnummer
-    }/${markt.id}/#marktprofiel`;
+    const blockUrl = `../../algemene-voorkeuren/${markt.id}/?next=../../markt-detail/${markt.id}/#marktprofiel`;
 
     return (
         <div className="OndernemerMarktAlgVoorkeuren background-link-parent" id="marktprofiel">

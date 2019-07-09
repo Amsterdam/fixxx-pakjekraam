@@ -70,7 +70,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
             <form
                 className="Form Form--AlgemeneVoorkeurenForm"
                 method="POST"
-                action="/algemene-voorkeuren/"
+                action="./"
                 encType="application/x-www-form-urlencoded"
             >
                 <h1>Marktprofiel</h1>

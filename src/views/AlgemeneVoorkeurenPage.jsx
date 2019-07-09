@@ -24,8 +24,8 @@ class AlgemeneVoorkeurenPage extends React.Component {
 
         return (
             <Page messages={messages}>
-                <Header user={ondernemer} logoUrl={`/dashboard/${ondernemer.erkenningsnummer}`}>
-                    <a className="Header__nav-item" href={`/dashboard/${ondernemer.erkenningsnummer}`}>
+                <Header user={ondernemer} logoUrl="/dashboard/">
+                    <a className="Header__nav-item" href="/dashboard/">
                         Mijn markten
                     </a>
                     <OndernemerProfileHeader user={ondernemer} />

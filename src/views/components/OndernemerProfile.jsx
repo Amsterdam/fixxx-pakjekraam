@@ -16,11 +16,7 @@ class OndernemerProfile extends React.Component {
             <div>
                 <h1>Ondernemer detail: {formatOndernemerName(ondernemer)}</h1>
                 <p>{ondernemer.erkenningsnummer}</p>
-                <Button
-                    href={`/dashboard/${ondernemer.erkenningsnummer}`}
-                    type="secondary"
-                    label="Ondernemer dashboard"
-                />
+                <Button href={`/dashboard/`} type="secondary" label="Ondernemer dashboard" />
                 <h2>Markten</h2>
                 <ul>
                     {ondernemer.sollicitaties
@@ -34,27 +30,15 @@ class OndernemerProfile extends React.Component {
                                     {sollicitatie.sollicitatieNummer}
                                 </span>
                                 <br />
-                                <a
-                                    href={`/afmelden/${ondernemer.erkenningsnummer}/${
-                                        sollicitatie.markt.id
-                                    }/?next=/profile/${ondernemer.erkenningsnummer}`}
-                                >
+                                <a href={`/afmelden/${sollicitatie.markt.id}/?next=/profile/`}>
                                     <strong>aanwezigheid</strong>
                                 </a>
                                 &nbsp;&nbsp;
-                                <a
-                                    href={`/voorkeuren/${ondernemer.erkenningsnummer}/${
-                                        sollicitatie.markt.id
-                                    }/?next=/profile/${ondernemer.erkenningsnummer}`}
-                                >
+                                <a href={`/voorkeuren/${sollicitatie.markt.id}/?next=/profile/`}>
                                     <strong>plaatsvoorkeuren</strong>
                                 </a>
                                 &nbsp;&nbsp;
-                                <a
-                                    href={`/algemene-voorkeuren/${ondernemer.erkenningsnummer}/${
-                                        sollicitatie.markt.id
-                                    }/?next=/profile/${ondernemer.erkenningsnummer}&advanced=true`}
-                                >
+                                <a href={`/algemene-voorkeuren/${sollicitatie.markt.id}/?next=/profile/&advanced=true`}>
                                     <strong>algemene voorkeuren</strong>
                                 </a>
                             </li>

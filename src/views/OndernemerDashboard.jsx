@@ -27,8 +27,8 @@ class OndernemerDashboard extends React.Component {
 
         return (
             <Page messages={messages}>
-                <Header user={ondernemer} logoUrl={`/dashboard/${ondernemer.erkenningsnummer}`}>
-                    <a className="Header__nav-item" href={`/dashboard/${ondernemer.erkenningsnummer}`}>
+                <Header user={ondernemer} logoUrl="/dashboard/">
+                    <a className="Header__nav-item" href="/dashboard/">
                         Mijn markten
                     </a>
                     <OndernemerProfileHeader user={ondernemer} />
@@ -38,10 +38,7 @@ class OndernemerDashboard extends React.Component {
                     <ul className="LinkList">
                         {sollicitaties.map(soll => (
                             <li key={soll.markt.id} className="LinkList__item">
-                                <a
-                                    className="Link"
-                                    href={`/markt-detail/${ondernemer.erkenningsnummer}/${soll.markt.id}`}
-                                >
+                                <a className="Link" href={`../markt-detail/${soll.markt.id}/`}>
                                     {soll.markt.naam}
                                 </a>
                             </li>

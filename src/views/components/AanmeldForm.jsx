@@ -32,7 +32,7 @@ class AanmeldForm extends React.Component {
         });
 
         return (
-            <form className="Form" method="POST" action="/aanmelden/">
+            <form className="Form" method="POST" action="./">
                 <h1>
                     Aanmelden voor {ondernemer.voorletters && ondernemer.voorletters + ' '}
                     {ondernemer.achternaam}

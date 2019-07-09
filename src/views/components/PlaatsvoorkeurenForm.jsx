@@ -40,7 +40,7 @@ class PlaatsvoorkeurenForm extends React.Component {
             index,
         }));
 
-        const next = query.next ? query.next : `/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/`;
+        const next = query.next ? query.next : `./`;
         const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
         const maxCountUitbreidingenMarkt = 2;
         const defaultPlaatsCount = isVast(sollicitatie.status) ? sollicitatie.vastePlaatsen.length : 1;
@@ -92,7 +92,7 @@ class PlaatsvoorkeurenForm extends React.Component {
             <form
                 className="Form Form--PlaatsvoorkeurenForm"
                 method="POST"
-                action="/voorkeuren/"
+                action="./"
                 encType="application/x-www-form-urlencoded"
                 data-decorator="voorkeur-form"
                 data-vasteplaats-count={sollicitatie.vastePlaatsen.length}
@@ -298,9 +298,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                             className="Button Button--secondary"
                             type="submit"
                             name="redirectTo"
-                            value={`/voorkeuren/${ondernemer.erkenningsnummer}/${
-                                markt.id
-                            }/?error=plaatsvoorkeuren-saved&next=${next}#bottom-buttons`}
+                            value={`./?error=plaatsvoorkeuren-saved&next=${next}#bottom-buttons`}
                         >
                             + Voeg nog een keuze toe
                         </button>
@@ -329,7 +327,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                         </a>
                         <a
                             className="Button Button--tertiary"
-                            href={`/markt-detail/${ondernemer.erkenningsnummer}/${markt.id}/#plaatsvoorkeuren`}
+                            href={`../../markt-detail/${markt.id}/#plaatsvoorkeuren`}
                         >
                             Terug naar marktoverzicht
                         </a>

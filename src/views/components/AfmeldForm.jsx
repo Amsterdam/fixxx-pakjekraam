@@ -33,7 +33,7 @@ class AfmeldForm extends React.Component {
         });
 
         return (
-            <form className="Form" method="POST" action="/afmelden/" encType="application/x-www-form-urlencoded">
+            <form className="Form" method="POST" action="./" encType="application/x-www-form-urlencoded">
                 <h1>Aanwezigheid wijzigen</h1>
                 <input
                     id="erkenningsNummer"
@@ -48,9 +48,7 @@ class AfmeldForm extends React.Component {
                     : entries
                 ).map(({ sollicitatie, markt, rsvpEntries }) => {
                     let lastDivider = false;
-                    const next = query.next
-                        ? query.next
-                        : `/markt-detail/${ondernemer.erkenningsnummer}/${markt.id}/#aanwezigheid`;
+                    const next = query.next ? query.next : `/markt-detail/${markt.id}/#aanwezigheid`;
 
                     return (
                         <section className="Fieldset" key={sollicitatie.markt.id}>
@@ -135,7 +133,7 @@ class AfmeldForm extends React.Component {
                             className="Button Button--secondary"
                             type="submit"
                             name="next"
-                            value={`/afmelden/${ondernemer.erkenningsnummer}/?updated=${new Date().toISOString()}`}
+                            value={`/afmelden/?updated=${new Date().toISOString()}`}
                         >
                             Opslaan en verder
                         </button>

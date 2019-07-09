@@ -5,9 +5,7 @@ const { formatDayOfWeek, formatDate, relativeHumanDay, WEEK_DAYS } = require('..
 const HeaderTitleButton = require('./HeaderTitleButton');
 
 const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, ondernemer }) => {
-    const blockUrl = `/afmelden/${ondernemer.erkenningsnummer}/${markt.id}/?next=/markt-detail/${
-        ondernemer.erkenningsnummer
-    }/${markt.id}/#aanwezigheid`;
+    const blockUrl = `../../afmelden/${markt.id}/?next=../../markt-detail/${markt.id}/#aanwezigheid`;
 
     let lastDivider = false;
 
