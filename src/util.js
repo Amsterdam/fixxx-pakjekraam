@@ -110,7 +110,7 @@ const relativeHumanDay = date => {
 
 const fullRelativeHumanDate = date => {
     return (
-        (relativeHumanDay(date) ? relativeHumanDay(date) + ', ' : null) +
+        (relativeHumanDay(date) ? relativeHumanDay(date) + ', ' : '') +
         formatDayOfWeek(date) +
         ' ' +
         formatDateFull(date)
