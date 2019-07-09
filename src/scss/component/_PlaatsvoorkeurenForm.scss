@@ -11,6 +11,7 @@
             position: relative;
             display: flex;
             flex-wrap: wrap;
+            justify-content: space-between;
         }
         &--hidden {
             display: none;
@@ -76,6 +77,43 @@
             display: none;
             pointer-events: none;
         }
+    }
+    &__plaats-count-limit {
+        label {
+            @include fontBold;
+        }
+        margin-bottom: $vm6;
+        .InputField--range {
+            margin-top: $vm4;
+        }
+    }
+    &__list-item__extra {
+        display: inline-block;
+        margin: 0 0 0 20px;
+        position: relative;
+        max-width: 10px;
+        white-space: pre-wrap;
+        padding: 3px;
+        height: 44px;
+        font-size: $fs-50;
+        line-height: 18px;
+        display: table;
+
+        &:before {
+            content: "+";
+            display: inline-block;
+            line-height: 44px;
+            width: 20px;
+            text-align: center;
+            position: absolute;
+            left: -20px;
+        }
+        &.hidden {
+            display: none;
+        }
+    }
+    &__prototype &__list-item__extra {
+        border: 1px solid $neutral-grey4;
     }
     &__remove-wrapper,
     &__add-wrapper {

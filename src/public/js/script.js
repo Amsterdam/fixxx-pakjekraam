@@ -268,11 +268,37 @@ function splitByArray(orgArr, valueArr) {
   };
 
   var decorators = {
+      'voorkeur-form': function(){
+          var form = this,
+              vasteplaatsCount = form.dataset.vasteplaatsCount,
+              slider = form.querySelectorAll('input[type="range"]'),
+              extra = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__min-extra'),
+              optional = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__optional'),
+              minSlider = slider[0],
+              maxSlider = slider[1],
+              _formChange = function(e){
+                  var elem = e && e.target, i;
+                  if (elem === maxSlider && maxSlider.value < minSlider.value){
+                      minSlider.value = maxSlider.value;
+                  } else if (elem === minSlider && maxSlider.value < minSlider.value) {
+                      maxSlider.value = minSlider.value;
+                  }
+                  for (i = 0; i < extra.length; i++){
+                      console.log(minSlider.value - vasteplaatsCount);
+                      extra[i].classList[minSlider.value - vasteplaatsCount > 0 ? 'remove' : 'add'  ]('hidden');
+                      extra[i].querySelector('.count').textContent = minSlider.value - vasteplaatsCount;
+                  }
+                  for (i = 0; i < optional.length; i++){
+                      optional[i].classList[maxSlider.value - minSlider.value > 0 ? 'remove' : 'add'  ]('hidden');
+                      optional[i].querySelector('.count').textContent = maxSlider.value - minSlider.value;
+                  }
+              };
+          _formChange();
+          form.addEventListener('change', _formChange);
+      },
       'initial-modal': function(){
           var self = this,
               el = window.location.hash && window.location.hash.split('modal-').length == 2 && document.getElementById(window.location.hash.split('modal-')[1]);
-            console.log(window.location.hash.split('modal-'));
-            console.log(el);
             if (el){
                 handlers['modal'].call(el);
             }

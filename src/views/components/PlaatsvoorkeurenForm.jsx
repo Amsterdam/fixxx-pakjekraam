@@ -42,7 +42,12 @@ class PlaatsvoorkeurenForm extends React.Component {
 
         const next = query.next ? query.next : `/voorkeuren/${ondernemer.erkenningsnummer}/${markt.id}/`;
         const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
-        const newPlaatsvoorkeurCount = sollicitatie.vastePlaatsen.length > 0 ? sollicitatie.vastePlaatsen.length : 1;
+        const maxCountUitbreidingenMarkt = 2;
+        const defaultPlaatsCount = isVast(sollicitatie.status) ? sollicitatie.vastePlaatsen.length : 1;
+        const newPlaatsvoorkeurCount =
+            sollicitatie.vastePlaatsen.length > 0
+                ? sollicitatie.vastePlaatsen.length + maxCountUitbreidingenMarkt
+                : 1 + maxCountUitbreidingenMarkt;
         const entriesFiltered = allEntries.filter(entry => entry.marktId === markt.id);
         const entriesSplit = entriesFiltered
             .sort((a, b) => b.priority - a.priority)
@@ -89,7 +94,8 @@ class PlaatsvoorkeurenForm extends React.Component {
                 method="POST"
                 action="/voorkeuren/"
                 encType="application/x-www-form-urlencoded"
-                // data-decorator="voorkeur-form"
+                data-decorator="voorkeur-form"
+                data-vasteplaats-count={sollicitatie.vastePlaatsen.length}
             >
                 <input
                     id="erkenningsNummer"
@@ -97,6 +103,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                     name="erkenningsNummer"
                     defaultValue={ondernemer.erkenningsnummer}
                 />
+                <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
                 <p>
                     Je kunt de plaatsvoorkeuren voor morgen tot 21.00 wijzigen. Wijzig je de plaatsvoorkeuren na 21.00
                     uur dan gelden deze voor de dagen na morgen.
@@ -105,12 +112,17 @@ class PlaatsvoorkeurenForm extends React.Component {
                 <div className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
                     <script dangerouslySetInnerHTML={marktRowsJSOM()} />
                     <script dangerouslySetInnerHTML={plaatsSetsJSON()} />
-                    <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
                     <div className="PlaatsvoorkeurenForm__plaats-count-limit">
                         <div className="InputField InputField--range">
                             <label>Minimaal aantal plaatsen</label>
                             <div className="InputField--range__wrapper">
-                                <input name="min" type="range" min="0" max={newPlaatsvoorkeurCount} value={0} />
+                                <input
+                                    name="min"
+                                    type="range"
+                                    min="1"
+                                    max={newPlaatsvoorkeurCount}
+                                    value={defaultPlaatsCount}
+                                />
                                 <ul className="InputField--range__value-list">
                                     {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
                                         <li key={i} className="InputField--range__value-list-item">
@@ -123,7 +135,13 @@ class PlaatsvoorkeurenForm extends React.Component {
                         <div className="InputField InputField--range">
                             <label>Maximaal aantal plaatsen</label>
                             <div className="InputField--range__wrapper">
-                                <input name="max" type="range" min="0" max={newPlaatsvoorkeurCount} value={0} />
+                                <input
+                                    name="max"
+                                    type="range"
+                                    min="1"
+                                    max={newPlaatsvoorkeurCount}
+                                    value={defaultPlaatsCount}
+                                />
                                 <ul className="InputField--range__value-list">
                                     {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
                                         <li key={i} className="InputField--range__value-list-item">
@@ -182,6 +200,20 @@ class PlaatsvoorkeurenForm extends React.Component {
                                                 <span className="PlaatsvoorkeurenForm__list-item__value">
                                                     {plaatsId}
                                                 </span>
+                                                {sollicitatie.vastePlaatsen.length > 0 ? (
+                                                    <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__extra-default">
+                                                        {sollicitatie.vastePlaatsen.length - 1}&nbsp;vaste plaats
+                                                        {sollicitatie.vastePlaatsen.length > 2 ? 'en' : null}
+                                                    </div>
+                                                ) : null}
+                                                <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__min-extra">
+                                                    <span className="count" />
+                                                    &nbsp;extra plaats
+                                                </div>
+                                                <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__optional">
+                                                    <span className="count" />
+                                                    &nbsp;extra&nbsp;als er&nbsp;plek&nbsp;is.
+                                                </div>
                                             </div>
                                         ))}
                                     <div className="PlaatsvoorkeurenForm__list-item__tools">
@@ -230,6 +262,20 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         data={rowsFlat}
                                         optional={true}
                                     />
+                                    {sollicitatie.vastePlaatsen.length > 0 ? (
+                                        <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__extra-default">
+                                            {sollicitatie.vastePlaatsen.length - 1}&nbsp;vaste plaats
+                                            {sollicitatie.vastePlaatsen.length > 2 ? 'en' : null}
+                                        </div>
+                                    ) : null}
+                                    <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__min-extra">
+                                        <span className="count" />
+                                        &nbsp;extra plaats
+                                    </div>
+                                    <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__optional">
+                                        <span className="count" />
+                                        &nbsp;extra&nbsp;als er plek is.
+                                    </div>
                                 </div>
                                 <a
                                     href="#"
