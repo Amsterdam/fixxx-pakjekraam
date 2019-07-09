@@ -33,6 +33,19 @@ const { mail } = require('./mail.js');
 const EmailIndeling = require('./views/EmailIndeling.jsx');
 const EmailWijzigingAanmeldingen = require('./views/EmailWijzigingAanmeldingen.jsx');
 const EmailWijzigingVoorkeuren = require('./views/EmailWijzigingVoorkeuren.jsx');
+const {
+    HTTP_CREATED_SUCCESS,
+    HTTP_BAD_REQUEST,
+    HTTP_FORBIDDEN_ERROR,
+    HTTP_PAGE_NOT_FOUND,
+    HTTP_INTERNAL_SERVER_ERROR,
+    httpErrorPage,
+    internalServerErrorPage,
+    forbiddenErrorPage,
+    publicErrors,
+    getQueryErrors,
+} = require('./express-util.ts');
+const { marktDetailController } = require('./routes/markt-detail.ts');
 
 const {
     getMailContext,
@@ -55,21 +68,7 @@ const {
     getSollicitantenlijstInput,
 } = require('./pakjekraam-api.js');
 
-const HTTP_CREATED_SUCCESS = 201;
-const HTTP_BAD_REQUEST = 400;
-const HTTP_FORBIDDEN_ERROR = 403;
-const HTTP_PAGE_NOT_FOUND = 404;
-const HTTP_INTERNAL_SERVER_ERROR = 500;
 const HTTP_DEFAULT_PORT = 8080;
-
-const httpErrorPage = (res, errorCode) => err => {
-    console.log(err);
-    res.status(errorCode).end(`${err}`);
-};
-
-const internalServerErrorPage = res => httpErrorPage(HTTP_INTERNAL_SERVER_ERROR);
-
-const forbiddenErrorPage = res => httpErrorPage(HTTP_FORBIDDEN_ERROR);
 
 const port = process.env.PORT || HTTP_DEFAULT_PORT;
 const app = express();
@@ -88,10 +87,6 @@ const parseDatabaseURL = str => {
 };
 
 const pgPool = new PgPool(parseDatabaseURL(process.env.DATABASE_URL));
-
-const errorPage = (res, err) => {
-    res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
-};
 
 /*
  * The built-in Sequelize `upsert()` doesn't work well with
@@ -445,46 +440,6 @@ app.get(
         );
     },
 );
-
-const publicErrors = {
-    INCORRECT_CREDENTIALS: 'incorrect-credentials',
-    AANWEZIGHEID_SAVED: 'aanwezigheid-saved',
-    PLAATSVOORKEUREN_SAVED: 'plaatsvoorkeuren-saved',
-    ALGEMENE_VOORKEUREN_SAVED: 'algemene-voorkeuren-saved',
-    ACTIVATION_FAILED: 'activation-failed',
-    NON_MATCHING_PASSWORDS: 'non-matching-passwords',
-};
-
-const humanReadableMessage = {
-    [publicErrors.INCORRECT_CREDENTIALS]: 'Uw gebruikersnaam of wachtwoord is incorrect.',
-    [publicErrors.AANWEZIGHEID_SAVED]: 'Je aan- of afmeldingen zijn met success gewijzigd.',
-    [publicErrors.PLAATSVOORKEUREN_SAVED]: 'Je plaatsvoorkeuren zijn met success gewijzigd.',
-    [publicErrors.ALGEMENE_VOORKEUREN_SAVED]: 'Je marktprofiel is met success gewijzigd.',
-    [publicErrors.ACTIVATION_FAILED]:
-        'De ingevoerde activatie-code klopt niet of is verlopen. Controleer de ingevulde gegevens.',
-    [publicErrors.NON_MATCHING_PASSWORDS]:
-        'De ingevoerde wachtwoorden komen niet overeen. Let op dat je geen fout maakt bij het kiezen van een wachtwoord.',
-};
-
-/*
- * Error message codes can be passed along via the query string, for example:
- *
- *     /login?error=incorrect-credentials
- *     /login?error[]=incorrect-request&error[]=database-down
- */
-const getQueryErrors = queryParams => {
-    const errorCodes = queryParams.error
-        ? Array.isArray(queryParams.error)
-            ? queryParams.error
-            : [queryParams.error]
-        : [];
-
-    return errorCodes.map(msg => ({
-        code: msg,
-        message: humanReadableMessage[msg] || msg,
-        severity: 'error',
-    }));
-};
 
 const dashboardPage = (req, res, erkenningsNummer) => {
     const messages = getQueryErrors(req.query);
@@ -1207,39 +1162,13 @@ const algemeneVoorkeurenFormData = body => {
     return voorkeur;
 };
 
-app.get('/markt-detail/:erkenningsNummer/:marktId/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
-    const messages = getQueryErrors(req.query);
-    const ondernemerPromise = getMarktondernemer(req.session.token, req.params.erkenningsNummer);
-    const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(req.params.erkenningsNummer);
-    const marktPromise = req.params.marktId ? getMarkt(req.session.token, req.params.marktId) : Promise.resolve(null);
-    const query = req.query;
-    const next = req.query.next;
+app.get('/markt-detail/:marktId/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res, next) =>
+    marktDetailController(req, res, next, getErkenningsNummer(req)),
+);
 
-    Promise.all([
-        ondernemerPromise,
-        ondernemerVoorkeurenPromise,
-        getAanmeldingenByOndernemer(req.params.erkenningsNummer),
-        marktPromise,
-        getIndelingVoorkeur(req.params.erkenningsNummer, req.params.marktId),
-        getAllBranches(),
-    ]).then(
-        ([ondernemer, plaatsvoorkeuren, aanmeldingen, markt, voorkeur, branches]) => {
-            res.render('OndernemerMarktDetailPage', {
-                ondernemer,
-                plaatsvoorkeuren,
-                aanmeldingen,
-                markt,
-                voorkeur,
-                branches,
-                marktId: req.params.marktId,
-                next,
-                query,
-                messages,
-            });
-        },
-        err => errorPage(res, err),
-    );
-});
+app.get('/markt-detail/:erkenningsNummer/:marktId/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res, next) =>
+    marktDetailController(req, res, next, req.params.erkenningsNummer),
+);
 
 app.post('/algemene-voorkeuren/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
     const { next } = req.body;
