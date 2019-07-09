@@ -268,29 +268,49 @@ function splitByArray(orgArr, valueArr) {
   };
 
   var decorators = {
-      'voorkeur-form': function(){
+      'voorkeur-form': function () {
           var form = this,
               vasteplaatsCount = form.dataset.vasteplaatsCount,
               slider = form.querySelectorAll('input[type="range"]'),
               extra = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__min-extra'),
               optional = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__optional'),
+              explain = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__explain'),
               minSlider = slider[0],
               maxSlider = slider[1],
-              _formChange = function(e){
-                  var elem = e && e.target, i;
-                  if (elem === maxSlider && maxSlider.value < minSlider.value){
+              _clearElem = function (elem) {
+                  while (elem.firstChild) {
+                      elem.removeChild(elem.firstChild);
+                  }
+              },
+              _addKraamCount = function (elem, kraamCount) {
+                  var j;
+                  for (j = 0; j < kraamCount; j++) {
+
+                      var kraam = document.createElement('span');
+                      kraam.classList.add('kraam');
+                      elem.appendChild(kraam);
+                  }
+              },
+              _formChange = function (e) {
+                  var elem = e && e.target,
+                      i,
+                      j;
+                  if (elem === maxSlider && maxSlider.value < minSlider.value) {
                       minSlider.value = maxSlider.value;
                   } else if (elem === minSlider && maxSlider.value < minSlider.value) {
                       maxSlider.value = minSlider.value;
                   }
-                  for (i = 0; i < extra.length; i++){
-                      console.log(minSlider.value - vasteplaatsCount);
-                      extra[i].classList[minSlider.value - vasteplaatsCount > 0 ? 'remove' : 'add'  ]('hidden');
-                      extra[i].querySelector('.count').textContent = minSlider.value - vasteplaatsCount;
-                  }
-                  for (i = 0; i < optional.length; i++){
-                      optional[i].classList[maxSlider.value - minSlider.value > 0 ? 'remove' : 'add'  ]('hidden');
-                      optional[i].querySelector('.count').textContent = maxSlider.value - minSlider.value;
+                  for (i = 0; i < explain.length; i++) {
+                      var min = explain[i].querySelector('.min');
+                      var max = explain[i].querySelector('.max');
+                      var extr = explain[i].querySelector('.extra');
+                      var minM = explain[i].querySelector('.minMulti');
+                      var maxM = explain[i].querySelector('.maxMulti');
+                      max.textContent = maxSlider.value - minSlider.value;
+                      min.textContent = minSlider.value;
+                      extr.classList[maxSlider.value === minSlider.value ? 'add' : 'remove']('hidden');
+                      maxM.classList[maxSlider.value - minSlider.value <= 1 ? 'add' : 'remove']('hidden');
+                      minM.classList[minSlider.value <= 1 ? 'add' : 'remove']('hidden');
                   }
               };
           _formChange();

@@ -175,9 +175,18 @@ class PlaatsvoorkeurenForm extends React.Component {
                                 key={i}
                                 style={{ ...{ order: entries[0].priority } }}
                             >
-                                <h5 className="PlaatsvoorkeurenForm__list-item__heading">{i + 1}e keuze</h5>
+                                <h4 className="PlaatsvoorkeurenForm__list-item__heading">{i + 1}e keuze</h4>
                                 <div className="well">
-                                    <span className="PlaatsvoorkeurenForm__list-item__label">Plaatsen:</span>
+                                    <span className="PlaatsvoorkeurenForm__list-item__label">
+                                        Plaatsnummer:{' '}
+                                        <strong>
+                                            {entries
+                                                .map(e => {
+                                                    return e.plaatsId;
+                                                })
+                                                .join('')}
+                                        </strong>
+                                    </span>
                                     {entries
                                         .sort((a, b) => b.priority - a.priority)
                                         .map(({ marktId, plaatsId, priority, index, readonly, newItem }, n, arr) => (
@@ -197,25 +206,27 @@ class PlaatsvoorkeurenForm extends React.Component {
                                                     name={`plaatsvoorkeuren[${index}][plaatsId]`}
                                                     value={plaatsId}
                                                 />
-                                                <span className="PlaatsvoorkeurenForm__list-item__value">
-                                                    {plaatsId}
-                                                </span>
-                                                {sollicitatie.vastePlaatsen.length > 0 ? (
-                                                    <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__extra-default">
-                                                        {sollicitatie.vastePlaatsen.length - 1}&nbsp;vaste plaats
-                                                        {sollicitatie.vastePlaatsen.length > 2 ? 'en' : null}
-                                                    </div>
-                                                ) : null}
-                                                <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__min-extra">
-                                                    <span className="count" />
-                                                    &nbsp;extra plaats
-                                                </div>
-                                                <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__optional">
-                                                    <span className="count" />
-                                                    &nbsp;extra&nbsp;als er&nbsp;plek&nbsp;is.
-                                                </div>
+                                                {/* <span className="PlaatsvoorkeurenForm__list-item__value">*/}
+                                                {/* {plaatsId}*/}
+                                                {/* </span>*/}
+                                                {/* <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__min-extra">*/}
+                                                {/* <span className="count" />*/}
+                                                {/* &nbsp;extra plaats*/}
+                                                {/* </div>*/}
+                                                {/* <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__optional">*/}
+                                                {/* <span className="count" />*/}
+                                                {/* &nbsp;extra&nbsp;als er&nbsp;plek&nbsp;is.*/}
+                                                {/* </div>*/}
                                             </div>
                                         ))}
+                                    <span className="PlaatsvoorkeurenForm__list-item__explain">
+                                        Ik wil minimaal <span className="min" /> plaats
+                                        <span className="minMulti">en</span>
+                                        <span className="extra">
+                                            , en nog <span className="max" /> plaats<span className="maxMulti">en</span>{' '}
+                                            erbij als er plek is.
+                                        </span>
+                                    </span>
                                     <div className="PlaatsvoorkeurenForm__list-item__tools">
                                         <a
                                             href="#"
@@ -239,9 +250,9 @@ class PlaatsvoorkeurenForm extends React.Component {
                         data-max-uitbreidingen={1}
                     >
                         <div className="PlaatsvoorkeurenForm__list-item">
-                            <h5 className="PlaatsvoorkeurenForm__list-item__heading">
+                            <h4 className="PlaatsvoorkeurenForm__list-item__heading">
                                 {entriesSplit.length + 1}e keuze
-                            </h5>
+                            </h4>
                             <div className="well">
                                 <span className="PlaatsvoorkeurenForm__list-item__label">Kies een marktplaats</span>
                                 <div className={`PlaatsvoorkeurenForm__list-item__wrapper`}>
@@ -262,20 +273,8 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         data={rowsFlat}
                                         optional={true}
                                     />
-                                    {sollicitatie.vastePlaatsen.length > 0 ? (
-                                        <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__extra-default">
-                                            {sollicitatie.vastePlaatsen.length - 1}&nbsp;vaste plaats
-                                            {sollicitatie.vastePlaatsen.length > 2 ? 'en' : null}
-                                        </div>
-                                    ) : null}
-                                    <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__min-extra">
-                                        <span className="count" />
-                                        &nbsp;extra plaats
-                                    </div>
-                                    <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__optional">
-                                        <span className="count" />
-                                        &nbsp;extra&nbsp;als er plek is.
-                                    </div>
+                                    <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__min-extra" />
+                                    <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__optional" />
                                 </div>
                                 <a
                                     href="#"
@@ -284,6 +283,13 @@ class PlaatsvoorkeurenForm extends React.Component {
                                 >
                                     leeg maken
                                 </a>
+                                <span className="PlaatsvoorkeurenForm__list-item__explain">
+                                    Ik wil minimaal <span className="min" /> plaats<span className="minMulti">en</span>
+                                    <span className="extra">
+                                        , en nog <span className="max" /> plaats<span className="maxMulti">en</span>{' '}
+                                        erbij als er plek is.
+                                    </span>
+                                </span>
                             </div>
                         </div>
                     </div>
