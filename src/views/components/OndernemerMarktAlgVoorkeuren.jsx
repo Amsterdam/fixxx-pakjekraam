@@ -17,7 +17,7 @@ const OndernemerMarktAlgVoorkeuren = ({ markt, sollicitatie, ondernemer, voorkeu
                 {voorkeur ? (
                     <dl>
                         <dt>Branche</dt>
-                        <dd>{voorkeur.branches ? voorkeur.branches : 'geen'}</dd>
+                        <dd>{voorkeur.brancheId ? voorkeur.brancheId : 'geen'}</dd>
                         <dt>Bakplaats</dt>
                         <dd>{voorkeur.parentBrancheId ? voorkeur.parentBrancheId : 'geen'}</dd>
                         <dt>Eigen materiaal</dt>

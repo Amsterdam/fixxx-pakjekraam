@@ -294,15 +294,23 @@ class PlaatsvoorkeurenForm extends React.Component {
                             name="redirectTo"
                             value={`/voorkeuren/${ondernemer.erkenningsnummer}/${
                                 markt.id
-                            }/?&next=${next}#modal-submit-buttons`}
+                            }/?error=plaatsvoorkeuren-saved&next=${next}#bottom-buttons`}
+                        >
+                            + Voeg nog een keuze toe
+                        </button>
+                        <button
+                            className="Button Button--secondary"
+                            type="submit"
+                            name="redirectTo"
+                            value={`${next}?error=plaatsvoorkeuren-saved#plaatsvoorkeuren`}
                         >
                             Bewaar
                         </button>
-                        <Button label="terug" href={`${next}#plaatsvoorkeuren`} type="tertiary" />
+                        <Button label="Annuleer" href={`${next}#plaatsvoorkeuren`} type="tertiary" />
                     </p>
                 </div>
                 <div
-                    data-decorator="initial-modal"
+                    // data-decorator="initial-modal"
                     className="hidden"
                     id="submit-buttons"
                     data-content-id="submit-buttons"

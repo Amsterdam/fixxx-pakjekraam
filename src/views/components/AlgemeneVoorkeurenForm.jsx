@@ -184,9 +184,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
                     ) : null}
                     {vast ? (
                         <div className={`Fieldset`}>
-                            <h2 className="Fieldset__header">
-                                Wil je zekerheid dat je alléén op voorkeursplaatsen staat?
-                            </h2>
+                            <h2 className="Fieldset__header">Flexibel indelen?</h2>
                             <p className="InputField InputField--checkbox">
                                 <input
                                     id="anywhere"
@@ -195,7 +193,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
                                     defaultChecked={voorkeur.anywhere !== false}
                                 />
                                 <label htmlFor="anywhere">
-                                    Als mijn voorkeurplaatsen niet beschikbaar zijn, wil ik automatisch op een losse
+                                    Als mijn voorkeursplaatsen niet beschikbaar zijn, wil ik automatisch op een losse
                                     plaats ingedeeld worden.
                                 </label>
                             </p>
@@ -217,12 +215,12 @@ class AlgemeneVoorkeurenForm extends React.Component {
                             className="Button Button--secondary"
                             type="submit"
                             name="next"
-                            value={`${query.next ? query.next : '.'}?error=aanwezigheid-saved#marktprofiel`}
+                            value={`${query.next ? query.next : '.'}?error=algemene-voorkeuren-saved#marktprofiel`}
                         >
-                            Opslaan
+                            Bewaar
                         </button>
                         <a className="Button Button--tertiary" href={`${query.next ? query.next : '.'}#marktprofiel`}>
-                            Terug
+                            Annuleer
                         </a>
                     </p>
                 </div>

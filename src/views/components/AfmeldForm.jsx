@@ -2,7 +2,7 @@ const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 const React = require('react');
 const PropTypes = require('prop-types');
 const { formatDayOfWeek, WEEK_DAYS, today, formatDate } = require('../../util.js');
-const { filterRsvpList } = require('../../domain-knowledge.js');
+const { filterRsvpList, isVast } = require('../../domain-knowledge.js');
 
 class AfmeldForm extends React.Component {
     propTypes = {
@@ -57,7 +57,13 @@ class AfmeldForm extends React.Component {
                             <div className="Fieldset__header">
                                 <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
                             </div>
-                            <span className="Fieldset__subtitle">Aanvinken welke dagen je komt</span>
+                            {isVast(sollicitatie.status) ? (
+                                <span className="Fieldset__subtitle">
+                                    Vink uit welke dagen je niet op de markt staat
+                                </span>
+                            ) : (
+                                <span className="Fieldset__subtitle">Aanvinken welke dagen je komt</span>
+                            )}
                             <ul className="CheckboxList">
                                 {rsvpEntries.map(({ date, rsvp, index }, i) => (
                                     <li key={date}>
@@ -111,11 +117,11 @@ class AfmeldForm extends React.Component {
                                         name="next"
                                         value={`${next}?error=aanwezigheid-saved#aanwezigheid`}
                                     >
-                                        Bewaren en terug
+                                        Bewaren
                                     </button>
                                     {currentMarktId && (
                                         <a className="Button Button--tertiary" href={`${next}#aanwezigheid`}>
-                                            Terug
+                                            Annuleer
                                         </a>
                                     )}
                                 </p>
