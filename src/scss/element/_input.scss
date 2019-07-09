@@ -15,6 +15,7 @@ input {
 input[type="range"] {
     margin: 0;
     display: inline-block;
+    height: 42px;
     &:focus {
         outline: none;
     }
@@ -28,13 +29,34 @@ input[type="range"]::-webkit-slider-thumb {
     background: $primary-black; /* Green background */
     cursor: pointer; /* Cursor on hover */
     border-radius: 50%;
-    margin-top: -18px;
+    //margin-top: -18px;
+    position: absolute;
+    top: -16px;
 }
 
 input[type="range"]::-moz-range-thumb {
-    @extend .track-thumb;
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 42px; /* Set a specific slider handle width */
+    height: 42px; /* Slider handle height */
+    background: $primary-black; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+    border-radius: 50%;
+    position: absolute;
+    top: -16px;
 }
 
+input[type="range"]::-moz-range-track {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 100%;
+    height: 10px;
+    background-color: $neutral-grey2;
+    cursor: pointer; /* Cursor on hover */
+    margin: 16px 0;
+    border-radius: 5px;
+    position: relative;
+}
 input[type="range"]::-webkit-slider-runnable-track {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
@@ -42,8 +64,9 @@ input[type="range"]::-webkit-slider-runnable-track {
     height: 10px;
     background-color: $neutral-grey2;
     cursor: pointer; /* Cursor on hover */
-    margin: 17px 0;
-    border-radius: 36px;
+    margin: 16px 0;
+    border-radius: 5px;
+    position: relative;
 }
 
 ::-ms-fill-lower {
