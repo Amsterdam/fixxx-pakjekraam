@@ -49,7 +49,7 @@ class EmailSollRandomPlaatsConfirm extends React.Component {
             ],
             [
                 'Soortplaats:',
-                <strong>
+                <strong key={`Soortplaats`}>
                     {toewijzing.plaatsen
                         .map(plaatsId => (branches[plaatsId] ? branches[plaatsId].branches.join(' ') : 'geen'))
                         .join(', ')}
