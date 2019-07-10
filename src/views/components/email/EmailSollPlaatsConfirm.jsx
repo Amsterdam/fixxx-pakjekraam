@@ -2,7 +2,7 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const EmailContent = require('../EmailContent.jsx');
 const EmailTable = require('../EmailTable.jsx');
-const { formatDate, formatDayOfWeek } = require('../../../util.js');
+const { formatDate, formatDayOfWeek, arrayToObject } = require('../../../util.js');
 const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
@@ -21,10 +21,17 @@ class EmailSollPlaatsConfirm extends React.Component {
     render() {
         const fontGray = { color: '#767676' };
         const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
-
+        const branches = arrayToObject(markt.marktplaatsen.filter(plaats => plaats.branches), 'plaatsId');
         const tableData = [
             ['Plaats nrs:', <strong key={`plaats`}>Wordt tijdens loting om 09:00 uur bepaald</strong>],
-            ['Soortplaats:', <strong key={`branche`}>fixme: ondernemer branche</strong>],
+            [
+                'Soortplaats:',
+                <strong>
+                    {toewijzing.plaatsen
+                        .map(plaatsId => (branches[plaatsId] ? branches[plaatsId].branches.join(' ') : 'geen'))
+                        .join(', ')}
+                </strong>,
+            ],
             ['Markt:', <strong key={`markt`}>{markt.markt.naam}</strong>],
             [
                 'Datum:',

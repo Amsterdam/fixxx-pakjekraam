@@ -2,7 +2,7 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const EmailContent = require('../EmailContent.jsx');
 const EmailTable = require('../EmailTable.jsx');
-const { formatDate, fullRelativeHumanDate, capitalize } = require('../../../util.js');
+const { formatDate, fullRelativeHumanDate, capitalize, arrayToObject } = require('../../../util.js');
 const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
@@ -20,6 +20,8 @@ class EmailVplPlaatsConfirm extends React.Component {
 
     render() {
         const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
+        const fontGray = { color: '#767676' };
+        const branches = arrayToObject(markt.marktplaatsen.filter(plaats => plaats.branches), 'plaatsId');
         const bijzonderheden = markt.marktplaatsen
             .reduce((t, plaats) => {
                 ondernemer.plaatsen.map(p => {
@@ -40,11 +42,18 @@ class EmailVplPlaatsConfirm extends React.Component {
             [
                 'Plaats nrs:',
                 <span key={`plaats`}>
-                    <strong>{ondernemer.plaatsen.join(', ')}</strong> (je vaste plaatsen)
+                    <strong>{ondernemer.plaatsen.join(', ')}</strong> (Uw vaste plaatsen)
                     <br /> {voorkeuren.length ? 'Je hebt helaas geen van je voorkeuren gekregen' : null}
                 </span>,
             ],
-            ['Soortplaats:', <strong key={`branche`}>fixme</strong>],
+            [
+                'Soortplaats:',
+                <strong>
+                    {toewijzing.plaatsen
+                        .map(plaatsId => (branches[plaatsId] ? branches[plaatsId].branches.join(' ') : 'geen'))
+                        .join(', ')}
+                </strong>,
+            ],
             [
                 'Bijzonderheden:',
                 <strong key={`remarks`}>{bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}</strong>,
@@ -59,9 +68,15 @@ class EmailVplPlaatsConfirm extends React.Component {
 
                 <EmailContent>
                     <p>
-                        {capitalize(fullRelativeHumanDate(marktDate))} is jouw plaats op de {markt.markt.naam}
+                        {capitalize(fullRelativeHumanDate(marktDate))} is uw plaats op de {markt.markt.naam}
                     </p>
                     <EmailTable data={tableData} />
+                </EmailContent>
+                <EmailContent>
+                    <p style={fontGray}>
+                        Als u bijvoorbeeld door ziekte toch niet kunt komen verzoeken wij u dit uiterlijk 08:45 aan de
+                        marktmeester telefonisch te melden zodat een andere koopman uw plaats kan krijgen.
+                    </p>
                 </EmailContent>
 
                 <p>

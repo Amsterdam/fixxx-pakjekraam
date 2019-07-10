@@ -2,7 +2,7 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const EmailContent = require('../EmailContent.jsx');
 const EmailTable = require('../EmailTable.jsx');
-const { formatDate, fullRelativeHumanDate, capitalize } = require('../../../util.js');
+const { formatDate, fullRelativeHumanDate, capitalize, arrayToObject } = require('../../../util.js');
 const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
@@ -21,7 +21,7 @@ class EmailSollVoorkeurConfirm extends React.Component {
     render() {
         const fontGray = { color: '#767676' };
         const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
-
+        const branches = arrayToObject(markt.marktplaatsen.filter(plaats => plaats.branches), 'plaatsId');
         const bijzonderheden = markt.marktplaatsen
             .reduce((t, plaats) => {
                 ondernemer.plaatsen.map(p => {
@@ -47,7 +47,14 @@ class EmailSollVoorkeurConfirm extends React.Component {
                     Dit is een voorkeursplaats die je hebt aangevraagd
                 </span>,
             ],
-            ['Soortplaats:', <strong key={`branche`}>fixme</strong>],
+            [
+                'Soortplaats:',
+                <strong>
+                    {toewijzing.plaatsen
+                        .map(plaatsId => (branches[plaatsId] ? branches[plaatsId].branches.join(' ') : 'geen'))
+                        .join(', ')}
+                </strong>,
+            ],
             [
                 'Bijzonderheden:',
                 <strong key={`remarks`}>{bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}</strong>,

@@ -2,7 +2,7 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const EmailContent = require('../EmailContent.jsx');
 const EmailTable = require('../EmailTable.jsx');
-const { formatDate, relativeHumanDay, capitalize, fullRelativeHumanDate } = require('../../../util.js');
+const { formatDate, relativeHumanDay, capitalize, fullRelativeHumanDate, arrayToObject } = require('../../../util.js');
 const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
@@ -19,8 +19,10 @@ class EmailVplVoorkeurConfirm extends React.Component {
     };
 
     render() {
-        const fontGray = { color: '#767676' };
         const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
+        const fontGray = { color: '#767676' };
+        const branches = arrayToObject(markt.marktplaatsen.filter(plaats => plaats.branches), 'plaatsId');
+
         const bijzonderheden = markt.marktplaatsen
             .reduce((t, plaats) => {
                 ondernemer.plaatsen.map(p => {
@@ -49,13 +51,13 @@ class EmailVplVoorkeurConfirm extends React.Component {
             .join('-')
             .includes(toewijzing.plaatsen.sort().join('-'));
 
-        const defaultText = 'Dit zijn je vaste plaatsen.';
-        const verplaatsText = 'Dit is een voorkeursplaats die je hebt aangevraagd.';
-        const vekleiningText = `Dit is een verkleining van je vaste plaats die je hebt aangevraagd`;
-        const vekleiningVerplaatsText = `Dit is een verplaatsing en verkleining die je hebt aangevraagd`;
-        const uitbreidingVerplaatsText = `Dit is een voorkeursplaats met extra plaats(en) die je hebt aangevraagd`;
-        const uitbreidingNietVerplaatsText = `Dit is je vaste plaats met extra plaats(en) die je hebt aangevraagd`;
-        const verplaatsGeenUitbreidingText = `Dit is een voorkeursplaats die je hebt aangevraagd`;
+        const defaultText = 'Dit zijn uw vaste plaatsen. U heeft helaas geen van uw voorkeursplaats(en) gekregen.';
+        const verplaatsText = 'Dit is een voorkeursplaats die u heeft aangevraagd.';
+        const vekleiningText = `Dit is een verkleining van uw vaste plaats die u heeft aangevraagd`;
+        const vekleiningVerplaatsText = `Dit is een verplaatsing en verkleining die u heeft aangevraagd`;
+        const uitbreidingVerplaatsText = `Dit is een voorkeursplaats met extra plaats(en) die u heeft aangevraagd`;
+        const uitbreidingNietVerplaatsText = `Dit is uw vaste plaats met extra plaats(en) die u heeft aangevraagd`;
+        const verplaatsGeenUitbreidingText = `Dit is een voorkeursplaats die u heeft aangevraagd`;
 
         let toewijzingsText = isVastePlaats ? defaultText : verplaatsText;
         if (uitbreiding) {
@@ -73,7 +75,14 @@ class EmailVplVoorkeurConfirm extends React.Component {
                     {toewijzingsText}
                 </span>,
             ],
-            ['Soortplaats:', <strong key={`branche`}>fixme</strong>],
+            [
+                'Soortplaats:',
+                <strong>
+                    {toewijzing.plaatsen
+                        .map(plaatsId => (branches[plaatsId] ? branches[plaatsId].branches.join(' ') : 'geen'))
+                        .join(', ')}
+                </strong>,
+            ],
             [
                 'Bijzonderheden:',
                 <strong key={`remarks`}>{bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}</strong>,
@@ -88,14 +97,14 @@ class EmailVplVoorkeurConfirm extends React.Component {
 
                 <EmailContent>
                     <p>
-                        {capitalize(fullRelativeHumanDate(marktDate))} is jouw plaats op de markt {markt.markt.naam}
+                        {capitalize(fullRelativeHumanDate(marktDate))} is uw plaats op de markt {markt.markt.naam}
                     </p>
                     <EmailTable data={tableData} />
                 </EmailContent>
                 <EmailContent>
                     <p style={fontGray}>
-                        Als je bijvoorbeeld door ziekte toch niet kunt komen verzoeken wij je dit uiterlijk 08:45 aan de
-                        marktmeester telefonisch te melden zodat een andere koopman je plaats kan krijgen.
+                        Als u bijvoorbeeld door ziekte toch niet kunt komen verzoeken wij u dit uiterlijk 08:45 aan de
+                        marktmeester telefonisch te melden zodat een andere koopman uw plaats kan krijgen.
                     </p>
                 </EmailContent>
                 <p>
