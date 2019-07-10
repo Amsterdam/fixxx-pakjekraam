@@ -69,6 +69,7 @@ const {
 } = require('./pakjekraam-api.js');
 
 const { serverHealth, databaseHealth, keycloakHealth, makkelijkeMarktHealth } = require('./routes/status.ts');
+const { activationPage, handleActivation } = require('./routes/activation.ts');
 
 const HTTP_DEFAULT_PORT = 8080;
 
@@ -499,48 +500,9 @@ app.get('/ondernemer/:erkenningsNummer/activatie-qr.svg', keycloak.protect(Keycl
     }, httpErrorPage(res, HTTP_PAGE_NOT_FOUND));
 });
 
-app.get('/activeren', (req, res) => {
-    res.render('ActivatePage', {
-        username: req.query.username,
-        code: req.query.code,
-        messages: getQueryErrors(req.query),
-    });
-});
+app.get('/activeren', activationPage);
 
-app.post('/activeren', (req, res) => {
-    const { username, code } = req.body;
-    checkActivationCode(username, code)
-        .then(ondernemer => userExists(username))
-        .then(isExistingUser => {
-            console.log(username, isExistingUser);
-            if (isExistingUser) {
-                // Go to the activation failed page
-                throw new Error();
-            }
-
-            return isExistingUser;
-        })
-        .then(
-            () => {
-                req.session.activation = {
-                    username,
-                };
-                res.redirect('/registreren');
-            },
-            () => {
-                res.redirect(
-                    `/activeren${qs.stringify(
-                        {
-                            username,
-                            code,
-                            error: publicErrors.ACTIVATION_FAILED,
-                        },
-                        { addQueryPrefix: true },
-                    )}`,
-                );
-            },
-        );
-});
+app.post('/activeren', handleActivation);
 
 app.get('/registreren', (req, res) => {
     if (req.session.activation) {
