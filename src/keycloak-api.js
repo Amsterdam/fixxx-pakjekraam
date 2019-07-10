@@ -23,7 +23,7 @@ const getKeycloakAdmin = () => {
      */
     const kcAdminClient = new KcAdminClient(clientConfig);
 
-    return kcAdminClient.auth(authConfig).then(() => kcAdminClient, err => console.log(err));
+    return kcAdminClient.auth(authConfig).then(() => kcAdminClient);
 };
 
 const userExists = username =>

@@ -68,6 +68,8 @@ const {
     getSollicitantenlijstInput,
 } = require('./pakjekraam-api.js');
 
+const { serverHealth, databaseHealth, keycloakHealth, makkelijkeMarktHealth } = require('./routes/status.ts');
+
 const HTTP_DEFAULT_PORT = 8080;
 
 const port = process.env.PORT || HTTP_DEFAULT_PORT;
@@ -102,46 +104,14 @@ const upsert = (model, where, data) =>
 
 app.use(morgan(morgan.compile(':date[iso] :method :status :url :response-time ms')));
 
-// This health check page is required for Docker deployments
-app.get('/status/health', function(req, res) {
-    res.end('OK!');
-});
+// The `/status/health` endpoint is required for Docker deployments
+app.get('/status/health', serverHealth);
 
-app.get('/status/database', function(req, res) {
-    sequelize
-        .authenticate()
-        .then(() => {
-            res.end('Database OK!');
-        })
-        .catch(err => {
-            errorPage(res, 'Unable to connect to the database');
-        });
-});
+app.get('/status/database', databaseHealth);
 
-app.get('/status/keycloak', function(req, res) {
-    getKeycloakAdmin()
-        .then(kcAdminClient =>
-            kcAdminClient.realms.findOne({
-                realm: process.env.IAM_REALM,
-            }),
-        )
-        .then(() => {
-            res.end('Keycloak OK!');
-        })
-        .catch(err => {
-            errorPage(res, 'Unable to connect to the Keycloak');
-        });
-});
+app.get('/status/keycloak', keycloakHealth);
 
-app.get('/status/makkelijkemarkt', function(req, res) {
-    readOnlyLogin()
-        .then(() => {
-            res.end('Makkelijke Markt API OK!');
-        })
-        .catch(err => {
-            errorPage(res, 'Unable to connect to Makkelijke Markt API');
-        });
-});
+app.get('/status/makkelijkemarkt', makkelijkeMarktHealth);
 
 // Required for Passport login form
 app.use(bodyParser.urlencoded({ extended: true }));
