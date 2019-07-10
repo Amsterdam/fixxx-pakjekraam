@@ -98,7 +98,7 @@
         "allowSingleLine": true
       }
     ],
-    "handle-callback-err": true,
+    "handle-callback-err": false,
     "no-constant-condition": true,
     "no-control-regex": true,
     "no-duplicate-case": true,
