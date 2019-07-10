@@ -5,6 +5,7 @@ const Header = require('./components/Header');
 const Content = require('./components/Content');
 const OndernemerAanwezigheid = require('./components/OndernemerAanwezigheid');
 const OndernemerProfileHeader = require('./components/OndernemerProfileHeader');
+const OndernemerMarktTile = require('./components/OndernemerMarktTile');
 
 class OndernemerDashboard extends React.Component {
     propTypes = {
@@ -35,15 +36,13 @@ class OndernemerDashboard extends React.Component {
                 </Header>
                 <Content>
                     <h1 className="h1">Mijn markten</h1>
-                    <ul className="LinkList">
+                    <div className="row row--responsive">
                         {sollicitaties.map(soll => (
-                            <li key={soll.markt.id} className="LinkList__item">
-                                <a className="Link" href={`../markt-detail/${soll.markt.id}/`}>
-                                    {soll.markt.naam}
-                                </a>
-                            </li>
+                            <div key={soll.markt.id} className="col-1-2">
+                                <OndernemerMarktTile markt={soll.markt} />
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </Content>
             </Page>
         );
