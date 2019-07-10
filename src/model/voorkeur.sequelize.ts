@@ -1,5 +1,12 @@
-module.exports = (sequelize, DataTypes) => {
-    const plaatsVoorkeur = sequelize.define(
+import { Sequelize, DataTypes, Model, BuildOptions } from 'sequelize';
+import { Voorkeur } from './voorkeur.model';
+
+type VoorkeurStatic = typeof Model & {
+    new (values?: object, options?: BuildOptions): Voorkeur;
+};
+
+const init = (sequelize: Sequelize) => {
+    const voorkeur = <VoorkeurStatic>sequelize.define(
         'voorkeur',
         {
             erkenningsNummer: {
@@ -76,5 +83,7 @@ module.exports = (sequelize, DataTypes) => {
         },
     );
 
-    return plaatsVoorkeur;
+    return voorkeur;
 };
+
+export default init;

@@ -1,5 +1,12 @@
-module.exports = (sequelize, DataTypes) => {
-    const RSVP = sequelize.define(
+import { Sequelize, DataTypes, Model, BuildOptions } from 'sequelize';
+import { RSVP } from './rsvp.model';
+
+type RSVPStatic = typeof Model & {
+    new (values?: object, options?: BuildOptions): RSVP;
+};
+
+const init = (sequelize: Sequelize) => {
+    const RSVP = <RSVPStatic>sequelize.define(
         'rsvp',
         {
             marktId: DataTypes.INTEGER,
@@ -15,3 +22,5 @@ module.exports = (sequelize, DataTypes) => {
 
     return RSVP;
 };
+
+export default init;

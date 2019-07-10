@@ -15,27 +15,22 @@ const config = {
 
 const db = {};
 
-const sequelize = config.use_env_variable
+export const sequelize = config.use_env_variable
     ? new Sequelize(process.env[config.use_env_variable], config)
     : new Sequelize(config.database, config.username, config.password, config);
 
-fs.readdirSync(__dirname)
-    .filter(file => {
-        return file.indexOf('.') !== 0 && file !== basename && file.slice(-'.js'.length) === '.js';
-    })
-    .forEach(file => {
-        const model = sequelize.import(path.join(__dirname, file));
+export const allocation = sequelize.import(path.join(__dirname, 'allocation.sequelize.ts'));
+export const rsvp = sequelize.import(path.join(__dirname, 'rsvp.sequelize.ts'));
+export const plaatsvoorkeur = sequelize.import(path.join(__dirname, 'plaatsvoorkeur.sequelize.ts'));
+export const session = sequelize.import(path.join(__dirname, 'session.sequelize.ts'));
+export const voorkeur = sequelize.import(path.join(__dirname, 'voorkeur.sequelize.ts'));
 
-        db[model.name] = model;
-    });
-
-Object.keys(db).forEach(modelName => {
-    if (db[modelName].associate) {
-        db[modelName].associate(db);
-    }
-});
-
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-
-module.exports = db;
+export default {
+    allocation,
+    plaatsvoorkeur,
+    rsvp,
+    sequelize,
+    Sequelize,
+    session,
+    voorkeur,
+};

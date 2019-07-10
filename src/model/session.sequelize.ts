@@ -1,6 +1,6 @@
-const { Model } = require('sequelize');
+import { DataTypes, Model, Sequelize } from 'sequelize';
 
-module.exports = (sequelize, DataTypes) => {
+module.exports = (sequelize: Sequelize) => {
     class Session extends Model {}
 
     Session.init(

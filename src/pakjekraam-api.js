@@ -7,7 +7,7 @@ const {
 } = require('./makkelijkemarkt-api.js');
 const { ALBERT_CUYP_ID, formatOndernemerName, slugifyMarkt } = require('./domain-knowledge.js');
 const { numberSort, stringSort } = require('./util.js');
-const { Sequelize } = require('./model/index.js');
+const Sequelize = require('sequelize');
 const models = require('./model/index.js');
 const fs = require('fs');
 const { calcToewijzingen } = require('./indeling.ts');

@@ -10,7 +10,7 @@
   "scripts": {
     "build": "gulp build",
     "build:typescript": "tsc --project tsconfig.json",
-    "deploy": "time node src/deploy.js",
+    "deploy": "time ts-node src/deploy.js",
     "clean": "rm -rf dist/* node_modules/.cache/",
     "prestart": "npm run deploy",
     "start": "ts-node src/index.js",

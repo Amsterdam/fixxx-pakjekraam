@@ -1,5 +1,12 @@
-module.exports = (sequelize, DataTypes) => {
-    const allocation = sequelize.define(
+import { Sequelize, DataTypes, Model, BuildOptions } from 'sequelize';
+import { Allocation } from './allocation.model';
+
+type AllocationStatic = typeof Model & {
+    new (values?: object, options?: BuildOptions): Allocation;
+};
+
+const init = (sequelize: Sequelize) => {
+    const allocation = <AllocationStatic>sequelize.define(
         'allocation',
         {
             marktId: {
@@ -26,3 +33,5 @@ module.exports = (sequelize, DataTypes) => {
 
     return allocation;
 };
+
+export default init;

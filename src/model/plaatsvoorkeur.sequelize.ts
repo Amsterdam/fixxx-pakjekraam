@@ -1,5 +1,12 @@
-module.exports = (sequelize, DataTypes) => {
-    const plaatsVoorkeur = sequelize.define(
+import { Sequelize, DataTypes, Model, BuildOptions } from 'sequelize';
+import { Plaatsvoorkeur } from './plaatsvoorkeur.model';
+
+type PlaatsvoorkeurStatic = typeof Model & {
+    new (values?: object, options?: BuildOptions): Plaatsvoorkeur;
+};
+
+const init = (sequelize: Sequelize) => {
+    const plaatsVoorkeur = <PlaatsvoorkeurStatic>sequelize.define(
         'plaatsvoorkeur',
         {
             marktId: {
@@ -26,3 +33,5 @@ module.exports = (sequelize, DataTypes) => {
 
     return plaatsVoorkeur;
 };
+
+export default init;
