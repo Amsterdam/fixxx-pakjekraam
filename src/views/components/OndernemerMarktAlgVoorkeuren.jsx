@@ -7,6 +7,7 @@ const { formatDayOfWeek, formatDate, WEEK_DAYS, arrayToObject } = require('../..
 const OndernemerMarktAlgVoorkeuren = ({ markt, sollicitatie, ondernemer, voorkeur, branches }) => {
     const blockUrl = `../../algemene-voorkeuren/${markt.id}/?next=../../markt-detail/${markt.id}/#marktprofiel`;
     const branchesObj = arrayToObject(branches, 'brancheId');
+
     return (
         <div className="OndernemerMarktAlgVoorkeuren background-link-parent" id="marktprofiel">
             <a href={blockUrl} className="background-link" />
