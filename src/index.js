@@ -70,6 +70,8 @@ const {
 
 const { serverHealth, databaseHealth, keycloakHealth, makkelijkeMarktHealth } = require('./routes/status.ts');
 const { activationPage, handleActivation } = require('./routes/activation.ts');
+const { registrationPage, handleRegistration } = require('./routes/registration.ts');
+const { KeycloakRoles } = require('./permissions');
 
 const HTTP_DEFAULT_PORT = 8080;
 
@@ -134,12 +136,6 @@ const keycloak = new Keycloak(
         'confidential-port': 0,
     },
 );
-
-const KeycloakRoles = {
-    MARKTBUREAU: 'marktbureau',
-    MARKTMEESTER: 'marktmeester',
-    MARKTONDERNEMER: 'marktondernemer',
-};
 
 // Trick `keycloak-connect` into thinking we're running on HTTPS
 app.set('trust proxy', true);
@@ -504,121 +500,9 @@ app.get('/activeren', activationPage);
 
 app.post('/activeren', handleActivation);
 
-app.get('/registreren', (req, res) => {
-    if (req.session.activation) {
-        res.render('RegistrationPage', {
-            code: req.session.activation.code,
-            email: req.query.email,
-            messages: getQueryErrors(req.query),
-            username: req.session.activation.username,
-        });
-    } else {
-        res.redirect('/activeren');
-    }
-});
+app.get('/registreren', registrationPage);
 
-app.post('/registreren', (req, res) => {
-    if (req.session.activation) {
-        const { password, email } = req.body;
-
-        if (req.body.password !== req.body.passwordRepeat) {
-            res.redirect(
-                `/registreren${qs.stringify(
-                    { email, error: publicErrors.NON_MATCHING_PASSWORDS },
-                    {
-                        addQueryPrefix: true,
-                    },
-                )}`,
-            );
-        }
-
-        const userDefinition = {
-            username: req.session.activation.username,
-            email,
-            enabled: true,
-        };
-
-        getKeycloakAdmin().then(kcAdminClient => {
-            // const clientId = process.env.IAM_CLIENT_ID;
-            const clientId = 'fea49ab9-656f-436c-a804-7925b4bfa08b';
-
-            const clientPromise = kcAdminClient.clients
-                .findOne({
-                    clientId: process.env.IAM_CLIENT_ID,
-                })
-                .then(clients => clients[0]);
-
-            const rolePromise = clientPromise.then(client =>
-                kcAdminClient.clients.findRole(
-                    trace({
-                        id: client.id,
-                        roleName: KeycloakRoles.MARKTONDERNEMER,
-                    }),
-                ),
-            );
-
-            const userPromise = kcAdminClient.users.create(userDefinition);
-
-            Promise.all([clientPromise, rolePromise, userPromise])
-                .then(([client, role, user]) => {
-                    const passwordPromise = kcAdminClient.users.resetPassword({
-                        id: user.id,
-                        credential: {
-                            temporary: false,
-                            type: 'password',
-                            value: password,
-                        },
-                    });
-
-                    if (user.email) {
-                        // TODO: How should we handle failure here?
-                        kcAdminClient.users
-                            .sendVerifyEmail({
-                                id: user.id,
-                            })
-                            .then(
-                                () => console.log('Verification e-mail sent.'),
-                                () => console.log('Failed to send verification e-mail.'),
-                            );
-                    }
-
-                    /*
-                     * TODO: Currently `Keycloak.MARKTONDERNEMER` is the default role
-                     * for all users, but we should ensure in this stage we add
-                     * the role in case someone deletes this default setting.
-                     * return rolePromise.then(role =>
-                     *     kcAdminClient.users.addClientRoleMappings({
-                     *         id: user.id,
-                     *         clientUniqueId: client.id,
-                     *         roles: [
-                     *             {
-                     *                 id: role.id,
-                     *                 name: role.name,
-                     *             },
-                     *         ],
-                     *     }),
-                     * );
-                     */
-
-                    /*
-                     * TODO: When setting up the initial password fails,
-                     * should we roll back and delete the new user?
-                     */
-
-                    return passwordPromise.then(result => {
-                        console.log('Password reset', result);
-                    });
-                })
-                .then(x => {
-                    delete req.session.activation;
-                    res.redirect('/welkom');
-                })
-                .catch(httpErrorPage(res, HTTP_INTERNAL_SERVER_ERROR));
-        });
-    } else {
-        forbiddenErrorPage(res);
-    }
-});
+app.post('/registreren', handleRegistration);
 
 app.get('/herstellen', (req, res) => {
     res.render('PasswordRecoveryPage', {
