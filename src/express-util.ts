@@ -34,7 +34,9 @@ const humanReadableMessage = {
 
 export const httpErrorPage = (res: Response, errorCode: number) => (err: Error | string) => {
     console.log(err);
-    res.status(errorCode).end(`${err}`);
+    res.set('Content-Type: text/plain; charset=UTF-8')
+        .status(errorCode)
+        .end(`${err}`);
 };
 
 export const internalServerErrorPage = (res: Response) => httpErrorPage(res, HTTP_INTERNAL_SERVER_ERROR);
