@@ -20,6 +20,7 @@ class OndernemerMarktDetailPage extends React.Component {
         markt: PropTypes.object.isRequired,
         marktId: PropTypes.string.isRequired,
         voorkeur: PropTypes.object.isRequired,
+        branches: PropTypes.object.isRequired,
         messages: PropTypes.array,
         startDate: PropTypes.string.isRequired,
         endDate: PropTypes.string.isRequired,
@@ -27,7 +28,7 @@ class OndernemerMarktDetailPage extends React.Component {
     };
 
     render() {
-        const { ondernemer, plaatsvoorkeuren, aanmeldingen, messages, markt, marktId, voorkeur } = this.props;
+        const { ondernemer, plaatsvoorkeuren, aanmeldingen, messages, markt, marktId, voorkeur, branches } = this.props;
         const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
         const rsvpEntries = filterRsvpList(aanmeldingen.filter(aanmelding => aanmelding.marktId === markt.id), markt);
 
@@ -62,6 +63,7 @@ class OndernemerMarktDetailPage extends React.Component {
                                 ondernemer={ondernemer}
                                 markt={markt}
                                 voorkeur={voorkeur}
+                                branches={branches}
                             />
                         </div>
                     </div>
