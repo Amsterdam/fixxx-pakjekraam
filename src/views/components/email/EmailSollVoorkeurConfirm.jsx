@@ -2,7 +2,7 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const EmailContent = require('../EmailContent.jsx');
 const EmailTable = require('../EmailTable.jsx');
-const { formatDate, fullRelativeHumanDate, capitalize, arrayToObject } = require('../../../util.js');
+const { formatDate, fullRelativeHumanDate, capitalize, formatDayOfWeek, arrayToObject } = require('../../../util.js');
 const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
@@ -44,7 +44,7 @@ class EmailSollVoorkeurConfirm extends React.Component {
                 <span key={`plaats`}>
                     <strong>{toewijzing.plaatsen.join(', ')}</strong>
                     <br />
-                    Dit is een voorkeursplaats die je hebt aangevraagd
+                    Dit is een voorkeursplaats die u heeft aangevraagd
                 </span>,
             ],
             [
@@ -81,8 +81,8 @@ class EmailSollVoorkeurConfirm extends React.Component {
                 </EmailContent>
                 <EmailContent>
                     <p style={fontGray}>
-                        Als je bijvoorbeeld door ziekte toch niet kunt komen verzoeken wij je dit uiterlijk 08:45 aan de
-                        marktmeester telefonisch te melden zodat een andere koopman je plaats kan krijgen.
+                        Als u bijvoorbeeld door ziekte toch niet kunt komen verzoeken wij u dit uiterlijk 08:45 aan de
+                        marktmeester telefonisch te melden zodat een andere koopman uw plaats kan krijgen.
                     </p>
                 </EmailContent>
                 <p>

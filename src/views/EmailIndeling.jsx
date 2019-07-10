@@ -52,7 +52,7 @@ class IndelingMail extends React.Component {
             }
         } else {
             template = <EmailSollNoPlaatsConfirm {...this.props} />;
-            if (voorkeuren.length && !props.afwijzing && !toewijzing) {
+            if (!afwijzing && !toewijzing) {
                 template = <EmailSollPlaatsConfirm {...this.props} />;
             } else if (voorkeuren.length && !afwijzing && toewijzing) {
                 template = <EmailSollVoorkeurConfirm {...this.props} />;

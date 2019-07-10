@@ -26,7 +26,7 @@ class EmailSollNoPlaatsConfirm extends React.Component {
 
                 <p>
                     Er is morgen ({formatDayOfWeek(marktDate)} {formatDate(marktDate)}) helaas GEEN plaats op de markt{' '}
-                    {markt.markt.naam} voor je.
+                    {markt.markt.naam} voor u.
                     <br />
                     De markt is vol.
                 </p>

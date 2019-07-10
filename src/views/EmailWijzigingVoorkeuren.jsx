@@ -31,7 +31,7 @@ class EmailWijzigingVoorkeuren extends React.Component {
                     <p>Beste {formatOndernemerName(ondernemer)},</p>
                     {voorkeuren.length ? (
                         <EmailContent>
-                            <p>Je nieuwe plaatsvoorkeurenlijst ziet er volgt uit.</p>
+                            <p>Uw nieuwe plaatsvoorkeurenlijst ziet er volgt uit.</p>
                             <ul>
                                 {voorkeuren.map((voorkeurSet, i) => (
                                     <li key={i}>
@@ -45,7 +45,7 @@ class EmailWijzigingVoorkeuren extends React.Component {
                     ) : (
                         <EmailContent>
                             <p>
-                                <strong>Je hebt al uw plaatsvoorkeuren verwijderd!</strong>
+                                <strong>Uw heeft al uw plaatsvoorkeuren verwijderd!</strong>
                             </p>
                         </EmailContent>
                     )}
@@ -53,7 +53,7 @@ class EmailWijzigingVoorkeuren extends React.Component {
                         <EmailContent>
                             <p>
                                 <strong>
-                                    Je vaste plaats{sollicitatie.vastePlaatsen.length > 1 ? 'en' : null} zijn:{' '}
+                                    Uw vaste plaats{sollicitatie.vastePlaatsen.length > 1 ? 'en' : null} zijn:{' '}
                                     {sollicitatie.vastePlaatsen.join(', ')}
                                 </strong>
                             </p>

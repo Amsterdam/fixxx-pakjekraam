@@ -51,12 +51,12 @@ class EmailWijzigingAanmeldingen extends React.Component {
                     <p>Je hebt je aanmeldingen voor de markt {markt.naam} gewijzigd.</p>
 
                     <p>
-                        Wil je je voor een dag aan- of afmelden? Dan kan dat uiterlijk 21:00 uur de dag ervoor in
-                        <a href="https://pakjekraam.amsterdam.nl">&apos;pak je kraam&apos;</a>.
+                        Wil u zich voor een dag aan- of afmelden? Dan kan dat uiterlijk 21:00 uur de dag ervoor in
+                        <a href="https://pakjekraam.amsterdam.nl">&apos;kies je kraam&apos;</a>.
                     </p>
 
                     <EmailContent>
-                        <p>Je aan- en afmeldingen voor de {markt.naam}:</p>
+                        <p>Uw aan- en afmeldingen voor de {markt.naam}:</p>
                         {weekAanmeldingen.map((week, i) => (
                             <EmailTable key={i} data={week} title={i === 0 ? `Deze week` : `Volgende week`} />
                         ))}
