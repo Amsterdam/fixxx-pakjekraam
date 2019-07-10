@@ -71,6 +71,7 @@ const {
 const { serverHealth, databaseHealth, keycloakHealth, makkelijkeMarktHealth } = require('./routes/status.ts');
 const { activationPage, handleActivation } = require('./routes/activation.ts');
 const { registrationPage, handleRegistration } = require('./routes/registration.ts');
+const { marketApplicationPage, handleMarketApplication } = require('./routes/market-application.ts');
 const { KeycloakRoles } = require('./permissions');
 
 const HTTP_DEFAULT_PORT = 8080;
@@ -811,67 +812,35 @@ app.post(
     (req, res, next) => handlePostAfmelden(req, res, next, req.params.erkenningsNummer),
 );
 
-const aanmeldPage = (res, token, erkenningsNummer, marktId, query) => {
-    Promise.all([
-        getMarktondernemer(token, erkenningsNummer),
-        getAanmeldingenByOndernemer(erkenningsNummer),
-        getMarkt(token, marktId),
-    ]).then(
-        ([ondernemer, aanmeldingen, markt]) => {
-            res.render('AanmeldPage', { ondernemer, aanmeldingen, markt, date: tomorrow() });
-        },
-        err => errorPage(res, err),
-    );
-};
-
 app.get('/aanmelden/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
-    aanmeldPage(res, req.session.token, getErkenningsNummer(req));
+    marketApplicationPage(res, req.session.token, getErkenningsNummer(req));
 });
 
 app.get('/aanmelden/:marktId/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
-    aanmeldPage(res, req.session.token, getErkenningsNummer(req), req.params.marktId, req.query);
+    marketApplicationPage(res, req.session.token, getErkenningsNummer(req), req.params.marktId, req.query);
 });
 
 app.get('/ondernemer/:erkenningsNummer/aanmelden/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
-    aanmeldPage(res, req.session.token, req.params.erkenningsNummer);
+    marketApplicationPage(res, req.session.token, req.params.erkenningsNummer);
 });
 
 app.get(
     '/ondernemer/:erkenningsNummer/aanmelden/:marktId/',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     (req, res) => {
-        aanmeldPage(res, req.session.token, req.params.erkenningsNummer, req.params.marktId, req.query);
+        marketApplicationPage(res, req.session.token, req.params.erkenningsNummer, req.params.marktId, req.query);
     },
 );
 
-const aanmeldFormDataToRSVP = (formData, erkenningsNummer) => ({
-    marktId: parseInt(formData.marktId, 10),
-    marktDate: formData.aanmelding,
-    erkenningsNummer,
-    attending: true,
-});
-
 app.post(['/aanmelden/', '/aanmelden/:marktId/'], keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
-    const { next } = req.body;
-    models.rsvp
-        .create(aanmeldFormDataToRSVP(req.body, getErkenningsNummer(req)))
-        .then(
-            () => res.status(HTTP_CREATED_SUCCESS).redirect(next ? next : '/'),
-            error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
-        );
+    handleMarketApplication(req, res, next, getErkenningsNummer(req));
 });
 
 app.post(
     ['/ondernemer/:erkenningsNummer/aanmelden/', '/ondernemer/:erkenningsNummer/aanmelden/:marktId/'],
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     (req, res) => {
-        const { next } = req.body;
-        models.rsvp
-            .create(aanmeldFormDataToRSVP(req.body, req.params.erkenningsNummer))
-            .then(
-                () => res.status(HTTP_CREATED_SUCCESS).redirect(next ? next : '/'),
-                error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
-            );
+        handleMarketApplication(req, res, next, req.params.erkenningsNummer);
     },
 );
 
