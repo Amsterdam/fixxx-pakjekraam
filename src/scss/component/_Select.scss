@@ -13,6 +13,7 @@ $inputMaxWidth: 620px;
     transition: border-color 0.4s, outline 0.4s;
     width: 100%;
     padding-right: 30px;
+    background-color: $primary-white;
     &:hover {
         border-color: $primary-black;
         color: $primary-black;
