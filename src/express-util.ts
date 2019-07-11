@@ -64,3 +64,5 @@ export const getQueryErrors = (queryParams: any): ErrorMessage[] => {
         }),
     );
 };
+
+export const errorPage = (res: Response, err: Error) => internalServerErrorPage(res)(err);

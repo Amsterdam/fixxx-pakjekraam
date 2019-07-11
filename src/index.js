@@ -34,6 +34,7 @@ const EmailIndeling = require('./views/EmailIndeling.jsx');
 const EmailWijzigingAanmeldingen = require('./views/EmailWijzigingAanmeldingen.jsx');
 const EmailWijzigingVoorkeuren = require('./views/EmailWijzigingVoorkeuren.jsx');
 const {
+    errorPage,
     HTTP_CREATED_SUCCESS,
     HTTP_BAD_REQUEST,
     HTTP_FORBIDDEN_ERROR,
