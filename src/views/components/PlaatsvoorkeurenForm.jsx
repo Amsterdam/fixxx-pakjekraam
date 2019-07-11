@@ -112,44 +112,42 @@ class PlaatsvoorkeurenForm extends React.Component {
                 <div className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
                     <script dangerouslySetInnerHTML={marktRowsJSOM()} />
                     <script dangerouslySetInnerHTML={plaatsSetsJSON()} />
-                    <div className="PlaatsvoorkeurenForm__plaats-count-limit">
-                        <div className="InputField InputField--range">
-                            <label>Minimaal aantal plaatsen</label>
-                            <div className="InputField--range__wrapper">
-                                <input
-                                    name="min"
-                                    type="range"
-                                    min="1"
-                                    max={newPlaatsvoorkeurCount}
-                                    value={defaultPlaatsCount}
-                                />
-                                <ul className="InputField--range__value-list">
-                                    {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
-                                        <li key={i} className="InputField--range__value-list-item">
-                                            {i + 1}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+
+                    <div className="PlaatsvoorkeurenForm__plaats-count">
+                        <strong className="PlaatsvoorkeurenForm__plaats-count__label">
+                            Hoeveel plaatsen heb je nodig
+                        </strong>
+                        <div className="PlaatsvoorkeurenForm__plaats-count__wrapper">
+                            {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
+                                <React.Fragment key={i}>
+                                    <input
+                                        type="radio"
+                                        id={`default-count-${i + 1}`}
+                                        value={`${i + 1}`}
+                                        name="default-count"
+                                        {...{ checked: defaultPlaatsCount === i + 1 }}
+                                    />
+                                    <label htmlFor={`default-count-${i + 1}`}>{i + 1}</label>
+                                </React.Fragment>
+                            ))}
                         </div>
-                        <div className="InputField InputField--range">
-                            <label>Maximaal aantal plaatsen</label>
-                            <div className="InputField--range__wrapper">
-                                <input
-                                    name="max"
-                                    type="range"
-                                    min="1"
-                                    max={newPlaatsvoorkeurCount}
-                                    value={defaultPlaatsCount}
-                                />
-                                <ul className="InputField--range__value-list">
-                                    {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
-                                        <li key={i} className="InputField--range__value-list-item">
-                                            {i + 1}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+                    </div>
+
+                    <div className="PlaatsvoorkeurenForm__plaats-count extra">
+                        <strong className="PlaatsvoorkeurenForm__plaats-count__label">Hoeveel extra plaatsen</strong>
+                        <div className="PlaatsvoorkeurenForm__plaats-count__wrapper extra">
+                            {['geen', '1', '2'].map((r, i) => (
+                                <React.Fragment key={i}>
+                                    <input
+                                        type="radio"
+                                        id={`extra-count-${i}`}
+                                        value={`${i}`}
+                                        name="extra-count"
+                                        {...{ checked: i === 0 }}
+                                    />
+                                    <label htmlFor={`extra-count-${i}`}>{r}</label>
+                                </React.Fragment>
+                            ))}
                         </div>
                     </div>
 

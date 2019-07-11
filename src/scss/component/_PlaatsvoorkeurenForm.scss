@@ -70,6 +70,77 @@
             }
         }
     }
+    &__plaats-count {
+        margin-top: $vm4;
+    }
+    &__plaats-count__wrapper {
+        //&__plaats-count__item {
+        display: inline-block;
+        display: flex;
+        input {
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+        label {
+            @include fontBold;
+            display: inline-block;
+            width: 70px;
+            height: 40px;
+            line-height: 40px;
+            background-color: $neutral-grey5;
+            color: $primary-white;
+            text-align: center;
+            margin: 0;
+            margin-right: 5px;
+        }
+        input:checked + label + input:not(:checked) + label,
+        input:checked + label + input:not(:checked) + label + input:not(:checked) + label,
+        input:checked + label + input:not(:checked) + label + input:not(:checked) + label + input:not(:checked) + label,
+        input:checked
+            + label
+            + input:not(:checked)
+            + label
+            + input:not(:checked)
+            + label
+            + input:not(:checked)
+            + label
+            + input:not(:checked)
+            + label,
+        input:checked
+            + label
+            + input:not(:checked)
+            + label
+            + input:not(:checked)
+            + label
+            + input:not(:checked)
+            + label
+            + input:not(:checked)
+            + label
+            + input:not(:checked)
+            + label {
+            background-color: $neutral-grey3;
+        }
+        &.extra {
+            *:nth-child(2) {
+                background-color: transparent;
+                content: "geen";
+                color: $primary-black;
+            }
+            label {
+                background-color: $neutral-grey3;
+            }
+            input:checked + label {
+                outline: 3px solid $primary-black;
+            }
+        }
+        //}
+    }
+    &__plaats-count__label {
+        @include fontBold;
+        display: inline-block;
+        margin: $vm1 0;
+    }
     &__list-item--sortable .well {
         padding-right: 50px;
     }
