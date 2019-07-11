@@ -94,7 +94,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                 method="POST"
                 action="./"
                 encType="application/x-www-form-urlencoded"
-                data-decorator="voorkeur-form"
+                // data-decorator="voorkeur-form"
                 data-vasteplaats-count={sollicitatie.vastePlaatsen.length}
             >
                 <input

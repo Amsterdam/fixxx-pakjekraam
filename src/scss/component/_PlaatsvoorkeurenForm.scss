@@ -124,7 +124,6 @@
         &.extra {
             *:nth-child(2) {
                 background-color: transparent;
-                content: "geen";
                 color: $primary-black;
             }
             label {
@@ -134,7 +133,6 @@
                 outline: 3px solid $primary-black;
             }
         }
-        //}
     }
     &__plaats-count__label {
         @include fontBold;
