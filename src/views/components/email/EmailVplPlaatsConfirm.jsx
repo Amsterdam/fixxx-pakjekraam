@@ -16,12 +16,13 @@ class EmailVplPlaatsConfirm extends React.Component {
         afwijzing: PropTypes.object,
         inschrijving: PropTypes.object,
         voorkeuren: PropTypes.array,
+        branches: PropTypes.array,
     };
 
     render() {
-        const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
+        const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren, branches } = this.props;
         const fontGray = { color: '#767676' };
-        const branches = arrayToObject(markt.marktplaatsen.filter(plaats => plaats.branches), 'plaatsId');
+        const marktBranches = arrayToObject(markt.marktplaatsen.filter(plaats => plaats.branches), 'plaatsId');
         const bijzonderheden = markt.marktplaatsen
             .reduce((t, plaats) => {
                 ondernemer.plaatsen.map(p => {
@@ -37,6 +38,16 @@ class EmailVplPlaatsConfirm extends React.Component {
 
                 return t;
             }, []);
+        const branchesObj = arrayToObject(branches, 'brancheId');
+        console.log(branchesObj);
+        console.log(marktBranches);
+        const ondernemerPlaatsBranches = ondernemer.plaatsen.map(plaatsId =>
+            marktBranches[plaatsId]
+                ? marktBranches[plaatsId].branches
+                      .map(br => (branchesObj[br] ? branchesObj[br].branches : []))
+                      .join(' ')
+                : 'geen',
+        );
 
         const tableData = [
             [
@@ -46,14 +57,7 @@ class EmailVplPlaatsConfirm extends React.Component {
                     <br /> {voorkeuren.length ? 'Je hebt helaas geen van je voorkeuren gekregen' : null}
                 </span>,
             ],
-            [
-                'Soortplaats:',
-                <strong key={`Soortplaats`}>
-                    {toewijzing.plaatsen
-                        .map(plaatsId => (branches[plaatsId] ? branches[plaatsId].branches.join(' ') : 'geen'))
-                        .join(', ')}
-                </strong>,
-            ],
+            ['Soortplaats:', <strong key={`Soortplaats`}>{ondernemerPlaatsBranches.join(', ')}</strong>],
             [
                 'Bijzonderheden:',
                 <strong key={`remarks`}>{bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}</strong>,

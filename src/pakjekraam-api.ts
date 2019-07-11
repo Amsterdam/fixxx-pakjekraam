@@ -337,7 +337,8 @@ export const getMailContext = (token: string, marktId: string, erkenningsNr: str
         getIndelingslijst(token, marktId, marktDate),
         getVoorkeurenMarktOndern(marktId, erkenningsNr),
         getAanmeldingenMarktOndern(marktId, erkenningsNr),
-    ]).then(([markt, voorkeuren, aanmeldingen]) => {
+        getAllBranches(),
+    ]).then(([markt, voorkeuren, aanmeldingen, branches]) => {
         const ondernemer = markt.ondernemers.find(({ erkenningsNummer }) => erkenningsNummer === erkenningsNr);
         const inschrijving = markt.aanwezigheid.find(({ erkenningsNummer }) => erkenningsNummer === erkenningsNr);
         const toewijzing = markt.toewijzingen.find(({ erkenningsNummer }) => erkenningsNummer === erkenningsNr);
@@ -367,6 +368,7 @@ export const getMailContext = (token: string, marktId: string, erkenningsNr: str
             afwijzing,
             voorkeuren: voorkeurenPrio,
             aanmeldingen,
+            branches,
         };
     });
 
