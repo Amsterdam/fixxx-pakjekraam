@@ -11,12 +11,13 @@ class OndernemerProfile extends React.Component {
 
     render() {
         const { ondernemer } = this.props;
+        const vendorURL = `/ondernemer/${ondernemer.erkenningsnummer}/`;
 
         return (
             <div>
                 <h1>Ondernemer detail: {formatOndernemerName(ondernemer)}</h1>
                 <p>{ondernemer.erkenningsnummer}</p>
-                <Button href={`/dashboard/`} type="secondary" label="Ondernemer dashboard" />
+                <Button href={`${vendorURL}dashboard/`} type="secondary" label="Ondernemer dashboard" />
                 <h2>Markten</h2>
                 <ul>
                     {ondernemer.sollicitaties
@@ -30,15 +31,19 @@ class OndernemerProfile extends React.Component {
                                     {sollicitatie.sollicitatieNummer}
                                 </span>
                                 <br />
-                                <a href={`/afmelden/${sollicitatie.markt.id}/?next=/profile/`}>
+                                <a href={`${vendorURL}afmelden/${sollicitatie.markt.id}/?next=/profile/`}>
                                     <strong>aanwezigheid</strong>
                                 </a>
                                 &nbsp;&nbsp;
-                                <a href={`/voorkeuren/${sollicitatie.markt.id}/?next=/profile/`}>
+                                <a href={`${vendorURL}voorkeuren/${sollicitatie.markt.id}/?next=/profile/`}>
                                     <strong>plaatsvoorkeuren</strong>
                                 </a>
                                 &nbsp;&nbsp;
-                                <a href={`/algemene-voorkeuren/${sollicitatie.markt.id}/?next=/profile/&advanced=true`}>
+                                <a
+                                    href={`${vendorURL}algemene-voorkeuren/${
+                                        sollicitatie.markt.id
+                                    }/?next=/profile/&advanced=true`}
+                                >
                                     <strong>algemene voorkeuren</strong>
                                 </a>
                             </li>
