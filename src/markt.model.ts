@@ -26,8 +26,16 @@ export enum DeelnemerStatus {
     SOLLICITANT = 'soll',
 }
 
+export interface IMarktProperties {
+    marktId?: string;
+    marktDate?: string;
+    naam?: string;
+    expansionLimit?: number;
+    rows?: string[][];
+}
+
 export interface IMarkt {
-    marktId: number;
+    marktId: string;
     marktDate: string;
     naam: string;
     branches: IBranche[];
@@ -36,7 +44,7 @@ export interface IMarkt {
     voorkeuren: IPlaatsvoorkeur[];
     ondernemers: IMarktondernemer[];
     obstakels: IObstakelBetween[];
-    expansionLimit: number;
+    expansionLimit?: number;
 }
 
 export interface IMarktindelingSeed {
@@ -45,7 +53,9 @@ export interface IMarktindelingSeed {
 }
 
 export interface IRSVP {
-    marktId: number;
+    // `id` is used by Sequelize
+    id?: number;
+    marktId: string;
     marktDate: string;
     erkenningsNummer: ErkenningsNummer;
     attending: boolean;
@@ -56,6 +66,9 @@ export interface IMarktdeelnemer {}
 // TODO: Implement 'standwerker' en 'promoplek' als `IMarktdeelnemer`
 
 export interface IMarktondernemerVoorkeur {
+    erkenningsNummer: string;
+    marktId?: string;
+    marktDate?: string;
     aantalPlaatsen?: number;
     krachtStroom?: boolean;
     kraaminrichting?: KraamInrichting;
@@ -63,6 +76,27 @@ export interface IMarktondernemerVoorkeur {
     inactive?: boolean;
     branches?: BrancheId[];
     verkoopinrichting?: string[];
+}
+
+export interface IMarktondernemerVoorkeurRow {
+    erkenningsNummer: string;
+    marktId?: string;
+    marktDate?: string;
+    aantalPlaatsen?: number;
+    krachtStroom?: boolean;
+    kraaminrichting?: KraamInrichting;
+    anywhere?: boolean;
+    inactive?: boolean;
+    brancheId?: BrancheId;
+    parentBrancheId?: BrancheId;
+    inrichting?: string;
+    monday: boolean;
+    tuesday: boolean;
+    wednesday: boolean;
+    thursday: boolean;
+    friday: boolean;
+    saturday: boolean;
+    sunday: boolean;
 }
 
 export interface IMarktondernemer extends IMarktdeelnemer {
@@ -98,7 +132,7 @@ export interface IToewijzing {
     erkenningsNummer: ErkenningsNummer;
 
     // TODO: Remove ondernemer, only keep `erkenningsNummer`
-    ondernemer: IMarktondernemer;
+    ondernemer?: IMarktondernemer;
 }
 
 export interface IAfwijzingReason {
@@ -107,6 +141,9 @@ export interface IAfwijzingReason {
 }
 
 export interface IAfwijzing {
+    marktId: string;
+    marktDate: string;
+    erkenningsNummer: string;
     ondernemer: IMarktondernemer;
     reason: IAfwijzingReason;
 }
@@ -132,7 +169,15 @@ export interface IBranche {
 
 export interface IPlaatsvoorkeur {
     erkenningsNummer: ErkenningsNummer;
-    marktId: number;
+    marktId: string;
     plaatsId: PlaatsId;
+    priority: number;
+}
+
+export interface IPlaatsvoorkeurRow {
+    id: number;
+    marktId: string;
+    erkenningsNummer: string;
+    plaatsId: string;
     priority: number;
 }

@@ -1,37 +1,33 @@
-import { Sequelize, DataTypes, Model, BuildOptions } from 'sequelize';
+import { Sequelize, DataTypes } from 'sequelize';
 import { Allocation } from './allocation.model';
 
-type AllocationStatic = typeof Model & {
-    new (values?: object, options?: BuildOptions): Allocation;
+export const initAllocation = (sequelize: Sequelize) => {
+    const attributes = {
+        marktId: {
+            type: DataTypes.INTEGER,
+            unique: 'key',
+        },
+        marktDate: {
+            type: DataTypes.DATEONLY,
+            unique: 'key',
+        },
+        plaatsId: {
+            type: DataTypes.STRING,
+            unique: 'key',
+        },
+        erkenningsNummer: {
+            type: DataTypes.STRING,
+        },
+    };
+
+    Allocation.init(attributes, {
+        modelName: 'allocation',
+        freezeTableName: true,
+        sequelize,
+        tableName: 'allocation',
+    });
+
+    return Allocation;
 };
 
-const init = (sequelize: Sequelize) => {
-    const allocation = <AllocationStatic>sequelize.define(
-        'allocation',
-        {
-            marktId: {
-                type: DataTypes.INTEGER,
-                unique: 'key',
-            },
-            marktDate: {
-                type: DataTypes.DATEONLY,
-                unique: 'key',
-            },
-            plaatsId: {
-                type: DataTypes.STRING,
-                unique: 'key',
-            },
-            erkenningsNummer: {
-                type: DataTypes.STRING,
-            },
-        },
-        {
-            freezeTableName: true,
-            tableName: 'allocation',
-        },
-    );
-
-    return allocation;
-};
-
-export default init;
+export default initAllocation;

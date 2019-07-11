@@ -16,7 +16,7 @@ const stringSort = (a: string, b: string): number => (a > b ? 1 : a === b ? 0 : 
 const isVast = (status: DeelnemerStatus): boolean =>
     status === DeelnemerStatus.VASTE_PLAATS || status === DeelnemerStatus.TIJDELIJKE_VASTE_PLAATS;
 
-const ondernemerAanmelding = (ondernemer: IMarktondernemer, marktId: number, marktDate: string): IRSVP => ({
+const ondernemerAanmelding = (ondernemer: IMarktondernemer, marktId: string, marktDate: string): IRSVP => ({
     marktId,
     marktDate,
     erkenningsNummer: ondernemer.erkenningsNummer,
@@ -26,7 +26,7 @@ const ondernemerAanmelding = (ondernemer: IMarktondernemer, marktId: number, mar
 /*
  * Assume everyone with a status that requires a high level of attendance will be attending.
  */
-const deFactoAanmeldingen = (ondernemers: IMarktondernemer[], marktId: number, marktDate: string): IRSVP[] =>
+const deFactoAanmeldingen = (ondernemers: IMarktondernemer[], marktId: string, marktDate: string): IRSVP[] =>
     ondernemers
         .filter(ondernemer => isVast(ondernemer.status))
         .map(ondernemer => ondernemerAanmelding(ondernemer, marktId, marktDate));
@@ -50,7 +50,7 @@ const marktScenario = (callback: (utils: scenarioUtils) => IMarktScenarioStub): 
     let sollicitatiesIncrement = 1;
     let erkenningsNummerIncrement = 1970010101;
 
-    const marktId = 1;
+    const marktId = '1';
     const marktDate = '1970-01-01';
     const ondernemers: IMarktondernemer[] = [];
 
@@ -128,7 +128,7 @@ const marktScenario = (callback: (utils: scenarioUtils) => IMarktScenarioStub): 
     };
 
     const defaultMarkt: IMarktScenario = {
-        id: marktId,
+        marktId,
         marktDate,
         ondernemers: [],
         aanwezigheid: [],
@@ -186,7 +186,7 @@ const marktScenario = (callback: (utils: scenarioUtils) => IMarktScenarioStub): 
          * assume everyone form `ondernemers` will be attending.
          */
         markt.aanwezigheid = markt.ondernemers.map(ondernemer =>
-            ondernemerAanmelding(ondernemer, markt.id, markt.marktDate),
+            ondernemerAanmelding(ondernemer, markt.marktId, markt.marktDate),
         );
     }
 

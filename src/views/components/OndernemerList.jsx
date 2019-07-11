@@ -19,9 +19,7 @@ const OndernemerList = ({ ondernemers, markt, aanmeldingen }) => {
                     {ondernemers.map(ondernemer => {
                         const aanmelding =
                             ondernemer &&
-                            aanmeldingen.find(
-                                rsvp => rsvp.dataValues.erkenningsNummer === ondernemer.koopman.erkenningsnummer,
-                            );
+                            aanmeldingen.find(rsvp => rsvp.erkenningsNummer === ondernemer.koopman.erkenningsnummer);
 
                         return (
                             <tr key={ondernemer.koopman.erkenningsnummer}>

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { sequelize } from '../model/index.js';
+import { sequelize } from '../model/index';
 import { getKeycloakAdmin } from '../keycloak-api.js';
-import { readOnlyLogin } from '../makkelijkemarkt-auth.js';
+import { readOnlyLogin } from '../makkelijkemarkt-auth';
 import { internalServerErrorPage } from '../express-util';
 
 // This health check page is required for Docker deployments

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { checkActivationCode } from '../makkelijkemarkt-auth.js';
+import { checkActivationCode } from '../makkelijkemarkt-auth';
 import { userExists } from '../keycloak-api.js';
 import { publicErrors, getQueryErrors } from '../express-util';
 import { stringify } from 'qs';

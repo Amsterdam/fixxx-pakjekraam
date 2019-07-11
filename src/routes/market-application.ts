@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { getMarkt, getMarktondernemer } from '../makkelijkemarkt-api.js';
-import { getAanmeldingenByOndernemer } from '../pakjekraam-api.js';
+import { getMarkt, getMarktondernemer } from '../makkelijkemarkt-api';
+import { getAanmeldingenByOndernemer } from '../pakjekraam-api';
 import { httpErrorPage, HTTP_CREATED_SUCCESS, HTTP_INTERNAL_SERVER_ERROR } from '../express-util';
-import models from '../model/index.js';
+import models from '../model/index';
 import { tomorrow } from '../util.js';
 
 export const marketApplicationPage = (

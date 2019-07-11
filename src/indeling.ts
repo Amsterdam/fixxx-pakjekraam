@@ -105,7 +105,7 @@ const matchesObstakel = (plaatsA: string, plaatsB: string, obstakel: IObstakelBe
 
 const logOpenPlaatsen = (indeling: IMarktindeling) => log(`Nog ${indeling.openPlaatsen.length} vrije plaatsen`);
 
-const getAdjacentPlaatsen = (
+export const getAdjacentPlaatsen = (
     rows: IMarktplaats[][],
     plaatsId: PlaatsId,
     obstakels: IObstakelBetween[] = [],
@@ -127,7 +127,7 @@ const getAdjacentPlaatsen = (
  * The number of adjacent spots can be greater than  the number of steps, if a number
  * of spots is available in either direction.
  */
-const getAdjacentPlaatsenRecursive = (
+export const getAdjacentPlaatsenRecursive = (
     rows: IMarktplaats[][],
     plaatsId: string,
     steps: number = 1,
@@ -324,7 +324,7 @@ const assignPlaats = (
     log(`Plaats toegewezen aan ${ondernemer.erkenningsNummer}: ${toewijzing.plaatsen}`);
     const existingToewijzing = findToewijzing(state, ondernemer);
 
-    let newToewijzing = {
+    let newToewijzing: IToewijzing = {
         plaatsen: [...toewijzing.plaatsen],
         erkenningsNummer: ondernemer.erkenningsNummer,
 
@@ -355,6 +355,9 @@ const rejectOndernemer = (state: IMarktindeling, ondernemer: IMarktondernemer, r
         afwijzingen: [
             ...state.afwijzingen,
             {
+                marktId: state.marktId,
+                marktDate: state.marktDate,
+                erkenningsNummer: ondernemer.erkenningsNummer,
                 reason,
                 ondernemer,
             },
@@ -648,7 +651,7 @@ const getPossibleMoves = (state: IMarktindeling, toewijzing: IToewijzing): MoveQ
     };
 };
 
-const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling => {
+export const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling => {
     const { marktplaatsen, ondernemers, voorkeuren } = markt;
     const { aanwezigheid, aLijst } = markt;
 
@@ -909,11 +912,3 @@ const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling =>
 
     return indeling;
 };
-
-if (typeof module !== 'undefined' && module && module.exports) {
-    module.exports = {
-        calcToewijzingen,
-        getAdjacentPlaatsen,
-        getAdjacentPlaatsenRecursive,
-    };
-}

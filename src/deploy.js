@@ -1,4 +1,4 @@
-const models = require('./model/index.js');
+const models = require('./model/index.ts');
 
 // Ensure the database tables have been created, particularly the session storage.
 models.sequelize.sync({}).then(

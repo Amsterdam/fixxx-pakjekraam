@@ -1,7 +1,7 @@
-const packageJSON = require('../package.json');
-const { init, login, getMarktondernemer } = require('./makkelijkemarkt-api.js');
-const { isErkenningsnummer } = require('./domain-knowledge.js');
+import { init, login, getMarktondernemer } from './makkelijkemarkt-api';
+import { MMSession } from './makkelijkemarkt.model';
 
+const packageJSON = require('../package.json');
 const MILLISECONDS_IN_SECOND = 1000;
 
 const loginSettings = {
@@ -13,17 +13,19 @@ const loginSettings = {
 
 init(loginSettings);
 
-const readOnlyLogin = () =>
+export const readOnlyLogin = (): Promise<{ token: string; expiry: string }> =>
     login({
         ...loginSettings,
         username: process.env.API_READONLY_USER,
         password: process.env.API_READONLY_PASS,
-    }).then(session => ({
+    }).then((session: MMSession) => ({
         token: session.uuid,
-        expiry: new Date(Date.parse(session.creationDate) + MILLISECONDS_IN_SECOND * session.lifeTime).toISOString(),
+        expiry: new Date(
+            new Date(session.creationDate).getTime() + MILLISECONDS_IN_SECOND * session.lifeTime,
+        ).toISOString(),
     }));
 
-const checkActivationCode = (username, code) =>
+export const checkActivationCode = (username: string, code: string): Promise<boolean> =>
     readOnlyLogin().then(session =>
         getMarktondernemer(session.token, username).then(
             ondernemer => {
@@ -34,14 +36,9 @@ const checkActivationCode = (username, code) =>
                     return typeof code === 'string' && code.length > 0 && code === ondernemer.pasUid;
                 }
             },
-            err => {
+            (err: Error) => {
                 console.log(err);
                 throw new Error('Incorrect username/password');
             },
         ),
     );
-
-module.exports = {
-    checkActivationCode,
-    readOnlyLogin,
-};

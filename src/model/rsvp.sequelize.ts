@@ -1,26 +1,31 @@
-import { Sequelize, DataTypes, Model, BuildOptions } from 'sequelize';
-import { RSVP } from './rsvp.model';
+import { Sequelize, DataTypes, Model } from 'sequelize';
+import { IRSVP } from '../markt.model';
 
-type RSVPStatic = typeof Model & {
-    new (values?: object, options?: BuildOptions): RSVP;
+export class RSVPModel extends Model<IRSVP, IRSVP> implements IRSVP {
+    public id!: number;
+    public marktId!: string;
+    public marktDate!: string;
+    public erkenningsNummer!: string;
+    public attending!: boolean;
+}
+
+export const initRSVP = (sequelize: Sequelize) => {
+    // const fields: SequelizeAttributes<RSVP> = {
+    const attributes = {
+        marktId: DataTypes.INTEGER,
+        marktDate: DataTypes.DATEONLY,
+        erkenningsNummer: DataTypes.STRING,
+        attending: DataTypes.BOOLEAN,
+    };
+
+    RSVPModel.init(attributes, {
+        modelName: 'rsvp',
+        freezeTableName: true,
+        sequelize,
+        tableName: 'rsvp',
+    });
+
+    return RSVPModel;
 };
 
-const init = (sequelize: Sequelize) => {
-    const RSVP = <RSVPStatic>sequelize.define(
-        'rsvp',
-        {
-            marktId: DataTypes.INTEGER,
-            marktDate: DataTypes.DATEONLY,
-            erkenningsNummer: DataTypes.STRING,
-            attending: DataTypes.BOOLEAN,
-        },
-        {
-            freezeTableName: true,
-            tableName: 'rsvp',
-        },
-    );
-
-    return RSVP;
-};
-
-export default init;
+export default initRSVP;

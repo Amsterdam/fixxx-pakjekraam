@@ -8,14 +8,14 @@ const reactViews = require('express-react-views');
 const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
-const models = require('./model/index.js');
-const { sequelize } = require('./model/index.js');
+const models = require('./model/index.ts');
+const { sequelize } = require('./model/index.ts');
 const morgan = require('morgan');
 const url = require('url');
 const qs = require('qs');
 const { isErkenningsnummer, slugifyMarkt, isVast, filterRsvpList } = require('./domain-knowledge.js');
-const { checkActivationCode, readOnlyLogin } = require('./makkelijkemarkt-auth.js');
-const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.js');
+const { checkActivationCode, readOnlyLogin } = require('./makkelijkemarkt-auth.ts');
+const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.ts');
 const {
     formatDate,
     splitByValueArray,
@@ -67,7 +67,7 @@ const {
     getMarktplaatsen,
     getMarkten,
     getSollicitantenlijstInput,
-} = require('./pakjekraam-api.js');
+} = require('./pakjekraam-api.ts');
 
 const { serverHealth, databaseHealth, keycloakHealth, makkelijkeMarktHealth } = require('./routes/status.ts');
 const { activationPage, handleActivation } = require('./routes/activation.ts');
@@ -256,8 +256,8 @@ app.get(
                 const subject = `Markt ${markt.naam} - plaatsvoorkeur wijziging`;
 
                 const voorkeurenObjPrio = (voorkeuren || []).reduce(function(hash, voorkeur) {
-                    if (!hash.hasOwnProperty(voorkeur.dataValues.priority)) hash[voorkeur.dataValues.priority] = [];
-                    hash[voorkeur.dataValues.priority].push(voorkeur.dataValues);
+                    if (!hash.hasOwnProperty(voorkeur.priority)) hash[voorkeur.priority] = [];
+                    hash[voorkeur.priority].push(voorkeur);
 
                     return hash;
                 }, {});
@@ -417,11 +417,10 @@ const dashboardPage = (req, res, erkenningsNummer) => {
     const marktenPromise = getMarkten(req.session.token);
     const marktenPromiseProps = marktenPromise.then(markten => {
         const propsPromise = markten.map(markt => {
-            return getMarktProperties(markt.id).then(props => {
-                markt.properties = props;
-
-                return markt;
-            });
+            return getMarktProperties(markt.id).then(props => ({
+                ...markt,
+                ...props,
+            }));
         });
 
         return Promise.all(propsPromise);

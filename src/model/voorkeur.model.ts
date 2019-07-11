@@ -1,8 +1,10 @@
-const { Model } = require('sequelize');
+import { Model } from 'sequelize';
+import { IMarktondernemerVoorkeurRow } from '../markt.model';
 
-export class Voorkeur extends Model {
+export class Voorkeur extends Model<IMarktondernemerVoorkeurRow, IMarktondernemerVoorkeurRow>
+    implements IMarktondernemerVoorkeurRow {
     public erkenningsNummer!: string;
-    public marktId: number;
+    public marktId: string;
     public marktDate: string;
     public monday: boolean;
     public tuesday: boolean;

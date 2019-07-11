@@ -1,19 +1,25 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
+import { Session } from './session.model';
 
-module.exports = (sequelize: Sequelize) => {
-    class Session extends Model {}
-
-    Session.init(
-        {
-            sid: {
-                type: DataTypes.STRING,
-                primaryKey: true,
-            },
-            sess: DataTypes.JSON,
-            expire: DataTypes.DATE,
+export const initSession = (sequelize: Sequelize) => {
+    const attributes = {
+        sid: {
+            type: DataTypes.STRING,
+            primaryKey: true,
         },
-        { sequelize, modelName: 'session', freezeTableName: true, tableName: 'session', timestamps: false },
-    );
+        sess: DataTypes.JSON,
+        expire: DataTypes.DATE,
+    };
+
+    Session.init(attributes, {
+        freezeTableName: true,
+        modelName: 'session',
+        sequelize,
+        tableName: 'session',
+        timestamps: false,
+    });
 
     return Session;
 };
+
+export default initSession;

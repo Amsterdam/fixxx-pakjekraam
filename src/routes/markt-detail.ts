@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { getMarkt, getMarktondernemer } from '../makkelijkemarkt-api.js';
+import { getMarkt, getMarktondernemer } from '../makkelijkemarkt-api';
 
 import {
     getAllBranches,
     getIndelingVoorkeur,
     getAanmeldingenByOndernemer,
     getOndernemerVoorkeuren,
-} from '../pakjekraam-api.js';
+} from '../pakjekraam-api';
 
 import { HTTP_INTERNAL_SERVER_ERROR, httpErrorPage, getQueryErrors } from '../express-util';
 

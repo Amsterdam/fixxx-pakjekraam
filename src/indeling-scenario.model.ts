@@ -10,7 +10,7 @@ import {
 } from './markt.model';
 
 export interface IMarktScenario {
-    id: number;
+    marktId: string;
     marktDate: string;
     aanwezigheid: IRSVP[];
     marktplaatsen: IMarktplaats[];

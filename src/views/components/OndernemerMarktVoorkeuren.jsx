@@ -18,8 +18,7 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query,
             t.push(entriesFiltered.filter(e => e.priority === p));
 
             return t;
-        }, [])
-        .map(e => e.map(p => p.dataValues));
+        }, []);
 
     return (
         <div className="OndernemerVoorkeuren background-link-parent" id="plaatsvoorkeuren">

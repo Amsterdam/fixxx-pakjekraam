@@ -1,18 +1,37 @@
-const {
-    login,
+import {
     getALijst,
     getMarkt,
-    getMarkten: getMakkelijkeMarkten,
+    getMarkten as getMakkelijkeMarkten,
     getMarktondernemersByMarkt,
-} = require('./makkelijkemarkt-api.js');
-const { ALBERT_CUYP_ID, formatOndernemerName, slugifyMarkt } = require('./domain-knowledge.js');
-const { numberSort, stringSort } = require('./util.js');
-const Sequelize = require('sequelize');
-const models = require('./model/index.js');
-const fs = require('fs');
-const { calcToewijzingen } = require('./indeling.ts');
+} from './makkelijkemarkt-api';
+import { formatOndernemerName, slugifyMarkt } from './domain-knowledge.js';
+import { numberSort, stringSort } from './util.js';
+import Sequelize from 'sequelize';
+import { allocation, plaatsvoorkeur, rsvp, voorkeur } from './model/index';
+import { calcToewijzingen } from './indeling';
 
-const loadJSON = (path, defaultValue = null) =>
+import {
+    IBranche,
+    IMarktProperties,
+    IMarktondernemer,
+    IMarktondernemerVoorkeur,
+    IMarktondernemerVoorkeurRow,
+    IMarktplaats,
+    IObstakelBetween,
+    IPlaatsvoorkeur,
+    IRSVP,
+} from './markt.model';
+import { IAllocationPrintout, IAllocationPrintoutPage, IMarketRow } from './model/printout.model';
+import { RSVP } from './model/rsvp.model';
+import { Allocation } from './model/allocation.model';
+import { Plaatsvoorkeur } from './model/plaatsvoorkeur.model';
+import { Voorkeur } from './model/voorkeur.model';
+
+import { MMSollicitatieStandalone } from './makkelijkemarkt.model';
+
+import * as fs from 'fs';
+
+const loadJSON = <T>(path: string, defaultValue: T = null): Promise<T> =>
     new Promise((resolve, reject) => {
         console.log(`Load ${path}`);
         fs.readFile(path, (err, data) => {
@@ -20,7 +39,7 @@ const loadJSON = (path, defaultValue = null) =>
                 resolve(defaultValue);
             } else {
                 try {
-                    resolve(JSON.parse(data));
+                    resolve(JSON.parse(String(data)));
                 } catch (e) {
                     reject(e);
                 }
@@ -28,56 +47,86 @@ const loadJSON = (path, defaultValue = null) =>
         });
     });
 
-/*
- * Convert a Sequelize instance to a regular object
- */
-const toPlainInstance = inst => inst.get({ plain: true });
+export const getAanmeldingen = (marktId: string, marktDate: string): Promise<IRSVP[]> =>
+    rsvp
+        .findAll<RSVP>({
+            where: { marktId, marktDate },
+        })
+        .then(aanmeldingen => aanmeldingen);
 
-const getAanmeldingen = (marktId, marktDate) => {
-    return models.rsvp.findAll({
-        where: { marktId, marktDate },
-    });
+export const getAanmeldingenMarktOndern = (marktId: string, erkenningsNummer: string): Promise<IRSVP[]> =>
+    rsvp
+        .findAll<RSVP>({
+            where: { marktId, erkenningsNummer },
+        })
+        .then(aanmeldingen => aanmeldingen);
+
+export const getAanmeldingenByOndernemer = (erkenningsNummer: string): Promise<IRSVP[]> =>
+    rsvp
+        .findAll<RSVP>({
+            where: { erkenningsNummer },
+        })
+        .then(aanmeldingen => aanmeldingen);
+
+export const getToewijzingen = (marktId: string, marktDate: string): Promise<Allocation[]> =>
+    allocation
+        .findAll<Allocation>({
+            where: { marktId, marktDate },
+        })
+        .then(toewijzingen => toewijzingen);
+
+export const getPlaatsvoorkeuren = (marktId: string): Promise<IPlaatsvoorkeur[]> =>
+    plaatsvoorkeur
+        .findAll<Plaatsvoorkeur>({
+            where: { marktId },
+        })
+        .then(plaatsvoorkeuren => plaatsvoorkeuren);
+
+export const getVoorkeurenMarktOndern = (marktId: string, erkenningsNummer: string): Promise<IPlaatsvoorkeur[]> =>
+    plaatsvoorkeur
+        .findAll<Plaatsvoorkeur>({
+            where: { marktId, erkenningsNummer },
+        })
+        .then(plaatsvoorkeuren => plaatsvoorkeuren);
+
+const indelingVoorkeurPrio = (voorkeur: IMarktondernemerVoorkeur): number =>
+    (voorkeur.marktId ? 1 : 0) | (voorkeur.marktDate ? 2 : 0);
+const indelingVoorkeurSort = (a: IMarktondernemerVoorkeur, b: IMarktondernemerVoorkeur) =>
+    numberSort(indelingVoorkeurPrio(a), indelingVoorkeurPrio(b));
+
+const indelingVoorkeurMerge = (a: IMarktondernemerVoorkeur, b: IMarktondernemerVoorkeur): IMarktondernemerVoorkeur => {
+    const merged = Object.assign({}, a);
+
+    if (b.aantalPlaatsen !== null) {
+        merged.aantalPlaatsen = b.aantalPlaatsen;
+    }
+    if (b.krachtStroom !== null) {
+        merged.krachtStroom = b.krachtStroom;
+    }
+    if (b.kraaminrichting !== null) {
+        merged.kraaminrichting = b.kraaminrichting;
+    }
+    if (b.anywhere !== null) {
+        merged.anywhere = b.anywhere;
+    }
+    if (b.inactive !== null) {
+        merged.inactive = b.inactive;
+    }
+    if (b.branches !== null) {
+        merged.branches = b.branches;
+    }
+    if (b.verkoopinrichting !== null) {
+        merged.verkoopinrichting = b.verkoopinrichting;
+    }
+
+    return merged;
 };
 
-const getAanmeldingenMarktOndern = (marktId, erkenningsNummer) => {
-    return models.rsvp.findAll({
-        where: { marktId, erkenningsNummer },
-    });
-};
-
-const getAanmeldingenByOndernemer = erkenningsNummer => {
-    return models.rsvp.findAll({
-        where: { erkenningsNummer },
-    });
-};
-
-const getPlaatsvoorkeuren = marktId => {
-    return models.plaatsvoorkeur.findAll({
-        where: { marktId },
-    });
-};
-
-const getVoorkeurenMarktOndern = (marktId, erkenningsNummer) => {
-    return models.plaatsvoorkeur.findAll({
-        where: { marktId, erkenningsNummer },
-    });
-};
-
-const indelingVoorkeurPrio = voorkeur => (voorkeur.marktId ? 1 : 0) | (voorkeur.marktDate ? 2 : 0);
-const indelingVoorkeurSort = (a, b) => numberSort(indelingVoorkeurPrio(a), indelingVoorkeurPrio(b));
-
-const indelingVoorkeurMerge = (a, b) => ({
-    ...a,
-    ...Object.keys(b).reduce((state, key) => {
-        if (b[key] !== null && typeof b[key] !== 'undefined') {
-            state[key] = b[key];
-        }
-
-        return state;
-    }, {}),
-});
-
-const getIndelingVoorkeur = (erkenningsNummer, marktId = null, marktDate = null) => {
+export const getIndelingVoorkeur = (
+    erkenningsNummer: string,
+    marktId: string = null,
+    marktDate: string = null,
+): Promise<IMarktondernemerVoorkeur> => {
     const where = {
         erkenningsNummer,
         [Sequelize.Op.and]: [
@@ -86,19 +135,17 @@ const getIndelingVoorkeur = (erkenningsNummer, marktId = null, marktDate = null)
         ],
     };
 
-    return models.voorkeur
-        .findAll({
+    return voorkeur
+        .findAll<Voorkeur>({
             where,
         })
-        .then(voorkeuren =>
-            voorkeuren
-                .map(toPlainInstance)
-                .sort(indelingVoorkeurSort)
-                .reduce(indelingVoorkeurMerge, null),
-        );
+        .then(voorkeuren => voorkeuren.sort(indelingVoorkeurSort).reduce(indelingVoorkeurMerge, null));
 };
 
-const groupByErkenningsNummer = (groups, voorkeur) => {
+const groupByErkenningsNummer = (
+    groups: IMarktondernemerVoorkeur[][],
+    voorkeur: IMarktondernemerVoorkeur,
+): IMarktondernemerVoorkeur[][] => {
     let group;
 
     for (let i = groups.length; i--; ) {
@@ -117,13 +164,16 @@ const groupByErkenningsNummer = (groups, voorkeur) => {
     return groups;
 };
 
-const convertVoorkeur = obj => ({
+const convertVoorkeur = (obj: IMarktondernemerVoorkeurRow): IMarktondernemerVoorkeur => ({
     ...obj,
     branches: [obj.brancheId, obj.parentBrancheId].filter(Boolean),
     verkoopinrichting: obj.inrichting ? [obj.inrichting] : [],
 });
 
-const getIndelingVoorkeuren = (marktId, marktDate = null) => {
+export const getIndelingVoorkeuren = (
+    marktId: string,
+    marktDate: string = null,
+): Promise<IMarktondernemerVoorkeur[]> => {
     const where = {
         [Sequelize.Op.and]: [
             {
@@ -135,54 +185,58 @@ const getIndelingVoorkeuren = (marktId, marktDate = null) => {
         ],
     };
 
-    return models.voorkeur
-        .findAll({
+    return voorkeur
+        .findAll<Voorkeur>({
             where,
         })
         .then(voorkeuren =>
             voorkeuren
-                .map(toPlainInstance)
                 .sort((a, b) => indelingVoorkeurSort(a, b) || stringSort(a.erkenningsNummer, b.erkenningsNummer))
                 .reduce(groupByErkenningsNummer, [])
                 .map(arr => arr.reduce(indelingVoorkeurMerge)),
         );
 };
 
-const getOndernemerVoorkeuren = erkenningsNummer => {
-    return models.plaatsvoorkeur.findAll({
+export const getOndernemerVoorkeuren = (erkenningsNummer: string): Promise<IPlaatsvoorkeur[]> =>
+    plaatsvoorkeur.findAll<Plaatsvoorkeur>({
         where: { erkenningsNummer },
     });
-};
 
-const getMarktProperties = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/markt.json`, []);
+export const getMarktProperties = (marktId: string): Promise<IMarktProperties> =>
+    loadJSON(`./data/${slugifyMarkt(marktId)}/markt.json`, {});
 
-const getBranches = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/branches.json`, []);
+export const getBranches = (marktId: string): Promise<IBranche[]> =>
+    loadJSON(`./data/${slugifyMarkt(marktId)}/branches.json`, []);
 
-const getAllBranches = () => loadJSON(`./data//branches.json`, []);
+export const getAllBranches = (): Promise<IBranche[]> => loadJSON('./data/branches.json', []);
 
-const getMarktplaatsen = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/locaties.json`, []);
+export const getMarktplaatsen = (marktId: string): Promise<IMarktplaats[]> =>
+    loadJSON(`./data/${slugifyMarkt(marktId)}/locaties.json`, []);
 
-const getMarktPaginas = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/paginas.json`, []);
+export const getMarktPaginas = (marktId: string): Promise<IAllocationPrintout> =>
+    loadJSON(`./data/${slugifyMarkt(marktId)}/paginas.json`, []);
 
-const getMarktGeografie = marktId => loadJSON(`./data/${slugifyMarkt(marktId)}/geografie.json`, []);
+export const getMarktGeografie = (marktId: string): Promise<{ obstakels: IObstakelBetween[] }> =>
+    loadJSON(`./data/${slugifyMarkt(marktId)}/geografie.json`, { obstakels: [] });
 
 /*
  * Convert an object from Makkelijke Markt to our own type of `IMarktondernemer` object
  */
-const convertOndernemer = data => {
+const convertOndernemer = (data: MMSollicitatieStandalone): IMarktondernemer => {
     const {
-        id,
         koopman: { erkenningsnummer },
         sollicitatieNummer,
         status,
+        markt,
     } = data;
 
     return {
         description: formatOndernemerName(data.koopman),
-        id: erkenningsnummer,
         erkenningsNummer: erkenningsnummer,
         plaatsen: data.vastePlaatsen,
         voorkeur: {
+            marktId: String(markt.id),
+            erkenningsNummer: erkenningsnummer,
             aantalPlaatsen: Math.max(1, data.aantal3MeterKramen + data.aantal4MeterKramen),
         },
         sollicitatieNummer,
@@ -190,7 +244,7 @@ const convertOndernemer = data => {
     };
 };
 
-const getIndelingslijstInput = (token, marktId, marktDate) => {
+export const getIndelingslijstInput = (token: string, marktId: string, marktDate: string) => {
     const ondernemersPromise = getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
         ondernemers.filter(ondernemer => !ondernemer.doorgehaald).map(convertOndernemer),
     );
@@ -235,6 +289,7 @@ const getIndelingslijstInput = (token, marktId, marktDate) => {
         ] = args;
 
         return {
+            naam: '?',
             marktId,
             marktDate,
             ...marktProperties,
@@ -253,9 +308,11 @@ const getIndelingslijstInput = (token, marktId, marktDate) => {
             rows: (
                 marktProperties.rows ||
                 paginas.reduce(
-                    (list, pagina) => [
+                    (list: string[][], pagina: IAllocationPrintoutPage): string[][] => [
                         ...list,
-                        ...pagina.indelingslijstGroup.map(group => group.plaatsList).filter(Array.isArray),
+                        ...pagina.indelingslijstGroup
+                            .map(group => (group as IMarketRow).plaatsList)
+                            .filter(Array.isArray),
                     ],
                     [],
                 )
@@ -264,7 +321,7 @@ const getIndelingslijstInput = (token, marktId, marktDate) => {
     });
 };
 
-const getIndelingslijst = (token, marktId, date) =>
+export const getIndelingslijst = (token: string, marktId: string, date: string) =>
     getIndelingslijstInput(token, marktId, date).then(data => {
         const logMessage = `Marktindeling berekenen: ${data.markt.naam}`;
 
@@ -275,7 +332,7 @@ const getIndelingslijst = (token, marktId, date) =>
         return indeling;
     });
 
-const getMailContext = (token, marktId, erkenningsNr, marktDate) =>
+export const getMailContext = (token: string, marktId: string, erkenningsNr: string, marktDate: string) =>
     Promise.all([
         getIndelingslijst(token, marktId, marktDate),
         getVoorkeurenMarktOndern(marktId, erkenningsNr),
@@ -285,16 +342,19 @@ const getMailContext = (token, marktId, erkenningsNr, marktDate) =>
         const inschrijving = markt.aanwezigheid.find(({ erkenningsNummer }) => erkenningsNummer === erkenningsNr);
         const toewijzing = markt.toewijzingen.find(({ erkenningsNummer }) => erkenningsNummer === erkenningsNr);
         const afwijzing = markt.afwijzingen.find(({ erkenningsNummer }) => erkenningsNummer === erkenningsNr);
-        const voorkeurenObjPrio = (voorkeuren || []).reduce(function(hash, voorkeur) {
-            if (!hash.hasOwnProperty(voorkeur.dataValues.priority)) hash[voorkeur.dataValues.priority] = [];
-            hash[voorkeur.dataValues.priority].push(voorkeur.dataValues);
+        const voorkeurenObjPrio: { [index: string]: IPlaatsvoorkeur[] } = (voorkeuren || []).reduce(
+            (hash: { [index: string]: IPlaatsvoorkeur[] }, voorkeur) => {
+                if (!hash.hasOwnProperty(voorkeur.priority)) {
+                    hash[voorkeur.priority] = [];
+                }
+                hash[voorkeur.priority].push(voorkeur);
 
-            return hash;
-        }, {});
+                return hash;
+            },
+            {},
+        );
         const voorkeurenPrio = Object.keys(voorkeurenObjPrio)
-            .map(function(key) {
-                return voorkeurenObjPrio[key];
-            })
+            .map(key => voorkeurenObjPrio[key])
             .sort((a, b) => b[0].priority - a[0].priority)
             .map(voorkeurList => voorkeurList.map(voorkeur => voorkeur.plaatsId));
 
@@ -310,7 +370,7 @@ const getMailContext = (token, marktId, erkenningsNr, marktDate) =>
         };
     });
 
-const getSollicitantenlijstInput = (token, marktId, date) =>
+export const getSollicitantenlijstInput = (token: string, marktId: string, date: string) =>
     Promise.all([
         getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
             ondernemers.filter(
@@ -331,28 +391,7 @@ const getSollicitantenlijstInput = (token, marktId, date) =>
         };
     });
 
-const getMarkten = token =>
+export const getMarkten = (token: string) =>
     getMakkelijkeMarkten(token)
         // Only show markten for which JSON data with location info exists
         .then(markten => markten.filter(markt => fs.existsSync(`data/${slugifyMarkt(markt.id)}/locaties.json`)));
-
-module.exports = {
-    getMailContext,
-    getAllBranches,
-    getMarktPaginas,
-    getMarktProperties,
-    getAanmeldingen,
-    getAanmeldingenByOndernemer,
-    getAanmeldingenMarktOndern,
-    getPlaatsvoorkeuren,
-    getOndernemerVoorkeuren,
-    getVoorkeurenMarktOndern,
-    getBranches,
-    getMarktplaatsen,
-    getIndelingVoorkeur,
-    getIndelingVoorkeuren,
-    getIndelingslijst,
-    getIndelingslijstInput,
-    getMarkten,
-    getSollicitantenlijstInput,
-};

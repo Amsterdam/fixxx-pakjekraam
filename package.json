@@ -15,7 +15,7 @@
     "prestart": "npm run deploy",
     "start": "ts-node src/index.js",
     "predev": "npm run build && npm run deploy",
-    "dev": "ts-node-dev src/index.js",
+    "dev": "ts-node-dev --ignore-watch node_modules src/index.js",
     "allocation": "ts-node src/allocation.js",
     "import": "echo 'Import skipped. Temporarily disabled.' && exit 0",
     "tdd": "jest --watch --verbose --rootDir ./src/",
