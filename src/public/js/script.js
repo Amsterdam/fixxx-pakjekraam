@@ -174,8 +174,10 @@ function splitByArray(orgArr, valueArr) {
     },
     'remove-voorkeur': function(e){
         var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
-            plaatsIdsInputs = voorkeur.querySelectorAll('[name*="[plaatsId]"]'),
+            remove = voorkeur.classList.contains('remove'),
+            plaatsIdsInputs = voorkeur.querySelectorAll('input[type="hidden"]'),
             container = _closest(this, '.PlaatsvoorkeurenForm__list'),
+            dataAttrs = ['name'],
             items = container.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
             prototype = _closest(this, '.PlaatsvoorkeurenForm__markt').querySelector('.PlaatsvoorkeurenForm__prototype'),
             prototypeHeading = _closest(this, '.PlaatsvoorkeurenForm__markt').querySelector('.PlaatsvoorkeurenForm__prototype .PlaatsvoorkeurenForm__list-item__heading'),
@@ -189,20 +191,18 @@ function splitByArray(orgArr, valueArr) {
                 prototypeHeading.textContent = (i + 1) + 'e keuze';
             };
         e && e.preventDefault();
-        var arr = [];
+        voorkeur.classList[remove ? 'remove' : 'add']('remove');
         for (var i = 0; i < plaatsIdsInputs.length; i++){
-            arr.push(String(plaatsIdsInputs[i].value));
-        }
-        for (i = 0; i < plaatsenSets.length; i++){
-            if (arr.sort().join('-') === plaatsenSets[i].sort().join('-')){
-                break;
+            for (var j = 0; j < dataAttrs.length; j++){
+                console.log(plaatsIdsInputs[i].getAttribute('data-' + dataAttrs[j]));
+                if (remove){
+                    plaatsIdsInputs[i].setAttribute(dataAttrs[j], plaatsIdsInputs[i].getAttribute('data-' + dataAttrs[j]));
+                }else{
+                    plaatsIdsInputs[i].setAttribute('data-' + dataAttrs[j], plaatsIdsInputs[i].getAttribute(dataAttrs[j]));
+                    plaatsIdsInputs[i].removeAttribute(dataAttrs[j]);
+                }
             }
         }
-        plaatsenSets.splice(i, 1);
-        voorkeur.parentNode.removeChild(voorkeur);
-        _resetCopy();
-
-        //decorators['plaatsvoorkeur-prototype'].call(prototype);
     },
     'move-voorkeur': function(e){
         var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),

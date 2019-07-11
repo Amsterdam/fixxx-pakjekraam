@@ -56,6 +56,19 @@
                 }
             }
         }
+        &.remove {
+            color: $neutral-grey3;
+            .PlaatsvoorkeurenForm__list-item__heading {
+                display: none;
+            }
+            .PlaatsvoorkeurenForm__list-item__heading-remove {
+                display: block;
+            }
+            .well {
+                outline: 1px solid $neutral-grey4;
+                background-color: transparent;
+            }
+        }
     }
     &__list-item--sortable .well {
         padding-right: 50px;
@@ -65,9 +78,13 @@
         margin-bottom: 5px;
         width: 100%;
     }
+    &__list-item__heading-remove,
     &__list-item__heading {
         width: 100%;
         margin: 0;
+    }
+    &__list-item__heading-remove {
+        display: none;
     }
     &__list-item__value {
         @include fontBold;
@@ -96,29 +113,6 @@
         height: 20px;
         background-color: $neutral-grey4;
         margin: 2px;
-        //display: inline-block;
-        //margin: 0 0 0 20px;
-        //position: relative;
-        //max-width: 10px;
-        //white-space: pre-wrap;
-        //padding: 3px;
-        //height: 44px;
-        //font-size: $fs-50;
-        //line-height: 18px;
-        //display: table;
-        //
-        //&:before {
-        //    content: "+";
-        //    display: inline-block;
-        //    line-height: 44px;
-        //    width: 20px;
-        //    text-align: center;
-        //    position: absolute;
-        //    left: -20px;
-        //}
-        //&.hidden {
-        //    display: none;
-        //}
     }
     &__list-item__optional .kraam {
         background-color: $neutral-grey3;
@@ -255,16 +249,35 @@
         width: 40px;
         height: 40px;
         background-color: $primary-darkblue;
+        border: 1px solid $primary-darkblue;
         &:hover {
             background-color: $primary-darkblue-darker;
+        }
+        .remove & {
+            background-color: $primary-white;
+            border-color: $neutral-grey4;
+            color: $neutral-grey4;
+            &:after {
+                color: $neutral-grey4;
+            }
+            &:before {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 2px;
+                background-color: $primary-black;
+                top: 19px;
+                transform-origin: center;
+                transform: rotate(-45deg);
+            }
         }
     }
     &__list-item__tools-del:after {
         @include icon($icon-Trash-Bin);
         font-size: 20px;
         display: inline-block;
-        line-height: 40px;
-        width: 40px;
+        line-height: 38px;
+        width: 38px;
         text-align: center;
         color: $primary-white;
     }

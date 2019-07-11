@@ -176,6 +176,9 @@ class PlaatsvoorkeurenForm extends React.Component {
                                 style={{ ...{ order: entries[0].priority } }}
                             >
                                 <h4 className="PlaatsvoorkeurenForm__list-item__heading">{i + 1}e keuze</h4>
+                                <h4 className="PlaatsvoorkeurenForm__list-item__heading-remove">
+                                    {i + 1}e keuze wordt verwijderd na bewaren.
+                                </h4>
                                 <div className="well">
                                     <span className="PlaatsvoorkeurenForm__list-item__label">
                                         Plaatsnummer:{' '}
