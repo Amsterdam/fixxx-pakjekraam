@@ -17,19 +17,21 @@ const OndernemerMarktAlgVoorkeuren = ({ markt, sollicitatie, ondernemer, voorkeu
                     <dl>
                         <dt>Branche</dt>
                         <dd>{voorkeur.brancheId ? branchesObj[voorkeur.brancheId].description : 'geen'}</dd>
-                        <dt>Bakplaats</dt>
+                        <dt>Bakplaats nodig?</dt>
                         <dd>{voorkeur.parentBrancheId ? voorkeur.parentBrancheId : 'geen'}</dd>
-                        <dt>Eigen materiaal</dt>
+                        <dt>Verkoopwagen/eigen materiaal?</dt>
                         <dd>{voorkeur.inrichting ? voorkeur.inrichting : 'geen'}</dd>
                     </dl>
                 ) : (
                     <p>
-                        <strong>Je hebt nog geen marktprofiel ingesteld.</strong>
+                        <strong>
+                            Vul uw <u>marktprofiel</u> in.
+                        </strong>
                     </p>
                 )}
                 <span>
-                    Bij het indienen houden we rekening met voorrang op brancheplaatsen, bakplaatsen en eigen materiaal
-                    plaatsen
+                    Bij de indeling houden we rekening met voorrang op brancheplaatsen, bakplaatsen en plaatsen voor
+                    eigen materiaal/verkoopwagens
                 </span>
             </div>
         </div>

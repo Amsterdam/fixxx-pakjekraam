@@ -114,9 +114,10 @@ class PlaatsvoorkeurenForm extends React.Component {
                     <script dangerouslySetInnerHTML={plaatsSetsJSON()} />
 
                     <div className="PlaatsvoorkeurenForm__plaats-count">
-                        <strong className="PlaatsvoorkeurenForm__plaats-count__label">
-                            Hoeveel plaatsen heb je nodig
-                        </strong>
+                        <strong className="PlaatsvoorkeurenForm__plaats-count__label">Aantal plaatsen</strong>
+                        <span className="PlaatsvoorkeurenForm__plaats-count__sublabel">
+                            Hoeveel plaatsen heeft u minstens nodig?
+                        </span>
                         <div className="PlaatsvoorkeurenForm__plaats-count__wrapper">
                             {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
                                 <React.Fragment key={i}>
@@ -134,7 +135,10 @@ class PlaatsvoorkeurenForm extends React.Component {
                     </div>
 
                     <div className="PlaatsvoorkeurenForm__plaats-count extra">
-                        <strong className="PlaatsvoorkeurenForm__plaats-count__label">Hoeveel extra plaatsen</strong>
+                        <strong className="PlaatsvoorkeurenForm__plaats-count__label">Extra plaatsen</strong>
+                        <span className="PlaatsvoorkeurenForm__plaats-count__sublabel">
+                            Hoeveel extra plaatsen wilt u als er plek is?
+                        </span>
                         <div className="PlaatsvoorkeurenForm__plaats-count__wrapper extra">
                             {['geen', '1', '2'].map((r, i) => (
                                 <React.Fragment key={i}>

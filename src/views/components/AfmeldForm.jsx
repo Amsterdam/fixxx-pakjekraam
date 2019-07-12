@@ -57,10 +57,12 @@ class AfmeldForm extends React.Component {
                             </div>
                             {isVast(sollicitatie.status) ? (
                                 <span className="Fieldset__subtitle">
-                                    Vink uit welke dagen je niet op de markt staat
+                                    Vink uit op welke dagen u (of uw vervanger) niet op deze markt staat.
                                 </span>
                             ) : (
-                                <span className="Fieldset__subtitle">Aanvinken welke dagen je komt</span>
+                                <span className="Fieldset__subtitle">
+                                    Vink aan op welke dagen u (of uw vervanger) naar de markt wilt komen.
+                                </span>
                             )}
                             <ul className="CheckboxList">
                                 {rsvpEntries.map(({ date, rsvp, index }, i) => (

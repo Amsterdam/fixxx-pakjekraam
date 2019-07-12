@@ -22,14 +22,14 @@ export const publicErrors = {
 };
 
 const humanReadableMessage = {
-    [publicErrors.INCORRECT_CREDENTIALS]: 'Uw gebruikersnaam of wachtwoord is incorrect.',
-    [publicErrors.AANWEZIGHEID_SAVED]: 'Je aan- of afmeldingen zijn met success gewijzigd.',
-    [publicErrors.PLAATSVOORKEUREN_SAVED]: 'Je plaatsvoorkeuren zijn met success gewijzigd.',
-    [publicErrors.ALGEMENE_VOORKEUREN_SAVED]: 'Je marktprofiel is met success gewijzigd.',
+    [publicErrors.INCORRECT_CREDENTIALS]: 'Uw gebruikersnaam of wachtwoord is incorrect',
+    [publicErrors.AANWEZIGHEID_SAVED]: 'Uw aan- of afmeldingen zijn bewaard',
+    [publicErrors.PLAATSVOORKEUREN_SAVED]: 'Uw plaatsvoorkeuren zijn bewaard',
+    [publicErrors.ALGEMENE_VOORKEUREN_SAVED]: 'Uw marktprofiel is bewaard',
     [publicErrors.ACTIVATION_FAILED]:
         'De ingevoerde activatie-code klopt niet of is verlopen. Controleer de ingevulde gegevens.',
     [publicErrors.NON_MATCHING_PASSWORDS]: `De ingevoerde wachtwoorden komen niet overeen.
-        Let op dat je geen fout maakt bij het kiezen van een wachtwoord.`,
+        Let op dat u geen fout maakt bij het kiezen van een wachtwoord.`,
 };
 
 export const httpErrorPage = (res: Response, errorCode: number) => (err: Error | string) => {

@@ -71,11 +71,9 @@
         }
     }
     &__plaats-count {
-        margin-top: $vm4;
+        margin-top: $vm5;
     }
     &__plaats-count__wrapper {
-        //&__plaats-count__item {
-        display: inline-block;
         display: flex;
         input {
             position: absolute;
@@ -134,10 +132,15 @@
             }
         }
     }
+    &__plaats-count__sublabel,
+    &__plaats-count__label {
+        display: block;
+    }
+    &__plaats-count__sublabel {
+        margin-bottom: $vm2;
+    }
     &__plaats-count__label {
         @include fontBold;
-        display: inline-block;
-        margin: $vm1 0;
     }
     &__list-item--sortable .well {
         padding-right: 50px;

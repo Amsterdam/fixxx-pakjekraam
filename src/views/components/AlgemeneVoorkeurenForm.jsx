@@ -77,7 +77,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
                 <OndernemerMarktHeading sollicitatie={sollicitatie} markt={markt} />
                 <div className="well well--max-width">
                     <div className="Fieldset">
-                        <h2 className="Fieldset__header">Wat voor koopwaar verkoop je?</h2>
+                        <h2 className="Fieldset__header">Wat voor koopwaar verkoopt u?</h2>
                         <div className="InputField">
                             <div className="Select__wrapper">
                                 <select id="brancheId" name="brancheId" className="Select">
@@ -103,6 +103,9 @@ class AlgemeneVoorkeurenForm extends React.Component {
                                 </select>{' '}
                             </div>
                         </div>
+                    </div>
+                    <div className="Fieldset">
+                        <h2 className="Fieldset__header">Hebt u een bakplaats nodig?</h2>
                         <p className="InputField InputField--checkbox">
                             <input
                                 id="parentBrancheId"
@@ -111,11 +114,11 @@ class AlgemeneVoorkeurenForm extends React.Component {
                                 defaultValue="bak"
                                 defaultChecked={voorkeur.parentBrancheId === 'bak'}
                             />
-                            <label htmlFor="parentBrancheId">Ik ga koken, bakken, frituren, etc.</label>
+                            <label htmlFor="parentBrancheId">Ja, ik ga koken, bakken of frituren</label>
                         </p>
                     </div>
                     <div className="Fieldset">
-                        <h2 className="Fieldset__header">Huur je een kraam of kom je met eigen materieel?</h2>
+                        <h2 className="Fieldset__header">Wilt u met eigen materiaal staan?</h2>
 
                         <p className="InputField InputField--checkbox">
                             <input
@@ -125,7 +128,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
                                 defaultValue="eigen-materieel"
                                 defaultChecked={voorkeur.inrichting === 'eigen-materieel'}
                             />
-                            <label htmlFor="inrichting">Ik kom met eigen materieel.</label>
+                            <label htmlFor="inrichting">Ja, ik kom met een eigen verkoopwagen/eigen materiaal.</label>
                         </p>
                     </div>
                     <div className={`Fieldset ${advanced ? null : 'hidden'}`}>

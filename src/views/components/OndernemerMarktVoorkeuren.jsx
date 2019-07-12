@@ -3,6 +3,7 @@ const React = require('react');
 const { paginate } = require('../../util.js');
 const Button = require('./Button');
 const HeaderTitleButton = require('./HeaderTitleButton');
+const { isVast } = require('../../domain-knowledge.js');
 
 const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query, sollicitatie }) => {
     const blockUrl = `../../voorkeuren/${markt.id}/?next=../../markt-detail/${markt.id}/#plaatsvoorkeuren`;
@@ -26,17 +27,18 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query,
             <a href={blockUrl} className="background-link" />
             <HeaderTitleButton title="Plaatsvoorkeuren" url={blockUrl} />
             <div className="well">
-                {sollicitatie.status === 'vpl' ? (
+                {isVast(sollicitatie.status) ? (
                     <div className="margin-bottom">
-                        <strong className="h4">{sollicitatie.vastePlaatsen.join(' & ')}</strong>{' '}
-                        <span className="font-gray">
-                            (vaste plaats{sollicitatie.vastePlaatsen.length > 1 ? 'en' : null})
-                        </span>
+                        <strong className="h5">Uw vaste plaatsen</strong>
+                        <p>
+                            <strong>{sollicitatie.vastePlaatsen.join(', ')}</strong>
+                            <br />U krijgt deze plaatsen op de dagen waarop u bent aangemeld.
+                        </p>
                     </div>
                 ) : null}
                 {entriesSplit.length ? (
                     <div className="margin-top" key="voorkeuren">
-                        <strong>Dit zijn je plaatsvoorkeuren</strong>
+                        <strong className="h5">Favoriete plaatsen</strong>
                         <ul>
                             {entriesSplit.map((entry, i) => (
                                 <li key={`${i + 1}e keuze`}>
@@ -47,13 +49,18 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query,
                     </div>
                 ) : (
                     <p>
-                        <strong>Je hebt nog geen plaatsvoorkeuren doorgeven</strong>
+                        {isVast(sollicitatie.status) ? (
+                            <strong>
+                                <u>Wilt u schuiven naar een ander plaats of vergroten?</u>
+                            </strong>
+                        ) : (
+                            <strong>
+                                Geef uw <u>plaatsvoorkeuren</u> door. Het systeem probeert u in te delen op uw favoriete
+                                plaatsen.
+                            </strong>
+                        )}
                     </p>
                 )}
-                <span>
-                    Je krijgt deze plaats{sollicitatie.vastePlaatsen.length > 1 ? 'en' : null} automatisch op de dagen
-                    die je als &apos;aanwezig&apos; aangeeft.
-                </span>
             </div>
         </div>
     );
