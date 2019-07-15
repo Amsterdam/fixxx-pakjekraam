@@ -13,7 +13,7 @@ const MarktplaatsSelect = ({ id, name, markt, data, value, optional, readonly, n
             }`}
         >
             <select className="Select Select--MarktplaatsSelect" {...attrs} disabled={readonly}>
-                {optional ? <option value="">Plaats</option> : null}
+                {optional ? <option value="">Plaatsnummer</option> : null}
                 {data.map(plaats => (
                     <option
                         key={plaats.plaatsId}

@@ -275,8 +275,8 @@ function splitByArray(orgArr, valueArr) {
               extra = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__min-extra'),
               optional = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__optional'),
               explain = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__explain'),
-              minSlider = slider[0],
-              maxSlider = slider[1],
+              minSlider = form.querySelector('input[name="default-count"]'),
+              maxSlider = form.querySelector('input[name="extra-count"]'),
               _clearElem = function (elem) {
                   while (elem.firstChild) {
                       elem.removeChild(elem.firstChild);
@@ -294,7 +294,9 @@ function splitByArray(orgArr, valueArr) {
               _formChange = function (e) {
                   var elem = e && e.target,
                       i,
-                      j;
+                      j,
+                      minVal = form.querySelector('input[name="default-count"]:checked').value,
+                      maxVal = form.querySelector('input[name="extra-count"]:checked').value;
                   if (elem === maxSlider && maxSlider.value < minSlider.value) {
                       minSlider.value = maxSlider.value;
                   } else if (elem === minSlider && maxSlider.value < minSlider.value) {
@@ -306,11 +308,11 @@ function splitByArray(orgArr, valueArr) {
                       var extr = explain[i].querySelector('.extra');
                       var minM = explain[i].querySelector('.minMulti');
                       var maxM = explain[i].querySelector('.maxMulti');
-                      max.textContent = maxSlider.value - minSlider.value;
-                      min.textContent = minSlider.value;
-                      extr.classList[maxSlider.value === minSlider.value ? 'add' : 'remove']('hidden');
-                      maxM.classList[maxSlider.value - minSlider.value <= 1 ? 'add' : 'remove']('hidden');
-                      minM.classList[minSlider.value <= 1 ? 'add' : 'remove']('hidden');
+                      max.textContent = maxVal;
+                      min.textContent = minVal;
+                      extr.classList[maxVal < 1 ? 'add' : 'remove']('hidden');
+                      maxM.classList[maxVal <= 1 ? 'add' : 'remove']('hidden');
+                      minM.classList[minVal <= 1 ? 'add' : 'remove']('hidden');
                   }
               };
           _formChange();

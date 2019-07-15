@@ -85,12 +85,14 @@
             display: inline-block;
             width: 70px;
             height: 40px;
-            line-height: 40px;
+            line-height: 38px;
             background-color: $neutral-grey5;
+            border: 1px solid $neutral-grey5;
             color: $primary-white;
             text-align: center;
             margin: 0;
             margin-right: 5px;
+            cursor: pointer;
         }
         input:checked + label + input:not(:checked) + label,
         input:checked + label + input:not(:checked) + label + input:not(:checked) + label,
@@ -118,17 +120,15 @@
             + input:not(:checked)
             + label {
             background-color: $neutral-grey3;
+            border: 1px solid $neutral-grey3;
+        }
+        input:checked + label {
+            outline: 2px solid $support-focus;
         }
         &.extra {
             *:nth-child(2) {
                 background-color: transparent;
                 color: $primary-black;
-            }
-            label {
-                background-color: $neutral-grey3;
-            }
-            input:checked + label {
-                outline: 3px solid $primary-black;
             }
         }
     }
