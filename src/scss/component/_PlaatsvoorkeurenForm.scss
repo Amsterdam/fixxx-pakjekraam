@@ -367,6 +367,10 @@
         width: 50px;
         font-size: $fs-50;
     }
+    &__prototype.ghost {
+        pointer-events: none;
+        color: $neutral-grey3;
+    }
     @media screen and (min-width: $screenMedium) {
         &__list-item {
             justify-content: normal;

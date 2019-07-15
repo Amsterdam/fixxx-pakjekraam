@@ -309,6 +309,82 @@ class PlaatsvoorkeurenForm extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        <div
+                            className="PlaatsvoorkeurenForm__prototype ghost"
+                            data-plaatsvoorkeur-count={newPlaatsvoorkeurCount}
+                            data-markt-id={markt.id}
+                            // data-decorator="plaatsvoorkeur-prototype"
+                            data-used-plaatsen={`p=${entriesFiltered.map(entry => entry.plaatsId).join('&p=')}`}
+                            data-select-base-id={entriesFiltered.length}
+                            data-max-uitbreidingen={1}
+                        >
+                            <div className="PlaatsvoorkeurenForm__list-item">
+                                <h4 className="PlaatsvoorkeurenForm__list-item__heading">
+                                    {entriesSplit.length + 2}e voorkeur
+                                </h4>
+                                <div className="well">
+                                    <span className="PlaatsvoorkeurenForm__list-item__label">Kies een marktplaats</span>
+                                    <div className={`PlaatsvoorkeurenForm__list-item__wrapper`}>
+                                        <MarktplaatsSelect
+                                            name={`plaatsvoorkeuren[${entriesFiltered.length + 1}][plaatsId]`}
+                                            id={`voorkeur-${entriesFiltered.length + 1}`}
+                                            markt={markt}
+                                            data={rowsFlat}
+                                            optional={true}
+                                            readonly="disabled"
+                                        />
+                                        <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__min-extra" />
+                                        <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__optional" />
+                                    </div>
+                                    <span className="PlaatsvoorkeurenForm__list-item__explain">
+                                        Ik wil minimaal <span className="min" /> plaats
+                                        <span className="minMulti">en</span>
+                                        <span className="extra">
+                                            , en nog <span className="max" /> plaats<span className="maxMulti">en</span>{' '}
+                                            erbij als er plek is.
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            className="PlaatsvoorkeurenForm__prototype ghost"
+                            data-plaatsvoorkeur-count={newPlaatsvoorkeurCount}
+                            data-markt-id={markt.id}
+                            // data-decorator="plaatsvoorkeur-prototype"
+                            data-used-plaatsen={`p=${entriesFiltered.map(entry => entry.plaatsId).join('&p=')}`}
+                            data-select-base-id={entriesFiltered.length}
+                            data-max-uitbreidingen={1}
+                        >
+                            <div className="PlaatsvoorkeurenForm__list-item">
+                                <h4 className="PlaatsvoorkeurenForm__list-item__heading">
+                                    {entriesSplit.length + 3}e voorkeur
+                                </h4>
+                                <div className="well">
+                                    <span className="PlaatsvoorkeurenForm__list-item__label">Kies een marktplaats</span>
+                                    <div className={`PlaatsvoorkeurenForm__list-item__wrapper`}>
+                                        <MarktplaatsSelect
+                                            name={`plaatsvoorkeuren[${entriesFiltered.length + 1}][plaatsId]`}
+                                            id={`voorkeur-${entriesFiltered.length + 1}`}
+                                            markt={markt}
+                                            data={rowsFlat}
+                                            optional={true}
+                                            readonly="disabled"
+                                        />
+                                        <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__min-extra" />
+                                        <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__optional" />
+                                    </div>
+                                    <span className="PlaatsvoorkeurenForm__list-item__explain">
+                                        Ik wil minimaal <span className="min" /> plaats
+                                        <span className="minMulti">en</span>
+                                        <span className="extra">
+                                            , en nog <span className="max" /> plaats<span className="maxMulti">en</span>{' '}
+                                            erbij als er plek is.
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <p className="InputField InputField--submit" id="bottom-buttons">
