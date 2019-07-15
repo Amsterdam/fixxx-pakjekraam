@@ -63,13 +63,13 @@ class EmailVplVoorkeurConfirm extends React.Component {
             .join('-')
             .includes(toewijzing.plaatsen.sort().join('-'));
 
-        const defaultText = 'Dit zijn uw vaste plaatsen. U heeft helaas geen van uw voorkeursplaats(en) gekregen.';
-        const verplaatsText = 'Dit is een voorkeursplaats die u heeft aangevraagd.';
-        const vekleiningText = `Dit is een verkleining van uw vaste plaats die u heeft aangevraagd`;
-        const vekleiningVerplaatsText = `Dit is een verplaatsing en verkleining die u heeft aangevraagd`;
-        const uitbreidingVerplaatsText = `Dit is een voorkeursplaats met extra plaats(en) die u heeft aangevraagd`;
-        const uitbreidingNietVerplaatsText = `Dit is uw vaste plaats met extra plaats(en) die u heeft aangevraagd`;
-        const verplaatsGeenUitbreidingText = `Dit is een voorkeursplaats die u heeft aangevraagd`;
+        const defaultText = 'Dit zijn uw vaste plaatsen. u hebt helaas geen van uw voorkeursplaats(en) gekregen.';
+        const verplaatsText = 'Dit is een voorkeursplaats die u hebt aangevraagd.';
+        const vekleiningText = `Dit is een verkleining van uw vaste plaats die u hebt aangevraagd`;
+        const vekleiningVerplaatsText = `Dit is een verplaatsing en verkleining die u hebt aangevraagd`;
+        const uitbreidingVerplaatsText = `Dit is een voorkeursplaats met extra plaats(en) die u hebt aangevraagd`;
+        const uitbreidingNietVerplaatsText = `Dit is uw vaste plaats met extra plaats(en) die u hebt aangevraagd`;
+        const verplaatsGeenUitbreidingText = `Dit is een voorkeursplaats die u hebt aangevraagd`;
 
         let toewijzingsText = isVastePlaats ? defaultText : verplaatsText;
         if (uitbreiding) {

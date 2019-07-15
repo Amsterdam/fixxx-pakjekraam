@@ -56,7 +56,7 @@ class EmailSollVoorkeurConfirm extends React.Component {
                 <span key={`plaats`}>
                     <strong>{toewijzing.plaatsen.join(', ')}</strong>
                     <br />
-                    Dit is een voorkeursplaats die u heeft aangevraagd
+                    Dit is een voorkeursplaats die u hebt aangevraagd
                 </span>,
             ],
             ['Soortplaats:', <strong key={`Soortplaats`}>{ondernemerPlaatsBranches.join(', ')}</strong>],

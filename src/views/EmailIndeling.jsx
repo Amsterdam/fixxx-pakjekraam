@@ -70,11 +70,11 @@ class IndelingMail extends React.Component {
                         {/* </h2>*/}
                         {/* <p>Beste {ondernemer.description},</p>*/}
                         {/* {inschrijving && inschrijving.attending ? (*/}
-                        {/* <p>U heeft zich ingeschreven voor de markt vandaag.</p>*/}
+                        {/* <p>U hebt zich ingeschreven voor de markt vandaag.</p>*/}
                         {/* ) : isVast(ondernemer.status) ? (*/}
                         {/* <p>U bent (tijdelijke) vasteplaatshouder op deze markt.</p>*/}
                         {/* ) : (*/}
-                        {/* <p>U heeft zich niet ingeschreven voor de markt van {formatDate(marktDate)}.</p>*/}
+                        {/* <p>U hebt zich niet ingeschreven voor de markt van {formatDate(marktDate)}.</p>*/}
                         {/* )}*/}
                         {/* {afwijzing ? <p>U bent niet ingedeeld</p> : null}*/}
                         {/* {!toewijzing ? (*/}

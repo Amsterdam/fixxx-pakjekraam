@@ -37,7 +37,7 @@ class EmailSollPlaatsConfirm extends React.Component {
             <EmailContent>
                 <p>Beste {ondernemer.description},</p>
                 <p>
-                    U heeft u aangemeld voor een plaats op de markt {markt.markt.naam} op {formatDayOfWeek(marktDate)}{' '}
+                    U hebt u aangemeld voor een plaats op de markt {markt.markt.naam} op {formatDayOfWeek(marktDate)}{' '}
                     {formatDate(marktDate)}.
                 </p>
                 {voorkeuren.length ? (

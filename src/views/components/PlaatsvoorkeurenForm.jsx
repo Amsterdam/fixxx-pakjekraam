@@ -115,7 +115,7 @@ class PlaatsvoorkeurenForm extends React.Component {
 
                     <div className="Fieldset PlaatsvoorkeurenForm__plaats-count">
                         <h2 className="Fieldset__header">Aantal plaatsen</h2>
-                        <span className="Fieldset__sub-header">Hoeveel plaatsen heeft u echt nodig?</span>
+                        <span className="Fieldset__sub-header">Hoeveel plaatsen hebt u echt nodig?</span>
                         <div className="PlaatsvoorkeurenForm__plaats-count__wrapper">
                             {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
                                 <React.Fragment key={i}>
