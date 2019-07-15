@@ -16,12 +16,24 @@ class EmailSollVoorkeurConfirm extends React.Component {
         afwijzing: PropTypes.object,
         inschrijving: PropTypes.object,
         voorkeuren: PropTypes.array,
+        branches: PropTypes.array,
     };
 
     render() {
+        const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren, branches } = this.props;
         const fontGray = { color: '#767676' };
-        const { markt, marktDate, ondernemer, toewijzing, afwijzing, inschrijving, voorkeuren } = this.props;
-        const branches = arrayToObject(markt.marktplaatsen.filter(plaats => plaats.branches), 'plaatsId');
+        const branchesObj = arrayToObject(branches, 'brancheId');
+        const ondernemerPlaatsBranches = toewijzing.plaatsen.map(plaatsId => {
+            const plaatsBranches =
+                marktBranches[plaatsId] &&
+                marktBranches[plaatsId].branches &&
+                marktBranches[plaatsId].branches
+                    .map(br => (branchesObj[br] ? branchesObj[br].description : null))
+                    .filter(br => br)
+                    .join(' ');
+
+            return plaatsBranches ? plaatsBranches : 'geen';
+        });
         const bijzonderheden = markt.marktplaatsen
             .reduce((t, plaats) => {
                 ondernemer.plaatsen.map(p => {
@@ -47,14 +59,7 @@ class EmailSollVoorkeurConfirm extends React.Component {
                     Dit is een voorkeursplaats die u heeft aangevraagd
                 </span>,
             ],
-            [
-                'Soortplaats:',
-                <strong key={`Soortplaats`}>
-                    {toewijzing.plaatsen
-                        .map(plaatsId => (branches[plaatsId] ? branches[plaatsId].branches.join(' ') : 'geen'))
-                        .join(', ')}
-                </strong>,
-            ],
+            ['Soortplaats:', <strong key={`Soortplaats`}>{ondernemerPlaatsBranches.join(', ')}</strong>],
             [
                 'Bijzonderheden:',
                 <strong key={`remarks`}>{bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}</strong>,

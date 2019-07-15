@@ -39,15 +39,17 @@ class EmailVplPlaatsConfirm extends React.Component {
                 return t;
             }, []);
         const branchesObj = arrayToObject(branches, 'brancheId');
-        console.log(branchesObj);
-        console.log(marktBranches);
-        const ondernemerPlaatsBranches = ondernemer.plaatsen.map(plaatsId =>
-            marktBranches[plaatsId]
-                ? marktBranches[plaatsId].branches
-                      .map(br => (branchesObj[br] ? branchesObj[br].branches : []))
-                      .join(' ')
-                : 'geen',
-        );
+        const ondernemerPlaatsBranches = ondernemer.plaatsen.map(plaatsId => {
+            const plaatsBranches =
+                marktBranches[plaatsId] &&
+                marktBranches[plaatsId].branches &&
+                marktBranches[plaatsId].branches
+                    .map(br => (branchesObj[br] ? branchesObj[br].description : null))
+                    .filter(br => br)
+                    .join(' ');
+
+            return plaatsBranches ? plaatsBranches : 'geen';
+        });
 
         const tableData = [
             [
