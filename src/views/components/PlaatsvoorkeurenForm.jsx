@@ -363,7 +363,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                             name="redirectTo"
                             value={`./?error=plaatsvoorkeuren-saved&next=${next}#bottom-buttons`}
                         >
-                            + Voeg nog een keuze toe
+                            + Voeg nog een voorkeur toe
                         </button>
                         <button
                             className="Button Button--secondary"
