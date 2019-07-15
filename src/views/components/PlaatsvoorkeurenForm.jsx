@@ -92,6 +92,7 @@ class PlaatsvoorkeurenForm extends React.Component {
             <form
                 className="Form Form--PlaatsvoorkeurenForm"
                 method="POST"
+                name="plaatsvoorkeur-form"
                 action="./"
                 encType="application/x-www-form-urlencoded"
                 data-decorator="voorkeur-form"

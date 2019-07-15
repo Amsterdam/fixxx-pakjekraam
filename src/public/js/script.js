@@ -279,31 +279,59 @@ function splitByArray(orgArr, valueArr) {
               maxSlider = form.querySelector('input[name="extra-count"]'),
               _submit = function(e){
                 e && e.preventDefault();
-                var data = new FormData(form);
+                var data = new FormData(form), newData = {};
                 data['redirectTo'] = './';
+                var formData = new FormData(form);
+
+                for (var [key, value] of formData.entries()) {
+                  newData[key] = value;
+                }
+                data = _getFormData();
                 console.log(data);
                     form.classList.add('in-progress');
                   form.request = helpers.ajax({
                     type: form.method,
                     url: form.action,
-                    data: data,
+                    data: JSON.stringify(data),
+                    headers: [["Content-Type", "application/json; charset=utf-8"]],
                     callback: function (data) {
                       _process(data, form.dataset.resultSelector || 'body');
                     },
                     error: function () {
+                        console.log('error');
                       form.classList.remove('in-progress');
                       form.classList.add('ajax-error');
                       _decorate();
                     }
                   });
               },
+              _getFormData = function(){
+                var out = {plaatsvoorkeuren: []},
+                items = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
+                erkenningsNummer = form.querySelector('[name="erkenningsNummer"]').value;
+                for (var i = 0; i < items.length; i++){
+                    var
+                        plaatsId = items[i].querySelector('[name*="plaatsId"]') && items[i].querySelector('[name*="plaatsId"]').value,
+                        priority = items[i].querySelector('[name*="priority"]') && items[i].querySelector('[name*="priority"]').value,
+                        marktId = items[i].querySelector('[name*="marktId"]') && items[i].querySelector('[name*="marktId"]').value;
+                    if (plaatsId && priority && marktId){
+                        out.plaatsvoorkeuren.push({plaatsId: plaatsId, priority: priority, marktId: marktId});
+                    }
+                    out['erkenningsNummer'] = erkenningsNummer;
+                    out['redirectTo'] = './';
+                }
+                return out;
+              },
               _process = function (data, selector) {
-                var div = document.createElement('div');
+                var div = document.createElement('html');
                 div.innerHTML = data;
+                console.log(data);
+                console.log(div);
+                console.log(div.querySelectorAll(selector));
                 var
                   result = div.querySelectorAll(selector),
                   target = document.querySelectorAll(selector);
-                    if (result && target) {
+                    if (result.length && target.length) {
                       for (var i = 0; i < target.length; i++) {
                         target[i].innerHTML = result[i].innerHTML;
                       }
@@ -348,6 +376,7 @@ function splitByArray(orgArr, valueArr) {
                       maxM.classList[maxVal <= 1 ? 'add' : 'remove']('hidden');
                       minM.classList[minVal <= 1 ? 'add' : 'remove']('hidden');
                   }
+                  _getFormData();
               };
           _formChange();
           form.addEventListener('change', _formChange);
