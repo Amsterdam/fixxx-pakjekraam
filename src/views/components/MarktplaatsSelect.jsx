@@ -21,7 +21,7 @@ const MarktplaatsSelect = ({ id, name, markt, data, value, optional, readonly, n
                         disabled={!plaats.disabled}
                         selected={plaats.plaatsId === value}
                     >
-                        {plaats.plaatsId} {plaats.properties ? plaats.properties.join(', ') : ''}
+                        {plaats.plaatsId}
                     </option>
                 ))}
             </select>
@@ -35,7 +35,7 @@ MarktplaatsSelect.propTypes = {
     value: PropTypes.string,
     id: PropTypes.string,
     name: PropTypes.string,
-    optional: PropTypes.string,
+    optional: PropTypes.bool,
     readonly: PropTypes.string,
     newItem: PropTypes.string,
 };

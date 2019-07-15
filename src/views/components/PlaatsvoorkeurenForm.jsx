@@ -115,7 +115,9 @@ class PlaatsvoorkeurenForm extends React.Component {
 
                     <div className="Fieldset PlaatsvoorkeurenForm__plaats-count">
                         <h2 className="Fieldset__header">Aantal plaatsen</h2>
-                        <span className="Fieldset__sub-header">Hoeveel plaatsen hebt u echt nodig?</span>
+                        <span className="Fieldset__sub-header">
+                            Hoeveel plaatsen hebt u <strong>echt nodig</strong>?
+                        </span>
                         <div className="PlaatsvoorkeurenForm__plaats-count__wrapper">
                             {Array.from(new Array(newPlaatsvoorkeurCount)).map((r, i) => (
                                 <React.Fragment key={i}>
@@ -125,7 +127,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         value={`${i + 1}`}
                                         data-val={`${i + 1}`}
                                         name="default-count"
-                                        {...{ checked: defaultPlaatsCount === i + 1 }}
+                                        {...{ defaultChecked: defaultPlaatsCount === i + 1 }}
                                     />
                                     <label htmlFor={`default-count-${i + 1}`}>{i + 1}</label>
                                 </React.Fragment>
@@ -146,7 +148,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         id={`extra-count-${i}`}
                                         value={`${i}`}
                                         name="extra-count"
-                                        {...{ checked: i === 0 }}
+                                        {...{ defaultChecked: i === 0 }}
                                     />
                                     <label htmlFor={`extra-count-${i}`}>
                                         {i !== 0 ? '+' : ''}
