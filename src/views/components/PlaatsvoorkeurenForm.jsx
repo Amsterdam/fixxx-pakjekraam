@@ -402,7 +402,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                             className="Button Button--secondary"
                             type="submit"
                             name="redirectTo"
-                            value={`${next}?error=plaatsvoorkeuren-saved#plaatsvoorkeuren`}
+                            value={`./?error=plaatsvoorkeuren-saved&next=${next}#bottom-buttons`}
                         >
                             Bewaar
                         </button>
