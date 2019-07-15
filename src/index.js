@@ -1137,7 +1137,7 @@ const handleVoorkeurenPost = (req, res, next, erkenningsNummer) => {
     };
 
     // TODO: Remove and insert in one transaction
-    console.log(redirectTo);
+    console.log(req.body);
     removeExisting()
         .then(insertFormData)
         .then(

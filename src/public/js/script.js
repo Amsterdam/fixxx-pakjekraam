@@ -277,6 +277,40 @@ function splitByArray(orgArr, valueArr) {
               explain = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__explain'),
               minSlider = form.querySelector('input[name="default-count"]'),
               maxSlider = form.querySelector('input[name="extra-count"]'),
+              _submit = function(e){
+                e && e.preventDefault();
+                var data = new FormData(form);
+                data['redirectTo'] = './';
+                console.log(data);
+                    form.classList.add('in-progress');
+                  form.request = helpers.ajax({
+                    type: form.method,
+                    url: form.action,
+                    data: data,
+                    callback: function (data) {
+                      _process(data, form.dataset.resultSelector || 'body');
+                    },
+                    error: function () {
+                      form.classList.remove('in-progress');
+                      form.classList.add('ajax-error');
+                      _decorate();
+                    }
+                  });
+              },
+              _process = function (data, selector) {
+                var div = document.createElement('div');
+                div.innerHTML = data;
+                var
+                  result = div.querySelectorAll(selector),
+                  target = document.querySelectorAll(selector);
+                    if (result && target) {
+                      for (var i = 0; i < target.length; i++) {
+                        target[i].innerHTML = result[i].innerHTML;
+                      }
+                    }
+                    _decorate();
+                    form.classList.remove('in-progress');
+              },
               _clearElem = function (elem) {
                   while (elem.firstChild) {
                       elem.removeChild(elem.firstChild);
@@ -317,6 +351,7 @@ function splitByArray(orgArr, valueArr) {
               };
           _formChange();
           form.addEventListener('change', _formChange);
+          form.addEventListener('submit', _submit);
       },
       'initial-modal': function(){
           var self = this,
