@@ -71,6 +71,11 @@ class MarktDetailPage extends React.Component {
                                     Sollicitanten & vastekaarthouders
                                 </a>
                             </li>
+                            <li className="LinkList__item">
+                                <a href={`./${today()}/voorrangslijst/`} className="Link">
+                                    Voorrangslijst
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

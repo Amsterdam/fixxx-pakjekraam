@@ -67,6 +67,7 @@ const {
     getMarktplaatsen,
     getMarkten,
     getSollicitantenlijstInput,
+    getVoorrangslijstInput,
 } = require('./pakjekraam-api.ts');
 
 const { serverHealth, databaseHealth, keycloakHealth, makkelijkeMarktHealth } = require('./routes/status.ts');
@@ -385,6 +386,20 @@ app.get('/markt/:marktId/:datum/sollicitanten/', keycloak.protect(KeycloakRoles.
     getSollicitantenlijstInput(req.session.token, req.params.marktId, req.params.datum).then(
         ({ ondernemers, aanmeldingen, voorkeuren, markt }) => {
             res.render('SollicitantenPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type, user });
+        },
+        err => {
+            res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
+        },
+    );
+});
+
+app.get('/markt/:marktId/:datum/voorrangslijst/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
+    const user = req.session.token;
+    const datum = req.params.datum;
+    const type = 'voorrangslijst';
+    getVoorrangslijstInput(req.session.token, req.params.marktId, req.params.datum).then(
+        ({ ondernemers, aanmeldingen, voorkeuren, markt }) => {
+            res.render('VoorrangslijstPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type, user });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);
