@@ -1,6 +1,9 @@
 const ReactDOMServer = require('react-dom/server');
 const nodemailer = require('nodemailer');
 const sgTransport = require('nodemailer-sendgrid-transport');
+const { requireEnv } = require('./util.js');
+
+requireEnv('MAILER_URL');
 
 const { username, password, hostname, port, searchParams } = new URL(process.env.MAILER_URL);
 

@@ -1,8 +1,14 @@
 import { init, login, getMarktondernemer } from './makkelijkemarkt-api';
 import { MMSession } from './makkelijkemarkt.model';
+import { requireEnv } from './util.js';
 
 const packageJSON = require('../package.json');
 const MILLISECONDS_IN_SECOND = 1000;
+
+requireEnv('API_URL');
+requireEnv('API_MMAPPKEY');
+requireEnv('API_READONLY_USER');
+requireEnv('API_READONLY_PASS');
 
 const loginSettings = {
     url: process.env.API_URL,

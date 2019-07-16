@@ -23,6 +23,7 @@ const {
     nextWeek,
     addDays,
     endOfWeek,
+    requireEnv,
     requireOne,
     toISODate,
     trace,
@@ -93,6 +94,9 @@ const parseDatabaseURL = str => {
         database: params.pathname.split('/')[1],
     };
 };
+
+requireEnv('DATABASE_URL');
+requireEnv('APP_SECRET');
 
 const pgPool = new PgPool(parseDatabaseURL(process.env.DATABASE_URL));
 

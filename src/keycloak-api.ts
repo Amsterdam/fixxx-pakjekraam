@@ -1,5 +1,12 @@
 import KeycloakAdminClient from 'keycloak-admin';
-import { requireOne } from './util.js';
+import { requireEnv, requireOne } from './util.js';
+
+requireEnv('IAM_URL');
+requireEnv('IAM_REALM');
+requireEnv('IAM_ADMIN_USER');
+requireEnv('IAM_ADMIN_PASS');
+requireEnv('IAM_CLIENT_ID');
+requireEnv('IAM_CLIENT_SECRET');
 
 const clientConfig = {
     baseUrl: process.env.IAM_URL,

@@ -171,6 +171,12 @@ const traceError = message => err => {
     throw err;
 };
 
+const requireEnv = key => {
+    if (!process.env[key]) {
+        throw new Error(`Required environment variable "${key}" is not configured.`);
+    }
+};
+
 module.exports = {
     fullRelativeHumanDate,
     splitByValueArray,
@@ -191,6 +197,7 @@ module.exports = {
     formatDate,
     relativeHumanDay,
     capitalize,
+    requireEnv,
     requireOne,
     trace,
     traceError,

@@ -8,6 +8,9 @@ import { initAllocation } from './allocation.sequelize';
 import { initPlaatsvoorkeur } from './plaatsvoorkeur.sequelize';
 import { initSession } from './session.sequelize';
 import { initVoorkeur } from './voorkeur.sequelize';
+import { requireEnv } from '../util.js';
+
+requireEnv('DATABASE_URL');
 
 const databaseURL = new URL(process.env.DATABASE_URL);
 const config = {
