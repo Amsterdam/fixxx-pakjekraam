@@ -6,7 +6,7 @@ import {
     getMarktondernemers as getMarktondernemersMM,
     getMarktondernemersByMarkt as getMarktondernemersByMarktMM,
 } from './makkelijkemarkt-api';
-import { formatOndernemerName, slugifyMarkt } from './domain-knowledge.js';
+import { formatOndernemerName, isVast, slugifyMarkt } from './domain-knowledge.js';
 import { numberSort, stringSort } from './util.js';
 import Sequelize from 'sequelize';
 import { allocation, plaatsvoorkeur, rsvp, voorkeur } from './model/index';
@@ -280,10 +280,14 @@ export const getMarktondernemer = (token: string, erkenningsNummer: string) =>
     getMarktondernemerMM(token, erkenningsNummer).then(ondernemer => convertOndernemer(ondernemer));
 
 export const getMarktondernemers = (token: string) =>
-    getMarktondernemersMM(token).then(sollictaties => sollictaties.map(convertSollicitatie));
+    getMarktondernemersMM(token).then(sollictaties =>
+        sollictaties.filter(sollictatie => !sollictatie.doorgehaald).map(convertSollicitatie),
+    );
 
 export const getMarktondernemersByMarkt = (token: string, marktId: string) =>
-    getMarktondernemersByMarktMM(token, marktId).then(sollictaties => sollictaties.map(convertSollicitatie));
+    getMarktondernemersByMarktMM(token, marktId).then(sollictaties =>
+        sollictaties.filter(sollictatie => !sollictatie.doorgehaald).map(convertSollicitatie),
+    );
 
 export const getIndelingslijstInput = (token: string, marktId: string, marktDate: string) => {
     const ondernemersPromise = getMarktondernemersByMarktMM(token, marktId).then(ondernemers =>
@@ -415,10 +419,8 @@ export const getMailContext = (token: string, marktId: string, erkenningsNr: str
 
 export const getSollicitantenlijstInput = (token: string, marktId: string, date: string) =>
     Promise.all([
-        getMarktondernemersByMarktMM(token, marktId).then(ondernemers =>
-            ondernemers.filter(
-                ondernemer => !ondernemer.doorgehaald && (ondernemer.status === 'soll' || ondernemer.status === 'vkk'),
-            ),
+        getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
+            ondernemers.filter(({ status }) => !isVast(status)),
         ),
         getAanmeldingen(marktId, date),
         getPlaatsvoorkeuren(marktId),
@@ -434,22 +436,22 @@ export const getSollicitantenlijstInput = (token: string, marktId: string, date:
         };
     });
 
-export const getVoorrangslijstInput = (token: string, marktId: string, date: string) =>
+export const getVoorrangslijstInput = (token: string, marktId: string, marktDate: string) =>
     Promise.all([
-        getMarktondernemersByMarktMM(token, marktId).then(ondernemers =>
-            ondernemers.filter(ondernemer => !ondernemer.doorgehaald),
-        ),
-        getAanmeldingen(marktId, date),
+        getMarktondernemersByMarkt(token, marktId),
+        getAanmeldingen(marktId, marktDate),
         getPlaatsvoorkeuren(marktId),
         getMarkt(token, marktId),
+        getALijst(token, marktId, marktDate),
     ]).then(args => {
-        const [ondernemers, aanmeldingen, voorkeuren, markt] = args;
+        const [ondernemers, aanmeldingen, voorkeuren, markt, aLijst] = args;
 
         return {
             ondernemers,
             aanmeldingen,
             voorkeuren,
             markt,
+            aLijst,
         };
     });
 

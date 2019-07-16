@@ -1,13 +1,15 @@
 const React = require('react');
 const MarktDetailBase = require('./components/MarktDetailBase');
-const OndernemerList = require('./components/OndernemerList');
+const OndernemerList = require('./components/OndernemerList.tsx');
 const PrintPage = require('./components/PrintPage');
 const PropTypes = require('prop-types');
 const { paginate } = require('../util');
+const { calcVolgorde, isAanwezig } = require('../indeling');
 
 class VoorrangslijstPage extends React.Component {
     propTypes = {
         markt: PropTypes.object.isRequired,
+        aLijst: PropTypes.array,
         ondernemers: PropTypes.object,
         aanmeldingen: PropTypes.object,
         voorkeuren: PropTypes.object,
@@ -17,9 +19,15 @@ class VoorrangslijstPage extends React.Component {
     };
 
     render() {
-        const { markt, ondernemers, aanmeldingen, voorkeuren, datum, type, user } = this.props;
+        const { markt, aLijst, aanmeldingen, voorkeuren, datum, type, user } = this.props;
+        let { ondernemers } = this.props;
         const itemsOnPage = 50;
-        const aanmeldingenOrdered = aanmeldingen.sort((a, b) => b.updatedAt - a.updatedAt);
+
+        ondernemers = calcVolgorde(ondernemers, aLijst);
+        ondernemers = [
+            ...ondernemers.filter(ondernemer => isAanwezig(aanmeldingen, ondernemer)),
+            ...ondernemers.filter(ondernemer => !isAanwezig(aanmeldingen, ondernemer)),
+        ];
 
         const paginas = paginate(ondernemers, itemsOnPage);
         const paginasLists = paginate(paginas, 2);
@@ -43,7 +51,7 @@ class VoorrangslijstPage extends React.Component {
                                 markt={markt}
                                 type={type}
                                 datum={datum}
-                                aanmeldingen={aanmeldingenOrdered}
+                                aanmeldingen={aanmeldingen}
                             />
                         ))}
                     </PrintPage>

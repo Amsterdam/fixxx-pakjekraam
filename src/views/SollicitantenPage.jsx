@@ -1,6 +1,6 @@
 const React = require('react');
 const MarktDetailBase = require('./components/MarktDetailBase');
-const OndernemerList = require('./components/OndernemerList');
+const OndernemerList = require('./components/OndernemerList.tsx');
 const PrintPage = require('./components/PrintPage');
 const PropTypes = require('prop-types');
 const { paginate } = require('../util');

@@ -261,7 +261,7 @@ const findOptimalSpot = (
     return mogelijkePlaatsen[0];
 };
 
-const isAanwezig = (aanwezigheid: IRSVP[], ondernemer: IMarktondernemer) => {
+export const isAanwezig = (aanwezigheid: IRSVP[], ondernemer: IMarktondernemer) => {
     const rsvp = aanwezigheid.find(aanmelding => aanmelding.erkenningsNummer === ondernemer.erkenningsNummer);
 
     /*
@@ -655,13 +655,38 @@ const getPossibleMoves = (state: IMarktindeling, toewijzing: IToewijzing): MoveQ
     };
 };
 
+export const calcVolgorde = (ondernemers: IMarktondernemer[], aLijst: IMarktondernemer[] = []): IMarktondernemer[] => {
+    const abLijstPriority = (ondernemer: IMarktondernemer): number => (aLijst.includes(ondernemer) ? 1 : 2);
+
+    const ondernemerSort = (a: IMarktondernemer, b: IMarktondernemer) => {
+        // A-lijst of B-lijst
+        const sort1 = numberSort(abLijstPriority(a), abLijstPriority(b));
+
+        // Vastekaarthouders, tijdelijkevasteplaatshouders, sollicitanten
+        const sort2 = numberSort(statusPriority(a.status), statusPriority(b.status));
+
+        // Ancienniteitsnummer
+        const sort3 = numberSort(a.sollicitatieNummer, b.sollicitatieNummer);
+
+        return sort1 || sort2 || sort3;
+    };
+
+    return [...ondernemers].sort(ondernemerSort);
+};
+
+export const calcAanwezigenVolgorde = (
+    ondernemers: IMarktondernemer[],
+    aanwezigheid: IRSVP[] = [],
+    aLijst: IMarktondernemer[],
+): IMarktondernemer[] => {
+    const aanwezigen = ondernemers.filter(ondernemer => isAanwezig(aanwezigheid, ondernemer));
+
+    return calcVolgorde(aanwezigen, aLijst);
+};
+
 export const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling => {
     const { marktplaatsen, ondernemers, voorkeuren } = markt;
     const { aanwezigheid, aLijst } = markt;
-
-    let aanwezigen = ondernemers.filter(ondernemer => isAanwezig(aanwezigheid, ondernemer));
-
-    log(`${aanwezigheid.filter(rsvp => !rsvp.attending).length} Afmeldingen`);
 
     const abLijstPriority = (ondernemer: IMarktondernemer): number => (aLijst.includes(ondernemer) ? 1 : 2);
 
@@ -678,7 +703,7 @@ export const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktinde
         return sort1 || sort2 || sort3;
     };
 
-    aanwezigen = [...aanwezigen].sort(ondernemerSort);
+    const aanwezigen = calcAanwezigenVolgorde(ondernemers, aanwezigheid, aLijst);
 
     log(
         `Aanwezigen: ${aanwezigen.length}/${ondernemers.length} (${(
