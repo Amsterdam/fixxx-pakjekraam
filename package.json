@@ -91,9 +91,8 @@
     "qs": "6.7.0",
     "react": "16.8.6",
     "react-dom": "16.8.6",
-    "react-native": "0.59.9",
     "react-qr-svg": "2.2.1",
-    "sequelize": "5.8.7"
+    "sequelize": "5.10.1"
   },
   "husky": {
     "hooks": {
