@@ -11,12 +11,20 @@ class PlaatsvoorkeurenForm extends React.Component {
         plaatsvoorkeuren: PropTypes.array.isRequired,
         markt: PropTypes.object.isRequired,
         ondernemer: PropTypes.object.isRequired,
+        indelingVoorkeur: PropTypes.object,
         rows: PropTypes.array.isRequired,
         query: PropTypes.string,
     };
 
     render() {
-        const { markt, ondernemer, plaatsvoorkeuren, query, rows } = this.props;
+        const { markt, ondernemer, plaatsvoorkeuren, query, rows, indelingVoorkeur } = this.props;
+        const defaultVoorkeur = {
+            aantalPlaatsen: 1,
+            anwhere: true,
+            inactive: false,
+        };
+
+        const voorkeur = indelingVoorkeur || defaultVoorkeur;
 
         const hasVoorkeur = (marktId, plaatsId) =>
             plaatsvoorkeuren.some(voorkeur => voorkeur.marktId === marktId && voorkeur.plaatsId === plaatsId) ||
@@ -348,6 +356,23 @@ class PlaatsvoorkeurenForm extends React.Component {
                                 </div>
                             </div>
                         ))}
+
+                        <input type="hidden" name="marktId" defaultValue={markt.id} />
+                        <div className={`Fieldset`}>
+                            <h2 className="Fieldset__header">Flexibel indelen?</h2>
+                            <p className="InputField InputField--checkbox">
+                                <input
+                                    id="anywhere"
+                                    type="checkbox"
+                                    name="anywhere"
+                                    defaultChecked={voorkeur.anywhere !== false}
+                                />
+                                <label htmlFor="anywhere">
+                                    Als mijn voorkeursplaatsen niet beschikbaar zijn, wil ik automatisch op een losse
+                                    plaats ingedeeld worden.
+                                </label>
+                            </p>
+                        </div>
                     </div>
 
                     <p className="InputField InputField--submit" id="bottom-buttons">

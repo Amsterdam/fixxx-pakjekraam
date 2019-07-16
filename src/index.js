@@ -890,8 +890,9 @@ const voorkeurenPage = (req, res, token, erkenningsNummer, query, currentMarktId
         getMarktPaginas(currentMarktId),
         getMarktProperties(currentMarktId),
         getMarktplaatsen(currentMarktId),
+        getIndelingVoorkeur(erkenningsNummer, currentMarktId),
     ]).then(
-        ([ondernemer, markten, plaatsvoorkeuren, marktPaginas, marktProperties, marktPlaatsen]) => {
+        ([ondernemer, markten, plaatsvoorkeuren, marktPaginas, marktProperties, marktPlaatsen, indelingVoorkeur]) => {
             res.render('VoorkeurenPage', {
                 ondernemer,
                 markten,
@@ -899,6 +900,7 @@ const voorkeurenPage = (req, res, token, erkenningsNummer, query, currentMarktId
                 marktPaginas,
                 marktProperties,
                 marktPlaatsen,
+                indelingVoorkeur,
                 query,
                 user: req.user,
                 messages,
@@ -1139,6 +1141,19 @@ const handleVoorkeurenPost = (req, res, next, erkenningsNummer) => {
     const ignoreEmptyVoorkeur = voorkeur => !!voorkeur.plaatsId;
 
     const insertFormData = () => {
+        console.log(`${req.body.plaatsvoorkeuren.length} (nieuwe) voorkeuren opslaan...`);
+
+        const voorkeuren = req.body.plaatsvoorkeuren
+            .map(voorkeurenFormDataToObject)
+            .map(plaatsvoorkeur => ({
+                ...plaatsvoorkeur,
+                erkenningsNummer,
+            }))
+            .filter(ignoreEmptyVoorkeur);
+
+        return models.plaatsvoorkeur.bulkCreate(voorkeuren);
+    };
+    const insertAlgemeneVoorkeurFormData = () => {
         console.log(`${req.body.plaatsvoorkeuren.length} (nieuwe) voorkeuren opslaan...`);
 
         const voorkeuren = req.body.plaatsvoorkeuren
