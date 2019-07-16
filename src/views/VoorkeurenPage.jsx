@@ -15,13 +15,14 @@ class VoorkeurenPage extends React.Component {
         marktProperties: PropTypes.object,
         marktPlaatsen: PropTypes.object,
         indelingVoorkeur: PropTypes.object,
+        marktDate: PropTypes.string,
         messages: PropTypes.array,
         query: PropTypes.string,
         user: PropTypes.object,
     };
 
     render() {
-        const { marktProperties, marktPaginas, marktPlaatsen, indelingVoorkeur } = this.props;
+        const { marktProperties, marktPaginas, marktPlaatsen, indelingVoorkeur, marktDate } = this.props;
         const rows = (
             marktProperties.rows ||
             marktPaginas.reduce(
@@ -35,6 +36,7 @@ class VoorkeurenPage extends React.Component {
             row.map(plaatsId => marktPlaatsen.find(plaats => plaats.plaatsId === plaatsId)).map(plaats => plaats),
         );
         console.log(indelingVoorkeur);
+
         return (
             <Page messages={this.props.messages}>
                 <Header user={this.props.user}>
@@ -49,6 +51,7 @@ class VoorkeurenPage extends React.Component {
                         ondernemer={this.props.ondernemer}
                         markt={this.props.markten[0]}
                         indelingVoorkeur={indelingVoorkeur}
+                        marktDate={marktDate}
                         rows={rows}
                         query={this.props.query}
                     />

@@ -12,12 +12,13 @@ class PlaatsvoorkeurenForm extends React.Component {
         markt: PropTypes.object.isRequired,
         ondernemer: PropTypes.object.isRequired,
         indelingVoorkeur: PropTypes.object,
+        marktDate: PropTypes.string,
         rows: PropTypes.array.isRequired,
         query: PropTypes.string,
     };
 
     render() {
-        const { markt, ondernemer, plaatsvoorkeuren, query, rows, indelingVoorkeur } = this.props;
+        const { markt, ondernemer, plaatsvoorkeuren, query, rows, indelingVoorkeur, marktDate } = this.props;
         const defaultVoorkeur = {
             aantalPlaatsen: 1,
             anwhere: true,
@@ -27,17 +28,17 @@ class PlaatsvoorkeurenForm extends React.Component {
         const voorkeur = indelingVoorkeur || defaultVoorkeur;
 
         const hasVoorkeur = (marktId, plaatsId) =>
-            plaatsvoorkeuren.some(voorkeur => voorkeur.marktId === marktId && voorkeur.plaatsId === plaatsId) ||
+            plaatsvoorkeuren.some(voork => voork.marktId === marktId && voork.plaatsId === plaatsId) ||
             ondernemer.sollicitaties.some(
                 sollicitatie =>
                     sollicitatie.markt.id === parseInt(marktId, 10) && sollicitatie.vastePlaatsen.includes(plaatsId),
             );
-        const voorkeurEntries = plaatsvoorkeuren.map((voorkeur, index) => {
+        const voorkeurEntries = plaatsvoorkeuren.map((voork, index) => {
             return {
-                marktId: voorkeur.marktId,
-                erkenningsNummer: voorkeur.erkenningsNummer,
-                plaatsId: voorkeur.plaatsId,
-                priority: voorkeur.priority + 1,
+                marktId: voork.marktId,
+                erkenningsNummer: voork.erkenningsNummer,
+                plaatsId: voork.plaatsId,
+                priority: voork.priority + 1,
                 readonly: false,
                 newItem: false,
             };
@@ -121,7 +122,12 @@ class PlaatsvoorkeurenForm extends React.Component {
                 <div className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
                     <script dangerouslySetInnerHTML={marktRowsJSOM()} />
                     <script dangerouslySetInnerHTML={plaatsSetsJSON()} />
-
+                    <input
+                        name="aantalPlaatsen"
+                        id="aantalPlaatsen"
+                        type="hidden"
+                        defaultValue={voorkeur.aantalPlaatsen}
+                    />
                     <div className="Fieldset PlaatsvoorkeurenForm__plaats-count">
                         <h2 className="Fieldset__header">Aantal plaatsen</h2>
                         <span className="Fieldset__sub-header">
@@ -358,8 +364,11 @@ class PlaatsvoorkeurenForm extends React.Component {
                         ))}
 
                         <input type="hidden" name="marktId" defaultValue={markt.id} />
+                        <input type="hidden" name="marktDate" defaultValue={marktDate} />
                         <div className={`Fieldset`}>
-                            <h2 className="Fieldset__header">Flexibel indelen?</h2>
+                            <h2 className="Fieldset__header">
+                                Flexibel indelen? Dan deelt het systeem u op beschikare plaatsen in
+                            </h2>
                             <p className="InputField InputField--checkbox">
                                 <input
                                     id="anywhere"
@@ -368,8 +377,17 @@ class PlaatsvoorkeurenForm extends React.Component {
                                     defaultChecked={voorkeur.anywhere !== false}
                                 />
                                 <label htmlFor="anywhere">
-                                    Als mijn voorkeursplaatsen niet beschikbaar zijn, wil ik automatisch op een losse
-                                    plaats ingedeeld worden.
+                                    {isVast(sollicitatie.status) ? (
+                                        <span>
+                                            Ja, ik wil liever kunnen vergroten dan alleen op mijn eigen plaats(en)
+                                            staan.
+                                        </span>
+                                    ) : (
+                                        <span>
+                                            Als mijn voorkeursplaatsen niet beschikbaar zijn, wil ik automatisch op een
+                                            losse plaats ingedeeld worden.
+                                        </span>
+                                    )}
                                 </label>
                             </p>
                         </div>

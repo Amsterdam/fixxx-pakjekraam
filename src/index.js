@@ -1153,24 +1153,26 @@ const handleVoorkeurenPost = (req, res, next, erkenningsNummer) => {
 
         return models.plaatsvoorkeur.bulkCreate(voorkeuren);
     };
-    const insertAlgemeneVoorkeurFormData = () => {
-        console.log(`${req.body.plaatsvoorkeuren.length} (nieuwe) voorkeuren opslaan...`);
+    const insertAlgVoorkeurFormData = () => {
+        console.log(`algemene voorkeuren opslaan...`);
+        const data = algemeneVoorkeurenFormData(req.body);
+        const { marktId, marktDate } = data;
 
-        const voorkeuren = req.body.plaatsvoorkeuren
-            .map(voorkeurenFormDataToObject)
-            .map(plaatsvoorkeur => ({
-                ...plaatsvoorkeur,
+        return upsert(
+            models.voorkeur,
+            {
                 erkenningsNummer,
-            }))
-            .filter(ignoreEmptyVoorkeur);
-
-        return models.plaatsvoorkeur.bulkCreate(voorkeuren);
+                marktId,
+                marktDate,
+            },
+            data,
+        );
     };
 
     // TODO: Remove and insert in one transaction
-    console.log(req.body);
     removeExisting()
         .then(insertFormData)
+        .then(insertAlgVoorkeurFormData)
         .then(
             () => res.status(HTTP_CREATED_SUCCESS).redirect(redirectTo),
             error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),

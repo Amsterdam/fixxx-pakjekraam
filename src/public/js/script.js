@@ -303,9 +303,15 @@ function splitByArray(orgArr, valueArr) {
                _getFormData = function(){
                 var out = [],
                         items = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
-                        erkenningsNummer = form.querySelector('[name="erkenningsNummer"]').value;
+                        erkenningsNummer = form.querySelector('[name="erkenningsNummer"]').value,
+                        marktId = form.querySelector('[name="marktId"]').value,
+                        aantalPlaatsen = form.querySelector('[name="aantalPlaatsen"]').value,
+                        anywhere = form.querySelector('[name="anywhere"]:checked') && form.querySelector('[name="anywhere"]:checked').value;
                 out.push(encodeURIComponent('erkenningsNummer') + '=' + encodeURIComponent(erkenningsNummer));
                 out.push(encodeURIComponent('redirectTo') + '=' + encodeURIComponent('./?error=plaatsvoorkeuren-saved'));
+                anywhere && out.push(encodeURIComponent('anywhere') + '=' + encodeURIComponent(anywhere));
+                out.push(encodeURIComponent('marktId') + '=' + encodeURIComponent(marktId));
+                out.push(encodeURIComponent('aantalPlaatsen') + '=' + encodeURIComponent(aantalPlaatsen));
                 for (var i = 0; i < items.length; i++){
                     var
                         plaatsId = items[i].querySelector('[name*="plaatsId"]'),
@@ -360,11 +366,13 @@ function splitByArray(orgArr, valueArr) {
                       j,
                       minVal = form.querySelector('input[name="default-count"]:checked').value,
                       maxVal = form.querySelector('input[name="extra-count"]:checked').value;
+                      aantalPlaatsen = form.querySelector('input[name="aantalPlaatsen"]');
                   if (elem === maxSlider && maxSlider.value < minSlider.value) {
                       minSlider.value = maxSlider.value;
                   } else if (elem === minSlider && maxSlider.value < minSlider.value) {
                       maxSlider.value = minSlider.value;
                   }
+                  aantalPlaatsen.value = parseInt(minVal) + parseInt(maxVal);
                   for (i = 0; i < explain.length; i++) {
                       var min = explain[i].querySelector('.min');
                       var max = explain[i].querySelector('.max');

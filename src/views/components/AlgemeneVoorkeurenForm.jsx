@@ -138,7 +138,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
 
                         <p className="InputField InputField--number">
                             <label htmlFor="aantalPlaatsen" className="Label">
-                                Aantal kramen:
+                                Maximaal aantal kramen:
                             </label>
                             <input
                                 name="aantalPlaatsen"
@@ -187,7 +187,9 @@ class AlgemeneVoorkeurenForm extends React.Component {
                     ) : null}
                     {vast ? (
                         <div className={`Fieldset`}>
-                            <h2 className="Fieldset__header">Flexibel indelen?</h2>
+                            <h2 className="Fieldset__header">
+                                Flexibel indelen? Dan deelt het systeem u op beschikare plaatsen in
+                            </h2>
                             <p className="InputField InputField--checkbox">
                                 <input
                                     id="anywhere"
@@ -196,8 +198,17 @@ class AlgemeneVoorkeurenForm extends React.Component {
                                     defaultChecked={voorkeur.anywhere !== false}
                                 />
                                 <label htmlFor="anywhere">
-                                    Als mijn voorkeursplaatsen niet beschikbaar zijn, wil ik automatisch op een losse
-                                    plaats ingedeeld worden.
+                                    {isVast(sollicitatie.status) ? (
+                                        <span>
+                                            Ja, ik wil liever kunnen vergroten dan alleen op mijn eigen plaats(en)
+                                            staan.
+                                        </span>
+                                    ) : (
+                                        <span>
+                                            Als mijn voorkeursplaatsen niet beschikbaar zijn, wil ik automatisch op een
+                                            losse plaats ingedeeld worden.
+                                        </span>
+                                    )}
                                 </label>
                             </p>
                         </div>
