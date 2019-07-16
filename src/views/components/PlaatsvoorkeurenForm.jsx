@@ -305,7 +305,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        {Array.from(new Array(2)).map((r, i) => (
+                        {Array.from(new Array(0)).map((r, i) => (
                             <div
                                 className="PlaatsvoorkeurenForm__prototype ghost"
                                 data-plaatsvoorkeur-count={newPlaatsvoorkeurCount}
@@ -351,14 +351,6 @@ class PlaatsvoorkeurenForm extends React.Component {
                     </div>
 
                     <p className="InputField InputField--submit" id="bottom-buttons">
-                        <button
-                            className="Button Button--secondary"
-                            type="submit"
-                            name="redirectTo"
-                            value={`./?error=plaatsvoorkeuren-saved&next=${next}#bottom-buttons`}
-                        >
-                            + Voeg nog een voorkeur toe
-                        </button>
                         <button
                             className="Button Button--secondary"
                             type="submit"
