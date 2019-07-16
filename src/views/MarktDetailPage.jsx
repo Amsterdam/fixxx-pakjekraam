@@ -47,7 +47,7 @@ class MarktDetailPage extends React.Component {
                         <ul className="LinkList">
                             {dates.map(({ date, day, month, weekDay, relativeDay }) => (
                                 <li key={date} className="LinkList__item">
-                                    <a className={`Link`} href={`/markt/${markt.id}/${date}/indelingslijst/`}>
+                                    <a className={`Link`} href={`./${date}/indelingslijst/`}>
                                         <strong>{relativeDay !== '' && capitalize(relativeDay) + ', '}</strong>
                                         {relativeDay !== '' ? weekDay : capitalize(weekDay)} {day} {month}
                                     </a>
@@ -59,7 +59,7 @@ class MarktDetailPage extends React.Component {
                         <h2>Ondernemers</h2>
                         <ul className="LinkList">
                             <li className="LinkList__item">
-                                <a href={`/markt/${markt.id}/${today()}/vasteplaatshouders/`} className="Link">
+                                <a href={`./${today()}/vasteplaatshouders/`} className="Link">
                                     Vasteplaatshouder
                                 </a>
                             </li>
@@ -67,7 +67,7 @@ class MarktDetailPage extends React.Component {
                         <h2>Aanwezigheid vandaag</h2>
                         <ul className="LinkList">
                             <li className="LinkList__item">
-                                <a href={`/markt/${markt.id}/${today()}/sollicitanten/`} className="Link">
+                                <a href={`./${today()}/sollicitanten/`} className="Link">
                                     Sollicitanten & vastekaarthouders
                                 </a>
                             </li>

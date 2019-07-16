@@ -6,8 +6,8 @@ const OndernemerMarktTile = ({ markt, sollicitatie, voorkeuren, indelingVoorkeur
     return (
         <div className="OndernemerMarktTile well background-link-parent">
             <h2>{markt.naam}</h2>
-            <a className="background-link" href={`/markt-detail/${markt.id}`} />
-            <Button label={`Ga naar ${markt.naam}`} href={`/markt-detail/${markt.id}`} />
+            <a className="background-link" href={`./${markt.id}`} />
+            <Button label={`Ga naar ${markt.naam}`} href={`./${markt.id}`} />
         </div>
     );
 };

@@ -6,6 +6,35 @@ body {
 
     font-family: $ff-regular;
     @include p1;
+    &.in-progress {
+        overflow-y: hidden;
+        pointer-events: none;
+    }
+    &.in-progress:after {
+        content: "";
+        position: fixed;
+        z-index: 50;
+        opacity: 0.6;
+        background-color: $primary-white;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+    }
+    &.in-progress:before {
+        content: "";
+        @extend .loader-oval-dark;
+        z-index: 51;
+        opacity: 0.8;
+        background-repeat: no-repeat;
+        background-size: contain;
+        position: fixed;
+        width: 50px;
+        height: 50px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
 }
 html {
     box-sizing: border-box;

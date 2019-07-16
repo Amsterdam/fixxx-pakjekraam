@@ -294,13 +294,6 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__min-extra" />
                                         <div className="PlaatsvoorkeurenForm__list-item__extra PlaatsvoorkeurenForm__list-item__optional" />
                                     </div>
-                                    <a
-                                        href="#"
-                                        data-handler="clear-select"
-                                        className="PlaatsvoorkeurenForm__list-item__clear"
-                                    >
-                                        leeg maken
-                                    </a>
                                     <span className="PlaatsvoorkeurenForm__list-item__explain">
                                         Ik wil minimaal <span className="min" /> plaats
                                         <span className="minMulti">en</span>

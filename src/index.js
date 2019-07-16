@@ -120,7 +120,7 @@ app.get('/status/makkelijkemarkt', makkelijkeMarktHealth);
 
 // Required for Passport login form
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 const sessionStore = new (connectPg(session))({
     pool: pgPool,

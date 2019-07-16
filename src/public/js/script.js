@@ -174,6 +174,7 @@ function splitByArray(orgArr, valueArr) {
     },
     'remove-voorkeur': function(e){
         var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
+            form = _closest(this, 'form'),
             remove = voorkeur.classList.contains('remove'),
             plaatsIdsInputs = voorkeur.querySelectorAll('input[type="hidden"]'),
             container = _closest(this, '.PlaatsvoorkeurenForm__list'),
@@ -203,6 +204,7 @@ function splitByArray(orgArr, valueArr) {
                 }
             }
         }
+        helpers.trigger(form, 'submit');
     },
     'move-voorkeur': function(e){
         var voorkeur = _closest(this, '.PlaatsvoorkeurenForm__list-item'),
@@ -272,6 +274,7 @@ function splitByArray(orgArr, valueArr) {
           var form = this,
               vasteplaatsCount = form.dataset.vasteplaatsCount,
               slider = form.querySelectorAll('input[type="range"]'),
+              body = _closest(this, 'body'),
               extra = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__min-extra'),
               optional = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__optional'),
               explain = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__explain'),
@@ -279,55 +282,53 @@ function splitByArray(orgArr, valueArr) {
               maxSlider = form.querySelector('input[name="extra-count"]'),
               _submit = function(e){
                 e && e.preventDefault();
-                var data = new FormData(form), newData = {};
-                data['redirectTo'] = './';
-                var formData = new FormData(form);
-
-                for (var [key, value] of formData.entries()) {
-                  newData[key] = value;
-                }
-                data = _getFormData();
-                console.log(data);
-                    form.classList.add('in-progress');
-                  form.request = helpers.ajax({
+                _addAlert('Bezig met bewaren');
+                    body.classList.add('in-progress');
+                    form.request = helpers.ajax({
                     type: form.method,
                     url: form.action,
-                    data: JSON.stringify(data),
-                    headers: [["Content-Type", "application/json; charset=utf-8"]],
+                    data: _getFormData(),
+                    headers: [["Content-Type", "application/x-www-form-urlencoded"]],
                     callback: function (data) {
                       _process(data, form.dataset.resultSelector || 'body');
                     },
                     error: function () {
                         console.log('error');
-                      form.classList.remove('in-progress');
+                      body.classList.remove('in-progress');
                       form.classList.add('ajax-error');
                       _decorate();
                     }
                   });
               },
-              _getFormData = function(){
-                var out = {plaatsvoorkeuren: []},
-                items = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
-                erkenningsNummer = form.querySelector('[name="erkenningsNummer"]').value;
+               _getFormData = function(){
+                var out = [],
+                        items = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
+                        erkenningsNummer = form.querySelector('[name="erkenningsNummer"]').value;
+                out.push(encodeURIComponent('erkenningsNummer') + '=' + encodeURIComponent(erkenningsNummer));
+                out.push(encodeURIComponent('redirectTo') + '=' + encodeURIComponent('./?error=plaatsvoorkeuren-saved'));
                 for (var i = 0; i < items.length; i++){
                     var
-                        plaatsId = items[i].querySelector('[name*="plaatsId"]') && items[i].querySelector('[name*="plaatsId"]').value,
-                        priority = items[i].querySelector('[name*="priority"]') && items[i].querySelector('[name*="priority"]').value,
-                        marktId = items[i].querySelector('[name*="marktId"]') && items[i].querySelector('[name*="marktId"]').value;
+                        plaatsId = items[i].querySelector('[name*="plaatsId"]'),
+                        priority = items[i].querySelector('[name*="priority"]'),
+                        marktId = items[i].querySelector('[name*="marktId"]');
                     if (plaatsId && priority && marktId){
-                        out.plaatsvoorkeuren.push({plaatsId: plaatsId, priority: priority, marktId: marktId});
+                        out.push(encodeURIComponent(plaatsId.getAttribute('name')) + '=' + encodeURIComponent(plaatsId.value));
+                        out.push(encodeURIComponent(priority.getAttribute('name')) + '=' + encodeURIComponent(priority.value));
+                        out.push(encodeURIComponent(marktId.getAttribute('name')) + '=' + encodeURIComponent(marktId.value));
+
                     }
-                    out['erkenningsNummer'] = erkenningsNummer;
-                    out['redirectTo'] = './';
                 }
-                return out;
+                return out.join('&').replace(/%20/g, '+');;
+              },
+              _addAlert = function(alertText){
+                var base = document.createElement('div');
+                base.classList.add('Alert');
+                base.textContent = alertText;
+                body.appendChild(base);
               },
               _process = function (data, selector) {
                 var div = document.createElement('html');
                 div.innerHTML = data;
-                console.log(data);
-                console.log(div);
-                console.log(div.querySelectorAll(selector));
                 var
                   result = div.querySelectorAll(selector),
                   target = document.querySelectorAll(selector);
@@ -337,7 +338,7 @@ function splitByArray(orgArr, valueArr) {
                       }
                     }
                     _decorate();
-                    form.classList.remove('in-progress');
+                    body.classList.remove('in-progress');
               },
               _clearElem = function (elem) {
                   while (elem.firstChild) {
@@ -376,7 +377,9 @@ function splitByArray(orgArr, valueArr) {
                       maxM.classList[maxVal <= 1 ? 'add' : 'remove']('hidden');
                       minM.classList[minVal <= 1 ? 'add' : 'remove']('hidden');
                   }
-                  _getFormData();
+                  if(e) {
+                    _submit();
+                  }
               };
           _formChange();
           form.addEventListener('change', _formChange);
@@ -625,7 +628,10 @@ function splitByArray(orgArr, valueArr) {
       request.onreadystatechange = function () {
         if (request.readyState == 4) {
           if (request.status >= 200 && request.status < 400) {
-            if (options.callback && typeof (options.callback) == 'function') {
+            //fixme: beter login page check
+            if (request.responseText.indexOf('id="kc-') >= 0) {
+                location.reload();
+            } else if (options.callback && typeof (options.callback) == 'function') {
               options.callback.call(request, request.responseText);
             }
           } else {
@@ -703,6 +709,8 @@ function splitByArray(orgArr, valueArr) {
 
 
   _decorate();
+
+  var domain = location.domain;
 
 
 
