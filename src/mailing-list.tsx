@@ -1,7 +1,9 @@
 import * as React from 'react';
 import EmailIndeling from './views/EmailIndeling.jsx';
+import { defer } from 'rxjs';
+import { shareReplay, tap, combineLatest } from 'rxjs/operators';
 import { mail } from './mail.js';
-import { today } from './util.js';
+import { requireEnv, today } from './util.js';
 import { getMarkten } from './makkelijkemarkt-api';
 import {
     getAanmeldingen,
@@ -11,26 +13,30 @@ import {
     getPlaatsvoorkeuren,
     getToewijzingen,
 } from './pakjekraam-api';
+import { retry } from './rxjs-util';
 import { getAllUsers } from './keycloak-api';
 import { readOnlyLogin } from './makkelijkemarkt-auth';
 
-const fatalError = (err: string) => {
-    console.error(err);
-    process.exit(1);
-};
+requireEnv('MAILER_FROM');
 
 const marktDate = today();
 
-const usersPromise = getAllUsers();
-const makkelijkeMarktPromise = readOnlyLogin();
+const users$ = defer(() => getAllUsers()).pipe(
+    tap(() => console.log('Keycloak OK!'), () => console.log('Unable to connect to Keycloak')),
+    retry(10, 5000),
+    shareReplay(1),
+);
 
-usersPromise.then(() => console.log('Keycloak OK!')).catch(() => fatalError('Unable to connect to Keycloak'));
+const makkelijkeMarkt$ = defer(() => readOnlyLogin()).pipe(
+    tap(
+        () => console.log('Makkelijke Markt API OK!'),
+        () => console.log('Unable to connect to the Makkelijke Markt API'),
+    ),
+    retry(10, 5000),
+    shareReplay(1),
+);
 
-makkelijkeMarktPromise
-    .then(() => console.log('Makkelijke Markt API OK!'))
-    .catch(() => fatalError('Unable to connect to Makkelijke Markt API'));
-
-makkelijkeMarktPromise.then(makkelijkeMarkt =>
+makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]) =>
     getMarkten(makkelijkeMarkt.token).then(markten =>
         markten
             .filter(markt => markt.id === 20)
@@ -38,83 +44,80 @@ makkelijkeMarktPromise.then(makkelijkeMarkt =>
                 Promise.all([
                     getMarktondernemersByMarkt(makkelijkeMarkt.token, String(markt.id)),
                     getToewijzingen(String(markt.id), marktDate),
-                    usersPromise,
                     getPlaatsvoorkeuren(String(markt.id)),
                     getAanmeldingen(String(markt.id), marktDate),
                     getMarktplaatsen(String(markt.id)),
                     getAllBranches(),
-                ]).then(
-                    ([ondernemers, toewijzingen, users, plaatsvoorkeuren, aanmeldingen, marktplaatsen, branches]) => {
-                        console.log(`Verstuur mails voor de marktindeling van ${markt.id} op datum ${marktDate}`);
-                        console.log('Marktondernemers', ondernemers ? ondernemers.length : 0);
-                        console.log('Toewijzingen', toewijzingen ? toewijzingen.length : 0);
+                ]).then(([ondernemers, toewijzingen, plaatsvoorkeuren, aanmeldingen, marktplaatsen, branches]) => {
+                    console.log(`Verstuur mails voor de marktindeling van ${markt.id} op datum ${marktDate}`);
+                    console.log('Marktondernemers', ondernemers ? ondernemers.length : 0);
+                    console.log('Toewijzingen', toewijzingen ? toewijzingen.length : 0);
 
-                        const registeredUsers = users
-                            .filter(({ username }) =>
-                                ondernemers.some(({ erkenningsNummer }) => erkenningsNummer === username),
-                            )
-                            .filter(user => !!user.email);
+                    const registeredUsers = users
+                        .filter(({ username }) =>
+                            ondernemers.some(({ erkenningsNummer }) => erkenningsNummer === username),
+                        )
+                        .filter(user => !!user.email);
 
-                        console.log(
-                            'Geregistreerde marktondernemers met e-mail',
-                            registeredUsers ? registeredUsers.length : 0,
-                        );
+                    console.log(
+                        'Geregistreerde marktondernemers met e-mail',
+                        registeredUsers ? registeredUsers.length : 0,
+                    );
 
-                        toewijzingen
-                            .map(toewijzing => {
-                                const ondernemer = ondernemers.find(
-                                    ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer,
-                                );
-                                const user = users.find(({ username }) => username === toewijzing.erkenningsNummer);
+                    toewijzingen
+                        .map(toewijzing => {
+                            const ondernemer = ondernemers.find(
+                                ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer,
+                            );
+                            const user = users.find(({ username }) => username === toewijzing.erkenningsNummer);
 
-                                return {
-                                    toewijzing,
-                                    ondernemer,
-                                    user,
-                                };
-                            })
-                            .filter(({ user }) => !!user && !!user.email)
-                            .map(({ ondernemer, user, toewijzing }) => {
-                                const props = {
-                                    markt,
-                                    marktplaatsen,
-                                    marktDate,
-                                    ondernemer,
-                                    voorkeuren: plaatsvoorkeuren,
-                                    aanmeldingen,
-                                    branches,
-                                };
+                            return {
+                                toewijzing,
+                                ondernemer,
+                                user,
+                            };
+                        })
+                        .filter(({ user }) => !!user && !!user.email)
+                        .map(({ ondernemer, user, toewijzing }) => {
+                            const props = {
+                                markt,
+                                marktplaatsen,
+                                marktDate,
+                                ondernemer,
+                                voorkeuren: plaatsvoorkeuren,
+                                aanmeldingen,
+                                branches,
+                            };
 
-                                console.log(
-                                    `Stuur e-mail naar ${user.email}! Ondernemer is ingedeeld op plaats ${
-                                        toewijzing.plaatsen
-                                    }`,
-                                );
+                            console.log(
+                                `Stuur e-mail naar ${user.email}! Ondernemer is ingedeeld op plaats ${
+                                    toewijzing.plaatsen
+                                }`,
+                            );
 
-                                const subject = `${markt.naam} indeling voor ${marktDate}`;
+                            const subject = `${markt.naam} indeling voor ${marktDate}`;
 
-                                console.log(subject);
+                            console.log(subject);
 
-                                const testEmail = {
-                                    from: process.env.MAILER_FROM,
-                                    to: user.email,
-                                    subject,
-                                    react: <EmailIndeling {...props} />,
-                                };
+                            const testEmail = {
+                                from: process.env.MAILER_FROM,
+                                to: user.email,
+                                subject,
+                                react: <EmailIndeling {...props} />,
+                            };
 
-                                mail(testEmail).then(
-                                    () => {
-                                        console.log('E-mail is verstuurd.');
-                                        process.exit(0);
-                                    },
-                                    (err: Error) => {
-                                        console.error('E-mail sturen mislukt.', err);
-                                        process.exit(1);
-                                    },
-                                );
-                            });
-                    },
-                ),
+                            mail(testEmail).then(
+                                () => {
+                                    console.log('E-mail is verstuurd.');
+                                    process.exit(0);
+                                },
+                                (err: Error) => {
+                                    console.error('E-mail sturen mislukt.', err);
+                                    process.exit(1);
+                                },
+                            );
+                        });
+                }),
             ),
     ),
 );
