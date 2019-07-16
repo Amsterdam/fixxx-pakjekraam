@@ -67,7 +67,7 @@
     "number-literal-format": true,
     "object-literal-shorthand": true,
     "prefer-template": true,
-    "quotemark": [true, "avoid-escape", "avoid-template", "single"],
+    "quotemark": [true, "avoid-escape", "avoid-template", "single", "jsx-double"],
     "semicolon": [true, "always", "ignore-interfaces"],
     "space-before-function-paren": [
       true,
@@ -77,7 +77,7 @@
         "asyncArrow": "always"
       }
     ],
-    "variable-name": [true, "check-format", "allow-leading-underscore", "ban-keywords"],
+    "variable-name": [true, "check-format", "allow-leading-underscore", "ban-keywords", "allow-pascal-case"],
     "whitespace": [
       true,
       "check-branch",
