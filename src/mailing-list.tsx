@@ -14,12 +14,21 @@ import {
 import { getAllUsers } from './keycloak-api';
 import { readOnlyLogin } from './makkelijkemarkt-auth';
 
-// const React = require('react');
+const fatalError = (err: string) => {
+    console.error(err);
+    process.exit(1);
+};
 
 const marktDate = today();
 
 const usersPromise = getAllUsers();
 const makkelijkeMarktPromise = readOnlyLogin();
+
+usersPromise.then(() => console.log('Keycloak OK!')).catch(() => fatalError('Unable to connect to Keycloak'));
+
+makkelijkeMarktPromise
+    .then(() => console.log('Makkelijke Markt API OK!'))
+    .catch(() => fatalError('Unable to connect to Makkelijke Markt API'));
 
 makkelijkeMarktPromise.then(makkelijkeMarkt =>
     getMarkten(makkelijkeMarkt.token).then(markten =>
