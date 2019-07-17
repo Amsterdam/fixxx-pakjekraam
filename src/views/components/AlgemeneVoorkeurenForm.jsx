@@ -186,34 +186,6 @@ class AlgemeneVoorkeurenForm extends React.Component {
                             </p>
                         </div>
                     ) : null}
-                    {vast ? (
-                        <div className={`Fieldset`}>
-                            <h2 className="Fieldset__header">
-                                Flexibel indelen? Dan deelt het systeem u op beschikare plaatsen in
-                            </h2>
-                            <p className="InputField InputField--checkbox">
-                                <input
-                                    id="anywhere"
-                                    type="checkbox"
-                                    name="anywhere"
-                                    defaultChecked={voorkeur.anywhere !== false}
-                                />
-                                <label htmlFor="anywhere">
-                                    {isVast(sollicitatie.status) ? (
-                                        <span>
-                                            Ja, ik wil liever kunnen vergroten dan alleen op mijn eigen plaats(en)
-                                            staan.
-                                        </span>
-                                    ) : (
-                                        <span>
-                                            Als mijn voorkeursplaatsen niet beschikbaar zijn, wil ik automatisch op een
-                                            losse plaats ingedeeld worden.
-                                        </span>
-                                    )}
-                                </label>
-                            </p>
-                        </div>
-                    ) : null}
                 </div>
 
                 <div className="Fieldset">
