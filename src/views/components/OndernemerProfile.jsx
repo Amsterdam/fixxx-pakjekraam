@@ -17,7 +17,7 @@ class OndernemerProfile extends React.Component {
             <div>
                 <h1>Ondernemer detail: {formatOndernemerName(ondernemer)}</h1>
                 <p>{ondernemer.erkenningsnummer}</p>
-                <Button href={`${vendorURL}dashboard/`} type="secondary" label="Ondernemer dashboard" />
+
                 <h2>Markten</h2>
                 <ul>
                     {ondernemer.sollicitaties
