@@ -403,8 +403,17 @@ app.get('/markt/:marktId/:datum/voorrangslijst/', keycloak.protect(KeycloakRoles
     const datum = req.params.datum;
     const type = 'voorrangslijst';
     getVoorrangslijstInput(req.session.token, req.params.marktId, req.params.datum).then(
-        ({ ondernemers, aanmeldingen, voorkeuren, markt }) => {
-            res.render('VoorrangslijstPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type, user });
+        ({ ondernemers, aanmeldingen, voorkeuren, markt, toewijzingen }) => {
+            res.render('VoorrangslijstPage', {
+                ondernemers,
+                aanmeldingen,
+                voorkeuren,
+                markt,
+                datum,
+                type,
+                user,
+                toewijzingen,
+            });
         },
         err => {
             res.status(HTTP_INTERNAL_SERVER_ERROR).end(`${err}`);

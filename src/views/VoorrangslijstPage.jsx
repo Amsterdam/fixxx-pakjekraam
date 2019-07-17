@@ -16,12 +16,18 @@ class VoorrangslijstPage extends React.Component {
         datum: PropTypes.string,
         type: PropTypes.string,
         user: PropTypes.object,
+        toewijzingen: PropTypes.array.isRequired,
     };
 
     render() {
-        const { markt, aLijst, aanmeldingen, voorkeuren, datum, type, user } = this.props;
+        const { markt, aLijst, aanmeldingen, voorkeuren, datum, type, user, toewijzingen } = this.props;
         let { ondernemers } = this.props;
         const itemsOnPage = 50;
+
+        ondernemers = ondernemers.filter(
+            ondernemer =>
+                !toewijzingen.find(({ erkenningsNummer }) => erkenningsNummer === ondernemer.erkenningsNummer),
+        );
 
         ondernemers = calcVolgorde(ondernemers, aLijst);
         ondernemers = [
