@@ -80,7 +80,7 @@ const {
     marketApplicationPage,
     handleMarketApplication,
 } = require('./routes/market-application.ts');
-const { updateMarketPreferences } = require('./routes/market-preferences.ts');
+const { marketPreferencesPage, updateMarketPreferences } = require('./routes/market-preferences.ts');
 const { vendorDashboardPage } = require('./routes/vendor-dashboard.ts');
 const { marketLocationPage, updateMarketLocation } = require('./routes/market-location.ts');
 const { preferencesMailPage } = require('./routes/mail-preferences.tsx');
@@ -566,38 +566,6 @@ app.get(
     },
 );
 
-const algemeneVoorkeurenPage = (req, res, token, erkenningsNummer, marktId, marktDate, role) => {
-    const messages = getQueryErrors(req.query);
-    const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
-    const marktPromise = marktId ? getMarkt(token, marktId) : Promise.resolve(null);
-
-    // TODO: Only allow relative URLs in `next`, to prevent redirection to 3rd party phishing sites
-    const next = req.query.next;
-    const query = req.query;
-
-    Promise.all([
-        ondernemerPromise,
-        marktPromise,
-        getIndelingVoorkeur(erkenningsNummer, marktId, marktDate),
-        getAllBranches(),
-    ]).then(
-        ([ondernemer, markt, voorkeur, branches]) => {
-            res.render('AlgemeneVoorkeurenPage', {
-                ondernemer,
-                markt,
-                marktId,
-                voorkeur,
-                branches,
-                next,
-                query,
-                messages,
-                role,
-            });
-        },
-        err => errorPage(res, err),
-    );
-};
-
 const jsonPage = res => data => {
     res.set({
         'Content-Type': 'application/json; charset=UTF-8',
@@ -659,7 +627,7 @@ app.post(
 );
 
 app.get('/algemene-voorkeuren/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
-    algemeneVoorkeurenPage(
+    marketPreferencesPage(
         req,
         res,
         req.session.token,
@@ -671,7 +639,7 @@ app.get('/algemene-voorkeuren/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER)
 });
 
 app.get('/algemene-voorkeuren/:marktId/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
-    algemeneVoorkeurenPage(
+    marketPreferencesPage(
         req,
         res,
         req.session.token,
@@ -683,7 +651,7 @@ app.get('/algemene-voorkeuren/:marktId/', keycloak.protect(KeycloakRoles.MARKTON
 });
 
 app.get('/algemene-voorkeuren/:marktId/:marktDate/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
-    algemeneVoorkeurenPage(
+    marketPreferencesPage(
         req,
         res,
         req.session.token,
@@ -698,7 +666,7 @@ app.get(
     '/ondernemer/:erkenningsNummer/algemene-voorkeuren/',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     (req, res) => {
-        algemeneVoorkeurenPage(
+        marketPreferencesPage(
             req,
             res,
             req.session.token,
@@ -714,7 +682,7 @@ app.get(
     '/ondernemer/:erkenningsNummer/algemene-voorkeuren/:marktId/',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     (req, res) => {
-        algemeneVoorkeurenPage(
+        marketPreferencesPage(
             req,
             res,
             req.session.token,
@@ -730,7 +698,7 @@ app.get(
     '/ondernemer/:erkenningsNummer/algemene-voorkeuren/:marktId/:marktDate/',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     (req, res) => {
-        algemeneVoorkeurenPage(
+        marketPreferencesPage(
             req,
             res,
             req.session.token,

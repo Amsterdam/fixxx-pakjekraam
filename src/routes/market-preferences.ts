@@ -2,7 +2,9 @@ import { Request, Response } from 'express';
 import { IMarktondernemerVoorkeurRow } from '../markt.model';
 import { upsert } from '../sequelize-util.js';
 import models from '../model/index';
-import { internalServerErrorPage, HTTP_CREATED_SUCCESS } from '../express-util';
+import { internalServerErrorPage, HTTP_CREATED_SUCCESS, getQueryErrors } from '../express-util';
+import { getMarkt, getMarktondernemer } from '../makkelijkemarkt-api';
+import { getAllBranches, getIndelingVoorkeur } from '../pakjekraam-api';
 
 export const algemeneVoorkeurenFormData = (body: any): IMarktondernemerVoorkeurRow => {
     const { erkenningsNummer, marktId, marktDate, brancheId, parentBrancheId, inrichting } = body;
@@ -50,4 +52,41 @@ export const updateMarketPreferences = (req: Request, res: Response) => {
         },
         data,
     ).then(() => res.status(HTTP_CREATED_SUCCESS).redirect(next ? next : '/'), internalServerErrorPage(res));
+};
+
+export const marketPreferencesPage = (
+    req: Request,
+    res: Response,
+    token: string,
+    erkenningsNummer: string,
+    marktId: string,
+    marktDate: string,
+    role: string,
+) => {
+    const messages = getQueryErrors(req.query);
+    const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
+    const marktPromise = marktId ? getMarkt(token, marktId) : Promise.resolve(null);
+
+    // TODO: Only allow relative URLs in `next`, to prevent redirection to 3rd party phishing sites
+    const next = req.query.next;
+    const query = req.query;
+
+    Promise.all([
+        ondernemerPromise,
+        marktPromise,
+        getIndelingVoorkeur(erkenningsNummer, marktId, marktDate),
+        getAllBranches(),
+    ]).then(([ondernemer, markt, voorkeur, branches]) => {
+        res.render('AlgemeneVoorkeurenPage', {
+            ondernemer,
+            markt,
+            marktId,
+            voorkeur,
+            branches,
+            next,
+            query,
+            messages,
+            role,
+        });
+    }, internalServerErrorPage(res));
 };
