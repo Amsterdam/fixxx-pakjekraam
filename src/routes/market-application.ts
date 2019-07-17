@@ -108,14 +108,13 @@ export interface AttendanceUpdateFormData {
     next: string;
 }
 
-export const handleAttendanceUpdate = (req: Request, res: Response) => {
+export const handleAttendanceUpdate = (req: Request, res: Response, next: NextFunction, erkenningsNummer: string) => {
     const data: AttendanceUpdateFormData = req.body;
     /*
      * TODO: Form data format validation
      * TODO: Business logic validation
      */
 
-    const { erkenningsNummer, next } = data;
     const responses = data.rsvp.map(
         (rsvp): IRSVP => ({
             ...rsvp,
@@ -161,7 +160,7 @@ export const handleAttendanceUpdate = (req: Request, res: Response) => {
                         );
                     }),
                 ).then(
-                    () => res.status(HTTP_CREATED_SUCCESS).redirect(next),
+                    () => res.status(HTTP_CREATED_SUCCESS).redirect(req.body.next),
                     error => internalServerErrorPage(res)(String(error)),
                 );
             }

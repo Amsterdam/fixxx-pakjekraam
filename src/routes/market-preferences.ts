@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { IMarktondernemerVoorkeurRow } from '../markt.model';
 import { upsert } from '../sequelize-util.js';
 import models from '../model/index';
@@ -36,12 +36,10 @@ export const algemeneVoorkeurenFormData = (body: any): IMarktondernemerVoorkeurR
     return voorkeur;
 };
 
-export const updateMarketPreferences = (req: Request, res: Response) => {
-    const { next } = req.body;
-
+export const updateMarketPreferences = (req: Request, res: Response, next: NextFunction, erkenningsNummer: string) => {
     const data = algemeneVoorkeurenFormData(req.body);
 
-    const { erkenningsNummer, marktId, marktDate } = data;
+    const { marktId, marktDate } = data;
 
     upsert(
         models.voorkeur,
@@ -51,7 +49,10 @@ export const updateMarketPreferences = (req: Request, res: Response) => {
             marktDate,
         },
         data,
-    ).then(() => res.status(HTTP_CREATED_SUCCESS).redirect(next ? next : '/'), internalServerErrorPage(res));
+    ).then(
+        () => res.status(HTTP_CREATED_SUCCESS).redirect(req.body.next ? req.body.next : '/'),
+        internalServerErrorPage(res),
+    );
 };
 
 export const marketPreferencesPage = (
