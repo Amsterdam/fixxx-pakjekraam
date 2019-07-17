@@ -77,6 +77,19 @@ class MarktDetailPage extends React.Component {
                                 </a>
                             </li>
                         </ul>
+                        <h2>Aanwezigheid morgen</h2>
+                        <ul className="LinkList">
+                            <li className="LinkList__item">
+                                <a href={`./${addDays(today(), 1)}/sollicitanten/`} className="Link">
+                                    Sollicitanten & vastekaarthouders
+                                </a>
+                            </li>
+                            <li className="LinkList__item">
+                                <a href={`./${addDays(today(), 1)}/voorrangslijst/`} className="Link">
+                                    Voorrangslijst
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </MarktDetailBase>

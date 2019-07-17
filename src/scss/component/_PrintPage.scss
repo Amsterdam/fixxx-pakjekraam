@@ -78,6 +78,10 @@ body.page-print {
         padding: 0 15px;
         margin-left: 10px;
     }
+    &__date {
+        float: right;
+        font-size: $fs-50;
+    }
     @media screen and (min-width: $screenLarge) {
         &__ratio {
             position: relative;

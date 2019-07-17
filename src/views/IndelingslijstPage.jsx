@@ -52,6 +52,7 @@ class IndelingslijstenPage extends React.Component {
                             index={j}
                             title={`Indelingslijst ${markt.naam}`}
                             label={page.title}
+                            datum={datum}
                         >
                             {page.indelingslijstGroup.map((pageItem, i) => {
                                 if (pageItem.type && pageItem.type === 'street') {

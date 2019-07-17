@@ -32,10 +32,10 @@ class SollicitantenPage extends React.Component {
                 datum={datum}
                 type={type}
                 user={user}
-                showDate={true}
+                showDate={false}
             >
                 {paginasLists.map((pagina, i) => (
-                    <PrintPage key={i} index={i} title={`Sollicitanten: ${markt.naam}`}>
+                    <PrintPage key={i} index={i} title={`Sollicitanten: ${markt.naam}`} datum={datum}>
                         {pagina.map((list, j) => (
                             <OndernemerList
                                 key={j}
