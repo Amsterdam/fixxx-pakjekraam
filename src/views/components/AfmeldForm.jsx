@@ -1,7 +1,7 @@
 const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 const React = require('react');
 const PropTypes = require('prop-types');
-const { formatDayOfWeek, WEEK_DAYS, today, formatDate } = require('../../util.ts');
+const { formatDayOfWeek, WEEK_DAYS, today, formatDate, relativeHumanDay, endOfWeek } = require('../../util.ts');
 const { filterRsvpList, isVast } = require('../../domain-knowledge.js');
 
 class AfmeldForm extends React.Component {
@@ -17,21 +17,30 @@ class AfmeldForm extends React.Component {
     };
 
     render() {
-        const { markten, ondernemer, currentMarktId, query, role } = this.props;
-        const sollicitaties = ondernemer.sollicitaties.filter(sollicitatie => !sollicitatie.doorgehaald);
+        const { markten, ondernemer, currentMarktId, query, role, aanmeldingen } = this.props;
+        const sollicitatie = ondernemer.sollicitaties.find(
+            soll => !soll.doorgehaald && String(soll.markt.id) === currentMarktId,
+        );
+        const markt = markten.find(m => String(m.id) === currentMarktId);
 
-        const entries = sollicitaties.map(sollicitatie => {
-            const markt = markten.find(m => m.id === sollicitatie.markt.id);
-            const marktAanmeldingen = (this.props.aanmeldingen || []).filter(
-                aanmelding => aanmelding.marktId === sollicitatie.markt.id,
-            );
+        const rsvpEntries = filterRsvpList(aanmeldingen.filter(aanmelding => aanmelding.marktId === markt.id), markt);
+        const weekAanmeldingen = rsvpEntries.reduce(
+            (t, { date, rsvp, index }, i) => {
+                const attending = rsvp
+                    ? rsvp.attending
+                    : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl';
+                t[t.length - 1].push({
+                    index,
+                    attending,
+                    date,
+                    weekDay: formatDayOfWeek(date),
+                });
+                new Date(date) >= new Date(endOfWeek()) && t.length === 1 && t.push([]);
 
-            return {
-                sollicitatie,
-                markt,
-                rsvpEntries: filterRsvpList(marktAanmeldingen, markt),
-            };
-        });
+                return t;
+            },
+            [[]],
+        );
 
         return (
             <form className="Form" method="POST" action="./" encType="application/x-www-form-urlencoded">
@@ -42,125 +51,64 @@ class AfmeldForm extends React.Component {
                     defaultValue={ondernemer.erkenningsnummer}
                     type="hidden"
                 />
-                {(currentMarktId
-                    ? entries.filter(({ markt }) => {
-                          return String(markt.id) === currentMarktId;
-                      })
-                    : entries
-                ).map(({ sollicitatie, markt, rsvpEntries }) => {
-                    let lastDivider = false;
-                    const next = query.next ? query.next : `/markt-detail/${markt.id}/#aanwezigheid`;
 
-                    return (
-                        <section className="Fieldset" key={sollicitatie.markt.id}>
-                            <div className="Fieldset__header">
-                                <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
-                            </div>
-                            {isVast(sollicitatie.status) ? (
-                                <span className="Fieldset__subtitle">
-                                    Vink uit op welke dagen u (of uw vervanger) niet op deze markt staat.
-                                </span>
-                            ) : (
-                                <span className="Fieldset__subtitle">
-                                    Vink aan op welke dagen u (of uw vervanger) naar de markt wilt komen.
-                                </span>
-                            )}
-                            <ul className="CheckboxList">
-                                {rsvpEntries.map(({ date, rsvp, index }, i) => (
-                                    <li key={date}>
-                                        {i === 0 ? (
-                                            <span className="OndernemerMarktAanwezigheid__divider">deze week</span>
-                                        ) : null}
-                                        <input type="hidden" name={`rsvp[${index}][marktId]`} defaultValue={markt.id} />
-                                        <input type="hidden" name={`rsvp[${index}][marktDate]`} defaultValue={date} />
-                                        <span className="InputField InputField--checkbox InputField--afmelden">
-                                            <input
-                                                id={`rsvp-${index}`}
-                                                name={`rsvp[${index}][attending]`}
-                                                type="checkbox"
-                                                defaultValue="true"
-                                                defaultChecked={
-                                                    rsvp
-                                                        ? rsvp.attending
-                                                        : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl'
-                                                }
-                                            />
-                                            <label htmlFor={`rsvp-${index}`}>
-                                                <span className="InputField--afmelden__main">
-                                                    <strong>{formatDayOfWeek(date)}</strong>
-                                                </span>
-                                                <span className="InputField--afmelden__date">{formatDate(date)}</span>
-                                                {rsvp ? (
-                                                    <span
-                                                        className="InputField--afmelden__rsvp-verified"
-                                                        style={{ display: 'none' }}
-                                                    >
-                                                        Bevestigd
-                                                    </span>
-                                                ) : null}
-                                            </label>
-                                        </span>
-                                        {WEEK_DAYS[new Date(date).getDay()].slice(0, 2) ===
-                                            markt.marktDagen[markt.marktDagen.length - 1] && !lastDivider ? (
-                                            <span className="OndernemerMarktAanwezigheid__divider">
-                                                volgende week
-                                                {(lastDivider = true)}
+                {weekAanmeldingen.map((week, i) => (
+                    <div key={i}>
+                        <span className="OndernemerMarktAanwezigheid__divider">
+                            {i === 0 ? `Deze week` : `Volgende week`}
+                        </span>
+                        <ul className="CheckboxList">
+                            {week.map(({ date, attending, index, weekDay }) => (
+                                <li key={date}>
+                                    <input type="hidden" name={`rsvp[${index}][marktId]`} defaultValue={markt.id} />
+                                    <input type="hidden" name={`rsvp[${index}][marktDate]`} defaultValue={date} />
+
+                                    <span className="InputField InputField--checkbox InputField--afmelden">
+                                        <input
+                                            id={`rsvp-${index}`}
+                                            name={`rsvp[${index}][attending]`}
+                                            type="checkbox"
+                                            defaultValue="true"
+                                            defaultChecked={attending}
+                                        />
+                                        <label htmlFor={`rsvp-${index}`}>
+                                            <span className="InputField--afmelden__main">
+                                                <strong>{weekDay}</strong>
                                             </span>
-                                        ) : null}
-                                    </li>
-                                ))}
-                            </ul>
-                            {currentMarktId && (
-                                <p className="InputField InputField--submit">
-                                    <button
-                                        className="Button Button--secondary"
-                                        type="submit"
-                                        name="next"
-                                        value={`${
-                                            role === 'marktmeester'
-                                                ? `/profile/${ondernemer.erkenningsnummer}?error=aanwezigheid-saved`
-                                                : `/markt-detail/${markt.id}?error=aanwezigheid-saved#aanwezigheid`
-                                        }`}
-                                    >
-                                        Bewaren
-                                    </button>
-                                    {currentMarktId && (
-                                        <a
-                                            className="Button Button--tertiary"
-                                            href={`${
-                                                role === 'marktmeester'
-                                                    ? `/profile/${ondernemer.erkenningsnummer}`
-                                                    : `/markt-detail/${markt.id}#aanwezigheid`
-                                            }`}
-                                        >
-                                            Annuleer
-                                        </a>
-                                    )}
-                                </p>
-                            )}
-                        </section>
-                    );
-                })}
-                {!currentMarktId && (
-                    <p className="InputField InputField--submit">
-                        <button
-                            className="Button Button--secondary"
-                            type="submit"
-                            name="next"
-                            value={`/afmelden/?updated=${new Date().toISOString()}`}
+                                            <span className="InputField--afmelden__date">{formatDate(date)}</span>
+                                        </label>
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
+                <p className="InputField InputField--submit">
+                    <button
+                        className="Button Button--secondary"
+                        type="submit"
+                        name="next"
+                        value={`${
+                            role === 'marktmeester'
+                                ? `/profile/${ondernemer.erkenningsnummer}?error=aanwezigheid-saved`
+                                : `/markt-detail/${markt.id}?error=aanwezigheid-saved#aanwezigheid`
+                        }`}
+                    >
+                        Bewaren
+                    </button>
+                    {currentMarktId && (
+                        <a
+                            className="Button Button--tertiary"
+                            href={`${
+                                role === 'marktmeester'
+                                    ? `/profile/${ondernemer.erkenningsnummer}`
+                                    : `/markt-detail/${markt.id}#aanwezigheid`
+                            }`}
                         >
-                            Opslaan en verder
-                        </button>
-                        {currentMarktId && (
-                            <a
-                                className="Button Button--tertiary"
-                                href={`/markt/${markt.id}/${today()}/indelingslijst/`}
-                            >
-                                Annuleer
-                            </a>
-                        )}
-                    </p>
-                )}
+                            Annuleer
+                        </a>
+                    )}
+                </p>
             </form>
         );
     }

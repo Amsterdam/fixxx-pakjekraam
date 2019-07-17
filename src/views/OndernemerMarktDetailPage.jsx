@@ -9,6 +9,7 @@ const OndernemerMarktHeading = require('./components/OndernemerMarktHeading');
 const OndernemerMarktVoorkeuren = require('./components/OndernemerMarktVoorkeuren');
 const OndernemerMarktAanwezigheid = require('./components/OndernemerMarktAanwezigheid');
 const OndernemerMarktAlgVoorkeuren = require('./components/OndernemerMarktAlgVoorkeuren');
+const { today } = require('../util.js');
 const Button = require('./components/Button');
 const Alert = require('./components/Alert');
 const { getMarktDays, parseMarktDag, filterRsvpList } = require('../domain-knowledge.js');
@@ -31,7 +32,12 @@ class OndernemerMarktDetailPage extends React.Component {
     render() {
         const { ondernemer, plaatsvoorkeuren, aanmeldingen, messages, markt, marktId, voorkeur, branches } = this.props;
         const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
-        const rsvpEntries = filterRsvpList(aanmeldingen.filter(aanmelding => aanmelding.marktId === markt.id), markt);
+
+        const rsvpEntries = filterRsvpList(
+            aanmeldingen.filter(aanmelding => aanmelding.marktId === markt.id),
+            markt,
+            today(),
+        );
 
         return (
             <Page messages={messages}>

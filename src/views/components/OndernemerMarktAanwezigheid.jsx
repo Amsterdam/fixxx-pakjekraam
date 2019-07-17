@@ -1,13 +1,39 @@
 const Button = require('./Button');
 const PropTypes = require('prop-types');
 const React = require('react');
-const { formatDayOfWeek, formatDate, relativeHumanDay, WEEK_DAYS } = require('../../util.ts');
+const { formatDayOfWeek, formatDate, relativeHumanDay, WEEK_DAYS, endOfWeek, today } = require('../../util.ts');
 const HeaderTitleButton = require('./HeaderTitleButton');
+const { isVast, formatOndernemerName } = require('../../domain-knowledge.js');
 
 const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, ondernemer }) => {
     const blockUrl = `../../afmelden/${markt.id}/`;
 
-    let lastDivider = false;
+    const lastDivider = false;
+
+    const weekAanmeldingen = rsvpEntries.reduce(
+        (t, { date, rsvp, index }, i) => {
+            const attending = rsvp ? rsvp.attending : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl';
+            t[t.length - 1].push([
+                <span key={date}>
+                    {relativeHumanDay(date) ? (
+                        <strong>{relativeHumanDay(date)}</strong>
+                    ) : (
+                        <span>{formatDayOfWeek(date)}</span>
+                    )}
+                </span>,
+                formatDate(date),
+                <strong key={attending ? `aangemeld` : `afgemeld`} className="OndernemerMarktAanwezigheid__attending">
+                    {attending ? `aangemeld` : `afgemeld`}
+                </strong>,
+                attending,
+                date === today(),
+            ]);
+            new Date(date) >= new Date(endOfWeek()) && t.length === 1 && t.push([]);
+
+            return t;
+        },
+        [[]],
+    );
 
     return (
         <div className="OndernemerMarktAanwezigheid background-link-parent" id="aanwezigheid">
@@ -15,64 +41,32 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
             <HeaderTitleButton title="Aanwezigheid" url={blockUrl} />
             <div className="well">
                 <span>Op welke dagen staat er iemand (vergunninghouder of vervanger) in de kraam?</span>
-                <ul className="OndernemerMarktAanwezigheid__list">
-                    <li
-                        className={`OndernemerMarktAanwezigheid__list-item OndernemerMarktAanwezigheid__list-item--today`}
-                    >
-                        <span className="OndernemerMarktAanwezigheid__divider">Deze week</span>
-                        <span className="OndernemerMarktAanwezigheid__list-item-wrapper">
-                            <strong className="OndernemerMarktAanwezigheid__week-day">
-                                {relativeHumanDay(new Date())}
-                            </strong>
 
-                            <span>
-                                <span className="OndernemerMarktAanwezigheid__date">{formatDate(new Date())}</span>
-                                <strong className="OndernemerMarktAanwezigheid__attending" />
-                            </span>
+                {weekAanmeldingen.map((week, i) => (
+                    <div key={i}>
+                        <span className="OndernemerMarktAanwezigheid__divider">
+                            {i === 0 ? `Deze week` : `Volgende week`}
                         </span>
-                    </li>
-                    {rsvpEntries.map(({ date, rsvp, index }, i) => {
-                        const attending = rsvp
-                            ? rsvp.attending
-                            : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl';
-
-                        return (
-                            <li
-                                key={date}
-                                className={`OndernemerMarktAanwezigheid__list-item OndernemerMarktAanwezigheid__list-item--${
-                                    attending ? 'attending' : 'not-attending'
-                                }`}
-                            >
-                                <span className="OndernemerMarktAanwezigheid__list-item-wrapper">
-                                    {relativeHumanDay(date) ? (
-                                        <strong className="OndernemerMarktAanwezigheid__week-day">
-                                            {relativeHumanDay(date)}
-                                        </strong>
-                                    ) : (
-                                        <span className="OndernemerMarktAanwezigheid__week-day">
-                                            {formatDayOfWeek(date)}
+                        <ul className="OndernemerMarktAanwezigheid__list">
+                            {week.map(day => (
+                                <li
+                                    key={day[1]}
+                                    className={`OndernemerMarktAanwezigheid__list-item OndernemerMarktAanwezigheid__list-item--${
+                                        day[3] ? 'attending' : 'not-attending'
+                                    } ${day[4] ? `OndernemerMarktAanwezigheid__list-item--today` : ``}`}
+                                >
+                                    <span className="OndernemerMarktAanwezigheid__list-item-wrapper">
+                                        <span className="OndernemerMarktAanwezigheid__week-day">{day[0]}</span>
+                                        <span>
+                                            <span className="OndernemerMarktAanwezigheid__date">{day[1]}</span>
+                                            {day[2]}
                                         </span>
-                                    )}
-                                    <span>
-                                        <span className="OndernemerMarktAanwezigheid__date">{formatDate(date)}</span>
-                                        <strong className="OndernemerMarktAanwezigheid__attending">
-                                            {attending ? `aangemeld` : `afgemeld`}
-                                        </strong>
                                     </span>
-                                </span>
-                                {WEEK_DAYS[new Date(date).getDay()].slice(0, 2) ===
-                                    markt.marktDagen[markt.marktDagen.length - 1] && !lastDivider ? (
-                                    <span className="OndernemerMarktAanwezigheid__divider">
-                                        volgende week
-                                        {(lastDivider = true)}
-                                    </span>
-                                ) : (
-                                    ``
-                                )}
-                            </li>
-                        );
-                    })}
-                </ul>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ))}
             </div>
         </div>
     );

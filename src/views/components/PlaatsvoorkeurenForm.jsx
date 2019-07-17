@@ -368,7 +368,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                         <input type="hidden" name="marktDate" defaultValue={marktDate} />
                         <div className={`Fieldset`}>
                             <h2 className="Fieldset__header">
-                                Flexibel indelen? Dan deelt het systeem u op beschikare plaatsen in
+                                Flexibel indelen? Dan deelt het systeem u op beschikbare plaatsen in
                             </h2>
                             <p className="InputField InputField--checkbox">
                                 <input
