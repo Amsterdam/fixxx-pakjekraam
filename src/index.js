@@ -80,6 +80,7 @@ const {
     marketApplicationPage,
     handleMarketApplication,
 } = require('./routes/market-application.ts');
+const { vendorDashboardPage } = require('./routes/vendor-dashboard.ts');
 const { KeycloakRoles } = require('./permissions');
 
 const HTTP_DEFAULT_PORT = 8080;
@@ -432,49 +433,12 @@ app.get(
     },
 );
 
-const dashboardPage = (req, res, erkenningsNummer) => {
-    const messages = getQueryErrors(req.query);
-    const ondernemerPromise = getMarktondernemer(req.session.token, erkenningsNummer);
-    const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(erkenningsNummer);
-    const marktenPromise = getMarkten(req.session.token);
-    const marktenPromiseProps = marktenPromise.then(markten => {
-        const propsPromise = markten.map(markt => {
-            return getMarktProperties(markt.id).then(props => ({
-                ...markt,
-                ...props,
-            }));
-        });
-
-        return Promise.all(propsPromise);
-    });
-    Promise.all([
-        ondernemerPromise,
-        marktenPromiseProps,
-        ondernemerVoorkeurenPromise,
-        getAanmeldingenByOndernemer(erkenningsNummer),
-    ]).then(
-        ([ondernemer, markten, plaatsvoorkeuren, aanmeldingen]) => {
-            res.render('OndernemerDashboard', {
-                ondernemer,
-                aanmeldingen,
-                markten,
-                plaatsvoorkeuren,
-                startDate: tomorrow(),
-                endDate: nextWeek(),
-                messages,
-                user: req.session.token,
-            });
-        },
-        err => errorPage(res, err),
-    );
-};
-
 app.get('/dashboard/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
-    dashboardPage(req, res, getErkenningsNummer(req));
+    vendorDashboardPage(req, res, getErkenningsNummer(req));
 });
 
 app.get('/ondernemer/:erkenningsNummer/dashboard/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
-    dashboardPage(req, res, req.params.erkenningsNummer);
+    vendorDashboardPage(req, res, req.params.erkenningsNummer);
 });
 
 app.get('/login', keycloak.protect(), (req, res) => {
