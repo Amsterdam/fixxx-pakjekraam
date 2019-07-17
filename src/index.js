@@ -86,6 +86,7 @@ const { marketLocationPage, updateMarketLocation } = require('./routes/market-lo
 const { preferencesMailPage } = require('./routes/mail-preferences.tsx');
 const { applicationMailPage } = require('./routes/mail-application.tsx');
 const { allocationMailPage } = require('./routes/mail-allocation.tsx');
+const { activationQRPage } = require('./routes/activation-qr.ts');
 const { KeycloakRoles } = require('./permissions');
 
 const HTTP_DEFAULT_PORT = 8080;
@@ -337,33 +338,11 @@ app.get('/login', keycloak.protect(), (req, res) => {
     });
 });
 
-app.get('/ondernemer/:erkenningsNummer/activatie-qr.svg', keycloak.protect(KeycloakRoles.MARKTMEESTER), function(
-    req,
-    res,
-) {
-    getMarktondernemer(req.session.token, req.params.erkenningsNummer).then(ondernemer => {
-        const params = {
-            username: req.params.erkenningsNummer,
-            code: ondernemer.pasUid,
-        };
-
-        const activationURL = `${req.protocol}://${req.headers.host}/activeren${qs.stringify(params, {
-            addQueryPrefix: true,
-        })}`;
-
-        /*
-         * FIXME: The <QRCode> React component doesn't output the `xmlns` attribute,
-         * image only get's displayed as `text/html`.
-         */
-        res.set({
-            // 'Content-Type': 'image/svg+xml; charset=UTF-8',
-        });
-
-        res.render('QRCodeImage', {
-            value: activationURL,
-        });
-    }, httpErrorPage(res, HTTP_PAGE_NOT_FOUND));
-});
+app.get(
+    '/ondernemer/:erkenningsNummer/activatie-qr.svg',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    activationQRPage,
+);
 
 app.get('/activeren', activationPage);
 
