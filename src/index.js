@@ -31,7 +31,7 @@ const {
 const { upsert } = require('./sequelize-util.js');
 const { getKeycloakAdmin, userExists } = require('./keycloak-api.ts');
 const { mail } = require('./mail.js');
-const EmailIndeling = require('./views/EmailIndeling.jsx');
+const { EmailIndeling } = require('./views/EmailIndeling.tsx');
 const EmailWijzigingAanmeldingen = require('./views/EmailWijzigingAanmeldingen.jsx');
 const EmailWijzigingVoorkeuren = require('./views/EmailWijzigingVoorkeuren.jsx');
 const {

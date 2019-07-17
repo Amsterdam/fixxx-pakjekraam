@@ -1,54 +1,41 @@
-const PropTypes = require('prop-types');
-const React = require('react');
-const EmailContent = require('../EmailContent.jsx');
-const EmailTable = require('../EmailTable.jsx');
-const { formatDate, fullRelativeHumanDate, capitalize, arrayToObject } = require('../../../util.ts');
-const { isVast } = require('../../../domain-knowledge.js');
+import PropTypes, { ValidationMap } from 'prop-types';
+import * as React from 'react';
+import EmailContent from '../EmailContent.jsx';
+import EmailTable from '../EmailTable.jsx';
+import { flatten, formatDate, fullRelativeHumanDate, capitalize, arrayToObject } from '../../../util';
+import { IMarkt, IMarktplaats, IMarktondernemer, IPlaatsvoorkeur, IBranche } from '../../../markt.model';
 
-const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
+export type EmailVplPlaatsConfirmProps = {
+    markt: IMarkt;
+    marktplaatsen: IMarktplaats[];
+    marktDate: string;
+    ondernemer: IMarktondernemer;
+    voorkeuren: IPlaatsvoorkeur[];
+    branches: IBranche[];
+};
 
-class EmailVplPlaatsConfirm extends React.Component {
-    propTypes = {
-        markt: PropTypes.object.isRequired,
+export class EmailVplPlaatsConfirm extends React.Component {
+    public propTypes: ValidationMap<EmailVplPlaatsConfirmProps> = {
+        markt: PropTypes.any.isRequired,
         marktplaatsen: PropTypes.array.isRequired,
         marktDate: PropTypes.string.isRequired,
-        ondernemer: PropTypes.object.isRequired,
-        toewijzing: PropTypes.object,
-        afwijzing: PropTypes.object,
-        inschrijving: PropTypes.object,
+        ondernemer: PropTypes.any.isRequired,
         voorkeuren: PropTypes.array,
         branches: PropTypes.array,
     };
 
-    render() {
-        const {
-            markt,
-            marktplaatsen,
-            marktDate,
-            ondernemer,
-            toewijzing,
-            afwijzing,
-            inschrijving,
-            voorkeuren,
-            branches,
-        } = this.props;
+    public render() {
+        const { markt, marktplaatsen, marktDate, ondernemer, voorkeuren, branches } = this
+            .props as EmailVplPlaatsConfirmProps;
         const fontGray = { color: '#767676' };
         const marktBranches = arrayToObject(marktplaatsen.filter(plaats => plaats.branches), 'plaatsId');
-        const bijzonderheden = marktplaatsen
-            .reduce((t, plaats) => {
-                (ondernemer.plaatsen || []).map(p => {
-                    p === plaats.plaatsId && plaats.properties && t.push(plaats.properties);
-                });
 
-                return t;
-            }, [])
-            .reduce((t, props) => {
-                props.map(prop => {
-                    t.push(prop);
-                });
+        const bijzonderheden = ondernemer.plaatsen
+            .map(plaatsId => marktplaatsen.find(p => p.plaatsId === plaatsId))
+            .filter(Boolean)
+            .map(plaats => plaats.properties || [])
+            .reduce(flatten, []);
 
-                return t;
-            }, []);
         const branchesObj = arrayToObject(branches, 'brancheId');
         const ondernemerPlaatsBranches = (ondernemer.plaatsen || []).map(plaatsId => {
             const plaatsBranches =
@@ -65,18 +52,18 @@ class EmailVplPlaatsConfirm extends React.Component {
         const tableData = [
             [
                 'Plaats nrs:',
-                <span key={`plaats`}>
+                <span key="plaats">
                     <strong>{(ondernemer.plaatsen || []).join(', ')}</strong> (Uw vaste plaatsen)
                     <br /> {voorkeuren.length ? 'Je hebt helaas geen van je voorkeuren gekregen' : null}
                 </span>,
             ],
-            ['Soortplaats:', <strong key={`Soortplaats`}>{ondernemerPlaatsBranches.join(', ')}</strong>],
+            ['Soortplaats:', <strong key="Soortplaats">{ondernemerPlaatsBranches.join(', ')}</strong>],
             [
                 'Bijzonderheden:',
-                <strong key={`remarks`}>{bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}</strong>,
+                <strong key="remarks">{bijzonderheden.length ? bijzonderheden.join(' ') : 'geen'}</strong>,
             ],
-            ['Markt:', <strong key={`markt`}>{markt.naam}</strong>],
-            ['Datum:', <strong key={`date`}>{formatDate(marktDate)}</strong>],
+            ['Markt:', <strong key="markt">{markt.naam}</strong>],
+            ['Datum:', <strong key="date">{formatDate(marktDate)}</strong>],
         ];
 
         return (
@@ -105,5 +92,3 @@ class EmailVplPlaatsConfirm extends React.Component {
         );
     }
 }
-
-module.exports = EmailVplPlaatsConfirm;

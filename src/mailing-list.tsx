@@ -1,5 +1,5 @@
 import * as React from 'react';
-import EmailIndeling from './views/EmailIndeling.jsx';
+import { EmailIndeling } from './views/EmailIndeling';
 import { defer } from 'rxjs';
 import { shareReplay, tap, combineLatest } from 'rxjs/operators';
 import { mail } from './mail.js';

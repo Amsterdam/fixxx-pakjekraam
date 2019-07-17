@@ -5,7 +5,7 @@ import EmailTable from '../EmailTable.jsx';
 import { formatDate, capitalize, fullRelativeHumanDate, arrayToObject, flatten } from '../../../util';
 import { IMarkt, IMarktplaats, IMarktondernemer, IToewijzing, IBranche } from '../../../markt.model';
 
-type EmailVplVoorkeurConfirmProps = {
+export type EmailVplVoorkeurConfirmProps = {
     markt: IMarkt;
     marktplaatsen: IMarktplaats[];
     marktDate: string;
