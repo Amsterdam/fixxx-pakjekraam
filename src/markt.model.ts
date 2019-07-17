@@ -178,7 +178,8 @@ export interface IPlaatsvoorkeur {
 }
 
 export interface IPlaatsvoorkeurRow {
-    id: number;
+    // `id` is used by Sequelize
+    id?: number;
     marktId: string;
     erkenningsNummer: string;
     plaatsId: string;

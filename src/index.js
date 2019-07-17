@@ -80,7 +80,9 @@ const {
     marketApplicationPage,
     handleMarketApplication,
 } = require('./routes/market-application.ts');
+const { updateMarketPreferences } = require('./routes/market-preferences.ts');
 const { vendorDashboardPage } = require('./routes/vendor-dashboard.ts');
+const { marketLocationPage, updateMarketLocation } = require('./routes/market-location.ts');
 const { KeycloakRoles } = require('./permissions');
 
 const HTTP_DEFAULT_PORT = 8080;
@@ -709,59 +711,8 @@ app.post(
     },
 );
 
-const voorkeurenPage = (req, res, token, erkenningsNummer, query, currentMarktId, role) => {
-    const messages = getQueryErrors(req.query);
-    const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
-    const marktenPromise = ondernemerPromise
-        .then(ondernemer =>
-            Promise.all(
-                ondernemer.sollicitaties
-                    .filter(sollicitatie => !sollicitatie.doorgehaald)
-                    .map(sollicitatie => sollicitatie.markt.id)
-                    .map(marktId => getMarkt(token, marktId)),
-            ),
-        )
-        .then(markten =>
-            Promise.all(
-                (currentMarktId ? markten.filter(markt => String(markt.id) === currentMarktId) : markten).map(markt =>
-                    getMarktplaatsen(markt.id).then(marktplaatsen => ({
-                        ...markt,
-                        marktplaatsen,
-                    })),
-                ),
-            ),
-        );
-
-    Promise.all([
-        ondernemerPromise,
-        marktenPromise,
-        getOndernemerVoorkeuren(erkenningsNummer),
-        getMarktPaginas(currentMarktId),
-        getMarktProperties(currentMarktId),
-        getMarktplaatsen(currentMarktId),
-        getIndelingVoorkeur(erkenningsNummer, currentMarktId),
-    ]).then(
-        ([ondernemer, markten, plaatsvoorkeuren, marktPaginas, marktProperties, marktPlaatsen, indelingVoorkeur]) => {
-            res.render('VoorkeurenPage', {
-                ondernemer,
-                markten,
-                plaatsvoorkeuren,
-                marktPaginas,
-                marktProperties,
-                marktPlaatsen,
-                indelingVoorkeur,
-                query,
-                user: req.user,
-                messages,
-                role,
-            });
-        },
-        err => errorPage(res, err),
-    );
-};
-
 app.get('/voorkeuren/:marktId/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
-    voorkeurenPage(
+    marketLocationPage(
         req,
         res,
         req.session.token,
@@ -776,7 +727,7 @@ app.get(
     '/ondernemer/:erkenningsNummer/voorkeuren/:marktId/',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     (req, res) => {
-        voorkeurenPage(
+        marketLocationPage(
             req,
             res,
             req.session.token,
@@ -854,36 +805,6 @@ app.get(
     },
 );
 
-const algemeneVoorkeurenFormData = body => {
-    const { erkenningsNummer, marktId, marktDate, brancheId, parentBrancheId, inrichting } = body;
-
-    const inactive = !!body.inactive;
-    const anywhere = !!body.anywhere;
-    const aantalPlaatsen = parseInt(body.aantalPlaatsen, 10) || null;
-
-    const voorkeur = {
-        erkenningsNummer,
-        marktId: marktId || null,
-        marktDate: marktDate || null,
-        anywhere,
-        aantalPlaatsen,
-        brancheId: brancheId || null,
-        parentBrancheId: parentBrancheId || null,
-        inrichting: inrichting || null,
-        inactive,
-
-        monday: !!body.monday,
-        tuesday: !!body.tuesday,
-        wednesday: !!body.wednesday,
-        thursday: !!body.thursday,
-        friday: !!body.friday,
-        saturday: !!body.saturday,
-        sunday: !!body.sunday,
-    };
-
-    return voorkeur;
-};
-
 app.get('/markt-detail/:marktId/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res, next) =>
     marktDetailController(req, res, next, getErkenningsNummer(req)),
 );
@@ -894,31 +815,10 @@ app.get(
     (req, res, next) => marktDetailController(req, res, next, req.params.erkenningsNummer),
 );
 
-const handleAlgemeneVoorkeurenPost = (req, res) => {
-    const { next } = req.body;
-
-    const data = algemeneVoorkeurenFormData(req.body);
-
-    const { erkenningsNummer, marktId, marktDate } = data;
-
-    upsert(
-        models.voorkeur,
-        {
-            erkenningsNummer,
-            marktId,
-            marktDate,
-        },
-        data,
-    ).then(
-        () => res.status(HTTP_CREATED_SUCCESS).redirect(next ? next : '/'),
-        error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
-    );
-};
-
 app.post(
     ['/algemene-voorkeuren/', '/algemene-voorkeuren/:marktId/', '/algemene-voorkeuren/:marktId/:marktDate/'],
     keycloak.protect(KeycloakRoles.MARKTONDERNEMER),
-    (req, res, next) => handleAlgemeneVoorkeurenPost(req, res, next, getErkenningsNummer(req)),
+    (req, res, next) => updateMarketPreferences(req, res, next, getErkenningsNummer(req)),
 );
 
 app.post(
@@ -928,7 +828,7 @@ app.post(
         '/ondernemer/:erkenningsNummer/algemene-voorkeuren/:marktId/:marktDate/',
     ],
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
-    (req, res, next) => handleAlgemeneVoorkeurenPost(req, res, next, req.params.erkenningsNummer),
+    (req, res, next) => updateMarketPreferences(req, res, next, req.params.erkenningsNummer),
 );
 
 app.get('/algemene-voorkeuren/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
@@ -1015,79 +915,14 @@ app.get(
     },
 );
 
-const voorkeurenFormDataToObject = formData => ({
-    marktId: parseInt(formData.marktId, 10),
-    erkenningsNummer: formData.erkenningsNummer,
-    plaatsId: formData.plaatsId,
-    priority: parseInt(formData.priority, 10),
-});
-
-const handleVoorkeurenPost = (req, res, next, erkenningsNummer) => {
-    /*
-     * TODO: Form data format validation
-     * TODO: Business logic validation
-     */
-
-    const { redirectTo } = req.body;
-
-    const removeExisting = () =>
-        models.plaatsvoorkeur
-            .destroy({
-                where: {
-                    erkenningsNummer,
-                },
-            })
-            .then(n => console.log(`${n} Bestaande voorkeuren verwijderd...`));
-
-    const ignoreEmptyVoorkeur = voorkeur => !!voorkeur.plaatsId;
-
-    const insertFormData = () => {
-        console.log(`${req.body.plaatsvoorkeuren.length} (nieuwe) voorkeuren opslaan...`);
-
-        const voorkeuren = req.body.plaatsvoorkeuren
-            .map(voorkeurenFormDataToObject)
-            .map(plaatsvoorkeur => ({
-                ...plaatsvoorkeur,
-                erkenningsNummer,
-            }))
-            .filter(ignoreEmptyVoorkeur);
-
-        return models.plaatsvoorkeur.bulkCreate(voorkeuren);
-    };
-    const insertAlgVoorkeurFormData = () => {
-        console.log(`algemene voorkeuren opslaan...`);
-        const data = algemeneVoorkeurenFormData(req.body);
-        const { marktId, marktDate } = data;
-
-        return upsert(
-            models.voorkeur,
-            {
-                erkenningsNummer,
-                marktId,
-                marktDate,
-            },
-            data,
-        );
-    };
-
-    // TODO: Remove and insert in one transaction
-    removeExisting()
-        .then(insertFormData)
-        .then(insertAlgVoorkeurFormData)
-        .then(
-            () => res.status(HTTP_CREATED_SUCCESS).redirect(redirectTo),
-            error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
-        );
-};
-
 app.post(['/voorkeuren/', '/voorkeuren/:marktId/'], keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res, next) =>
-    handleVoorkeurenPost(req, res, next, getErkenningsNummer(req)),
+    updateMarketLocation(req, res, next, getErkenningsNummer(req)),
 );
 
 app.post(
     ['/ondernemer/:erkenningsNummer/voorkeuren/', '/ondernemer/:erkenningsNummer/voorkeuren/:marktId/'],
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
-    (req, res, next) => handleVoorkeurenPost(req, res, next, req.params.erkenningsNummer),
+    (req, res, next) => updateMarketLocation(req, res, next, req.params.erkenningsNummer),
 );
 
 app.get('/profile/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
