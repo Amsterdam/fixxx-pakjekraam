@@ -31,8 +31,10 @@ class HomePage extends React.Component {
                     <h2>Wachtwoord kwijt?</h2>
                     <p>
                         Ben je het wachtwoord vergeten? Als je een e-mailadres hebt ingesteld, kun je daarmee een{' '}
-                        <a href="/herstellen">nieuw wachtwoord instellen</a>. Lukt het niet om een nieuw wachtwoord te
-                        kiezen,{' '}
+                        <a href="https://iam.amsterdam.nl/auth/realms/pakjekraam/login-actions/reset-credentials">
+                            nieuw wachtwoord instellen
+                        </a>
+                        . Lukt het niet om een nieuw wachtwoord te kiezen,{' '}
                         <a href="https://www.amsterdam.nl/adressengids/overig/marktbureau/">
                             neem dan contact op met het Marktbureau
                         </a>

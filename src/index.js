@@ -373,38 +373,6 @@ app.get('/registreren', registrationPage);
 
 app.post('/registreren', handleRegistration);
 
-app.get('/herstellen', (req, res) => {
-    res.render('PasswordRecoveryPage', {
-        username: req.query.username,
-    });
-});
-
-app.post('/herstellen', (req, res) => {
-    if (req.body && req.body.username) {
-        const { username } = req.body;
-        getKeycloakAdmin()
-            .then(
-                kcAdminClient =>
-                    kcAdminClient.users
-                        .findOne({ username })
-                        .then(requireOne)
-                        .then(user =>
-                            kcAdminClient.users.executeActionsEmail({
-                                id: trace(user).id,
-                                lifespan: 3600,
-                                actions: ['UPDATE_PASSWORD'],
-                            }),
-                        ),
-                traceError(`Password reset for unknown user: ${username}`),
-            )
-            .then(() => {
-                res.redirect('/login?message=password-recovery-mail');
-            }, httpErrorPage(res, HTTP_INTERNAL_SERVER_ERROR)('Password reset failed'));
-    } else {
-        httpErrorPage(res, HTTP_PAGE_NOT_FOUND)('Missing username');
-    }
-});
-
 app.get('/welkom', (req, res) => {
     res.render('AccountCreatedPage', {});
 });
