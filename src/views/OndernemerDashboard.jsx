@@ -29,7 +29,7 @@ class OndernemerDashboard extends React.Component {
         return (
             <Page messages={messages}>
                 <Header user={ondernemer} logoUrl="/dashboard/">
-                    <a className="Header__nav-item" href="/dashboard/">
+                    <a className="Header__nav-item" href="./">
                         Mijn markten
                     </a>
                     <OndernemerProfileHeader user={ondernemer} />

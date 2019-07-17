@@ -12,11 +12,12 @@ class ProfilePage extends React.Component {
     propTypes = {
         ondernemer: PropTypes.object,
         user: PropTypes.object.isRequired,
+        messages: PropTypes.array,
     };
 
     render(state) {
         return (
-            <Page>
+            <Page messages={this.props.messages}>
                 <Header user={this.props.user} />
                 <Content>
                     {this.props.user.userType === 'ondernemer' ? (

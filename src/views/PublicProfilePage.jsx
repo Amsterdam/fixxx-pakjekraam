@@ -14,15 +14,16 @@ class PublicProfilePage extends React.Component {
     propTypes = {
         ondernemer: PropTypes.object,
         user: PropTypes.object.isRequired,
+        messages: PropTypes.array,
     };
 
     render(state) {
-        const { ondernemer, user } = this.props;
+        const { ondernemer, user, messages } = this.props;
         const isVastSomewhere = ondernemer.sollicitaties.some(soll => isVast(soll.status));
         const isSollicitantSomewhere = ondernemer.sollicitaties.some(soll => soll.status === 'soll');
 
         return (
-            <Page>
+            <Page messages={messages}>
                 <Header user={user} />
                 <Content>
                     <OndernemerProfile ondernemer={ondernemer} />

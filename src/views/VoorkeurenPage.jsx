@@ -19,10 +19,11 @@ class VoorkeurenPage extends React.Component {
         messages: PropTypes.array,
         query: PropTypes.string,
         user: PropTypes.object,
+        role: PropTypes.object,
     };
 
     render() {
-        const { marktProperties, marktPaginas, marktPlaatsen, indelingVoorkeur, marktDate } = this.props;
+        const { marktProperties, marktPaginas, marktPlaatsen, indelingVoorkeur, marktDate, user, role } = this.props;
         const rows = (
             marktProperties.rows ||
             marktPaginas.reduce(
@@ -35,13 +36,12 @@ class VoorkeurenPage extends React.Component {
         ).map(row =>
             row.map(plaatsId => marktPlaatsen.find(plaats => plaats.plaatsId === plaatsId)).map(plaats => plaats),
         );
-        console.log(indelingVoorkeur);
 
         return (
             <Page messages={this.props.messages}>
-                <Header user={this.props.user}>
-                    <a className="Header__nav-item" href="/dashboard/">
-                        Mijn markten
+                <Header user={this.props.user} logoUrl={role === 'marktmeester' ? '/markt/' : '/dashboard/'}>
+                    <a className="Header__nav-item" href={role === 'marktmeester' ? '/markt/' : '/dashboard/'}>
+                        {role === 'marktmeester' ? 'Markten' : 'Mijn markten'}
                     </a>
                     <OndernemerProfileHeader user={this.props.ondernemer} />
                 </Header>
@@ -53,6 +53,7 @@ class VoorkeurenPage extends React.Component {
                         indelingVoorkeur={indelingVoorkeur}
                         marktDate={marktDate}
                         rows={rows}
+                        role={role}
                         query={this.props.query}
                     />
                 </Content>

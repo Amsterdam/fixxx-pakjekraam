@@ -6,7 +6,7 @@ const HeaderTitleButton = require('./HeaderTitleButton');
 const { isVast } = require('../../domain-knowledge.js');
 
 const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query, sollicitatie }) => {
-    const blockUrl = `../../voorkeuren/${markt.id}/?next=../../markt-detail/${markt.id}/#plaatsvoorkeuren`;
+    const blockUrl = `../../voorkeuren/${markt.id}/`;
     const entriesFiltered = plaatsvoorkeuren.filter(entry => entry.marktId === markt.id);
     const entriesSplit = entriesFiltered
         .sort((a, b) => b.priority - a.priority)

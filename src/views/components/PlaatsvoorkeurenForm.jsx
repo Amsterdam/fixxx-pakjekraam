@@ -14,11 +14,12 @@ class PlaatsvoorkeurenForm extends React.Component {
         indelingVoorkeur: PropTypes.object,
         marktDate: PropTypes.string,
         rows: PropTypes.array.isRequired,
+        role: PropTypes.string,
         query: PropTypes.string,
     };
 
     render() {
-        const { markt, ondernemer, plaatsvoorkeuren, query, rows, indelingVoorkeur, marktDate } = this.props;
+        const { markt, ondernemer, plaatsvoorkeuren, query, rows, indelingVoorkeur, marktDate, role } = this.props;
         const defaultVoorkeur = {
             aantalPlaatsen: 1,
             anwhere: true,
@@ -398,31 +399,24 @@ class PlaatsvoorkeurenForm extends React.Component {
                             className="Button Button--secondary"
                             type="submit"
                             name="redirectTo"
-                            value={`./?error=plaatsvoorkeuren-saved&next=${next}#bottom-buttons`}
+                            // value={`./?error=plaatsvoorkeuren-saved&next=${next}#bottom-buttons`}
+                            value={`${
+                                role === 'marktmeester'
+                                    ? `/profile/${ondernemer.erkenningsnummer}?error=plaatsvoorkeuren-saved`
+                                    : `/markt-detail/${markt.id}?error=plaatsvoorkeuren-saved#plaatsvoorkeuren`
+                            }`}
                         >
                             Bewaar
                         </button>
-                        <Button label="Annuleer" href={`${next}#plaatsvoorkeuren`} type="tertiary" />
-                    </p>
-                </div>
-                <div
-                    // data-decorator="initial-modal"
-                    className="hidden"
-                    id="submit-buttons"
-                    data-content-id="submit-buttons"
-                >
-                    <h2>Je keuze is bewaard</h2>
-                    <p>Je kunt meerdere keuzes toevoegen om je kans op een gewenste plaats te vergroten.</p>
-                    <p className="InputField InputField--submit">
-                        <a className="Button Button--secondary" href="#" data-handler="modal-close">
-                            + Voeg nog een keuze toe
-                        </a>
-                        <a
-                            className="Button Button--tertiary"
-                            href={`../../markt-detail/${markt.id}/#plaatsvoorkeuren`}
-                        >
-                            Terug naar marktoverzicht
-                        </a>
+                        <Button
+                            label="Annuleer"
+                            href={
+                                role === 'marktmeester'
+                                    ? `/profile/${ondernemer.erkenningsnummer}`
+                                    : `/markt-detail/${markt.id}#plaatsvoorkeuren`
+                            }
+                            type="tertiary"
+                        />
                     </p>
                 </div>
             </form>

@@ -5,7 +5,7 @@ const React = require('react');
 const { formatDayOfWeek, formatDate, WEEK_DAYS, arrayToObject } = require('../../util.js');
 
 const OndernemerMarktAlgVoorkeuren = ({ markt, sollicitatie, ondernemer, voorkeur, branches }) => {
-    const blockUrl = `../../algemene-voorkeuren/${markt.id}/?next=../../markt-detail/${markt.id}/#marktprofiel`;
+    const blockUrl = `../../algemene-voorkeuren/${markt.id}/`;
     const branchesObj = arrayToObject(branches, 'brancheId');
 
     return (

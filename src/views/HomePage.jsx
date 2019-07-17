@@ -2,12 +2,17 @@ const React = require('react');
 const Page = require('./components/Page.jsx');
 const Content = require('./components/Content.jsx');
 const Header = require('./components/Header.jsx');
+const PropTypes = require('prop-types');
 
 class HomePage extends React.Component {
+    propTypes = {
+        user: PropTypes.object,
+    };
+
     render() {
         return (
             <Page>
-                <Header />
+                <Header user={this.props.user} />
                 <Content>
                     <h2>Digitaal inschrijven</h2>
                     <p>

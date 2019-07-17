@@ -12,18 +12,22 @@ class AfmeldPage extends React.Component {
         date: PropTypes.string.isRequired,
         markten: PropTypes.array,
         ondernemer: PropTypes.object.isRequired,
+        messages: PropTypes.array,
         startDate: PropTypes.string.isRequired,
         endDate: PropTypes.string.isRequired,
         currentMarktId: PropTypes.string,
         query: PropTypes.string,
+        role: PropTypes.string,
     };
 
     render() {
+        const { ondernemer, messages, role } = this.props;
+
         return (
-            <Page>
-                <Header user={this.props.ondernemer} logoUrl="/dashboard/">
-                    <a className="Header__nav-item" href="/dashboard/">
-                        Mijn markten
+            <Page messages={messages}>
+                <Header user={this.props.ondernemer} logoUrl={role === 'marktmeester' ? '/markt/' : '/dashboard/'}>
+                    <a className="Header__nav-item" href={role === 'marktmeester' ? '/markt/' : '/dashboard/'}>
+                        {role === 'marktmeester' ? 'Markten' : 'Mijn markten'}
                     </a>
                     <OndernemerProfileHeader user={this.props.ondernemer} />
                 </Header>
@@ -37,6 +41,7 @@ class AfmeldPage extends React.Component {
                         endDate={this.props.endDate}
                         currentMarktId={this.props.currentMarktId}
                         query={this.props.query}
+                        role={this.props.role}
                     />
                 </Content>
             </Page>

@@ -13,10 +13,11 @@ class AfmeldForm extends React.Component {
         endDate: PropTypes.string.isRequired,
         currentMarktId: PropTypes.string,
         query: PropTypes.string,
+        role: PropTypes.string,
     };
 
     render() {
-        const { markten, ondernemer, currentMarktId, query } = this.props;
+        const { markten, ondernemer, currentMarktId, query, role } = this.props;
         const sollicitaties = ondernemer.sollicitaties.filter(sollicitatie => !sollicitatie.doorgehaald);
 
         const entries = sollicitaties.map(sollicitatie => {
@@ -115,12 +116,23 @@ class AfmeldForm extends React.Component {
                                         className="Button Button--secondary"
                                         type="submit"
                                         name="next"
-                                        value={`${next}?error=aanwezigheid-saved#aanwezigheid`}
+                                        value={`${
+                                            role === 'marktmeester'
+                                                ? `/profile/${ondernemer.erkenningsnummer}?error=aanwezigheid-saved`
+                                                : `/markt-detail/${markt.id}?error=aanwezigheid-saved#aanwezigheid`
+                                        }`}
                                     >
                                         Bewaren
                                     </button>
                                     {currentMarktId && (
-                                        <a className="Button Button--tertiary" href={`${next}#aanwezigheid`}>
+                                        <a
+                                            className="Button Button--tertiary"
+                                            href={`${
+                                                role === 'marktmeester'
+                                                    ? `/profile/${ondernemer.erkenningsnummer}`
+                                                    : `/markt-detail/${markt.id}#aanwezigheid`
+                                            }`}
+                                        >
                                             Annuleer
                                         </a>
                                     )}

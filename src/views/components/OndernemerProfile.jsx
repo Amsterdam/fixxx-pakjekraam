@@ -31,27 +31,15 @@ class OndernemerProfile extends React.Component {
                                     {sollicitatie.sollicitatieNummer}
                                 </span>
                                 <br />
-                                <a
-                                    href={`${vendorURL}afmelden/${sollicitatie.markt.id}/?next=/profile/${
-                                        ondernemer.erkenningsnummer
-                                    }`}
-                                >
+                                <a href={`${vendorURL}afmelden/${sollicitatie.markt.id}/`}>
                                     <strong>aanwezigheid</strong>
                                 </a>
                                 &nbsp;&nbsp;
-                                <a
-                                    href={`${vendorURL}voorkeuren/${sollicitatie.markt.id}/?next=/profile/${
-                                        ondernemer.erkenningsnummer
-                                    }`}
-                                >
+                                <a href={`${vendorURL}voorkeuren/${sollicitatie.markt.id}/`}>
                                     <strong>plaatsvoorkeuren</strong>
                                 </a>
                                 &nbsp;&nbsp;
-                                <a
-                                    href={`${vendorURL}algemene-voorkeuren/${sollicitatie.markt.id}/?next=/profile/${
-                                        ondernemer.erkenningsnummer
-                                    }&advanced=true`}
-                                >
+                                <a href={`${vendorURL}algemene-voorkeuren/${sollicitatie.markt.id}/?advanced=true`}>
                                     <strong>algemene voorkeuren</strong>
                                 </a>
                             </li>

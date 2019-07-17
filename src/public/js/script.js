@@ -142,7 +142,6 @@ function splitByArray(orgArr, valueArr) {
       };
 
       if (el) {
-          console.log('redner');
         content = el.innerHTML;
         _render(content);
       } else if (url) {
@@ -195,7 +194,6 @@ function splitByArray(orgArr, valueArr) {
         voorkeur.classList[remove ? 'remove' : 'add']('remove');
         for (var i = 0; i < plaatsIdsInputs.length; i++){
             for (var j = 0; j < dataAttrs.length; j++){
-                console.log(plaatsIdsInputs[i].getAttribute('data-' + dataAttrs[j]));
                 if (remove){
                     plaatsIdsInputs[i].setAttribute(dataAttrs[j], plaatsIdsInputs[i].getAttribute('data-' + dataAttrs[j]));
                 }else{
@@ -280,9 +278,12 @@ function splitByArray(orgArr, valueArr) {
               explain = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__explain'),
               minSlider = form.querySelector('input[name="default-count"]'),
               maxSlider = form.querySelector('input[name="extra-count"]'),
+              redirectTo = './?error=plaatsvoorkeuren-saved',
               _submit = function(e){
-                e && e.preventDefault();
-                _addAlert('Bezig met bewaren');
+                    if (e && e.x !== 0) {
+                        return;
+                    }
+                    _addAlert('Bezig met bewaren');
                     body.classList.add('in-progress');
                     form.request = helpers.ajax({
                     type: form.method,
@@ -308,7 +309,7 @@ function splitByArray(orgArr, valueArr) {
                         aantalPlaatsen = form.querySelector('[name="aantalPlaatsen"]').value,
                         anywhere = form.querySelector('[name="anywhere"]:checked') && form.querySelector('[name="anywhere"]:checked').value;
                 out.push(encodeURIComponent('erkenningsNummer') + '=' + encodeURIComponent(erkenningsNummer));
-                out.push(encodeURIComponent('redirectTo') + '=' + encodeURIComponent('./?error=plaatsvoorkeuren-saved'));
+                out.push(encodeURIComponent('redirectTo') + '=' + encodeURIComponent(redirectTo));
                 anywhere && out.push(encodeURIComponent('anywhere') + '=' + encodeURIComponent(anywhere));
                 out.push(encodeURIComponent('marktId') + '=' + encodeURIComponent(marktId));
                 out.push(encodeURIComponent('aantalPlaatsen') + '=' + encodeURIComponent(aantalPlaatsen));
@@ -453,7 +454,6 @@ function splitByArray(orgArr, valueArr) {
                   ];
                   input = currentPlaatsSets;
                   input = input.filter(function (i) {
-                      console.log(i);
                       return i.length === plaatsCount;
                   });
                   var allPlaatsIds = [];

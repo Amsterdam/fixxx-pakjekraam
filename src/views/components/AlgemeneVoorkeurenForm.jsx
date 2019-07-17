@@ -25,10 +25,11 @@ class AlgemeneVoorkeurenForm extends React.Component {
         branches: PropTypes.array.isRequired,
         next: PropTypes.string,
         query: PropTypes.string,
+        role: PropTypes.string,
     };
 
     render() {
-        const { branches, ondernemer, markt, marktId, marktDate, next, query } = this.props;
+        const { branches, ondernemer, markt, marktId, marktDate, next, query, role } = this.props;
         const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
         const nextMessage =
             (query && query.next) || '/markt-detail/' + ondernemer.erkenningsnummer + '/' + marktId + '/';
@@ -229,11 +230,22 @@ class AlgemeneVoorkeurenForm extends React.Component {
                             className="Button Button--secondary"
                             type="submit"
                             name="next"
-                            value={`${query.next ? query.next : '.'}?error=algemene-voorkeuren-saved#marktprofiel`}
+                            value={`${
+                                role === 'marktmeester'
+                                    ? `/profile/${ondernemer.erkenningsnummer}?error=algemene-voorkeuren-saved`
+                                    : `/markt-detail/${markt.id}?error=algemene-voorkeuren-saved#marktprofiel`
+                            }`}
                         >
                             Bewaar
                         </button>
-                        <a className="Button Button--tertiary" href={`${query.next ? query.next : '.'}#marktprofiel`}>
+                        <a
+                            className="Button Button--tertiary"
+                            href={`${
+                                role === 'marktmeester'
+                                    ? `/profile/${ondernemer.erkenningsnummer}`
+                                    : `/markt-detail/${markt.id}#marktprofiel`
+                            }`}
+                        >
                             Annuleer
                         </a>
                     </p>

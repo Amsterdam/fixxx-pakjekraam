@@ -16,17 +16,18 @@ class AlgemeneVoorkeurenPage extends React.Component {
         branches: PropTypes.array.isRequired,
         next: PropTypes.string,
         query: PropTypes.string,
+        role: PropTypes.string,
         messages: PropTypes.array,
     };
 
     render() {
-        const { ondernemer, messages } = this.props;
+        const { ondernemer, messages, role } = this.props;
 
         return (
             <Page messages={messages}>
-                <Header user={ondernemer} logoUrl="/dashboard/">
-                    <a className="Header__nav-item" href="/dashboard/">
-                        Mijn markten
+                <Header user={ondernemer} logoUrl={role === 'marktmeester' ? '/markt/' : '/dashboard/'}>
+                    <a className="Header__nav-item" href={role === 'marktmeester' ? '/markt/' : '/dashboard/'}>
+                        {role === 'marktmeester' ? 'Markten' : 'Mijn markten'}
                     </a>
                     <OndernemerProfileHeader user={ondernemer} />
                 </Header>
@@ -39,6 +40,7 @@ class AlgemeneVoorkeurenPage extends React.Component {
                         ondernemer={this.props.ondernemer}
                         voorkeur={this.props.voorkeur}
                         query={this.props.query}
+                        role={role}
                     />
                 </Content>
             </Page>
