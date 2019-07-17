@@ -26,6 +26,8 @@ const THURSDAY = 4;
 const FRIDAY = 5;
 const SATURDAY = 6;
 
+const LF = '\n';
+
 const monthName = [
     'januari',
     'februari',
@@ -178,6 +180,7 @@ const requireEnv = key => {
 };
 
 module.exports = {
+    LF,
     fullRelativeHumanDate,
     splitByValueArray,
     paginate,

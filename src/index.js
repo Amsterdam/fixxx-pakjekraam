@@ -29,6 +29,7 @@ const {
     trace,
     traceError,
 } = require('./util.js');
+const { upsert } = require('./sequelize-util.js');
 const { getKeycloakAdmin, userExists } = require('./keycloak-api.ts');
 const { mail } = require('./mail.js');
 const EmailIndeling = require('./views/EmailIndeling.jsx');
@@ -74,7 +75,12 @@ const {
 const { serverHealth, databaseHealth, keycloakHealth, makkelijkeMarktHealth } = require('./routes/status.ts');
 const { activationPage, handleActivation } = require('./routes/activation.ts');
 const { registrationPage, handleRegistration } = require('./routes/registration.ts');
-const { marketApplicationPage, handleMarketApplication } = require('./routes/market-application.ts');
+const {
+    attendancePage,
+    handleAttendanceUpdate,
+    marketApplicationPage,
+    handleMarketApplication,
+} = require('./routes/market-application.ts');
 const { KeycloakRoles } = require('./permissions');
 
 const HTTP_DEFAULT_PORT = 8080;
@@ -99,18 +105,6 @@ requireEnv('DATABASE_URL');
 requireEnv('APP_SECRET');
 
 const pgPool = new PgPool(parseDatabaseURL(process.env.DATABASE_URL));
-
-/*
- * The built-in Sequelize `upsert()` doesn't work well with
- * combined unique key constraints that allow NULL values.
- */
-const upsert = (model, where, data) =>
-    model
-        .findOrCreate({
-            where,
-            defaults: data,
-        })
-        .spread((inst, created) => (created ? inst : inst.update(data)));
 
 app.use(morgan(morgan.compile(':date[iso] :method :status :url :response-time ms')));
 
@@ -743,38 +737,12 @@ app.get('/branche/:erkenningsNummer/', keycloak.protect(KeycloakRoles.MARKTMEEST
     ondernemerChangeBranchePage(res, req.session.token, req.params.erkenningsNummer, req.query);
 });
 
-const afmeldPage = (res, token, erkenningsNummer, currentMarktId, query, role) => {
-    const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
-    const marktenPromise = ondernemerPromise.then(ondernemer =>
-        Promise.all(
-            ondernemer.sollicitaties
-                .map(sollicitatie => sollicitatie.markt.id)
-                .map(marktId => getMarkt(token, marktId)),
-        ),
-    );
-    Promise.all([ondernemerPromise, marktenPromise, getAanmeldingenByOndernemer(erkenningsNummer)]).then(
-        ([ondernemer, markten, aanmeldingen]) => {
-            res.render('AfmeldPage', {
-                ondernemer,
-                aanmeldingen,
-                markten,
-                startDate: tomorrow(),
-                endDate: nextWeek(),
-                currentMarktId,
-                query,
-                role,
-            });
-        },
-        err => errorPage(res, err),
-    );
-};
-
 app.get('/afmelden/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
-    afmeldPage(res, req.session.token, getErkenningsNummer(req), null, req.query, KeycloakRoles.MARKTONDERNEMER);
+    attendancePage(res, req.session.token, getErkenningsNummer(req), null, req.query, KeycloakRoles.MARKTONDERNEMER);
 });
 
 app.get('/afmelden/:marktId/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {
-    afmeldPage(
+    attendancePage(
         res,
         req.session.token,
         getErkenningsNummer(req),
@@ -785,14 +753,14 @@ app.get('/afmelden/:marktId/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), 
 });
 
 app.get('/ondernemer/:erkenningsNummer/afmelden/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
-    afmeldPage(res, req.session.token, req.params.erkenningsNummer, null, req.query, KeycloakRoles.MARKTMEESTER);
+    attendancePage(res, req.session.token, req.params.erkenningsNummer, null, req.query, KeycloakRoles.MARKTMEESTER);
 });
 
 app.get(
     '/ondernemer/:erkenningsNummer/afmelden/:marktId/',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     (req, res) => {
-        afmeldPage(
+        attendancePage(
             res,
             req.session.token,
             req.params.erkenningsNummer,
@@ -803,48 +771,14 @@ app.get(
     },
 );
 
-const handlePostAfmelden = (req, res) => {
-    /*
-     * TODO: Form data format validation
-     * TODO: Business logic validation
-     */
-
-    const { erkenningsNummer, next } = req.body;
-    const responses = req.body.rsvp.map(rsvp => ({
-        ...rsvp,
-        attending: rsvp.attending === 'true',
-        erkenningsNummer,
-    }));
-
-    // TODO: Redirect with success code
-    Promise.all(
-        responses.map(response => {
-            const { marktId, marktDate } = response;
-
-            return upsert(
-                models.rsvp,
-                {
-                    erkenningsNummer,
-                    marktId,
-                    marktDate,
-                },
-                response,
-            );
-        }),
-    ).then(
-        () => res.status(HTTP_CREATED_SUCCESS).redirect(next),
-        error => res.status(HTTP_INTERNAL_SERVER_ERROR).end(String(error)),
-    );
-};
-
 app.post(['/afmelden/', '/afmelden/:marktId/'], keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res, next) =>
-    handlePostAfmelden(req, res, next, getErkenningsNummer(req)),
+    handleAttendanceUpdate(req, res, next, getErkenningsNummer(req)),
 );
 
 app.post(
     ['/ondernemer/:erkenningsNummer/afmelden/', '/ondernemer/:erkenningsNummer/afmelden/:marktId/'],
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
-    (req, res, next) => handlePostAfmelden(req, res, next, req.params.erkenningsNummer),
+    (req, res, next) => handleAttendanceUpdate(req, res, next, req.params.erkenningsNummer),
 );
 
 app.get('/aanmelden/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req, res) => {

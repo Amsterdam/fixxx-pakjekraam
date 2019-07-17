@@ -459,3 +459,21 @@ export const getMarkten = (token: string) =>
     getMakkelijkeMarkten(token)
         // Only show markten for which JSON data with location info exists
         .then(markten => markten.filter(markt => fs.existsSync(`data/${slugifyMarkt(markt.id)}/locaties.json`)));
+
+/*
+ * Vendors are allowed to attend only one market per day.
+ * Check if a vendor wants to apply for a market, while on the same day it has applied for others.
+ */
+export const isConflictingApplication = (existing: IRSVP[], application: IRSVP): IRSVP[] =>
+    // TODO: In addition to `attending`, check the vendors 'default days' and `isVast()`
+    application.attending
+        ? existing
+              .filter(a => String(a.marktId) !== String(application.marktId))
+              .filter(a => a.marktDate === application.marktDate)
+              .filter(a => a.attending !== null && !!a.attending)
+        : [];
+
+export const getConflictingApplications = (application: IRSVP): Promise<IRSVP[]> =>
+    getAanmeldingenByOndernemer(application.erkenningsNummer).then(existing =>
+        isConflictingApplication(existing, application),
+    );
