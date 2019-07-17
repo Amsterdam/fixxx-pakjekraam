@@ -10,6 +10,7 @@ const OndernemerMarktVoorkeuren = require('./components/OndernemerMarktVoorkeure
 const OndernemerMarktAanwezigheid = require('./components/OndernemerMarktAanwezigheid');
 const OndernemerMarktAlgVoorkeuren = require('./components/OndernemerMarktAlgVoorkeuren');
 const Button = require('./components/Button');
+const Alert = require('./components/Alert');
 const { getMarktDays, parseMarktDag, filterRsvpList } = require('../domain-knowledge.js');
 
 class OndernemerMarktDetailPage extends React.Component {
@@ -42,6 +43,14 @@ class OndernemerMarktDetailPage extends React.Component {
                 </Header>
                 <Content>
                     <OndernemerMarktHeading sollicitatie={sollicitatie} markt={markt} />
+                    {!voorkeur || !voorkeur.branches ? (
+                        <Alert type="warning" inline={true}>
+                            <span>
+                                U hebt uw <strong>koopwaar</strong> nog niet doorgegeven in het{' '}
+                                <a href="#marktprofiel">marktprofiel</a>.
+                            </span>
+                        </Alert>
+                    ) : null}
                     <div className="row row--responsive">
                         <div className="col-1-2">
                             <OndernemerMarktAanwezigheid
