@@ -1,7 +1,7 @@
 const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 const React = require('react');
 const PropTypes = require('prop-types');
-const { formatDayOfWeek, WEEK_DAYS, today, formatDate } = require('../../util.js');
+const { formatDayOfWeek, WEEK_DAYS, today, formatDate } = require('../../util.ts');
 const { filterRsvpList, isVast } = require('../../domain-knowledge.js');
 
 class AfmeldForm extends React.Component {

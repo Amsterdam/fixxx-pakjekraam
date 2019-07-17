@@ -1,7 +1,7 @@
 const Button = require('./Button');
 const PropTypes = require('prop-types');
 const React = require('react');
-const { formatDayOfWeek, formatDate, relativeHumanDay, WEEK_DAYS } = require('../../util.js');
+const { formatDayOfWeek, formatDate, relativeHumanDay, WEEK_DAYS } = require('../../util.ts');
 const HeaderTitleButton = require('./HeaderTitleButton');
 
 const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, ondernemer }) => {

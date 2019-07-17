@@ -1,4 +1,4 @@
-const { arrayToObject } = require('../util.js');
+const { arrayToObject } = require('../util.ts');
 const IndelingslijstGroup = require('./components/IndelingslijstGroup');
 const React = require('react');
 const MarktDetailBase = require('./components/MarktDetailBase');

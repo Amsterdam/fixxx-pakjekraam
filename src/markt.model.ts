@@ -110,7 +110,7 @@ export interface IMarktondernemer extends IMarktdeelnemer {
 
 export interface IMarktplaats {
     plaatsId: PlaatsId;
-    tags?: string[];
+    properties?: string[];
     branches?: BrancheId[];
     verkoopinrichting?: string[];
     inactive?: boolean;
@@ -163,6 +163,7 @@ export interface IMarktindeling extends IMarkt, IMarktindelingSeed, IMarktindeli
 }
 
 export interface IBranche {
+    description: string;
     brancheId: BrancheId;
     maximumPlaatsen?: number;
     maximumToewijzingen?: number;

@@ -1,7 +1,7 @@
 const React = require('react');
 const Page = require('./Page.jsx');
 const PropTypes = require('prop-types');
-const { formatDayOfWeek } = require('../../util.js');
+const { formatDayOfWeek } = require('../../util.ts');
 
 class AanmeldForm extends React.Component {
     propTypes = {

@@ -3,7 +3,7 @@ import { getMarkt, getMarktondernemer } from '../makkelijkemarkt-api';
 import { getAanmeldingenByOndernemer, getConflictingApplications } from '../pakjekraam-api';
 import { httpErrorPage, internalServerErrorPage, HTTP_CREATED_SUCCESS, HTTP_FORBIDDEN_ERROR } from '../express-util';
 import models from '../model/index';
-import { flatten, nextWeek, LF, tomorrow } from '../util.js';
+import { flatten, nextWeek, LF, tomorrow } from '../util';
 import { IRSVP } from '../markt.model';
 import { upsert } from '../sequelize-util.js';
 

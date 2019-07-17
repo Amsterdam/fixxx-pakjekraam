@@ -1,7 +1,7 @@
 const PropTypes = require('prop-types');
 const React = require('react');
 const EmailContent = require('../EmailContent.jsx');
-const { formatDate, formatDayOfWeek } = require('../../../util.js');
+const { formatDate, formatDayOfWeek } = require('../../../util.ts');
 const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');

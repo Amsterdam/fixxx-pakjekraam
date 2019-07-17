@@ -1,7 +1,7 @@
 const React = require('react');
 const PropTypes = require('prop-types');
 const { formatOndernemerName } = require('../../domain-knowledge.js');
-const { today } = require('../../util.js');
+const { today } = require('../../util.ts');
 const Button = require('./Button');
 
 class OndernemerProfile extends React.Component {

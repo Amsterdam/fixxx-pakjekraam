@@ -1,4 +1,4 @@
-const { addDays, DAYS_IN_WEEK, formatDayOfWeek } = require('../../util.js');
+const { addDays, DAYS_IN_WEEK, formatDayOfWeek } = require('../../util.ts');
 const { getMarktDays, parseMarktDag } = require('../../domain-knowledge.js');
 const PropTypes = require('prop-types');
 const React = require('react');

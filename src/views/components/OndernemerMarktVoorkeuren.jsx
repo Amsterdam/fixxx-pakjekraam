@@ -1,6 +1,6 @@
 const PropTypes = require('prop-types');
 const React = require('react');
-const { paginate } = require('../../util.js');
+const { paginate } = require('../../util.ts');
 const Button = require('./Button');
 const HeaderTitleButton = require('./HeaderTitleButton');
 const { isVast } = require('../../domain-knowledge.js');

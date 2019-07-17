@@ -1,6 +1,6 @@
 const React = require('react');
 const PropTypes = require('prop-types');
-const { formatDate, numberSort } = require('../../util.js');
+const { formatDate, numberSort } = require('../../util.ts');
 const { formatOndernemerName, parseISOMarktDag, isVast } = require('../../domain-knowledge.js');
 const {
     ISO_SUNDAY,
@@ -11,7 +11,7 @@ const {
     ISO_FRIDAY,
     ISO_SATURDAY,
     formatISODayOfWeek,
-} = require('../../util.js');
+} = require('../../util.ts');
 const Button = require('./Button');
 const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 

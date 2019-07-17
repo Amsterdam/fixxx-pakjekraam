@@ -1,7 +1,7 @@
 const React = require('react');
 const PropTypes = require('prop-types');
 const { formatOndernemerName, plaatsSort, isVast } = require('../../domain-knowledge.js');
-const { flatten } = require('../../util.js');
+const { flatten } = require('../../util.ts');
 const MarktplaatsSelect = require('./MarktplaatsSelect');
 const Button = require('./Button');
 const OndernemerMarktHeading = require('./OndernemerMarktHeading');

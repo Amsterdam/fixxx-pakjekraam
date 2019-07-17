@@ -6,7 +6,7 @@ const {
     nextWeek,
     capitalize,
     relativeHumanDay,
-} = require('../util.js');
+} = require('../util.ts');
 const React = require('react');
 const PropTypes = require('prop-types');
 const MarktDetailBase = require('./components/MarktDetailBase');

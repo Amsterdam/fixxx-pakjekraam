@@ -2,10 +2,10 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const EmailBase = require('./components/EmailBase.jsx');
 const EmailContent = require('./components/EmailContent.jsx');
-const { formatDate } = require('../util.js');
+const { formatDate } = require('../util.ts');
 const { isVast } = require('../domain-knowledge.js');
 
-const EmailVplVoorkeurConfirm = require('./components/email/EmailVplVoorkeurConfirm.jsx');
+const { EmailVplVoorkeurConfirm } = require('./components/email/EmailVplVoorkeurConfirm.tsx');
 const EmailSollNoPlaatsConfirm = require('./components/email/EmailSollNoPlaatsConfirm.jsx');
 const EmailSollPlaatsConfirm = require('./components/email/EmailSollPlaatsConfirm.jsx');
 const EmailSollRandomPlaatsConfirm = require('./components/email/EmailSollRandomPlaatsConfirm.jsx');

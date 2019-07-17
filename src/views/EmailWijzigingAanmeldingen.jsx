@@ -3,7 +3,7 @@ const React = require('react');
 const EmailContent = require('./components/EmailContent.jsx');
 const EmailTable = require('./components/EmailTable.jsx');
 const EmailBase = require('./components/EmailBase.jsx');
-const { formatDate, relativeHumanDay, WEEK_DAYS, formatDayOfWeek, endOfWeek } = require('../util.js');
+const { formatDate, relativeHumanDay, WEEK_DAYS, formatDayOfWeek, endOfWeek } = require('../util.ts');
 const { isVast, formatOndernemerName } = require('../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');

@@ -7,7 +7,7 @@ import {
     getMarktondernemersByMarkt as getMarktondernemersByMarktMM,
 } from './makkelijkemarkt-api';
 import { formatOndernemerName, isVast, slugifyMarkt } from './domain-knowledge.js';
-import { numberSort, stringSort } from './util.js';
+import { numberSort, stringSort } from './util';
 import Sequelize from 'sequelize';
 import { allocation, plaatsvoorkeur, rsvp, voorkeur } from './model/index';
 import { calcToewijzingen } from './indeling';

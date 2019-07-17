@@ -8,7 +8,7 @@ import { initAllocation } from './allocation.sequelize';
 import { initPlaatsvoorkeur } from './plaatsvoorkeur.sequelize';
 import { initSession } from './session.sequelize';
 import { initVoorkeur } from './voorkeur.sequelize';
-import { requireEnv } from '../util.js';
+import { requireEnv } from '../util';
 
 requireEnv('DATABASE_URL');
 

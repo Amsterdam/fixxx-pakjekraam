@@ -1,6 +1,6 @@
 import { init, login, getMarktondernemer } from './makkelijkemarkt-api';
 import { MMSession } from './makkelijkemarkt.model';
-import { requireEnv } from './util.js';
+import { requireEnv } from './util';
 
 const packageJSON = require('../package.json');
 const MILLISECONDS_IN_SECOND = 1000;

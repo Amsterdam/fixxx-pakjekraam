@@ -1,7 +1,7 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 // import AxiosLogger from 'axios-logger';
 // import { setupCache } from 'axios-cache-adapter';
-import { addDays, MONDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY } from './util.js';
+import { addDays, MONDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY } from './util';
 import { MMMarkt, MMOndernemerStandalone, MMSollicitatieStandalone } from './makkelijkemarkt.model';
 
 const axios = require('axios');

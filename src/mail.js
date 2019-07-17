@@ -1,7 +1,7 @@
 const ReactDOMServer = require('react-dom/server');
 const nodemailer = require('nodemailer');
 const sgTransport = require('nodemailer-sendgrid-transport');
-const { requireEnv } = require('./util.js');
+const { requireEnv } = require('./util.ts');
 
 requireEnv('MAILER_URL');
 
@@ -36,7 +36,8 @@ const mail = options => {
         };
     }
 
-    return transport.sendMail(options);
+    return Promise.resolve(null);
+    // return transport.sendMail(options);
 };
 
 module.exports = {

@@ -18,7 +18,6 @@ const { checkActivationCode, readOnlyLogin } = require('./makkelijkemarkt-auth.t
 const { login, getMarkt, getMarktondernemer, getMarktondernemersByMarkt } = require('./makkelijkemarkt-api.ts');
 const {
     formatDate,
-    splitByValueArray,
     tomorrow,
     nextWeek,
     addDays,
@@ -28,7 +27,7 @@ const {
     toISODate,
     trace,
     traceError,
-} = require('./util.js');
+} = require('./util.ts');
 const { upsert } = require('./sequelize-util.js');
 const { getKeycloakAdmin, userExists } = require('./keycloak-api.ts');
 const { mail } = require('./mail.js');

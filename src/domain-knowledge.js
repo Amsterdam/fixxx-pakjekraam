@@ -14,7 +14,7 @@ const {
     nextWeek,
     endOfWeek,
     stringSort,
-} = require('./util.js');
+} = require('./util.ts');
 
 const DAPPERMARKT_ID = 16;
 const ALBERT_CUYP_ID = 19;

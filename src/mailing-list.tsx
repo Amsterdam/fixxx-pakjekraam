@@ -3,7 +3,7 @@ import EmailIndeling from './views/EmailIndeling.jsx';
 import { defer } from 'rxjs';
 import { shareReplay, tap, combineLatest } from 'rxjs/operators';
 import { mail } from './mail.js';
-import { requireEnv, today } from './util.js';
+import { requireEnv, today } from './util';
 import { getMarkten } from './makkelijkemarkt-api';
 import {
     getAanmeldingen,
@@ -87,6 +87,7 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                                 voorkeuren: plaatsvoorkeuren,
                                 aanmeldingen,
                                 branches,
+                                toewijzing,
                             };
 
                             console.log(

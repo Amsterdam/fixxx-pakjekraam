@@ -10,13 +10,13 @@ export const retry = <T>(attempts: number, delayTime: number): ((source$: Observ
             retryWhen(error$ =>
                 error$.pipe(
                     tap((error: Error) => {
-                        console.log('Retrying: ', error);
-
                         if (failedAttempts >= attempts) {
                             throw error;
                         }
 
                         failedAttempts += 1;
+
+                        console.log(`Retry attempt #${failedAttempts}`);
                     }),
                     delay(delayTime),
                 ),

@@ -2,12 +2,12 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const EmailContent = require('../EmailContent.jsx');
 const EmailTable = require('../EmailTable.jsx');
-const { formatDate, formatDayOfWeek, arrayToObject } = require('../../../util.js');
+const { formatDate, formatDayOfWeek, arrayToObject } = require('../../../util.ts');
 const { isVast } = require('../../../domain-knowledge.js');
 
 const formatPlaatsen = plaatsIds => plaatsIds.join(', ');
 
-class EmailSollPlaatsConfirm extends React.Component {
+export class EmailSollPlaatsConfirm extends React.Component {
     propTypes = {
         markt: PropTypes.object.isRequired,
         marktplaatsen: PropTypes.array.isRequired,
@@ -75,5 +75,3 @@ class EmailSollPlaatsConfirm extends React.Component {
         );
     }
 }
-
-module.exports = EmailSollPlaatsConfirm;

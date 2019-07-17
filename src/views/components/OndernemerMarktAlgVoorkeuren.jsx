@@ -2,7 +2,7 @@ const Button = require('./Button');
 const HeaderTitleButton = require('./HeaderTitleButton');
 const PropTypes = require('prop-types');
 const React = require('react');
-const { formatDayOfWeek, formatDate, WEEK_DAYS, arrayToObject } = require('../../util.js');
+const { formatDayOfWeek, formatDate, WEEK_DAYS, arrayToObject } = require('../../util.ts');
 
 const OndernemerMarktAlgVoorkeuren = ({ markt, sollicitatie, ondernemer, voorkeur, branches }) => {
     const blockUrl = `../../algemene-voorkeuren/${markt.id}/`;

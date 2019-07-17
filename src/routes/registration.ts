@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { getKeycloakAdmin } from '../keycloak-api';
 import { forbiddenErrorPage, internalServerErrorPage, publicErrors, getQueryErrors } from '../express-util';
 import { stringify } from 'qs';
-import { trace } from '../util.js';
+import { trace } from '../util';
 import { KeycloakRoles } from '../permissions.js';
 
 export const registrationPage = (req: Request, res: Response) => {

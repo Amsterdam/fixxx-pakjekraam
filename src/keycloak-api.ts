@@ -1,5 +1,5 @@
 import KeycloakAdminClient from 'keycloak-admin';
-import { requireEnv, requireOne } from './util.js';
+import { requireEnv, requireOne } from './util';
 
 requireEnv('IAM_URL');
 requireEnv('IAM_REALM');
