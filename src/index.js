@@ -83,6 +83,9 @@ const {
 const { updateMarketPreferences } = require('./routes/market-preferences.ts');
 const { vendorDashboardPage } = require('./routes/vendor-dashboard.ts');
 const { marketLocationPage, updateMarketLocation } = require('./routes/market-location.ts');
+const { preferencesMailPage } = require('./routes/mail-preferences.tsx');
+const { applicationMailPage } = require('./routes/mail-application.tsx');
+const { allocationMailPage } = require('./routes/mail-allocation.tsx');
 const { KeycloakRoles } = require('./permissions');
 
 const HTTP_DEFAULT_PORT = 8080;
@@ -200,147 +203,24 @@ app.get('/', (req, res) => {
 app.get(
     '/mail/:marktId/:marktDate/:erkenningsNummer/aanmeldingen',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
-    function(req, res) {
-        const ondernemerPromise = getMarktondernemer(req.session.token, req.params.erkenningsNummer);
-        const marktPromise = getMarkt(req.session.token, req.params.marktId);
-        const aanmeldingenPromise = getAanmeldingenMarktOndern(req.params.marktId, req.params.erkenningsNummer);
-        Promise.all([ondernemerPromise, marktPromise, aanmeldingenPromise]).then(
-            ([ondernemer, markt, aanmeldingen]) => {
-                const marktDate = new Date(req.params.marktDate);
-                const aanmeldingenFiltered = filterRsvpList(aanmeldingen, markt, marktDate);
-                const subject =
-                    `Markt ${markt.naam} - ` + isVast(ondernemer.status)
-                        ? 'aanwezigheid wijziging'
-                        : 'aanmelding wijziging';
-                const props = { markt, marktDate, ondernemer, aanmeldingen: aanmeldingenFiltered };
-                res.render('EmailWijzigingAanmeldingen', props);
-
-                if (req.query.mailto) {
-                    const to = req.query.mailto;
-                    mail({
-                        from: to,
-                        to,
-                        subject,
-                        react: <EmailWijzigingAanmeldingen {...props} />,
-                    }).then(
-                        () => {
-                            console.log(`E-mail is verstuurd naar ${to}`);
-                        },
-                        err => {
-                            console.error(`E-mail sturen naar ${to} is mislukt`, err);
-                        },
-                    );
-                }
-            },
-            err => {
-                res.status(HTTP_INTERNAL_SERVER_ERROR).end();
-            },
-        );
-    },
+    applicationMailPage,
 );
 
 app.get(
     '/mail/:marktId/:marktDate/:erkenningsNummer/voorkeuren',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
-    function(req, res) {
-        const mailContextPromise = getMailContext(
-            req.session.token,
-            req.params.marktId,
-            req.params.erkenningsNummer,
-            req.params.marktDate,
-        );
-        const ondernemerPromise = getMarktondernemer(req.session.token, req.params.erkenningsNummer);
-        const marktPromise = getMarkt(req.session.token, req.params.marktId);
-        const voorkeurenPromise = getVoorkeurenMarktOndern(req.params.marktId, req.params.erkenningsNummer);
-        Promise.all([ondernemerPromise, marktPromise, voorkeurenPromise]).then(
-            ([ondernemer, markt, voorkeuren]) => {
-                const marktDate = new Date(req.params.marktDate);
-                const subject = `Markt ${markt.naam} - plaatsvoorkeur wijziging`;
-
-                const voorkeurenObjPrio = (voorkeuren || []).reduce(function(hash, voorkeur) {
-                    if (!hash.hasOwnProperty(voorkeur.priority)) hash[voorkeur.priority] = [];
-                    hash[voorkeur.priority].push(voorkeur);
-
-                    return hash;
-                }, {});
-                const voorkeurenPrio = Object.keys(voorkeurenObjPrio)
-                    .map(function(key) {
-                        return voorkeurenObjPrio[key];
-                    })
-                    .sort((a, b) => b[0].priority - a[0].priority)
-                    .map(voorkeurList => voorkeurList.map(voorkeur => voorkeur.plaatsId));
-
-                const props = { ondernemer, markt, voorkeuren: voorkeurenPrio, marktDate };
-
-                res.render('EmailWijzigingVoorkeuren', props);
-
-                if (req.query.mailto) {
-                    const to = req.query.mailto;
-                    mail({
-                        from: to,
-                        to,
-                        subject,
-                        react: <EmailWijzigingVoorkeuren {...props} />,
-                    }).then(
-                        () => {
-                            console.log(`E-mail is verstuurd naar ${to}`);
-                        },
-                        err => {
-                            console.error(`E-mail sturen naar ${to} is mislukt`, err);
-                        },
-                    );
-                }
-            },
-            err => {
-                res.status(HTTP_INTERNAL_SERVER_ERROR).end();
-            },
-        );
-    },
+    preferencesMailPage,
 );
 
 app.get('/email/', keycloak.protect(KeycloakRoles.MARKTMEESTER), function(req, res) {
     res.render('EmailPage');
 });
 
-app.get('/mail/:marktId/:marktDate/:erkenningsNummer/indeling', keycloak.protect(KeycloakRoles.MARKTMEESTER), function(
-    req,
-    res,
-) {
-    const mailContextPromise = getMailContext(
-        req.session.token,
-        req.params.marktId,
-        req.params.erkenningsNummer,
-        req.params.marktDate,
-    );
-    mailContextPromise.then(
-        props => {
-            const subject = `Martindeling ${props.markt.naam} ${formatDate(props.marktDate)}`;
-            props.subject = subject;
-
-            res.render('EmailIndeling', props);
-
-            if (req.query.mailto) {
-                const to = req.query.mailto;
-                mail({
-                    from: to,
-                    to,
-                    subject,
-                    react: <EmailIndeling {...props} />,
-                }).then(
-                    () => {
-                        console.log(`E-mail is verstuurd naar ${to}`);
-                    },
-                    err => {
-                        console.error(`E-mail sturen naar ${to} is mislukt`, err);
-                    },
-                );
-            }
-        },
-        err => {
-            res.status(HTTP_INTERNAL_SERVER_ERROR).end();
-        },
-    );
-});
+app.get(
+    '/mail/:marktId/:marktDate/:erkenningsNummer/indeling',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    allocationMailPage,
+);
 
 app.get('/markt/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req, res) => {
     const user = req.session.token;

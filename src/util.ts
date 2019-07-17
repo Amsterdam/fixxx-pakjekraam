@@ -121,6 +121,19 @@ export const arrayToObject = <T, K extends keyof T>(array: T[], keyField: K): { 
         return obj;
     }, {});
 
+export const groupBy = <T, K extends keyof T>(array: T[], keyField: K): { [index: string]: T[] } =>
+    array.reduce((obj: { [index: string]: T[] }, item: T) => {
+        const key = String(item[keyField]);
+
+        if (obj.hasOwnProperty(key)) {
+            obj[key].push(item);
+        } else {
+            obj[key] = [item];
+        }
+
+        return obj;
+    }, {});
+
 export const numberSort = (a: number, b: number): number => (a > b ? 1 : a === b ? 0 : -1);
 
 export const stringSort = (a: string, b: string): number => (a > b ? 1 : a === b ? 0 : -1);
