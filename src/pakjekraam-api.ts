@@ -74,6 +74,7 @@ export const getAanmeldingen = (marktId: string, marktDate: string): Promise<IRS
     rsvp
         .findAll<RSVP>({
             where: { marktId, marktDate },
+            raw: true,
         })
         .then(aanmeldingen => aanmeldingen);
 
@@ -81,6 +82,7 @@ export const getAanmeldingenMarktOndern = (marktId: string, erkenningsNummer: st
     rsvp
         .findAll<RSVP>({
             where: { marktId, erkenningsNummer },
+            raw: true,
         })
         .then(aanmeldingen => aanmeldingen);
 
@@ -88,6 +90,7 @@ export const getAanmeldingenByOndernemer = (erkenningsNummer: string): Promise<I
     rsvp
         .findAll<RSVP>({
             where: { erkenningsNummer },
+            raw: true,
         })
         .then(aanmeldingen => aanmeldingen);
 
@@ -95,6 +98,7 @@ export const getToewijzingen = (marktId: string, marktDate: string): Promise<ITo
     allocation
         .findAll<Allocation>({
             where: { marktId, marktDate },
+            raw: true,
         })
         .then(toewijzingen => toewijzingen.reduce(groupAllocationRows, []));
 
@@ -102,6 +106,7 @@ export const getPlaatsvoorkeuren = (marktId: string): Promise<IPlaatsvoorkeur[]>
     plaatsvoorkeur
         .findAll<Plaatsvoorkeur>({
             where: { marktId },
+            raw: true,
         })
         .then(plaatsvoorkeuren => plaatsvoorkeuren);
 
@@ -109,6 +114,7 @@ export const getVoorkeurenMarktOndern = (marktId: string, erkenningsNummer: stri
     plaatsvoorkeur
         .findAll<Plaatsvoorkeur>({
             where: { marktId, erkenningsNummer },
+            raw: true,
         })
         .then(plaatsvoorkeuren => plaatsvoorkeuren);
 
@@ -188,6 +194,7 @@ export const getIndelingVoorkeur = (
     return voorkeur
         .findAll<Voorkeur>({
             where,
+            raw: true,
         })
         .then(voorkeuren => voorkeuren.sort(indelingVoorkeurSort).reduce(indelingVoorkeurMerge, null));
 };
@@ -238,6 +245,7 @@ export const getIndelingVoorkeuren = (
     return voorkeur
         .findAll<Voorkeur>({
             where,
+            raw: true,
         })
         .then(voorkeuren =>
             voorkeuren
