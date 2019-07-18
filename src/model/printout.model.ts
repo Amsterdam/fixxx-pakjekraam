@@ -1,4 +1,5 @@
 export interface IMarketRow {
+    type?: string;
     class: string;
     title: string;
     landmarkTop: string;

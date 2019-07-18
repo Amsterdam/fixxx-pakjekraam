@@ -38,6 +38,7 @@ import {
 import { marketPreferencesPage, updateMarketPreferences } from './routes/market-preferences';
 import { vendorDashboardPage } from './routes/vendor-dashboard';
 import { marketLocationPage, updateMarketLocation } from './routes/market-location';
+import { marketAllocationPage } from './routes/market-allocation';
 import { preferencesMailPage } from './routes/mail-preferences';
 import { applicationMailPage } from './routes/mail-application';
 import { allocationMailPage } from './routes/mail-allocation';
@@ -193,7 +194,17 @@ app.get('/markt/:marktId/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req: 
     getMarkt(req.session.token, req.params.marktId).then(markt => res.render('MarktDetailPage', { markt }));
 });
 
-app.get('/markt/:marktId/:datum/indelingslijst/', keycloak.protect(KeycloakRoles.MARKTMEESTER), indelingslijstPage);
+app.get(
+    '/markt/:marktId/:marktDate/concept-indelingslijst/',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    indelingslijstPage,
+);
+
+app.get(
+    '/markt/:marktId/:marktDate/indelingslijst/',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    marketAllocationPage,
+);
 
 app.get(
     '/markt/:marktId/:datum/vasteplaatshouders/',

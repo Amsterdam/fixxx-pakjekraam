@@ -3,7 +3,7 @@ const { getMarktDays, parseMarktDag } = require('../../domain-knowledge.js');
 const PropTypes = require('prop-types');
 const React = require('react');
 
-const MarktDayLink = ({ markt, offsetDate, direction = 1 }) => {
+const MarktDayLink = ({ type, markt, offsetDate, direction = 1 }) => {
     let targetDate, startDate, endDate;
 
     if (direction === 1) {
@@ -27,7 +27,7 @@ const MarktDayLink = ({ markt, offsetDate, direction = 1 }) => {
     return (
         <a
             className={`MarktDayLink MarktDayLink--${direction > 0 ? `right` : `left`}`}
-            href={`/markt/${markt.id}/${targetDate}/indelingslijst/`}
+            href={`/markt/${markt.id}/${targetDate}/${type}/`}
         >
             {formatDayOfWeek(targetDate)}
         </a>
@@ -35,6 +35,7 @@ const MarktDayLink = ({ markt, offsetDate, direction = 1 }) => {
 };
 
 MarktDayLink.propTypes = {
+    type: PropTypes.string.isRequired,
     markt: PropTypes.object.isRequired,
     offsetDate: PropTypes.string.isRequired,
     direction: PropTypes.number,

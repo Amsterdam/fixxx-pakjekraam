@@ -54,6 +54,17 @@ class MarktDetailPage extends React.Component {
                                 </li>
                             ))}
                         </ul>
+                        <p>Concept-indelingslijsten:</p>
+                        <ul className="LinkList">
+                            {dates.map(({ date, day, month, weekDay, relativeDay }) => (
+                                <li key={date} className="LinkList__item">
+                                    <a className={`Link`} href={`./${date}/concept-indelingslijst/`}>
+                                        <strong>{relativeDay !== '' && capitalize(relativeDay) + ', '}</strong>
+                                        {relativeDay !== '' ? weekDay : capitalize(weekDay)} {day} {month}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                     <div className="col-1-2">
                         <h2>Ondernemers</h2>

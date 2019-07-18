@@ -56,6 +56,7 @@ class VastplaatshoudersPage extends React.Component {
                                         vphl={vphl}
                                         obstakelList={obstakelsObject}
                                         aanmeldingen={aanmeldingenOrdered}
+                                        ondernemers={ondernemers}
                                         markt={markt}
                                         type={type}
                                         datum={datum}

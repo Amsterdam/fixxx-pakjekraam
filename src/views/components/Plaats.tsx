@@ -1,11 +1,25 @@
-const OndernemerStatus = require('./OndernemerStatus');
-const PrintableBackground = require('./PrintableBackground');
-const PropTypes = require('prop-types');
-const React = require('react');
-const { formatOndernemerName } = require('../../domain-knowledge.js');
+import * as React from 'react';
+import OndernemerStatus from './OndernemerStatus.jsx';
+import PrintableBackground from './PrintableBackground.jsx';
+import PropTypes from 'prop-types';
+import { IMarktplaats, IMarktondernemer, IRSVP, IToewijzing } from '../../markt.model';
 
-const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type, toewijzing }) => {
-    const colorList = {
+const Plaats = ({
+    plaats,
+    vph,
+    ondernemer,
+    first,
+    aanmelding,
+    toewijzing,
+}: {
+    plaats: IMarktplaats;
+    vph?: IMarktondernemer;
+    ondernemer?: IMarktondernemer;
+    first?: boolean;
+    aanmelding?: IRSVP;
+    toewijzing?: IToewijzing;
+}) => {
+    const colorList: { [index: string]: string } = {
         'branche-vis': '#343797',
         vis: '#343797',
         'branche-natte-vis': '#CEFFFF',
@@ -60,7 +74,7 @@ const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type, toewijzing
     };
 
     let plaatsProps = plaats.properties || [],
-        tags = plaats.tags || [];
+        tags = plaats.properties || [];
     const branches = plaats.branches || [];
 
     plaatsProps = plaatsProps.filter(word => !['dubble'].includes(word));
@@ -77,23 +91,20 @@ const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type, toewijzing
             : '#5D4211'
         : undefined;
 
-    tags = tags.join(' ');
-
     return (
         <tr
-            className={
-                'Plaats ' +
-                (first && 'Plaats--first') +
-                ' ' +
-                tags +
-                ' ' +
-                (aanmelding ? ' Plaats--vph-attendance-verified' : '') +
-                (aanmelding && aanmelding.attending === false ? ' Plaats--vph-attendance-not-attending' : '')
-            }
+            className={`
+                Plaats ${first && 'Plaats--first'} ${tags.join(' ')} ${
+                aanmelding ? ' Plaats--vph-attendance-verified' : ''
+            }${
+                aanmelding && aanmelding.attending !== null && !aanmelding.attending
+                    ? ' Plaats--vph-attendance-not-attending'
+                    : ''
+            }`}
             data-sollicitatie-nummer={vph && vph.sollicitatieNummer}
         >
             <td className="Plaats__prop Plaats__prop-properties">
-                <span className={'icon icon-' + (plaatsProps ? plaatsProps[0] : '')} />
+                <span className={`icon icon-${plaatsProps ? plaatsProps[0] : ''}`} />
             </td>
             <td className="Plaats__prop Plaats__prop-plaats-nr">
                 {plaats.plaatsId}
@@ -101,39 +112,38 @@ const Plaats = ({ plaats, vph, first, aanmelding, markt, datum, type, toewijzing
             </td>
 
             <td className="Plaats__prop Plaats__prop-soll Plaats__prop-vph">
-                <span id={'soll-' + (vph && vph.sollicitatieNummer)} />
+                <span id={`soll-${vph && vph.sollicitatieNummer}`} />
                 {vph ? (
                     <a href={`/profile/${vph.erkenningsNummer}`}>
                         <strong>{vph.sollicitatieNummer}</strong>
                     </a>
                 ) : null}
             </td>
-            <td className={`Plaats__prop Plaats__prop-naam Plaats__prop-vph-description`}>
-                {vph ? vph.description : <strong>{tags}</strong>}
+            <td className="Plaats__prop Plaats__prop-naam Plaats__prop-vph-description">
+                {vph ? vph.description : <strong>{tags.join(' ')}</strong>}
             </td>
             <td className="Plaats__prop Plaats__prop-soll">
-                {toewijzing ? (
+                {ondernemer ? (
                     <a href={`/profile/${toewijzing.erkenningsNummer}`}>
-                        <strong>{toewijzing.ondernemer.sollicitatieNummer}</strong>
+                        <strong>{ondernemer.sollicitatieNummer}</strong>
                     </a>
                 ) : null}
             </td>
-            <td className="Plaats__prop Plaats__prop-naam">{toewijzing ? toewijzing.ondernemer.description : null}</td>
+            <td className="Plaats__prop Plaats__prop-naam">{ondernemer ? ondernemer.description : null}</td>
             <td className="Plaats__prop Plaats__prop-status">
-                {toewijzing ? <OndernemerStatus status={toewijzing.ondernemer.status} size={`s`} /> : null}
+                {ondernemer ? <OndernemerStatus status={ondernemer.status} size="s" /> : null}
             </td>
         </tr>
     );
 };
+
 Plaats.propTypes = {
     plaats: PropTypes.object.isRequired,
+    ondernemer: PropTypes.object,
     vph: PropTypes.object,
     first: PropTypes.bool,
     aanmelding: PropTypes.object,
-    markt: PropTypes.object.isRequired,
-    datum: PropTypes.string,
-    type: PropTypes.string,
     toewijzing: PropTypes.object,
 };
 
-module.exports = Plaats;
+export default Plaats;

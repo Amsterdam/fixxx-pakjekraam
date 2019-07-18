@@ -377,6 +377,16 @@ export const getIndelingslijst = (token: string, marktId: string, date: string) 
         return indeling;
     });
 
+export const getToewijzingslijst = (token: string, marktId: string, marktDate: string) =>
+    // TODO: Request only necessary data, `getIndelingslijstInput` returns too much
+    Promise.all([getIndelingslijstInput(token, marktId, marktDate), getToewijzingen(marktId, marktDate)]).then(
+        ([data, toewijzingen]) => ({
+            ...data,
+            toewijzingen,
+            afwijzingen: [],
+        }),
+    );
+
 export const getMailContext = (token: string, marktId: string, erkenningsNr: string, marktDate: string) =>
     Promise.all([
         getIndelingslijst(token, marktId, marktDate),
