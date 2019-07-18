@@ -121,7 +121,7 @@ $plaatsCellHeight: 16px;
     &__prop-soll {
         text-align: right;
         border-right: none;
-        width: 42px;
+        width: 53px;
     }
     &__prop-naam {
         white-space: nowrap;
@@ -129,6 +129,7 @@ $plaatsCellHeight: 16px;
         text-overflow: ellipsis;
         width: 30%;
         border-left: none;
+        padding-left: 0;
     }
     .Plaats__prop-vph-description {
         border-right: none;
@@ -156,6 +157,7 @@ $plaatsCellHeight: 16px;
         border-right: none;
         width: $plaatsCellHeight;
         padding: 0;
+        display: none;
         .icon {
             display: block;
             width: 100%;
@@ -219,5 +221,10 @@ $plaatsCellHeight: 16px;
     }
     &.experimentele-zone .Plaats__prop:after {
         border-top-color: #9bcdfd;
+    }
+    @media screen and (min-width: $screenMedium) {
+        &__prop-properties {
+            display: table-cell;
+        }
     }
 }

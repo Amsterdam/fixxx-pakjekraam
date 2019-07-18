@@ -5,7 +5,7 @@
         padding: 0 5px;
         border: none !important;
         @include p1;
-        width: 42px;
+        width: 53px;
     }
     &__header-row {
         //display: flex;
@@ -16,10 +16,15 @@
     }
     &__vph {
         text-align: right;
+        padding-right: 0;
     }
     &__table {
         width: 100%;
         table-layout: fixed;
+        & *,
+        & {
+            box-sizing: content-box;
+        }
     }
     &--markt-19.IndelingslijstGroup--straat-1a {
         margin-top: 61px;
