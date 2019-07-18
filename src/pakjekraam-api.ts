@@ -117,7 +117,10 @@ const indelingVoorkeurPrio = (voorkeur: IMarktondernemerVoorkeur): number =>
 const indelingVoorkeurSort = (a: IMarktondernemerVoorkeur, b: IMarktondernemerVoorkeur) =>
     numberSort(indelingVoorkeurPrio(a), indelingVoorkeurPrio(b));
 
-const indelingVoorkeurMerge = (a: IMarktondernemerVoorkeur, b: IMarktondernemerVoorkeur): IMarktondernemerVoorkeur => {
+const indelingVoorkeurMerge = (
+    a: IMarktondernemerVoorkeurRow,
+    b: IMarktondernemerVoorkeurRow,
+): IMarktondernemerVoorkeurRow => {
     const merged = Object.assign({}, a);
 
     if (b.aantalPlaatsen !== null) {
@@ -135,11 +138,35 @@ const indelingVoorkeurMerge = (a: IMarktondernemerVoorkeur, b: IMarktondernemerV
     if (b.inactive !== null) {
         merged.inactive = b.inactive;
     }
-    if (b.branches !== null) {
-        merged.branches = b.branches;
+    if (b.brancheId !== null) {
+        merged.brancheId = b.brancheId;
     }
-    if (b.verkoopinrichting !== null) {
-        merged.verkoopinrichting = b.verkoopinrichting;
+    if (b.parentBrancheId !== null) {
+        merged.parentBrancheId = b.parentBrancheId;
+    }
+    if (b.inrichting !== null) {
+        merged.inrichting = b.inrichting;
+    }
+    if (b.monday !== null) {
+        merged.monday = b.monday;
+    }
+    if (b.tuesday !== null) {
+        merged.tuesday = b.tuesday;
+    }
+    if (b.wednesday !== null) {
+        merged.wednesday = b.wednesday;
+    }
+    if (b.thursday !== null) {
+        merged.thursday = b.thursday;
+    }
+    if (b.friday !== null) {
+        merged.friday = b.friday;
+    }
+    if (b.saturday !== null) {
+        merged.saturday = b.saturday;
+    }
+    if (b.sunday !== null) {
+        merged.sunday = b.sunday;
     }
 
     return merged;
