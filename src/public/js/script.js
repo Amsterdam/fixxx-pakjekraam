@@ -307,14 +307,17 @@ function splitByArray(orgArr, valueArr) {
                         erkenningsNummer = form.querySelector('[name="erkenningsNummer"]').value,
                         marktId = form.querySelector('[name="marktId"]').value,
                         marktDate = form.querySelector('[name="marktDate"]').value,
-                        aantalPlaatsen = form.querySelector('[name="aantalPlaatsen"]').value,
+                        minimum = form.querySelector('[name="minimum"]').value,
+                        extra = form.querySelector('[name="extra-count"]:checked').value,
+                        maximum = parseInt(minimum, 10) + parseInt(extra, 10),
                         anywhere = form.querySelector('[name="anywhere"]:checked') && form.querySelector('[name="anywhere"]:checked').value;
                 out.push(encodeURIComponent('erkenningsNummer') + '=' + encodeURIComponent(erkenningsNummer));
                 out.push(encodeURIComponent('redirectTo') + '=' + encodeURIComponent(redirectTo));
                 anywhere && out.push(encodeURIComponent('anywhere') + '=' + encodeURIComponent(anywhere));
                 out.push(encodeURIComponent('marktId') + '=' + encodeURIComponent(marktId));
                 out.push(encodeURIComponent('marktDate') + '=' + encodeURIComponent(marktDate));
-                out.push(encodeURIComponent('aantalPlaatsen') + '=' + encodeURIComponent(aantalPlaatsen));
+                out.push(encodeURIComponent('minimum') + '=' + encodeURIComponent(minimum));
+                out.push(encodeURIComponent('maximum') + '=' + encodeURIComponent(maximum));
                 for (var i = 0; i < items.length; i++){
                     var
                         plaatsId = items[i].querySelector('[name*="plaatsId"]'),
@@ -369,13 +372,13 @@ function splitByArray(orgArr, valueArr) {
                       j,
                       minVal = form.querySelector('input[name="default-count"]:checked').value,
                       maxVal = form.querySelector('input[name="extra-count"]:checked').value;
-                      aantalPlaatsen = form.querySelector('input[name="aantalPlaatsen"]');
+                      minimum = form.querySelector('input[name="minimum"]');
                   if (elem === maxSlider && maxSlider.value < minSlider.value) {
                       minSlider.value = maxSlider.value;
                   } else if (elem === minSlider && maxSlider.value < minSlider.value) {
                       maxSlider.value = minSlider.value;
                   }
-                  aantalPlaatsen.value = parseInt(minVal) + parseInt(maxVal);
+                  minimum.value = parseInt(minVal) + parseInt(maxVal);
                   for (i = 0; i < explain.length; i++) {
                       var min = explain[i].querySelector('.min');
                       var max = explain[i].querySelector('.max');

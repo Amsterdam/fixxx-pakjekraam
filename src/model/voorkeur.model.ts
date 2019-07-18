@@ -5,18 +5,19 @@ export class Voorkeur extends Model<IMarktondernemerVoorkeurRow, IMarktonderneme
     implements IMarktondernemerVoorkeurRow {
     public erkenningsNummer!: string;
     public marktId: string;
-    public marktDate: string;
-    public monday: boolean;
-    public tuesday: boolean;
-    public wednesday: boolean;
-    public thursday: boolean;
-    public friday: boolean;
-    public saturday: boolean;
-    public sunday: boolean;
-    public anywhere: boolean;
-    public aantalPlaatsen: number;
-    public brancheId: string;
-    public parentBrancheId: string;
-    public inrichting: string;
-    public inactive: boolean;
+    public marktDate: string | null;
+    public monday: boolean | null;
+    public tuesday: boolean | null;
+    public wednesday: boolean | null;
+    public thursday: boolean | null;
+    public friday: boolean | null;
+    public saturday: boolean | null;
+    public sunday: boolean | null;
+    public anywhere: boolean | null;
+    public minimum?: number | null;
+    public maximum?: number | null;
+    public brancheId: string | null;
+    public parentBrancheId: string | null;
+    public inrichting: string | null;
+    public inactive: boolean | null;
 }

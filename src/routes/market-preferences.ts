@@ -11,14 +11,16 @@ export const algemeneVoorkeurenFormData = (body: any): IMarktondernemerVoorkeurR
 
     const inactive = !!body.inactive;
     const anywhere = !!body.anywhere;
-    const aantalPlaatsen = parseInt(body.aantalPlaatsen, 10) || null;
+    const minimum = typeof body.minimum === 'string' ? parseInt(body.minimum, 10) || null : null;
+    const maximum = typeof body.maximum === 'string' ? parseInt(body.maximum, 10) || null : null;
 
     const voorkeur = {
         erkenningsNummer,
         marktId: marktId || null,
         marktDate: marktDate || null,
         anywhere,
-        aantalPlaatsen,
+        minimum,
+        maximum,
         brancheId: brancheId || null,
         parentBrancheId: parentBrancheId || null,
         inrichting: inrichting || null,

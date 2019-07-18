@@ -66,7 +66,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          * - 1 ondernemer met een dubbele plaats
          */
         const markt = marktScenario(({ ondernemer, marktplaats }) => ({
-            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 2 } })],
+            ondernemers: [ondernemer({ voorkeur: { maximum: 2 } })],
             marktplaatsen: [marktplaats(), marktplaats()],
         }));
 
@@ -83,7 +83,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          * - 1 ondernemer met een meervoudige plaats
          */
         const markt = marktScenario(({ ondernemer, marktplaats }) => ({
-            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 3 } })],
+            ondernemers: [ondernemer({ voorkeur: { maximum: 3 } })],
             marktplaatsen: [marktplaats(), marktplaats(), marktplaats()],
         }));
 
@@ -100,7 +100,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          * - 1 ondernemer met een meervoudige plaats
          */
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
-            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 3 } })],
+            ondernemers: [ondernemer({ voorkeur: { maximum: 3 } })],
             marktplaatsen: [marktplaats(), marktplaats(), marktplaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
@@ -123,7 +123,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          * - 1 ondernemer met een meervoudige plaats
          */
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
-            ondernemers: [ondernemer({ plaatsen: ['1', '2'], voorkeur: { aantalPlaatsen: 1 } })],
+            ondernemers: [ondernemer({ plaatsen: ['1', '2'], voorkeur: { maximum: 1 } })],
             marktplaatsen: [marktplaats(), marktplaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
@@ -342,7 +342,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
     it('Een ondernemer kan kiezen niet te worden ingedeeld op willekeurige plaatsen', () => {
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
             ondernemers: [
-                ondernemer({ voorkeur: { anywhere: false, aantalPlaatsen: 3 } }),
+                ondernemer({ voorkeur: { anywhere: false, maximum: 3 } }),
                 ondernemer({ voorkeur: { anywhere: false } }),
             ],
             marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats()],
@@ -428,7 +428,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          * - de markt staat maximaal 2 plaatsen toe met deze branchetoewijzing
          */
         const markt = marktScenario(({ ondernemer, marktplaats }) => ({
-            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 3, branches: ['branche-x'] } })],
+            ondernemers: [ondernemer({ voorkeur: { maximum: 3, branches: ['branche-x'] } })],
             marktplaatsen: [marktplaats(), marktplaats(), marktplaats()],
             branches: [
                 {
@@ -451,7 +451,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          * - 1 ondernemer met een voorkeur voor 2 kramen
          */
         const markt = marktScenario(({ ondernemer, marktplaats }) => ({
-            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 2 } })],
+            ondernemers: [ondernemer({ voorkeur: { maximum: 2 } })],
             marktplaatsen: [marktplaats(), marktplaats()],
             rows: [['1'], ['2']],
         }));
@@ -471,7 +471,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          * - de ondernemer heeft een voorkeur voor kraam 2, daarna 1, daarna 3
          */
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
-            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 2 } })],
+            ondernemers: [ondernemer({ voorkeur: { maximum: 2 } })],
             marktplaatsen: [marktplaats(), marktplaats(), marktplaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
@@ -494,10 +494,7 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          * - de ondernemer heeft een voorkeur voor kraam 2, daarna 1, daarna 3
          */
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
-            ondernemers: [
-                ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
-                ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
-            ],
+            ondernemers: [ondernemer({ voorkeur: { maximum: 2 } }), ondernemer({ voorkeur: { maximum: 2 } })],
             marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats(), marktplaats(), marktplaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
@@ -532,8 +529,8 @@ describe('Automatisch toewijzen marktplaatsen', () => {
          */
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
             ondernemers: [
-                ondernemer({ voorkeur: { aantalPlaatsen: 3 }, plaatsen: ['3', '4'], status: 'vpl' }),
-                ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
+                ondernemer({ voorkeur: { maximum: 3 }, plaatsen: ['3', '4'], status: 'vpl' }),
+                ondernemer({ voorkeur: { maximum: 2 } }),
             ],
             marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats()],
             voorkeuren: [
@@ -896,6 +893,107 @@ describe('Automatisch toewijzen marktplaatsen: verschuiven', () => {
     });
 });
 
+describe('Automatisch toewijzen marktplaatsen: uitbreiden', () => {
+    it('Een ondernemer kan kiezen minstens een tweede plaats te krijgen', () => {
+        /*
+         * Scenario:
+         * - 2 marktplaatsen
+         * - 1 ondernemer met een dubbele plaats
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats }) => ({
+            ondernemers: [ondernemer({ voorkeur: { minimum: 2 } })],
+            marktplaatsen: [marktplaats(), marktplaats()],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(1);
+        expect(indeling.afwijzingen.length).toBe(0);
+        expect(indeling.toewijzingen[0].plaatsen).toStrictEqual(['1', '2']);
+    });
+
+    it.skip('Een ondernemer kan kiezen minstens een tweede plaats te krijgen, en anders niet', () => {
+        /*
+         * Scenario:
+         * - 2 marktplaatsen
+         * - 1 ondernemer met een dubbele plaats
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats }) => ({
+            ondernemers: [ondernemer({ voorkeur: { minimum: 2 } })],
+            marktplaatsen: [marktplaats()],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(0);
+        expect(indeling.afwijzingen.length).toBe(1);
+    });
+
+    it.skip('Een ondernemer kan kiezen NIET te verschuiven om het minimum aantal plaatsen te krijgen', () => {
+        /*
+         * Scenario:
+         * - 2 marktplaatsen
+         * - 1 ondernemer met een dubbele plaats
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [ondernemer({ voorkeur: { minimum: 2, anywhere: false } })],
+            marktplaatsen: [marktplaats(), marktplaats({ inactive: true }), marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({
+                    sollicitatieNummer: 1,
+                    plaatsId: '1',
+                }),
+                voorkeur({
+                    sollicitatieNummer: 1,
+                    plaatsId: '2',
+                }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(0);
+        expect(indeling.afwijzingen.length).toBe(1);
+    });
+
+    it.skip('Een ondernemer kan kiezen te verschuiven om het minimum aantal plaatsen te krijgen', () => {
+        /*
+         * Scenario:
+         * - 2 marktplaatsen
+         * - 1 ondernemer met een dubbele plaats
+         */
+        const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
+            ondernemers: [ondernemer({ voorkeur: { minimum: 2 } }), ondernemer()],
+            marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats()],
+            voorkeuren: [
+                voorkeur({
+                    sollicitatieNummer: 1,
+                    plaatsId: '1',
+                }),
+                voorkeur({
+                    sollicitatieNummer: 2,
+                    plaatsId: '2',
+                }),
+            ],
+        }));
+
+        const indeling = calcToewijzingen(markt);
+
+        expect(indeling.toewijzingen.length).toBe(2);
+        expect(indeling.afwijzingen.length).toBe(0);
+        expect(
+            indeling.toewijzingen
+                .find(({ ondernemer: { sollicitatieNummer } }) => sollicitatieNummer === 1)
+                .plaatsen.sort(),
+        ).toStrictEqual(['3', '4']);
+        expect(
+            indeling.toewijzingen
+                .find(({ ondernemer: { sollicitatieNummer } }) => sollicitatieNummer === 2)
+                .plaatsen.sort(),
+        ).toStrictEqual(['2']);
+    });
+});
+
 describe('Automatisch toewijzen marktplaatsen: edge cases', () => {
     it.skip('Een vasteplaatshouder niet toegewezen kan worden aan één van de vaste plaatsen', () => {
         /*
@@ -990,7 +1088,7 @@ describe('Automatisch toewijzen marktplaatsen: edge cases', () => {
          *   en de ondernemer zonder branche heeft betere anceniteit
          */
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
-            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 3 } })],
+            ondernemers: [ondernemer({ voorkeur: { maximum: 3 } })],
             marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats()],
             voorkeuren: [
                 voorkeur({
@@ -1033,8 +1131,8 @@ describe('Automatisch toewijzen marktplaatsen: edge cases', () => {
          */
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
             ondernemers: [
-                ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
-                ondernemer({ voorkeur: { aantalPlaatsen: 2, branches: ['branche-x'] } }),
+                ondernemer({ voorkeur: { maximum: 2 } }),
+                ondernemer({ voorkeur: { maximum: 2, branches: ['branche-x'] } }),
             ],
             marktplaatsen: [
                 marktplaats(),
@@ -1089,10 +1187,7 @@ describe('Automatisch toewijzen marktplaatsen: edge cases', () => {
          * - 2 ondernemers met een voorkeur voor 2 kramen
          */
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
-            ondernemers: [
-                ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
-                ondernemer({ voorkeur: { aantalPlaatsen: 2 } }),
-            ],
+            ondernemers: [ondernemer({ voorkeur: { maximum: 2 } }), ondernemer({ voorkeur: { maximum: 2 } })],
             marktplaatsen: [marktplaats(), marktplaats(), marktplaats(), marktplaats()],
             rows: [['1', '2'], ['3', '4']],
         }));
@@ -1115,7 +1210,7 @@ describe('Automatisch toewijzen marktplaatsen: edge cases', () => {
 
     it('Een ondernemer kan niet uitbreiden wanneer een obstakel dat blokeert', () => {
         const markt = marktScenario(({ ondernemer, marktplaats, voorkeur }) => ({
-            ondernemers: [ondernemer({ voorkeur: { aantalPlaatsen: 2 } })],
+            ondernemers: [ondernemer({ voorkeur: { maximum: 2 } })],
             marktplaatsen: [marktplaats(), marktplaats()],
             obstakels: [{ kraamA: '1', kraamB: '2', obstakel: ['boom'] }],
         }));

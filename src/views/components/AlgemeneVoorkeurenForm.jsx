@@ -35,7 +35,8 @@ class AlgemeneVoorkeurenForm extends React.Component {
             (query && query.next) || '/markt-detail/' + ondernemer.erkenningsnummer + '/' + marktId + '/';
         const advanced = (query && query.advanced) || false;
         const defaultVoorkeur = {
-            aantalPlaatsen: 1,
+            mimimum: 1,
+            maximum: 1,
             anwhere: true,
             inactive: false,
         };
@@ -133,19 +134,36 @@ class AlgemeneVoorkeurenForm extends React.Component {
                         </p>
                     </div>
                     <div className={`Fieldset ${advanced ? null : 'hidden'}`}>
+                        <h2 className="Fieldset__header">Hoeveel plaatsen hebt u echt nodig?</h2>
+
+                        <p className="InputField InputField--number">
+                            <label htmlFor="minimum" className="Label">
+                                Minimaal aantal kramen:
+                            </label>
+                            <input
+                                name="minimum"
+                                id="minimum"
+                                type="number"
+                                defaultValue={voorkeur.minimum}
+                                className="Input Input--small"
+                                width={5}
+                            />
+                        </p>
+                    </div>
+                    <div className={`Fieldset ${advanced ? null : 'hidden'}`}>
                         <h2 className="Fieldset__header">
                             Als er ruimte is, hoeveel plaatsen zou je graag in totaal willen?
                         </h2>
 
                         <p className="InputField InputField--number">
-                            <label htmlFor="aantalPlaatsen" className="Label">
+                            <label htmlFor="maximum" className="Label">
                                 Maximaal aantal kramen:
                             </label>
                             <input
-                                name="aantalPlaatsen"
-                                id="aantalPlaatsen"
+                                name="maximum"
+                                id="maximum"
                                 type="number"
-                                defaultValue={voorkeur.aantalPlaatsen}
+                                defaultValue={voorkeur.maximum}
                                 className="Input Input--small"
                                 width={5}
                             />

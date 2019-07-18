@@ -21,7 +21,8 @@ class PlaatsvoorkeurenForm extends React.Component {
     render() {
         const { markt, ondernemer, plaatsvoorkeuren, query, rows, indelingVoorkeur, marktDate, role } = this.props;
         const defaultVoorkeur = {
-            aantalPlaatsen: 1,
+            minimum: 1,
+            maximum: 1,
             anwhere: true,
             inactive: false,
         };
@@ -124,12 +125,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                 <div className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
                     <script dangerouslySetInnerHTML={marktRowsJSOM()} />
                     <script dangerouslySetInnerHTML={plaatsSetsJSON()} />
-                    <input
-                        name="aantalPlaatsen"
-                        id="aantalPlaatsen"
-                        type="hidden"
-                        defaultValue={voorkeur.aantalPlaatsen}
-                    />
+                    <input name="minimum" id="minimum" type="hidden" defaultValue={voorkeur.minimum} />
                     <div className="Fieldset PlaatsvoorkeurenForm__plaats-count">
                         <h2 className="Fieldset__header">Aantal plaatsen</h2>
                         <span className="Fieldset__sub-header">

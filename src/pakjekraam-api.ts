@@ -129,8 +129,11 @@ const indelingVoorkeurMerge = (
 ): IMarktondernemerVoorkeurRow => {
     const merged = Object.assign({}, a);
 
-    if (b.aantalPlaatsen !== null) {
-        merged.aantalPlaatsen = b.aantalPlaatsen;
+    if (b.minimum !== null) {
+        merged.minimum = b.minimum;
+    }
+    if (b.maximum !== null) {
+        merged.maximum = b.maximum;
     }
     if (b.krachtStroom !== null) {
         merged.krachtStroom = b.krachtStroom;
@@ -295,7 +298,7 @@ const convertSollicitatie = (data: MMSollicitatieStandalone): IMarktondernemer =
         voorkeur: {
             marktId: String(markt.id),
             erkenningsNummer: erkenningsnummer,
-            aantalPlaatsen: Math.max(1, data.aantal3MeterKramen + data.aantal4MeterKramen),
+            maximum: Math.max(1, data.aantal3MeterKramen + data.aantal4MeterKramen),
         },
         sollicitatieNummer,
         status,

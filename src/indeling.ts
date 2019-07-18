@@ -185,12 +185,15 @@ const onlyVoorkeursPlaatsen = (plaatsen: IMarktplaats[], voorkeuren: IPlaatsvoor
     return plaatsen.filter(({ plaatsId }) => voorkeursplaatsen.includes(plaatsId));
 };
 
+const getTargetSize = (ondernemer: IMarktondernemer): number =>
+    ondernemer.voorkeur ? Math.max(1, ondernemer.voorkeur.minimum || null, ondernemer.voorkeur.maximum || null) : 1;
+
 const findOptimalSpot = (
     ondernemer: IMarktondernemer,
     voorkeuren: IPlaatsvoorkeur[],
     openPlaatsen: IMarktplaats[],
     markt: IMarkt,
-    aantalPlaatsen: number = 1,
+    maximum: number = 1,
 ) => {
     let mogelijkePlaatsen = openPlaatsen;
 
@@ -240,11 +243,11 @@ const findOptimalSpot = (
 
     mogelijkePlaatsen = sortPlaatsen(mogelijkePlaatsen, voorkeuren);
 
-    if (aantalPlaatsen > 1) {
-        console.log(`Ondernemer ${ondernemer.erkenningsNummer} wil in één keer ${aantalPlaatsen} plaatsen`);
+    if (maximum > 1) {
+        console.log(`Ondernemer ${ondernemer.erkenningsNummer} wil in één keer ${maximum} plaatsen`);
         const prevMogelijkePlaatsen = mogelijkePlaatsen;
         mogelijkePlaatsen = mogelijkePlaatsen.filter(p => {
-            const expansionSize = aantalPlaatsen - 1;
+            const expansionSize = maximum - 1;
             const adjacent = getAdjacentPlaatsenRecursive(markt.rows, p.plaatsId, expansionSize, markt.obstakels);
 
             return adjacent.length >= expansionSize;
@@ -253,7 +256,7 @@ const findOptimalSpot = (
         console.log(
             'Van deze plaatsen: ',
             prevMogelijkePlaatsen.map(({ plaatsId }) => plaatsId),
-            ` hebben de volgende mogelijkheid tot uitbreiden naar ${aantalPlaatsen} plaatsen: `,
+            ` hebben de volgende mogelijkheid tot uitbreiden naar ${maximum} plaatsen: `,
             mogelijkePlaatsen.map(({ plaatsId }) => plaatsId),
         );
     }
@@ -394,11 +397,9 @@ const assignVastePlaats = (state: IMarktindeling, ondernemer: IMarktondernemer):
     state = vastePlaatsen
         .slice(
             0,
-            Math.min(
-                ondernemer.voorkeur && ondernemer.voorkeur.aantalPlaatsen
-                    ? ondernemer.voorkeur.aantalPlaatsen
-                    : vastePlaatsen.length,
-            ),
+            ondernemer.voorkeur && ondernemer.voorkeur.maximum
+                ? Math.min(vastePlaatsen.length, ondernemer.voorkeur.maximum || null)
+                : vastePlaatsen.length,
         )
         .map(plaats => {
             log(`Wijs ondernemer ${ondernemer.erkenningsNummer} toe aan vaste plaats ${plaats.plaatsId}`);
@@ -422,9 +423,9 @@ const assignVastePlaats = (state: IMarktindeling, ondernemer: IMarktondernemer):
 
 const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): IMarktindeling => {
     const { ondernemer, plaatsen } = toewijzing;
-    const { aantalPlaatsen } = ondernemer.voorkeur;
     const { erkenningsNummer } = ondernemer;
-    const currentPlaatsen = plaatsen.length;
+    const targetSize = getTargetSize(ondernemer);
+    const currentSize = plaatsen.length;
 
     const removeFromQueue = (indeling: IMarktindeling, toewijzing: IToewijzing) => ({
         ...indeling,
@@ -436,7 +437,7 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
         expansionQueue: indeling.expansionQueue.map(item => (item === current ? replacement : item)),
     });
 
-    if (currentPlaatsen < aantalPlaatsen) {
+    if (currentSize < targetSize) {
         const adjacent = getAdjacentPlaatsenForMultiple(indeling.rows, plaatsen, indeling.obstakels);
         const openAdjacent = intersection(adjacent, indeling.openPlaatsen);
 
@@ -473,7 +474,7 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
 
             indeling = replaceToewijzing(indeling, toewijzing, uitbreiding);
 
-            if (currentPlaatsen + 1 < aantalPlaatsen) {
+            if (currentSize + 1 < targetSize) {
                 // Do You Want More?!!!??!
                 indeling = replaceInQueue(indeling, toewijzing, uitbreiding);
             } else {
@@ -482,7 +483,7 @@ const assignUitbreiding = (indeling: IMarktindeling, toewijzing: IToewijzing): I
             // TODO: Merge `toewijzing` and `uitbreiding` objects, add to `indeling`
         } else {
             log(
-                `Geen uitbreiding van ${currentPlaatsen} naar ${currentPlaatsen +
+                `Geen uitbreiding van ${currentSize} naar ${currentSize +
                     1} plaatsen voor ondernemer ${erkenningsNummer}`,
             );
             indeling = removeFromQueue(indeling, toewijzing);
@@ -563,7 +564,7 @@ const findPlaats = (
     ondernemers: IMarktondernemer[],
     plaatsen?: IMarktplaats[],
     handleRejection: 'reject' | 'ignore' = 'reject',
-    aantalPlaatsen: number = 1,
+    maximum: number = 1,
 ): IMarktindeling => {
     const mogelijkePlaatsen = plaatsen || state.openPlaatsen;
 
@@ -599,7 +600,7 @@ const findPlaats = (
     let plaats;
 
     if (!reason) {
-        plaats = findOptimalSpot(ondernemer, ondernemerVoorkeuren, mogelijkePlaatsen, state, aantalPlaatsen);
+        plaats = findOptimalSpot(ondernemer, ondernemerVoorkeuren, mogelijkePlaatsen, state, maximum);
     }
 
     if (plaats) {
@@ -868,8 +869,7 @@ export const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktinde
     indeling = {
         ...indeling,
         expansionQueue: indeling.toewijzingen.filter(
-            ({ ondernemer }) =>
-                !!ondernemer.voorkeur && ondernemer.voorkeur.aantalPlaatsen > indeling.expansionIteration,
+            ({ ondernemer }) => !!ondernemer.voorkeur && getTargetSize(ondernemer) > indeling.expansionIteration,
         ),
     };
 
@@ -877,7 +877,7 @@ export const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktinde
         log(
             `Uitbreidingsronde naar ${indeling.expansionIteration} plaatsen (later tot maximaal ${
                 indeling.expansionLimit
-            })`,
+            }) voor ${indeling.expansionQueue.length} deelnemers`,
         );
 
         // TODO: Remove items from expansion queue for which expansion was impossible,
@@ -886,20 +886,20 @@ export const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktinde
         indeling = indeling.expansionQueue
             .filter(toewijzing => {
                 const { ondernemer, plaatsen } = toewijzing;
-                const { aantalPlaatsen } = ondernemer.voorkeur;
-                const currentPlaatsen = plaatsen.length;
+                const currentSize = plaatsen.length;
+                const targetSize = getTargetSize(ondernemer);
 
-                return currentPlaatsen < Math.min(aantalPlaatsen, indeling.expansionIteration, indeling.expansionLimit);
+                return currentSize < Math.min(targetSize, indeling.expansionIteration, indeling.expansionLimit);
             })
             .map(toewijzing => {
                 const { ondernemer, plaatsen } = toewijzing;
-                const { aantalPlaatsen } = ondernemer.voorkeur;
-                const currentPlaatsen = plaatsen.length;
+                const currentSize = plaatsen.length;
+                const targetSize = getTargetSize(ondernemer);
 
                 log(
                     `Ondernemer ${
                         ondernemer.erkenningsNummer
-                    } wil ${aantalPlaatsen} plaatsen, en heeft nu ${currentPlaatsen} plaats(en)`,
+                    } wil ${targetSize} plaatsen, en heeft nu ${currentSize} plaats(en)`,
                     toewijzing,
                 );
 

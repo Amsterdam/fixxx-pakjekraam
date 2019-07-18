@@ -69,7 +69,8 @@ export interface IMarktondernemerVoorkeur {
     erkenningsNummer: string;
     marktId?: string;
     marktDate?: string;
-    aantalPlaatsen?: number;
+    minimum?: number;
+    maximum?: number;
     krachtStroom?: boolean;
     kraaminrichting?: KraamInrichting;
     anywhere?: boolean;
@@ -82,7 +83,8 @@ export interface IMarktondernemerVoorkeurRow {
     erkenningsNummer: string;
     marktId?: string;
     marktDate?: string;
-    aantalPlaatsen?: number;
+    minimum?: number;
+    maximum?: number;
     krachtStroom?: boolean;
     kraaminrichting?: KraamInrichting;
     anywhere?: boolean;

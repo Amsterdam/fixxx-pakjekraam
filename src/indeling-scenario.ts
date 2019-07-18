@@ -86,7 +86,7 @@ const marktScenario = (callback: (utils: scenarioUtils) => IMarktScenarioStub): 
             description: 'Jane Doe',
             ...data,
             voorkeur: {
-                aantalPlaatsen: data.plaatsen ? data.plaatsen.length : 1,
+                maximum: data.plaatsen ? data.plaatsen.length : null,
                 ...data.voorkeur,
             },
         };

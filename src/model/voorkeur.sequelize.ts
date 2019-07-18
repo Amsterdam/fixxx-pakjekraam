@@ -50,7 +50,11 @@ export const initVoorkeur = (sequelize: Sequelize) => {
             type: DataTypes.BOOLEAN,
             allowNull: true,
         },
-        aantalPlaatsen: {
+        minimum: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+        maximum: {
             type: DataTypes.INTEGER,
             allowNull: true,
         },
