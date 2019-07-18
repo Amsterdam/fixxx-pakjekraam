@@ -407,6 +407,7 @@ export const getMailContext = (token: string, marktId: string, erkenningsNr: str
         return {
             markt,
             marktDate,
+            marktplaatsen: markt.marktplaatsen,
             ondernemer,
             inschrijving,
             toewijzing,

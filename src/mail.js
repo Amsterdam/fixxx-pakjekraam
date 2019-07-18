@@ -36,8 +36,7 @@ const mail = options => {
         };
     }
 
-    return Promise.resolve(null);
-    // return transport.sendMail(options);
+    return transport.sendMail(options);
 };
 
 module.exports = {
