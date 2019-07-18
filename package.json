@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "",
   "repository": "https://github.com/Amsterdam/fixxx-pakjekraam.git",
-  "main": "index.js",
+  "main": "src/index.ts",
   "directories": {
     "test": "test"
   },
@@ -13,9 +13,9 @@
     "deploy": "time ts-node src/deploy.js",
     "clean": "rm -rf dist/* node_modules/.cache/",
     "prestart": "npm run deploy",
-    "start": "ts-node src/index.js",
+    "start": "ts-node src/index.ts",
     "predev": "npm run build && npm run deploy",
-    "dev": "ts-node-dev --ignore-watch node_modules src/index.js",
+    "dev": "ts-node-dev --ignore-watch node_modules src/index.ts",
     "allocation": "ts-node src/allocation.js",
     "import": "echo 'Import skipped. Temporarily disabled.' && exit 0",
     "tdd": "jest --watch --verbose --rootDir ./src/",
