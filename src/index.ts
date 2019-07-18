@@ -154,7 +154,10 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // Initialize React JSX templates for server-side rendering
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'jsx');
-app.engine('jsx', reactViews.createEngine({ beautify: true }));
+const templateEngine = reactViews.createEngine({ beautify: true });
+
+app.engine('jsx', templateEngine);
+app.engine('tsx', templateEngine);
 
 app.get('/', (req: Request, res: Response) => {
     res.render('HomePage');

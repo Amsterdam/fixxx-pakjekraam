@@ -21,7 +21,7 @@ export const allocationMailPage = (req: Request, res: Response) => {
             subject,
         };
 
-        res.render('EmailIndeling', props);
+        res.render('EmailIndeling.tsx', props);
 
         if (req.query.mailto) {
             const to = req.query.mailto;

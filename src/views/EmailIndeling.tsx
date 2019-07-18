@@ -76,3 +76,5 @@ export class EmailIndeling extends React.Component {
         );
     }
 }
+
+export default EmailIndeling;
