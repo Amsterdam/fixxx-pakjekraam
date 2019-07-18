@@ -2,7 +2,7 @@ const models = require('./model/index.ts');
 const { init, login } = require('./makkelijkemarkt-api.ts');
 const { getMarkten, getIndelingslijst } = require('./pakjekraam-api.ts');
 const packageJSON = require('../package.json');
-const { flatten, today } = require('./util.ts');
+const { flatten, tomorrow } = require('./util.ts');
 
 const loginSettings = {
     url: process.env.API_URL,
@@ -19,7 +19,7 @@ login({
 }).then(session => {
     const token = session.uuid;
 
-    const marktDate = today();
+    const marktDate = tomorrow();
     const marktData = getMarkten(token);
     const indelingen = marktData.then(markten =>
         Promise.all(markten.map(markt => getIndelingslijst(token, markt.id, marktDate))),
