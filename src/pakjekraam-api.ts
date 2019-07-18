@@ -13,6 +13,7 @@ import { allocation, plaatsvoorkeur, rsvp, voorkeur } from './model/index';
 import { calcToewijzingen } from './indeling';
 
 import {
+    IMarkt,
     IBranche,
     IMarktProperties,
     IMarktondernemer,
@@ -403,6 +404,9 @@ export const getMailContext = (token: string, marktId: string, erkenningsNr: str
             .map(key => voorkeurenObjPrio[key])
             .sort((a, b) => b[0].priority - a[0].priority)
             .map(voorkeurList => voorkeurList.map(voorkeur => voorkeur.plaatsId));
+
+        // fixme: resolve markt naam
+        markt.naam = ((markt as any).markt as IMarkt).naam;
 
         return {
             markt,
