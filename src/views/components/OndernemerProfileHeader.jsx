@@ -12,7 +12,7 @@ const OndernemerProfileHeader = ({ user }) => {
             <div className="OndernemerProfileHeader__text-wrapper">
                 <strong className="OndernemerProfileHeader__name">{formatOndernemerName(user)}</strong>
                 <span className="OndernemerProfileHeader__id">
-                    <span className="OndernemerProfileHeader__id-label">erkenningsnummer: </span>
+                    <span className="OndernemerProfileHeader__id-label">registratienummer: </span>
                     <strong className="OndernemerProfileHeader__id-value">{user.erkenningsnummer}</strong>
                 </span>
             </div>

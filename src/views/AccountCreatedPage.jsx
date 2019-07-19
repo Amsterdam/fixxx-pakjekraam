@@ -19,7 +19,7 @@ class AccountCreatedPage extends React.Component {
                 <Content>
                     <h1 className="h1">Gelukt!</h1>
                     <p>
-                        Je kunt nu <a href="/login">inloggen met je erkenningsnummer en wachtwoord</a>.
+                        Je kunt nu <a href="/login">inloggen met je registratienummer en wachtwoord</a>.
                     </p>
                     <p className="InputField InputField--submit">
                         <a className="Button Button--primary" href="login">

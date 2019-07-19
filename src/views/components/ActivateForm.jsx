@@ -14,7 +14,7 @@ class ActivateForm extends React.Component {
                 <fieldset className="Fieldset">
                     <p className="InputField">
                         <label className="Label" htmlFor="username">
-                            Erkenningsnummer:
+                            Registratienummer:
                         </label>
                         <input
                             className="Input Input--text"
