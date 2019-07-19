@@ -306,12 +306,14 @@ function splitByArray(orgArr, valueArr) {
                         items = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
                         erkenningsNummer = form.querySelector('[name="erkenningsNummer"]').value,
                         marktId = form.querySelector('[name="marktId"]').value,
+                        marktDate = form.querySelector('[name="marktDate"]').value,
                         aantalPlaatsen = form.querySelector('[name="aantalPlaatsen"]').value,
                         anywhere = form.querySelector('[name="anywhere"]:checked') && form.querySelector('[name="anywhere"]:checked').value;
                 out.push(encodeURIComponent('erkenningsNummer') + '=' + encodeURIComponent(erkenningsNummer));
                 out.push(encodeURIComponent('redirectTo') + '=' + encodeURIComponent(redirectTo));
                 anywhere && out.push(encodeURIComponent('anywhere') + '=' + encodeURIComponent(anywhere));
                 out.push(encodeURIComponent('marktId') + '=' + encodeURIComponent(marktId));
+                out.push(encodeURIComponent('marktDate') + '=' + encodeURIComponent(marktDate));
                 out.push(encodeURIComponent('aantalPlaatsen') + '=' + encodeURIComponent(aantalPlaatsen));
                 for (var i = 0; i < items.length; i++){
                     var

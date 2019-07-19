@@ -9,7 +9,6 @@ import {
 } from '../pakjekraam-api';
 import { getQueryErrors, internalServerErrorPage, HTTP_CREATED_SUCCESS } from '../express-util';
 import { upsert } from '../sequelize-util.js';
-import { algemeneVoorkeurenFormData } from './market-preferences';
 import { IPlaatsvoorkeurRow } from '../markt.model';
 import models from '../model/index';
 
@@ -116,17 +115,17 @@ export const updateMarketLocation = (req: Request, res: Response, next: NextFunc
 
     const insertAlgVoorkeurFormData = () => {
         console.log('algemene voorkeuren opslaan...');
-        const data = algemeneVoorkeurenFormData(req.body);
-        const { marktId, marktDate } = data;
 
         return upsert(
             models.voorkeur,
             {
                 erkenningsNummer,
-                marktId,
-                marktDate,
+                marktDate: req.body.marktDate || null,
+                marktId: req.body.marktId,
             },
-            data,
+            {
+                anywhere: !!req.body.anywhere,
+            },
         );
     };
 
