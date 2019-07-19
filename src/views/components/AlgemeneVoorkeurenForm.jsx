@@ -115,7 +115,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
                                 defaultValue="bak"
                                 defaultChecked={voorkeur.parentBrancheId === 'bak'}
                             />
-                            <label htmlFor="parentBrancheId">Ja, ik ga koken, bakken of frituren</label>
+                            <label htmlFor="parentBrancheId">Ja, ik ga koken, bakken of frituren.</label>
                         </p>
                     </div>
                     <div className="Fieldset">

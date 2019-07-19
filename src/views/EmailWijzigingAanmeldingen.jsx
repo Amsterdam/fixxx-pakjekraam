@@ -41,8 +41,8 @@ class EmailWijzigingAanmeldingen extends React.Component {
         return (
             <EmailBase
                 lang="nl"
-                appName={`Pak je kraam`}
-                domain={`pakjekraam.amsterdam.nl`}
+                appName={`Kies je kraam`}
+                domain={`kiesjekraam.amsterdam.nl`}
                 subject={`Indeling ${markt.naam} ${formatDate(marktDate)}`}
             >
                 <EmailContent>

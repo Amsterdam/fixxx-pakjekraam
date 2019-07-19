@@ -287,7 +287,7 @@
                                                 <td style="vertical-align:top">
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                         <tbody><tr>
-                                                            <td align="left" style="padding:0;font-size:30px;line-height:30px;font-family:Helvetica, Arial, sans-serif;color:#333333;font-weight:400" class="padding-copy">Pak je kraam</td>
+                                                            <td align="left" style="padding:0;font-size:30px;line-height:30px;font-family:Helvetica, Arial, sans-serif;color:#333333;font-weight:400" class="padding-copy">Kies je kraam</td>
                                                         </tr>
                                                     </tbody></table>
                                                 </td>
@@ -324,7 +324,7 @@
                                     <td style="padding:10px 5% 10px 5%">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tbody><tr>
-                                                <td align="left" class="padding-copy"><a href="https://pakjekraam.amsterdam.nl" style="font-size:12px;line-height:18px;font-family:Helvetica, Arial, sans-serif;color:#666666;text-decoration:none">Pak je kraam</a></td>
+                                                <td align="left" class="padding-copy"><a href="https://kiesjekraam.amsterdam.nl" style="font-size:12px;line-height:18px;font-family:Helvetica, Arial, sans-serif;color:#666666;text-decoration:none">Kies je kraam</a></td>
                                             </tr>
                                         </tbody></table>
                                     </td>

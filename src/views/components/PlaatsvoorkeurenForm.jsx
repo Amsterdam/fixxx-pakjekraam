@@ -116,8 +116,9 @@ class PlaatsvoorkeurenForm extends React.Component {
                 />
                 <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
                 <p>
-                    Je kunt de plaatsvoorkeuren voor morgen tot 21.00 wijzigen. Wijzig je de plaatsvoorkeuren na 21.00
-                    uur dan gelden deze voor de dagen na morgen.
+                    U kunt de plaatsvoorkeuren voor morgen tot 21.00 uur wijzigen.
+                    <br />
+                    Wijzigt u de plaatsvoorkeuren na 21.00 uur? Dan gelden de wijzigingen voor de dagen na morgen.
                 </p>
 
                 <div className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
@@ -368,7 +369,9 @@ class PlaatsvoorkeurenForm extends React.Component {
                         <input type="hidden" name="marktDate" defaultValue={marktDate} />
                         <div className={`Fieldset`}>
                             <h2 className="Fieldset__header">
-                                Flexibel indelen? Dan deelt het systeem u op beschikbare plaatsen in
+                                Flexibel indelen?
+                                <br />
+                                Dan deelt het systeem u in op beschikbare plaatsen.
                             </h2>
                             <p className="InputField InputField--checkbox">
                                 <input

@@ -23,7 +23,7 @@ class EmailWijzigingVoorkeuren extends React.Component {
         return (
             <EmailBase
                 lang="nl"
-                appName={`Pak je kraam`}
+                appName={`Kies je kraam`}
                 domain={`pakjekraam.amsterdam.nl`}
                 subject={`Indeling ${markt.naam} ${formatDate(marktDate)}`}
             >

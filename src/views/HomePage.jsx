@@ -14,32 +14,36 @@ class HomePage extends React.Component {
             <Page>
                 <Header user={this.props.user} />
                 <Content>
-                    <h2>Digitaal inschrijven</h2>
+                    <h2>Digitaal indelen</h2>
                     <p>
-                        Je kunt binnenkort voor een aantal Amsterdamse markten on-line inschrijven voor de markt van
-                        morgen.
+                        U kunt u online aanmelden voor de komende marktdagen op Plein 40-45.
+                        <br />
+                        Binnenkort kan dit ook voor andere markten in Amsterdam.
                     </p>
                     <h2>Account activeren</h2>
-                    <p>Heb je van het Marktbureau een uitnodiging ontvangen voor digitaal inschrijven?</p>
                     <p>
-                        <a href="/activeren">Activeer dan nu je account</a> met de code uit de brief.
+                        Hebt u van het Marktbureau een brief ontvangen over digitaal indelen?
+                        <br />
+                        <a href="/activeren">Activeer dan nu uw account</a> met de code uit de brief.
                     </p>
                     <h2>Mijn markten</h2>
                     <p>
-                        Heb je de account geactiveerd? <a href="/login">Log in en kies je kraam</a>.
+                        Hebt u uw account geactiveerd? <a href="/login">Log in en meld u aan voor de markt</a>.
                     </p>
                     <h2>Wachtwoord kwijt?</h2>
                     <p>
-                        Ben je het wachtwoord vergeten? Als je een e-mailadres hebt ingesteld, kun je daarmee een{' '}
+                        Bent u uw wachtwoord vergeten? Als u een e-mailadres hebt ingesteld, kunt u daarmee een{' '}
                         <a href="https://iam.amsterdam.nl/auth/realms/pakjekraam/login-actions/reset-credentials">
                             nieuw wachtwoord instellen
                         </a>
-                        . Lukt het niet om een nieuw wachtwoord te kiezen,{' '}
-                        <a href="https://www.amsterdam.nl/adressengids/overig/marktbureau/">
-                            neem dan contact op met het Marktbureau
-                        </a>
-                        .
+                        . Lukt het niet om een nieuw wachtwoord te kiezen, neem dan contact op met het{' '}
+                        <a href="https://www.amsterdam.nl/adressengids/overig/marktbureau/">Marktbureau</a>.
                     </p>
+                    Hebt u nog vragen? Kijk eerst bij de{' '}
+                    <a href="https://www.amsterdam.nl/ondernemen/markt-straathandel/digitaal-indelen-plein-40-45/">
+                        veelgestelde vragen
+                    </a>
+                    .<p />
                 </Content>
             </Page>
         );

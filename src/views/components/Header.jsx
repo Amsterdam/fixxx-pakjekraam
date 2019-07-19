@@ -16,7 +16,7 @@ const Header = ({ user, children, logoUrl }) => {
                                     <img srcSet="/images/logo-desktop.svg" alt="…" />
                                 </picture>
                             </a>
-                            <h1 className="Header__heading">Pak je kraam</h1>
+                            <h1 className="Header__heading">Kies je kraam</h1>
                             <div>
                                 <LoginButton user={user} />
                             </div>

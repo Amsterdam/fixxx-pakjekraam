@@ -27,7 +27,7 @@ class SollicitantenPage extends React.Component {
         return (
             <MarktDetailBase
                 bodyClass="page-markt-sollicitanten page-print"
-                title="Sollicitanten & vastekaarthouders"
+                title="Sollicitanten, VKK en TVPL"
                 markt={markt}
                 datum={datum}
                 type={type}

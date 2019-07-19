@@ -5,7 +5,7 @@ const EmailContent = require('./components/EmailContent.jsx');
 class EmailPage extends React.Component {
     render() {
         return (
-            <EmailBase lang="nl" appName={`Pak je kraam`} domain={`pakjekraam.amsterdam.nl`} subject={`Onderwerp`}>
+            <EmailBase lang="nl" appName={`Kies je kraam`} domain={`kiesjekraam.amsterdam.nl`} subject={`Onderwerp`}>
                 <EmailContent>
                     <h2>Email Title</h2>
                     <p>

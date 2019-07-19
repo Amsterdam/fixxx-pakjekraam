@@ -70,7 +70,7 @@ export class EmailIndeling extends React.Component {
         }
 
         return (
-            <EmailBase lang="nl" appName="Pak je kraam" domain="pakjekraam.amsterdam.nl" subject={subject}>
+            <EmailBase lang="nl" appName="Kies je kraam" domain="kiesjekraam.amsterdam.nl" subject={subject}>
                 {template ? template : <EmailContent />}
             </EmailBase>
         );

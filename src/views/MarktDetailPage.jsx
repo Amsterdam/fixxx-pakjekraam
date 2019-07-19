@@ -79,7 +79,7 @@ class MarktDetailPage extends React.Component {
                         <ul className="LinkList">
                             <li className="LinkList__item">
                                 <a href={`./${today()}/sollicitanten/`} className="Link">
-                                    Sollicitanten & vastekaarthouders
+                                    Sollicitanten, VKK en TVPL
                                 </a>
                             </li>
                             <li className="LinkList__item">
@@ -92,7 +92,7 @@ class MarktDetailPage extends React.Component {
                         <ul className="LinkList">
                             <li className="LinkList__item">
                                 <a href={`./${addDays(today(), 1)}/sollicitanten/`} className="Link">
-                                    Sollicitanten & vastekaarthouders
+                                    Sollicitanten, VKK en TVPL
                                 </a>
                             </li>
                             <li className="LinkList__item">
