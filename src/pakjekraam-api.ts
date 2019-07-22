@@ -6,7 +6,7 @@ import {
     getMarktondernemers as getMarktondernemersMM,
     getMarktondernemersByMarkt as getMarktondernemersByMarktMM,
 } from './makkelijkemarkt-api';
-import { formatOndernemerName, isVast, slugifyMarkt } from './domain-knowledge.js';
+import { formatOndernemerName, isVast, parseMarktDag, slugifyMarkt } from './domain-knowledge.js';
 import { numberSort, stringSort } from './util';
 import Sequelize from 'sequelize';
 import { allocation, plaatsvoorkeur, rsvp, voorkeur } from './model/index';
@@ -510,6 +510,14 @@ export const getMarkten = (token: string) =>
     getMakkelijkeMarkten(token)
         // Only show markten for which JSON data with location info exists
         .then(markten => markten.filter(markt => fs.existsSync(`data/${slugifyMarkt(markt.id)}/locaties.json`)));
+
+export const getMarktenByDate = (token: string, marktDate: string) => {
+    const day = new Date(marktDate).getDay();
+
+    return getMarkten(token).then(markten =>
+        markten.filter(({ marktDagen }) => marktDagen.map(parseMarktDag).includes(day)),
+    );
+};
 
 /*
  * Vendors are allowed to attend only one market per day.

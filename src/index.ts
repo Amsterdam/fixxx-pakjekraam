@@ -10,8 +10,8 @@ import morgan from 'morgan';
 import url from 'url';
 import { readOnlyLogin } from './makkelijkemarkt-auth';
 import { getMarkt, getMarktondernemer, getMarktondernemersByMarkt } from './makkelijkemarkt-api';
-import { requireEnv } from './util';
-import { HTTP_INTERNAL_SERVER_ERROR, internalServerErrorPage, getQueryErrors } from './express-util';
+import { requireEnv, today, tomorrow } from './util';
+import { HTTP_INTERNAL_SERVER_ERROR, internalServerErrorPage, jsonPage, getQueryErrors } from './express-util';
 import { marktDetailController } from './routes/markt-detail';
 
 import {
@@ -23,6 +23,7 @@ import {
     getPlaatsvoorkeuren,
     getBranches,
     getMarkten,
+    getMarktenByDate,
     getSollicitantenlijstInput,
 } from './pakjekraam-api';
 
@@ -188,6 +189,21 @@ app.get(
 
 app.get('/markt/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req: Request, res: Response) => {
     getMarkten(req.session.token).then(markten => res.render('MarktenPage', { markten }));
+});
+
+// For debug purposes:
+app.get('/markt/index.json', keycloak.protect(KeycloakRoles.MARKTBUREAU), (req: Request, res: Response) => {
+    getMarkten(req.session.token).then(jsonPage(res));
+});
+
+// For debug purposes:
+app.get('/markt/today.json', keycloak.protect(KeycloakRoles.MARKTBUREAU), (req: Request, res: Response) => {
+    getMarktenByDate(req.session.token, today()).then(jsonPage(res));
+});
+
+// For debug purposes:
+app.get('/markt/tomorrow.json', keycloak.protect(KeycloakRoles.MARKTBUREAU), (req: Request, res: Response) => {
+    getMarktenByDate(req.session.token, tomorrow()).then(jsonPage(res));
 });
 
 app.get('/markt/:marktId/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req: Request, res: Response) => {
@@ -530,13 +546,6 @@ app.get(
         );
     },
 );
-
-const jsonPage = (res: Response) => (data: any) => {
-    res.set({
-        'Content-Type': 'application/json; charset=UTF-8',
-    });
-    res.send(JSON.stringify(data, null, '  '));
-};
 
 app.get(
     '/algemene-voorkeuren/:erkenningsNummer/voorkeuren.json',

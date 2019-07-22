@@ -4,10 +4,10 @@ import { defer } from 'rxjs';
 import { shareReplay, tap, combineLatest } from 'rxjs/operators';
 import { mail } from './mail.js';
 import { requireEnv, tomorrow } from './util';
-import { getMarkten } from './makkelijkemarkt-api';
 import {
     getAanmeldingen,
     getAllBranches,
+    getMarktenByDate,
     getMarktplaatsen,
     getMarktondernemersByMarkt,
     getPlaatsvoorkeuren,
@@ -37,7 +37,7 @@ const makkelijkeMarkt$ = defer(() => readOnlyLogin()).pipe(
 );
 
 makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]) =>
-    getMarkten(makkelijkeMarkt.token).then(markten =>
+    getMarktenByDate(makkelijkeMarkt.token, marktDate).then(markten =>
         markten
             .filter(markt => markt.id === 20)
             .map(markt =>

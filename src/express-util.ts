@@ -66,3 +66,10 @@ export const getQueryErrors = (queryParams: any): ErrorMessage[] => {
 };
 
 export const errorPage = (res: Response, err: Error) => internalServerErrorPage(res)(err);
+
+export const jsonPage = (res: Response) => (data: any) => {
+    res.set({
+        'Content-Type': 'application/json; charset=UTF-8',
+    });
+    res.send(JSON.stringify(data, null, '  '));
+};
