@@ -2,7 +2,7 @@ const LoginButton = require('./LoginButton');
 const PropTypes = require('prop-types');
 const React = require('react');
 
-const Header = ({ user, children, logoUrl }) => {
+const Header = ({ user, children, logoUrl, hideLogout }) => {
     return (
         <header className="Header">
             <div className="Header__top">
@@ -17,9 +17,7 @@ const Header = ({ user, children, logoUrl }) => {
                                 </picture>
                             </a>
                             <h1 className="Header__heading">Kies je kraam</h1>
-                            <div>
-                                <LoginButton user={user} />
-                            </div>
+                            <div>{!hideLogout ? <LoginButton user={user} /> : null}</div>
                         </div>
                     </div>
                 </div>
@@ -39,6 +37,7 @@ Header.propTypes = {
     user: PropTypes.object,
     logoUrl: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+    hideLogout: PropTypes.bool,
 };
 
 module.exports = Header;

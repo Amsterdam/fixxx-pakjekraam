@@ -12,7 +12,7 @@ class HomePage extends React.Component {
     render() {
         return (
             <Page>
-                <Header user={this.props.user} />
+                <Header hideLogout={true} />
                 <Content>
                     <h2>Digitaal indelen</h2>
                     <p>

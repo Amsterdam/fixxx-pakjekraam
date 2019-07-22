@@ -32,6 +32,8 @@ export const marktDetailController = (
         getAllBranches(),
     ]).then(
         ([ondernemer, plaatsvoorkeuren, aanmeldingen, markt, voorkeur, branches]) => {
+            console.log(Object.keys(req));
+            console.log(req.session);
             res.render('OndernemerMarktDetailPage', {
                 ondernemer,
                 plaatsvoorkeuren,

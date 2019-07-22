@@ -3,12 +3,8 @@ const React = require('react');
 
 const LoginButton = ({ user }) => {
     return (
-        <a
-            className={`LoginButton LoginButton--${user ? 'logout' : 'login'}`}
-            href={`${!user ? '/login' : '/logout'}`}
-            role="button"
-        >
-            {user ? 'Uitloggen' : 'Inloggen'}
+        <a className={`LoginButton LoginButton--logout`} href={`/logout`} role="button">
+            Uitloggen
         </a>
     );
 };
