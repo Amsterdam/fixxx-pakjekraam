@@ -391,8 +391,8 @@ function splitByArray(orgArr, valueArr) {
                   }
               },
               _init = function(){
-                  var minVal = form.querySelector('input[name="minimum"]:checked').value,
-                      maximum = form.querySelector('input[name="maximum"]').value,
+                  var minVal = form.querySelector('input[name="minimum"]:checked') ? form.querySelector('input[name="minimum"]:checked').value : 1,
+                      maximum = form.querySelector('input[name="maximum"]').value || 1,
                       extra = parseInt(maximum, 10) - parseInt(minVal, 10),
                       maxVal = form.querySelector('input[name="extra-count"]:checked').value;
                   form.querySelector('input[id="extra-count-'+extra+'"]').checked = true;
