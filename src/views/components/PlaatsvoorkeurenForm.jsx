@@ -29,7 +29,7 @@ class PlaatsvoorkeurenForm extends React.Component {
             inactive: false,
         };
 
-        let voorkeur = indelingVoorkeur || defaultVoorkeur;
+        const voorkeur = indelingVoorkeur || defaultVoorkeur;
         voorkeur.minimum = !voorkeur.minimum ? 1 : parseInt(voorkeur.minimum, 10);
         voorkeur.maximum = !voorkeur.maximum ? 1 : parseInt(voorkeur.maximum, 10);
         voorkeur.minimum = voorkeur.maximum < voorkeur.minimum ? voorkeur.maximum : voorkeur.minimum;
