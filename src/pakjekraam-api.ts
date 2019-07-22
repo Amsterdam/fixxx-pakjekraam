@@ -298,7 +298,7 @@ const convertSollicitatie = (data: MMSollicitatieStandalone): IMarktondernemer =
         voorkeur: {
             marktId: String(markt.id),
             erkenningsNummer: erkenningsnummer,
-            maximum: Math.max(1, data.aantal3MeterKramen + data.aantal4MeterKramen),
+            maximum: Math.max(1, (data.vastePlaatsen || []).length),
         },
         sollicitatieNummer,
         status,
