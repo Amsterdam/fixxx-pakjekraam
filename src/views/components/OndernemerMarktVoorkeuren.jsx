@@ -5,9 +5,18 @@ const Button = require('./Button');
 const HeaderTitleButton = require('./HeaderTitleButton');
 const { isVast } = require('../../domain-knowledge.js');
 
-const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query, sollicitatie }) => {
+const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query, sollicitatie, voorkeur }) => {
     const blockUrl = `../../voorkeuren/${markt.id}/`;
     const entriesFiltered = plaatsvoorkeuren.filter(entry => entry.marktId === markt.id);
+    const defaultPlaatsCount = isVast(sollicitatie.status) ? sollicitatie.vastePlaatsen.length : 1;
+    const defaultVoorkeur = {
+        minimum: defaultPlaatsCount,
+        maximum: defaultPlaatsCount,
+        anwhere: true,
+        inactive: false,
+    };
+    const voorkeurDef = voorkeur || defaultVoorkeur;
+
     const entriesSplit = entriesFiltered
         .sort((a, b) => b.priority - a.priority)
         .reduce((t, e) => {
@@ -35,6 +44,18 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query,
                         </p>
                     </div>
                 ) : null}
+                <div className="margin-bottom">
+                    <dl>
+                        <dt>Aantal plaatsen:</dt>
+                        <dd>{voorkeurDef.minimum}</dd>
+                        <dt>Extra plaatsen:</dt>
+                        <dd>
+                            {voorkeurDef.maximum !== voorkeurDef.minimum
+                                ? parseInt(voorkeurDef.maximum, 10) - parseInt(voorkeurDef.minimum, 10)
+                                : 'geen'}
+                        </dd>
+                    </dl>
+                </div>
                 {entriesSplit.length ? (
                     <div className="margin-top" key="voorkeuren">
                         <strong className="h5">Favoriete plaatsen</strong>
@@ -67,6 +88,7 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query,
 
 OndernemerMarktVoorkeuren.propTypes = {
     plaatsvoorkeuren: PropTypes.array.isRequired,
+    voorkeur: PropTypes.object.isRequired,
     markt: PropTypes.object.isRequired,
     ondernemer: PropTypes.object.isRequired,
     sollicitatie: PropTypes.object.isRequired,

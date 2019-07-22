@@ -125,6 +125,8 @@ export const updateMarketLocation = (req: Request, res: Response, next: NextFunc
             },
             {
                 anywhere: !!req.body.anywhere,
+                minimum: req.body.minimum,
+                maximum: req.body.maximum,
             },
         );
     };

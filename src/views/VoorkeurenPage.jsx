@@ -23,7 +23,16 @@ class VoorkeurenPage extends React.Component {
     };
 
     render() {
-        const { marktProperties, marktPaginas, marktPlaatsen, indelingVoorkeur, marktDate, user, role } = this.props;
+        const {
+            marktProperties,
+            marktPaginas,
+            marktPlaatsen,
+            indelingVoorkeur,
+            marktDate,
+            user,
+            role,
+            ondernemer,
+        } = this.props;
         const rows = (
             marktProperties.rows ||
             marktPaginas.reduce(
@@ -39,7 +48,7 @@ class VoorkeurenPage extends React.Component {
 
         return (
             <Page messages={this.props.messages}>
-                <Header user={this.props.user} logoUrl={role === 'marktmeester' ? '/markt/' : '/dashboard/'}>
+                <Header user={ondernemer} logoUrl={role === 'marktmeester' ? '/markt/' : '/dashboard/'}>
                     <a className="Header__nav-item" href={role === 'marktmeester' ? '/markt/' : '/dashboard/'}>
                         {role === 'marktmeester' ? 'Markten' : 'Mijn markten'}
                     </a>

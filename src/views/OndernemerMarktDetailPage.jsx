@@ -49,7 +49,7 @@ class OndernemerMarktDetailPage extends React.Component {
                 </Header>
                 <Content>
                     <OndernemerMarktHeading sollicitatie={sollicitatie} markt={markt} />
-                    {!voorkeur || !voorkeur.branches ? (
+                    {!voorkeur || !voorkeur.brancheId ? (
                         <Alert type="warning" inline={true}>
                             <span>
                                 U hebt uw <strong>koopwaar</strong> nog niet doorgegeven in het{' '}
@@ -71,6 +71,7 @@ class OndernemerMarktDetailPage extends React.Component {
                                 ondernemer={ondernemer}
                                 markt={markt}
                                 plaatsvoorkeuren={plaatsvoorkeuren}
+                                voorkeur={voorkeur}
                                 sollicitatie={sollicitatie}
                             />
                             <OndernemerMarktAlgVoorkeuren

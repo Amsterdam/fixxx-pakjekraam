@@ -276,7 +276,7 @@ function splitByArray(orgArr, valueArr) {
               extra = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__min-extra'),
               optional = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__optional'),
               explain = form.querySelectorAll('.PlaatsvoorkeurenForm__list-item__explain'),
-              minSlider = form.querySelector('input[name="default-count"]'),
+              minSlider = form.querySelector('input[name="minimum"]'),
               maxSlider = form.querySelector('input[name="extra-count"]'),
               redirectTo = './?error=plaatsvoorkeuren-saved',
               _submit = function(e){
@@ -307,7 +307,7 @@ function splitByArray(orgArr, valueArr) {
                         erkenningsNummer = form.querySelector('[name="erkenningsNummer"]').value,
                         marktId = form.querySelector('[name="marktId"]').value,
                         marktDate = form.querySelector('[name="marktDate"]').value,
-                        minimum = form.querySelector('[name="minimum"]').value,
+                        minimum = form.querySelector('[name="minimum"]:checked').value,
                         extra = form.querySelector('[name="extra-count"]:checked').value,
                         maximum = parseInt(minimum, 10) + parseInt(extra, 10),
                         anywhere = form.querySelector('[name="anywhere"]:checked') && form.querySelector('[name="anywhere"]:checked').value;
@@ -370,15 +370,10 @@ function splitByArray(orgArr, valueArr) {
                   var elem = e && e.target,
                       i,
                       j,
-                      minVal = form.querySelector('input[name="default-count"]:checked').value,
+                      minVal = form.querySelector('input[name="minimum"]:checked').value,
+                      maximum = form.querySelector('input[name="maximum"]').value,
+                      extra = parseInt(maximum, 10) - parseInt(minVal, 10),
                       maxVal = form.querySelector('input[name="extra-count"]:checked').value;
-                      minimum = form.querySelector('input[name="minimum"]');
-                  if (elem === maxSlider && maxSlider.value < minSlider.value) {
-                      minSlider.value = maxSlider.value;
-                  } else if (elem === minSlider && maxSlider.value < minSlider.value) {
-                      maxSlider.value = minSlider.value;
-                  }
-                  minimum.value = parseInt(minVal) + parseInt(maxVal);
                   for (i = 0; i < explain.length; i++) {
                       var min = explain[i].querySelector('.min');
                       var max = explain[i].querySelector('.max');
@@ -394,8 +389,15 @@ function splitByArray(orgArr, valueArr) {
                   if(e) {
                     _submit();
                   }
-              };
-          _formChange();
+              },
+              _init = function(){
+                  var minVal = form.querySelector('input[name="minimum"]:checked').value,
+                      maximum = form.querySelector('input[name="maximum"]').value,
+                      extra = parseInt(maximum, 10) - parseInt(minVal, 10),
+                      maxVal = form.querySelector('input[name="extra-count"]:checked').value;
+                  form.querySelector('input[id="extra-count-'+extra+'"]').checked = true;
+              }
+          _init();
           form.addEventListener('change', _formChange);
           form.addEventListener('submit', _submit);
       },

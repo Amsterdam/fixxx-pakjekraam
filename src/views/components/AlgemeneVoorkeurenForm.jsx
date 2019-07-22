@@ -34,9 +34,10 @@ class AlgemeneVoorkeurenForm extends React.Component {
         const nextMessage =
             (query && query.next) || '/markt-detail/' + ondernemer.erkenningsnummer + '/' + marktId + '/';
         const advanced = (query && query.advanced) || false;
+        const defaultPlaatsCount = isVast(sollicitatie.status) ? sollicitatie.vastePlaatsen.length : 1;
         const defaultVoorkeur = {
-            mimimum: 1,
-            maximum: 1,
+            minimum: defaultPlaatsCount,
+            maximum: defaultPlaatsCount,
             anwhere: true,
             inactive: false,
         };

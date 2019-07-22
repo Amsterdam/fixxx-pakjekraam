@@ -20,9 +20,11 @@ class PlaatsvoorkeurenForm extends React.Component {
 
     render() {
         const { markt, ondernemer, plaatsvoorkeuren, query, rows, indelingVoorkeur, marktDate, role } = this.props;
+        const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
+        const defaultPlaatsCount = isVast(sollicitatie.status) ? sollicitatie.vastePlaatsen.length : 1;
         const defaultVoorkeur = {
-            minimum: 1,
-            maximum: 1,
+            minimum: defaultPlaatsCount,
+            maximum: defaultPlaatsCount,
             anwhere: true,
             inactive: false,
         };
@@ -32,8 +34,7 @@ class PlaatsvoorkeurenForm extends React.Component {
         const hasVoorkeur = (marktId, plaatsId) =>
             plaatsvoorkeuren.some(voork => voork.marktId === marktId && voork.plaatsId === plaatsId) ||
             ondernemer.sollicitaties.some(
-                sollicitatie =>
-                    sollicitatie.markt.id === parseInt(marktId, 10) && sollicitatie.vastePlaatsen.includes(plaatsId),
+                soll => soll.markt.id === parseInt(marktId, 10) && soll.vastePlaatsen.includes(plaatsId),
             );
         const voorkeurEntries = plaatsvoorkeuren.map((voork, index) => {
             return {
@@ -52,9 +53,9 @@ class PlaatsvoorkeurenForm extends React.Component {
         }));
 
         const next = query.next ? query.next : `./`;
-        const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
+
         const maxCountUitbreidingenMarkt = 2;
-        const defaultPlaatsCount = isVast(sollicitatie.status) ? sollicitatie.vastePlaatsen.length : 1;
+
         const newPlaatsvoorkeurCount =
             sollicitatie.vastePlaatsen.length > 0
                 ? sollicitatie.vastePlaatsen.length + maxCountUitbreidingenMarkt
@@ -125,7 +126,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                 <div className="PlaatsvoorkeurenForm__markt" data-markt-id={markt.id}>
                     <script dangerouslySetInnerHTML={marktRowsJSOM()} />
                     <script dangerouslySetInnerHTML={plaatsSetsJSON()} />
-                    <input name="minimum" id="minimum" type="hidden" defaultValue={voorkeur.minimum} />
+                    <input name="maximum" id="maximum" type="hidden" defaultValue={voorkeur.maximum} />
                     <div className="Fieldset PlaatsvoorkeurenForm__plaats-count">
                         <h2 className="Fieldset__header">Aantal plaatsen</h2>
                         <span className="Fieldset__sub-header">
@@ -139,8 +140,8 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         id={`default-count-${i + 1}`}
                                         value={`${i + 1}`}
                                         data-val={`${i + 1}`}
-                                        name="default-count"
-                                        {...{ defaultChecked: defaultPlaatsCount === i + 1 }}
+                                        name="minimum"
+                                        {...{ defaultChecked: voorkeur.minimum === i + 1 }}
                                     />
                                     <label htmlFor={`default-count-${i + 1}`}>{i + 1}</label>
                                 </React.Fragment>

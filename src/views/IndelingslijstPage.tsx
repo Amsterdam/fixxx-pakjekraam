@@ -50,8 +50,6 @@ export default class IndelingslijstenPage extends React.Component {
         };
         const title = titleMap[type] || titleMap['indelingslijst'];
 
-        console.log(toewijzingen);
-
         return (
             <MarktDetailBase
                 bodyClass="page-markt-indelingslijst page-print"
