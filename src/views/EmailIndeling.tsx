@@ -52,7 +52,7 @@ export class EmailIndeling extends React.Component {
 
     public render() {
         const { ondernemer, toewijzing, afwijzing, voorkeuren, subject, eggie } = this.props as EmailIndelingProps;
-
+        const infoLink = `https://www.amsterdam.nl/ondernemen/markt-straathandel/digitaal-indelen-plein-40-45/`;
         let template;
 
         if (isVast(ondernemer.status)) {
@@ -90,12 +90,8 @@ export class EmailIndeling extends React.Component {
                         <p>
                             <strong>Meer informatie?</strong>
                             <br />
-                            Op deze{' '}
-                            <a href="https://www.amsterdam.nl/ondernemen/markt-straathandel/digitaal-indelen-plein-40-45/">
-                                website
-                            </a>{' '}
-                            kunt u veel informatie vinden over digitaal indelen. Wij raden u aan dit te lezen als u wilt
-                            weten hoe het precies werkt.
+                            Op deze <a href={infoLink}>website</a> kunt u veel informatie vinden over digitaal indelen.
+                            Wij raden u aan dit te lezen als u wilt weten hoe het precies werkt.
                         </p>
                         <p>
                             Hebt u daarna nog vragen? Stuur ons dan een e-mail via{' '}
