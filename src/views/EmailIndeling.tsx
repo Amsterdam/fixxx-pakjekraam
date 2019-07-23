@@ -52,7 +52,7 @@ export class EmailIndeling extends React.Component {
 
     public render() {
         const { ondernemer, toewijzing, afwijzing, voorkeuren, subject, eggie } = this.props as EmailIndelingProps;
-        const infoLink = `https://www.amsterdam.nl/ondernemen/markt-straathandel/digitaal-indelen-plein-40-45/`;
+        const infoLink = 'https://www.amsterdam.nl/ondernemen/markt-straathandel/digitaal-indelen-plein-40-45/';
         let template;
 
         if (isVast(ondernemer.status)) {
