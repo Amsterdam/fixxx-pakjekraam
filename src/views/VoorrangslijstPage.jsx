@@ -57,10 +57,8 @@ class VoorrangslijstPage extends React.Component {
                 },
                 [[], [], [], []],
             )
-            .map(group => paginate(group, itemsOnPage));
+            .map(group => paginate(paginate(group, itemsOnPage), 2));
 
-        const paginas = paginate(ondernemers, itemsOnPage);
-        const paginasLists = paginate(paginas, 2);
         const titles = [
             `Voorrangslijst A lijst, aangemeld: ${markt.naam}`,
             `Voorrangslijst aangemeld: ${markt.naam}`,
@@ -79,20 +77,28 @@ class VoorrangslijstPage extends React.Component {
                 showDate={false}
             >
                 {ondernemersGrouped.map((group, i) =>
-                    group.length > 0 ? (
-                        <PrintPage title={titles[i]} datum={datum}>
-                            {group.map((list, j) => (
-                                <OndernemerList
-                                    key={j}
-                                    ondernemers={list}
-                                    markt={markt}
-                                    type={type}
-                                    datum={datum}
-                                    aanmeldingen={aanmeldingen}
-                                />
-                            ))}
-                        </PrintPage>
-                    ) : null,
+                    group.length > 0
+                        ? group.map((page, k) => (
+                              <PrintPage
+                                  key={k}
+                                  title={`${titles[i]}${
+                                      group.length > 1 ? ' (' + (k + 1) + ' - ' + group.length + ')' : ''
+                                  }`}
+                                  datum={datum}
+                              >
+                                  {page.map((list, j) => (
+                                      <OndernemerList
+                                          key={j}
+                                          ondernemers={list}
+                                          markt={markt}
+                                          type={type}
+                                          datum={datum}
+                                          aanmeldingen={aanmeldingen}
+                                      />
+                                  ))}
+                              </PrintPage>
+                          ))
+                        : null,
                 )}
             </MarktDetailBase>
         );

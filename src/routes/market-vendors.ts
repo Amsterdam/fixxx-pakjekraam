@@ -24,7 +24,7 @@ export const sollicitantenPage = (req: Request, res: Response) => {
 };
 
 export const voorrangslijstPage = (req: Request, res: Response) => {
-    const user = req.session.token;
+    const user = req.session;
     const datum = req.params.datum;
     const type = 'voorrangslijst';
     getVoorrangslijstInput(req.session.token, req.params.marktId, req.params.datum).then(

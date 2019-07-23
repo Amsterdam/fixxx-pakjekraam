@@ -46,7 +46,7 @@ const OndernemerList = ({
 OndernemerList.propTypes = {
     ondernemers: PropTypes.arrayOf(PropTypes.object),
     markt: PropTypes.object,
-    aanmeldingen: PropTypes.object,
+    aanmeldingen: PropTypes.array,
 };
 
 module.exports = OndernemerList;
