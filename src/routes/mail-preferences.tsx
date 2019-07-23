@@ -21,7 +21,7 @@ export const preferencesMailPage = (req: Request, res: Response) => {
             .sort((a, b) => b[0].priority - a[0].priority)
             .map(voorkeurList => voorkeurList.map(voorkeur => voorkeur.plaatsId));
 
-        const props = { ondernemer, markt, voorkeuren: voorkeurenPrio, marktDate };
+        const props = { ondernemer, markt, voorkeuren: voorkeurenPrio, marktDate, eggie: req.query.eggie || false };
 
         res.render('EmailWijzigingVoorkeuren', props);
 

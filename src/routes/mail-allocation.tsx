@@ -19,6 +19,7 @@ export const allocationMailPage = (req: Request, res: Response) => {
         const props = {
             ...context,
             subject,
+            eggie: req.query.eggie || false,
         };
 
         res.render('EmailIndeling.tsx', props);

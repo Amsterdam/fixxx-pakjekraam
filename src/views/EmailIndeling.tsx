@@ -32,6 +32,7 @@ export type EmailIndelingProps = {
     aanmeldingen: IRSVP[];
     branches: IBranche[];
     subject: string;
+    eggie: boolean;
 };
 
 export class EmailIndeling extends React.Component {
@@ -46,10 +47,11 @@ export class EmailIndeling extends React.Component {
         aanmeldingen: PropTypes.array,
         branches: PropTypes.array,
         subject: PropTypes.string,
+        eggie: PropTypes.bool,
     };
 
     public render() {
-        const { ondernemer, toewijzing, afwijzing, voorkeuren, subject } = this.props as EmailIndelingProps;
+        const { ondernemer, toewijzing, afwijzing, voorkeuren, subject, eggie } = this.props as EmailIndelingProps;
 
         let template;
 
@@ -71,7 +73,47 @@ export class EmailIndeling extends React.Component {
 
         return (
             <EmailBase lang="nl" appName="Kies je kraam" domain="kiesjekraam.amsterdam.nl" subject={subject}>
-                {template ? template : <EmailContent />}
+                {!eggie ? (
+                    <EmailContent>
+                        <p>Beste {ondernemer.description},</p>
+                        <p>
+                            Dit is een testmail tijdens de wenperiode van digitaal indelen. U ontvangt deze e-mail omdat
+                            u zich digitaal heeft aangemeld.
+                        </p>
+                        <p>In de toekomst ontvangt u in deze mail uw (toegewezen) plaatsnummers.</p>
+                        <p>
+                            De loting en de indeling verloopt zoals u nu gewend bent.
+                            <br />
+                            Er verandert verder niets tijdens de wenperiode.
+                        </p>
+
+                        <p>
+                            <strong>Meer informatie?</strong>
+                            <br />
+                            Op deze{' '}
+                            <a href="https://www.amsterdam.nl/ondernemen/markt-straathandel/digitaal-indelen-plein-40-45/">
+                                website
+                            </a>{' '}
+                            kunt u veel informatie vinden over digitaal indelen. Wij raden u aan dit te lezen als u wilt
+                            weten hoe het precies werkt.
+                        </p>
+                        <p>
+                            Hebt u daarna nog vragen? Stuur ons dan een e-mail via{' '}
+                            <a href="mailto: marktbureau@amsterdam.nl">marktbureau@amsterdam.nl</a> of bel ons via 14
+                            020.
+                        </p>
+
+                        <p>
+                            Met vriendelijke groet,
+                            <br />
+                            Marktbureau Amsterdam
+                        </p>
+                    </EmailContent>
+                ) : template ? (
+                    template
+                ) : (
+                    <EmailContent />
+                )}
             </EmailBase>
         );
     }

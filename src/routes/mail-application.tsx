@@ -17,7 +17,13 @@ export const applicationMailPage = (req: Request, res: Response) => {
         const subject = `Markt ${markt.naam} - ${
             isVast(ondernemer.status) ? 'aanwezigheid wijziging' : 'aanmelding wijziging'
         }`;
-        const props = { markt, marktDate, ondernemer, aanmeldingen: aanmeldingenFiltered };
+        const props = {
+            markt,
+            marktDate,
+            ondernemer,
+            aanmeldingen: aanmeldingenFiltered,
+            eggie: req.query.eggie || false,
+        };
         res.render('EmailWijzigingAanmeldingen', props);
 
         if (req.query.mailto) {
