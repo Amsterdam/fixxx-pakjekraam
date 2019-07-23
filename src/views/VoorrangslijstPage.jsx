@@ -22,7 +22,7 @@ class VoorrangslijstPage extends React.Component {
     render() {
         const { markt, aLijst, aanmeldingen, voorkeuren, datum, type, user, toewijzingen } = this.props;
         let { ondernemers } = this.props;
-        const itemsOnPage = 50;
+        const itemsOnPage = 40;
 
         ondernemers = ondernemers.filter(
             ondernemer =>
@@ -34,9 +34,39 @@ class VoorrangslijstPage extends React.Component {
             ...ondernemers.filter(ondernemer => isAanwezig(aanmeldingen, ondernemer)),
             ...ondernemers.filter(ondernemer => !isAanwezig(aanmeldingen, ondernemer)),
         ];
+        const aLijstAangemeld = 0;
+        const Aangemeld = 1;
+        const aLijstNietAangemeld = 2;
+        const NietAangemeld = 3;
+        const ondernemersGrouped = ondernemers
+            .reduce(
+                (total, ondernemer) => {
+                    total[
+                        isAanwezig(aanmeldingen, ondernemer) && aLijst.includes(ondernemer)
+                            ? aLijstAangemeld
+                            : isAanwezig(aanmeldingen, ondernemer) && !aLijst.includes(ondernemer)
+                            ? Aangemeld
+                            : !isAanwezig(aanmeldingen, ondernemer) && aLijst.includes(ondernemer)
+                            ? aLijstNietAangemeld
+                            : !isAanwezig(aanmeldingen, ondernemer) && !aLijst.includes(ondernemer)
+                            ? NietAangemeld
+                            : NietAangemeld
+                    ].push(ondernemer);
+
+                    return total;
+                },
+                [[], [], [], []],
+            )
+            .map(group => paginate(group, itemsOnPage));
 
         const paginas = paginate(ondernemers, itemsOnPage);
         const paginasLists = paginate(paginas, 2);
+        const titles = [
+            `Voorrangslijst A lijst, aangemeld: ${markt.naam}`,
+            `Voorrangslijst aangemeld: ${markt.naam}`,
+            `Voorrangslijst A lijst, niet aangemeld: ${markt.naam}`,
+            `Voorrangslijst niet aangemeld: ${markt.naam}`,
+        ];
 
         return (
             <MarktDetailBase
@@ -48,20 +78,22 @@ class VoorrangslijstPage extends React.Component {
                 user={user}
                 showDate={false}
             >
-                {paginasLists.map((pagina, i) => (
-                    <PrintPage key={i} index={i} title={`Voorrangslijst: ${markt.naam}`} datum={datum}>
-                        {pagina.map((list, j) => (
-                            <OndernemerList
-                                key={j}
-                                ondernemers={list}
-                                markt={markt}
-                                type={type}
-                                datum={datum}
-                                aanmeldingen={aanmeldingen}
-                            />
-                        ))}
-                    </PrintPage>
-                ))}
+                {ondernemersGrouped.map((group, i) =>
+                    group.length > 0 ? (
+                        <PrintPage title={titles[i]} datum={datum}>
+                            {group.map((list, j) => (
+                                <OndernemerList
+                                    key={j}
+                                    ondernemers={list}
+                                    markt={markt}
+                                    type={type}
+                                    datum={datum}
+                                    aanmeldingen={aanmeldingen}
+                                />
+                            ))}
+                        </PrintPage>
+                    ) : null,
+                )}
             </MarktDetailBase>
         );
     }

@@ -18,7 +18,7 @@ class SollicitantenPage extends React.Component {
 
     render() {
         const { markt, ondernemers, aanmeldingen, voorkeuren, datum, type, user } = this.props;
-        const itemsOnPage = 50;
+        const itemsOnPage = 40;
         const aanmeldingenOrdered = aanmeldingen.sort((a, b) => b.updatedAt - a.updatedAt);
 
         const paginas = paginate(ondernemers, itemsOnPage);

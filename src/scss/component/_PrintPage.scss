@@ -15,7 +15,7 @@ body.page-print {
     &__wrapper {
         top: 0;
         left: 0;
-        width: calc(100% - 40px);
+        width: 100%;
         height: 100%;
 
         display: block;
@@ -61,7 +61,6 @@ body.page-print {
     &__heading {
         display: block;
         margin: 0;
-        padding-right: 60px;
         margin-bottom: 10px;
     }
     &__street {

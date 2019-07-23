@@ -12,9 +12,9 @@ const PrintPage = ({ children, index, title, label, datum }) => {
                             {title}
                             {label ? (
                                 <span className="PrintPage__label">{label}</span>
-                            ) : (
+                            ) : index ? (
                                 <span className="PrintPage__index">{index + 1}</span>
-                            )}
+                            ) : null}
                             <span className="PrintPage__date">{datum}</span>
                         </h3>
                     </PrintPageHeader>

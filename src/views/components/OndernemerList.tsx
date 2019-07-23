@@ -12,38 +12,28 @@ const OndernemerList = ({
     aanmeldingen: IRSVP[];
 }) => (
     <div className="OndernemerList">
+        <span className="OndernemerList__heading">Personen</span>
         <table className="OndernemerList__table">
-            <thead>
-                <tr>
-                    <th>Nr.</th>
-                    <th>Sollicitant</th>
-                    <th>Status</th>
-                    <th />
-                </tr>
-            </thead>
             <tbody>
                 {ondernemers.map(ondernemer => {
                     const aanmelding =
                         ondernemer && aanmeldingen.find(rsvp => rsvp.erkenningsNummer === ondernemer.erkenningsNummer);
 
                     return (
-                        <tr key={ondernemer.erkenningsNummer}>
+                        <tr key={ondernemer.erkenningsNummer} className={ondernemer.status}>
                             <td>
-                                <strong>
-                                    <span id={`soll-${ondernemer.sollicitatieNummer}`} />
-                                    <a href={`/profile/${ondernemer.erkenningsNummer}`}>
-                                        {ondernemer.sollicitatieNummer}
-                                    </a>
-                                </strong>
+                                <span id={`soll-${ondernemer.sollicitatieNummer}`} />
+                                <a href={`/profile/${ondernemer.erkenningsNummer}`}>{ondernemer.sollicitatieNummer}</a>
                             </td>
-                            <td>{ondernemer.description}</td>
                             <td>{ondernemer.status}</td>
+                            <td>{ondernemer.description}</td>
+
                             <td
                                 className={`${
                                     aanmelding && aanmelding.attending !== null && !aanmelding.attending
                                         ? 'OndernemerList__ondernemer--not-attending'
                                         : ''
-                                } ${aanmelding ? 'OndernemerList__ondernemer--attending' : ''}`}
+                                } ${aanmelding && aanmelding.attending ? 'OndernemerList__ondernemer--attending' : ''}`}
                             />
                         </tr>
                     );

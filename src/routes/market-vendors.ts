@@ -28,11 +28,12 @@ export const voorrangslijstPage = (req: Request, res: Response) => {
     const datum = req.params.datum;
     const type = 'voorrangslijst';
     getVoorrangslijstInput(req.session.token, req.params.marktId, req.params.datum).then(
-        ({ ondernemers, aanmeldingen, voorkeuren, markt, toewijzingen }) => {
+        ({ ondernemers, aanmeldingen, voorkeuren, markt, toewijzingen, aLijst }) => {
             res.render('VoorrangslijstPage', {
                 ondernemers,
                 aanmeldingen,
                 voorkeuren,
+                aLijst,
                 markt,
                 datum,
                 type,
