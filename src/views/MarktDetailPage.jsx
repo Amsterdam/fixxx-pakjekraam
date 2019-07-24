@@ -43,16 +43,57 @@ class MarktDetailPage extends React.Component {
             <MarktDetailBase bodyClass="page-markt-detail" datum={datum} type={type} user={user} markt={markt}>
                 <div className="row row--responsive">
                     <div className="col-1-2">
+                        <h2>Wenperiode</h2>
+                    </div>
+                </div>
+                <div className="row row--responsive margin-bottom">
+                    <div className="col-1-2">
+                        <h4>Vandaag</h4>
+                        <ul className="LinkList">
+                            <li className="LinkList__item">
+                                <a href={`./${today()}/indelingslijst/?type=wenperiode`} className="Link">
+                                    Indelingslijst
+                                </a>
+                            </li>
+                            <li className="LinkList__item">
+                                <a href={`./${today()}/voorrangslijst/?type=wenperiode`} className="Link">
+                                    Sollicitanten
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="col-1-2">
+                        <h4>Morgen</h4>
+                        <ul className="LinkList">
+                            <li className="LinkList__item">
+                                <a href={`./${addDays(today(), 1)}/indelingslijst/?type=wenperiode`} className="Link">
+                                    Indelingslijst
+                                </a>
+                            </li>
+                            <li className="LinkList__item">
+                                <a href={`./${addDays(today(), 1)}/voorrangslijst/?type=wenperiode`} className="Link">
+                                    Sollicitanten
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div className="row row--responsive">
+                    <div className="col-1-2">
                         <h2>Indelingslijsten</h2>
                         <ul className="LinkList">
-                            {dates.map(({ date, day, month, weekDay, relativeDay }) => (
-                                <li key={date} className="LinkList__item">
-                                    <a className={`Link`} href={`./${date}/indelingslijst/`}>
-                                        <strong>{relativeDay !== '' && capitalize(relativeDay) + ', '}</strong>
-                                        {relativeDay !== '' ? weekDay : capitalize(weekDay)} {day} {month}
-                                    </a>
-                                </li>
-                            ))}
+                            <li className="LinkList__item">
+                                <a className={`Link`} href={`./${today()}/indelingslijst/`}>
+                                    <strong>Vandaag</strong>,{formatDayOfWeek(new Date(today()))}{' '}
+                                    {new Date(today()).getDate()} {formatMonth(today())}
+                                </a>
+                            </li>
+                            <li className="LinkList__item">
+                                <a className={`Link`} href={`./${addDays(today(), 1)}/indelingslijst/`}>
+                                    <strong>Morgen</strong>,{formatDayOfWeek(new Date(addDays(today(), 1)))}{' '}
+                                    {new Date(addDays(today(), 1)).getDate()} {formatMonth(addDays(today(), 1))}
+                                </a>
+                            </li>
                         </ul>
                         <p>Concept-indelingslijsten:</p>
                         <ul className="LinkList">

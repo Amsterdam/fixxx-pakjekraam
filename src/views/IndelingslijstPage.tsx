@@ -49,6 +49,7 @@ export default class IndelingslijstenPage extends React.Component {
             'concept-indelingslijst': 'Concept indelingslijst',
         };
         const title = titleMap[type] || titleMap['indelingslijst'];
+        const toewijzingenOptional = type !== 'wenperiode' ? toewijzingen : [];
 
         return (
             <MarktDetailBase
@@ -80,7 +81,7 @@ export default class IndelingslijstenPage extends React.Component {
                                         vphl={vphl}
                                         obstakelList={obstakelList}
                                         aanmeldingen={aanmeldingen}
-                                        toewijzingen={toewijzingen}
+                                        toewijzingen={toewijzingenOptional}
                                         ondernemers={ondernemers}
                                         markt={markt}
                                         datum={datum}

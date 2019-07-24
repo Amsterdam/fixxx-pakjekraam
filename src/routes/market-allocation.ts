@@ -14,7 +14,7 @@ export const indelingslijstPage = (req: Request, res: Response) => {
 export const marketAllocationPage = (req: Request, res: Response) => {
     const user = req.session.token;
     const { marktDate } = req.params;
-    const type = 'indelingslijst';
+    const type = req.query.type === 'wenperiode' ? 'wenperiode' : 'indelingslijst';
 
     getToewijzingslijst(req.session.token, req.params.marktId, marktDate).then(data => {
         res.render('IndelingslijstPage.tsx', { data, datum: marktDate, type, user });

@@ -8,7 +8,7 @@ const MarktDayLink = require('./MarktDayLink');
 const MarktDetailHeader = require('./MarktDetailHeader');
 const PrintButton = require('./PrintButton');
 
-const MarktDetailBase = ({ children, bodyClass, title, markt, type, datum, user, showDate }) => {
+const MarktDetailBase = ({ children, bodyClass, title, markt, type, datum, user, buttonLabel, showDate }) => {
     const relativeDatum = d => {
         return formatDayOfWeek(d) + ', ' + new Date(d).getDate() + ' ' + formatMonth(d);
     };
@@ -30,7 +30,7 @@ const MarktDetailBase = ({ children, bodyClass, title, markt, type, datum, user,
                         {title ? ': ' + title : ''}
                         {showDate && <span className="MarktDetailHeader__title-sub">{relativeDatum(datum)}</span>}
                     </h1>
-                    {type && <PrintButton title={`Print ${type}`} />}
+                    {type && <PrintButton title={`Print ${buttonLabel ? buttonLabel : type}`} />}
                 </div>
                 {showDate && (
                     <MarktDayLink markt={markt} offsetDate={new Date(datum).toISOString()} direction={1} type={type} />
@@ -49,6 +49,7 @@ MarktDetailBase.propTypes = {
     title: PropTypes.string,
     datum: PropTypes.string,
     type: PropTypes.string,
+    buttonLabel: PropTypes.string,
     showDate: PropTypes.bool,
 };
 

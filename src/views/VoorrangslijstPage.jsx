@@ -58,21 +58,22 @@ class VoorrangslijstPage extends React.Component {
                 [[], [], [], []],
             )
             .map(group => paginate(paginate(group, itemsOnPage), 2));
-
+        const titleBase = type === 'wenperiode' ? 'Sollicitanten' : 'Voorrangslijst';
         const titles = [
-            `Voorrangslijst A lijst, aangemeld: ${markt.naam}`,
-            `Voorrangslijst aangemeld: ${markt.naam}`,
-            `Voorrangslijst A lijst, niet aangemeld: ${markt.naam}`,
-            `Voorrangslijst niet aangemeld: ${markt.naam}`,
+            `${titleBase} A lijst, aangemeld: ${markt.naam}`,
+            `${titleBase} aangemeld: ${markt.naam}`,
+            `${titleBase} A lijst, niet aangemeld: ${markt.naam}`,
+            `${titleBase} niet aangemeld: ${markt.naam}`,
         ];
 
         return (
             <MarktDetailBase
                 bodyClass="page-markt-sollicitanten page-print"
-                title="Voorrangslijst"
+                title={titleBase}
                 markt={markt}
                 datum={datum}
                 type={type}
+                buttonLabel={type === 'wenperiode' ? 'sollicitanten' : type}
                 user={user}
                 showDate={false}
             >
