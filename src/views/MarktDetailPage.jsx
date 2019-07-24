@@ -43,7 +43,7 @@ class MarktDetailPage extends React.Component {
             <MarktDetailBase bodyClass="page-markt-detail" datum={datum} type={type} user={user} markt={markt}>
                 <div className="row row--responsive">
                     <div className="col-1-2">
-                        <h2>Wenperiode</h2>
+                        <h2>Aan- en afmeldingen wenperiode</h2>
                     </div>
                 </div>
                 <div className="row row--responsive margin-bottom">
@@ -52,12 +52,12 @@ class MarktDetailPage extends React.Component {
                         <ul className="LinkList">
                             <li className="LinkList__item">
                                 <a href={`./${today()}/indelingslijst/?type=wenperiode`} className="Link">
-                                    Indelingslijst
+                                    Afmeldingen vasteplaatshouders
                                 </a>
                             </li>
                             <li className="LinkList__item">
                                 <a href={`./${today()}/voorrangslijst/?type=wenperiode`} className="Link">
-                                    Sollicitanten
+                                    Aanmeldingen sollicitanten
                                 </a>
                             </li>
                         </ul>
@@ -67,12 +67,12 @@ class MarktDetailPage extends React.Component {
                         <ul className="LinkList">
                             <li className="LinkList__item">
                                 <a href={`./${addDays(today(), 1)}/indelingslijst/?type=wenperiode`} className="Link">
-                                    Indelingslijst
+                                    Afmeldingen vasteplaatshouders
                                 </a>
                             </li>
                             <li className="LinkList__item">
                                 <a href={`./${addDays(today(), 1)}/voorrangslijst/?type=wenperiode`} className="Link">
-                                    Sollicitanten
+                                    Aanmeldingen sollicitanten
                                 </a>
                             </li>
                         </ul>

@@ -367,13 +367,16 @@ function splitByArray(orgArr, valueArr) {
                   }
               },
               _formChange = function (e) {
-                  var elem = e && e.target,
-                      i,
-                      j,
-                      minVal = form.querySelector('input[name="minimum"]:checked').value,
-                      maximum = form.querySelector('input[name="maximum"]').value,
-                      extra = parseInt(maximum, 10) - parseInt(minVal, 10),
-                      maxVal = form.querySelector('input[name="extra-count"]:checked').value;
+                  if(e) {
+                    _submit();
+                  }
+              },
+              _init = function(){
+                  var minVal = form.querySelector('input[name="minimum"]:checked') ? form.querySelector('input[name="minimum"]:checked').value : 1,
+                      maximum = form.querySelector('input[name="maximum"]').value || 1,
+                      extra = parseInt(maximum, 10) - parseInt(minVal, 10);
+                  form.querySelector('input[id="extra-count-'+extra+'"]').checked = true;
+                      var maxVal = form.querySelector('input[name="extra-count"]:checked').value;
                   for (i = 0; i < explain.length; i++) {
                       var min = explain[i].querySelector('.min');
                       var max = explain[i].querySelector('.max');
@@ -386,16 +389,6 @@ function splitByArray(orgArr, valueArr) {
                       maxM.classList[maxVal <= 1 ? 'add' : 'remove']('hidden');
                       minM.classList[minVal <= 1 ? 'add' : 'remove']('hidden');
                   }
-                  if(e) {
-                    _submit();
-                  }
-              },
-              _init = function(){
-                  var minVal = form.querySelector('input[name="minimum"]:checked') ? form.querySelector('input[name="minimum"]:checked').value : 1,
-                      maximum = form.querySelector('input[name="maximum"]').value || 1,
-                      extra = parseInt(maximum, 10) - parseInt(minVal, 10),
-                      maxVal = form.querySelector('input[name="extra-count"]:checked').value;
-                  form.querySelector('input[id="extra-count-'+extra+'"]').checked = true;
               }
           _init();
           form.addEventListener('change', _formChange);
