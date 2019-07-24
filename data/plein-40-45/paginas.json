@@ -187,23 +187,7 @@
         "title": "Rij 8 Foodrij / langs het fietspad / Slotermeerlaan",
         "landmarkTop": "Jumbo",
         "landmarkBottom": "Marktkantoor Zij-rij",
-        "plaatsList": [
-          "136",
-          "137",
-          "138",
-          "139",
-          "140",
-          "141",
-          "142",
-          "143",
-          "144",
-          "145",
-          "146",
-          "147",
-          "148",
-          "149",
-          "150"
-        ]
+        "plaatsList": ["136", "137", "138", "139", "140", "141", "142", "143", "144", "145", "146", "147"]
       },
       {
         "type": "street",

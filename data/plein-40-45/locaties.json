@@ -145,8 +145,5 @@
   { "plaatsId": "144", "branches": ["food", "bak"], "verkoopinrichting": ["eigen-materieel"] },
   { "plaatsId": "145", "branches": ["food", "bak"], "verkoopinrichting": ["eigen-materieel"] },
   { "plaatsId": "146", "branches": ["food", "bak"], "verkoopinrichting": ["eigen-materieel"] },
-  { "plaatsId": "147", "branches": ["food", "bak"], "verkoopinrichting": ["eigen-materieel"] },
-  { "plaatsId": "148", "branches": ["food", "bak"], "verkoopinrichting": ["eigen-materieel"], "inactive": true },
-  { "plaatsId": "149", "branches": ["food", "bak"], "verkoopinrichting": ["eigen-materieel"], "inactive": true },
-  { "plaatsId": "150", "branches": ["food", "bak"], "verkoopinrichting": ["eigen-materieel"], "inactive": true }
+  { "plaatsId": "147", "branches": ["food", "bak"], "verkoopinrichting": ["eigen-materieel"] }
 ]
