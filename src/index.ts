@@ -144,14 +144,15 @@ const isMarktmeester = (req: GrantedRequest) => {
 const getErkenningsNummer = (req: GrantedRequest) =>
     isMarktondernemer(req) && (req.kauth.grant.access_token.content as TokenContent & any).preferred_username;
 
-app.use((req: Request, res: Response, next: NextFunction) => {
-    if (req.session && req.session.expiry && Date.now() > Date.parse(req.session.expiry)) {
-        console.log('Token is expired, logout user');
-        res.redirect('/login');
-    } else {
-        next();
-    }
-});
+// fixme: Redirect loop
+//app.use((req: Request, res: Response, next: NextFunction) => {
+//    if (req.session && req.session.expiry && Date.now() > Date.parse(req.session.expiry)) {
+//        console.log('Token is expired, logout user');
+//        res.redirect('/login');
+//    } else {
+//        next();
+//    }
+//});
 
 // Initialize React JSX templates for server-side rendering
 app.set('views', path.resolve(__dirname, 'views'));
