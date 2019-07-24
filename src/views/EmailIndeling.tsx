@@ -59,7 +59,7 @@ export class EmailIndeling extends React.Component {
             template = <EmailVplDefault {...this.props} />;
             if (!voorkeuren.length) {
                 template = <EmailVplPlaatsConfirm {...this.props} />;
-            } else {
+            } else if (toewijzing) {
                 template = <EmailVplVoorkeurConfirm {...this.props} />;
             }
         } else {
