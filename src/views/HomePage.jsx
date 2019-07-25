@@ -20,13 +20,17 @@ class HomePage extends React.Component {
                         <br />
                         Binnenkort kan dit ook voor andere markten in Amsterdam.
                     </p>
-                    <h2>Account activeren</h2>
+                    <h2>
+                        <a href="/activeren">Account activeren</a>
+                    </h2>
                     <p>
                         Hebt u van het Marktbureau een brief ontvangen over digitaal indelen?
                         <br />
                         <a href="/activeren">Activeer dan nu uw account</a> met de code uit de brief.
                     </p>
-                    <h2>Mijn markten</h2>
+                    <h2>
+                        <a href="/login">Inloggen Mijn markten</a>
+                    </h2>
                     <p>
                         Hebt u uw account geactiveerd? <a href="/login">Log in en meld u aan voor de markt</a>.
                     </p>
