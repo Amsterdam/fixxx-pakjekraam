@@ -53,7 +53,7 @@ class OndernemerMarktDetailPage extends React.Component {
                         <Alert type="warning" inline={true}>
                             <span>
                                 U hebt uw <strong>koopwaar</strong> nog niet doorgegeven in het{' '}
-                                <a href="#marktprofiel">marktprofiel</a>.
+                                <a href={`/algemene-voorkeuren/${markt.id}/`}>marktprofiel</a>.
                             </span>
                         </Alert>
                     ) : null}
