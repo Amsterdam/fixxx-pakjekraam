@@ -141,8 +141,11 @@ const isMarktmeester = (req: GrantedRequest) => {
     );
 };
 
+const sanitizeErkenningsNummer = (erkenningsNummer: string) => erkenningsNummer.replace(/\./g, '');
+
 const getErkenningsNummer = (req: GrantedRequest) =>
-    isMarktondernemer(req) && (req.kauth.grant.access_token.content as TokenContent & any).preferred_username;
+    isMarktondernemer(req) &&
+    sanitizeErkenningsNummer((req.kauth.grant.access_token.content as TokenContent & any).preferred_username);
 
 // fixme: Redirect loop
 //app.use((req: Request, res: Response, next: NextFunction) => {
