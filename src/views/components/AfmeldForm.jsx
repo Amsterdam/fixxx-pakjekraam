@@ -51,7 +51,16 @@ class AfmeldForm extends React.Component {
                     defaultValue={ondernemer.erkenningsnummer}
                     type="hidden"
                 />
-
+                <OndernemerMarktHeading markt={markt} sollicitatie={sollicitatie} />
+                {isVast(sollicitatie.status) ? (
+                    <span className="Fieldset__subtitle">
+                        Vink uit op welke dagen u (of uw vervanger) niet op deze markt staat.
+                    </span>
+                ) : (
+                    <span className="Fieldset__subtitle">
+                        Vink aan op welke dagen u (of uw vervanger) naar de markt wilt komen.
+                    </span>
+                )}
                 {weekAanmeldingen.map((week, i) => (
                     <div key={i}>
                         <span className="OndernemerMarktAanwezigheid__divider">
