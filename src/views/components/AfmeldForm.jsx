@@ -26,20 +26,20 @@ class AfmeldForm extends React.Component {
         const rsvpEntries = filterRsvpList(aanmeldingen.filter(aanmelding => aanmelding.marktId === markt.id), markt);
         const weekAanmeldingen = rsvpEntries.reduce(
             (t, { date, rsvp, index }, i) => {
+                const week = new Date(date) > new Date(endOfWeek()) ? 1 : 0;
                 const attending = rsvp
                     ? rsvp.attending
                     : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl';
-                t[t.length - 1].push({
+                t[week].push({
                     index,
                     attending,
                     date,
                     weekDay: formatDayOfWeek(date),
                 });
-                new Date(date) >= new Date(endOfWeek()) && t.length === 1 && t.push([]);
 
                 return t;
             },
-            [[]],
+            [[], []],
         );
 
         return (

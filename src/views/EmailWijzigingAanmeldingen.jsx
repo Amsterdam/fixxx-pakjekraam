@@ -22,21 +22,21 @@ class EmailWijzigingAanmeldingen extends React.Component {
         const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
         const weekAanmeldingen = aanmeldingen.reduce(
             (t, { date, rsvp, index }, i) => {
+                const week = new Date(date) > new Date(endOfWeek()) ? 1 : 0;
                 const attending = rsvp
                     ? rsvp.attending
                     : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl';
-                t[t.length - 1].push([
+                t[week].push([
                     <span key={date}>
                         <strong>{relativeHumanDay(date)}</strong> {formatDayOfWeek(date)}
                     </span>,
                     formatDate(date),
                     <strong key={attending ? `aangemeld` : `afgemeld`}>{attending ? `aangemeld` : `afgemeld`}</strong>,
                 ]);
-                new Date(date) >= new Date(endOfWeek()) && t.length === 1 && t.push([]);
 
                 return t;
             },
-            [[]],
+            [[], []],
         );
 
         return (
@@ -89,6 +89,7 @@ class EmailWijzigingAanmeldingen extends React.Component {
 
                         <p>
                             Wil u zich voor een dag aan- of afmelden? Dan kan dat uiterlijk 21:00 uur de dag ervoor in
+                            {` `}
                             <a href="https://pakjekraam.amsterdam.nl">&apos;kies je kraam&apos;</a>.
                         </p>
 

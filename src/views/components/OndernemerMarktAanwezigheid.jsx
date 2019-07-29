@@ -12,8 +12,9 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
 
     const weekAanmeldingen = rsvpEntries.reduce(
         (t, { date, rsvp, index }, i) => {
+            const week = new Date(date) > new Date(endOfWeek()) ? 1 : 0;
             const attending = rsvp ? rsvp.attending : sollicitatie.status === 'vkk' || sollicitatie.status === 'vpl';
-            t[t.length - 1].push([
+            t[week].push([
                 <span key={date}>
                     {relativeHumanDay(date) ? (
                         <strong>{relativeHumanDay(date)}</strong>
@@ -28,11 +29,10 @@ const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, onderne
                 attending,
                 date === today(),
             ]);
-            new Date(date) >= new Date(endOfWeek()) && t.length === 1 && t.push([]);
 
             return t;
         },
-        [[]],
+        [[], []],
     );
 
     return (
