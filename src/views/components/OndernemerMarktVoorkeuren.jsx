@@ -35,10 +35,8 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query,
             <a href={blockUrl} className="background-link" />
             <HeaderTitleButton title="Plaatsvoorkeuren" url={blockUrl} />
             <div className="well">
-                <p style={{ color: 'red' }}>
-                    <strong>Wenperiode!</strong>
-                    <br />
-                    Tijdens de wenperiode worden de &apos;Plaatsvoorkeuren&apos; niet gebruikt.
+                <p>
+                    <strong>Tijdens de wenperiode worden de &apos;Plaatsvoorkeuren&apos; niet gebruikt.</strong>
                 </p>
                 {isVast(sollicitatie.status) ? (
                     <div className="margin-bottom">
