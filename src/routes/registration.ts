@@ -32,107 +32,107 @@ export const handleRegistration = (req: Request, res: Response) => {
                     },
                 )}`,
             );
-        }
+        } else {
+            const userDefinition = {
+                username: req.session.activation.username,
+                email,
+                enabled: true,
+            };
 
-        const userDefinition = {
-            username: req.session.activation.username,
-            email,
-            enabled: true,
-        };
+            getKeycloakAdmin().then(kcAdminClient => {
+                // Use `as any` as workaround for incomplete TypeScript definition for `findOne` argument.
+                const clientPromise = kcAdminClient.clients
+                    .findOne({
+                        clientId: process.env.IAM_CLIENT_ID,
+                    } as any)
+                    .then(
+                        (clients: ClientRepresentation): ClientRepresentation => {
+                            if (Array.isArray(clients)) {
+                                return clients[0];
+                            } else {
+                                return clients;
+                            }
+                        },
+                    );
 
-        getKeycloakAdmin().then(kcAdminClient => {
-            // Use `as any` as workaround for incomplete TypeScript definition for `findOne` argument.
-            const clientPromise = kcAdminClient.clients
-                .findOne({
-                    clientId: process.env.IAM_CLIENT_ID,
-                } as any)
-                .then(
-                    (clients: ClientRepresentation): ClientRepresentation => {
-                        if (Array.isArray(clients)) {
-                            return clients[0];
-                        } else {
-                            return clients;
-                        }
-                    },
+                const rolePromise = clientPromise.then(client =>
+                    kcAdminClient.clients.findRole(
+                        trace({
+                            id: client.id,
+                            roleName: KeycloakRoles.MARKTONDERNEMER,
+                        }),
+                    ),
                 );
 
-            const rolePromise = clientPromise.then(client =>
-                kcAdminClient.clients.findRole(
-                    trace({
-                        id: client.id,
-                        roleName: KeycloakRoles.MARKTONDERNEMER,
-                    }),
-                ),
-            );
+                clientPromise.catch(() => console.warn('Unable to find Keycloak client'));
 
-            clientPromise.catch(() => console.warn('Unable to find Keycloak client'));
+                rolePromise.catch(() => console.warn('Unable to find Keycloak role'));
 
-            rolePromise.catch(() => console.warn('Unable to find Keycloak role'));
+                clientPromise.catch(internalServerErrorPage(res));
 
-            clientPromise.catch(internalServerErrorPage(res));
+                rolePromise.catch(internalServerErrorPage(res));
 
-            rolePromise.catch(internalServerErrorPage(res));
+                const userPromise = Promise.all([clientPromise, rolePromise]).then(() =>
+                    kcAdminClient.users.create(userDefinition),
+                );
 
-            const userPromise = Promise.all([clientPromise, rolePromise]).then(() =>
-                kcAdminClient.users.create(userDefinition),
-            );
+                Promise.all([clientPromise, rolePromise, userPromise])
+                    .then(([client, role, user]) => {
+                        const passwordPromise = kcAdminClient.users.resetPassword({
+                            id: user.id,
+                            credential: {
+                                temporary: false,
+                                type: 'password',
+                                value: password,
+                            },
+                        });
 
-            Promise.all([clientPromise, rolePromise, userPromise])
-                .then(([client, role, user]) => {
-                    const passwordPromise = kcAdminClient.users.resetPassword({
-                        id: user.id,
-                        credential: {
-                            temporary: false,
-                            type: 'password',
-                            value: password,
-                        },
-                    });
+                        if (['1', 'true'].includes(process.env.IAM_VERIFY_EMAIL) && userDefinition.email) {
+                            // TODO: How should we handle failure here?
+                            kcAdminClient.users
+                                .sendVerifyEmail({
+                                    id: user.id,
+                                })
+                                .then(
+                                    () => console.log('Verification e-mail sent.'),
+                                    () => console.log('Failed to send verification e-mail.'),
+                                );
+                        }
 
-                    if (['1', 'true'].includes(process.env.IAM_VERIFY_EMAIL) && userDefinition.email) {
-                        // TODO: How should we handle failure here?
-                        kcAdminClient.users
-                            .sendVerifyEmail({
-                                id: user.id,
-                            })
-                            .then(
-                                () => console.log('Verification e-mail sent.'),
-                                () => console.log('Failed to send verification e-mail.'),
-                            );
-                    }
+                        /*
+                         * TODO: Currently `Keycloak.MARKTONDERNEMER` is the default role
+                         * for all users, but we should ensure in this stage we add
+                         * the role in case someone deletes this default setting.
+                         * return rolePromise.then(role =>
+                         *     kcAdminClient.users.addClientRoleMappings({
+                         *         id: user.id,
+                         *         clientUniqueId: client.id,
+                         *         roles: [
+                         *             {
+                         *                 id: role.id,
+                         *                 name: role.name,
+                         *             },
+                         *         ],
+                         *     }),
+                         * );
+                         */
 
-                    /*
-                     * TODO: Currently `Keycloak.MARKTONDERNEMER` is the default role
-                     * for all users, but we should ensure in this stage we add
-                     * the role in case someone deletes this default setting.
-                     * return rolePromise.then(role =>
-                     *     kcAdminClient.users.addClientRoleMappings({
-                     *         id: user.id,
-                     *         clientUniqueId: client.id,
-                     *         roles: [
-                     *             {
-                     *                 id: role.id,
-                     *                 name: role.name,
-                     *             },
-                     *         ],
-                     *     }),
-                     * );
-                     */
+                        /*
+                         * TODO: When setting up the initial password fails,
+                         * should we roll back and delete the new user?
+                         */
 
-                    /*
-                     * TODO: When setting up the initial password fails,
-                     * should we roll back and delete the new user?
-                     */
-
-                    return passwordPromise.then(result => {
-                        console.log('Password reset', result);
-                    });
-                })
-                .then(x => {
-                    delete req.session.activation;
-                    res.redirect('/welkom');
-                })
-                .catch(internalServerErrorPage(res));
-        });
+                        return passwordPromise.then(result => {
+                            console.log('Password reset', result);
+                        });
+                    })
+                    .then(x => {
+                        delete req.session.activation;
+                        res.redirect('/welkom');
+                    })
+                    .catch(internalServerErrorPage(res));
+            });
+        }
     } else {
         forbiddenErrorPage(res)('');
     }

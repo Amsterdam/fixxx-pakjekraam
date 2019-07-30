@@ -15,7 +15,7 @@ class ActivatePage extends React.Component {
     render() {
         return (
             <Page messages={this.props.messages}>
-                <Header />
+                <Header hideLogout={true} />
                 <Content>
                     <h1 className="h1">Account activeren</h1>
                     <ActivateForm {...this.props} />

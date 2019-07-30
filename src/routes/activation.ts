@@ -4,12 +4,6 @@ import { userExists } from '../keycloak-api';
 import { publicErrors, getQueryErrors } from '../express-util';
 import { stringify } from 'qs';
 
-const trace = <T>(msg: string) => (arg: T): T => {
-    console.log(msg);
-
-    return arg;
-};
-
 export const activationPage = (req: Request, res: Response) => {
     res.render('ActivatePage', {
         username: req.query.username,
@@ -22,7 +16,15 @@ export const handleActivation = (req: Request, res: Response) => {
     const { username, code } = req.body;
 
     checkActivationCode(username, code)
-        .then(trace('Activation code for user is correct'))
+        .then((isValid: boolean) => {
+            if (!isValid) {
+                console.log('Registratienummer and Activatie-code combination is not valid');
+                // Go to the activation failed page
+                throw new Error();
+            }
+
+            return isValid;
+        })
         .then(() => userExists(username))
         .then((isExistingUser: boolean) => {
             if (isExistingUser) {

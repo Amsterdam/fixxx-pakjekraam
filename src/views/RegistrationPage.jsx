@@ -15,7 +15,7 @@ class RegistrationPage extends React.Component {
     render() {
         return (
             <Page messages={this.props.messages}>
-                <Header />
+                <Header hideLogout={true} />
                 <Content>
                     <h1 className="h1">Stel je wachtwoord in</h1>
                     <RegistrationForm username={this.props.username} email={this.props.email} />

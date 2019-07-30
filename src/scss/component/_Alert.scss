@@ -52,6 +52,8 @@
             font-size: 20px;
         }
     }
+    &--activation-failed,
+    &--non-matching-passwords,
     &--incorrect-credentials,
     &--warning {
         border-color: $supplement-orange;
