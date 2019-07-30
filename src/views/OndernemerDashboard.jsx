@@ -35,6 +35,11 @@ class OndernemerDashboard extends React.Component {
                     <OndernemerProfileHeader user={ondernemer} />
                 </Header>
                 <Content>
+                    <p style={{ color: 'red' }}>
+                        <strong>Wenperiode!</strong>
+                        <br />
+                        Tijdens de wenperiode worden de &apos;Plaatsvoorkeuren&apos; niet gebruikt.
+                    </p>
                     <h1 className="h1">Mijn markten</h1>
                     <div className="row row--responsive">
                         {sollicitaties.map(soll => (

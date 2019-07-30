@@ -48,6 +48,11 @@ class OndernemerMarktDetailPage extends React.Component {
                     <OndernemerProfileHeader user={ondernemer} />
                 </Header>
                 <Content>
+                    <p style={{ color: 'red' }}>
+                        <strong>Wenperiode!</strong>
+                        <br />
+                        Tijdens de wenperiode worden de &apos;Plaatsvoorkeuren&apos; niet gebruikt.
+                    </p>
                     <OndernemerMarktHeading sollicitatie={sollicitatie} markt={markt} />
                     {!voorkeur || !voorkeur.brancheId ? (
                         <Alert type="warning" inline={true}>
@@ -67,19 +72,19 @@ class OndernemerMarktDetailPage extends React.Component {
                             />
                         </div>
                         <div className="col-1-2">
-                            <OndernemerMarktVoorkeuren
-                                ondernemer={ondernemer}
-                                markt={markt}
-                                plaatsvoorkeuren={plaatsvoorkeuren}
-                                voorkeur={voorkeur}
-                                sollicitatie={sollicitatie}
-                            />
                             <OndernemerMarktAlgVoorkeuren
                                 sollicitatie={sollicitatie}
                                 ondernemer={ondernemer}
                                 markt={markt}
                                 voorkeur={voorkeur}
                                 branches={branches}
+                            />
+                            <OndernemerMarktVoorkeuren
+                                ondernemer={ondernemer}
+                                markt={markt}
+                                plaatsvoorkeuren={plaatsvoorkeuren}
+                                voorkeur={voorkeur}
+                                sollicitatie={sollicitatie}
                             />
                         </div>
                     </div>
