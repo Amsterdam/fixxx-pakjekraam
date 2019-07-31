@@ -49,10 +49,10 @@ import { indelingslijstPage } from './routes/market-allocation';
 import { KeycloakRoles } from './permissions';
 const Pool = require('pg-pool');
 
-const HTTP_DEFAULT_PORT = 8080;
+requireEnv('DATABASE_URL');
+requireEnv('APP_SECRET');
 
-const port = process.env.PORT || HTTP_DEFAULT_PORT;
-const app = express();
+const HTTP_DEFAULT_PORT = 8080;
 
 const parseDatabaseURL = (str: string) => {
     const params = url.parse(str);
@@ -66,62 +66,6 @@ const parseDatabaseURL = (str: string) => {
         database: params.pathname.split('/')[1],
     };
 };
-
-requireEnv('DATABASE_URL');
-requireEnv('APP_SECRET');
-
-const pgPool = new Pool(parseDatabaseURL(process.env.DATABASE_URL));
-
-app.use(morgan(morgan.compile(':date[iso] :method :status :url :response-time ms')));
-
-// The `/status/health` endpoint is required for Docker deployments
-app.get('/status/health', serverHealth);
-
-app.get('/status/database', databaseHealth);
-
-app.get('/status/keycloak', keycloakHealth);
-
-app.get('/status/makkelijkemarkt', makkelijkeMarktHealth);
-
-// Required for Passport login form
-app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
-
-const sessionStore = new (connectPgSimple(session))({
-    pool: pgPool,
-});
-
-const keycloak = new Keycloak(
-    { store: sessionStore },
-    {
-        realm: process.env.IAM_REALM,
-        'auth-server-url': process.env.IAM_URL,
-        'ssl-required': 'external',
-        resource: process.env.IAM_CLIENT_ID,
-        credentials: {
-            secret: process.env.IAM_CLIENT_SECRET,
-        },
-        'confidential-port': 0,
-    },
-);
-
-// Trick `keycloak-connect` into thinking we're running on HTTPS
-app.set('trust proxy', true);
-
-app.use(
-    session({
-        store: sessionStore,
-        secret: process.env.APP_SECRET,
-        resave: false,
-        saveUninitialized: false,
-    }),
-);
-
-app.use(
-    keycloak.middleware({
-        logout: '/logout',
-    }),
-);
 
 const isMarktondernemer = (req: GrantedRequest) => {
     const accessToken = req.kauth.grant.access_token.content;
@@ -141,22 +85,17 @@ const isMarktmeester = (req: GrantedRequest) => {
     );
 };
 
-const sanitizeErkenningsNummer = (erkenningsNummer: string) => erkenningsNummer.replace(/\./g, '');
+const getErkenningsNummer = (req: GrantedRequest) => {
+    const tokenContent = req.kauth.grant.access_token.content as TokenContent & any;
 
-const getErkenningsNummer = (req: GrantedRequest) =>
-    isMarktondernemer(req) &&
-    sanitizeErkenningsNummer((req.kauth.grant.access_token.content as TokenContent & any).preferred_username);
+    return isMarktondernemer(req) &&
+           tokenContent.preferred_username.replace(/\./g, '');
+};
 
-// fixme: Redirect loop
-//app.use((req: Request, res: Response, next: NextFunction) => {
-//    if (req.session && req.session.expiry && Date.now() > Date.parse(req.session.expiry)) {
-//        console.log('Token is expired, logout user');
-//        res.redirect('/login');
-//    } else {
-//        next();
-//    }
-//});
+const app = express();
 
+// Trick `keycloak-connect` into thinking we're running on HTTPS
+app.set('trust proxy', true);
 // Initialize React JSX templates for server-side rendering
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'jsx');
@@ -164,6 +103,65 @@ const templateEngine = reactViews.createEngine({ beautify: true });
 
 app.engine('jsx', templateEngine);
 app.engine('tsx', templateEngine);
+
+app.use(morgan(morgan.compile(':date[iso] :method :status :url :response-time ms')));
+
+// The `/status/health` endpoint is required for Docker deployments
+app.get('/status/health', serverHealth);
+app.get('/status/database', databaseHealth);
+app.get('/status/keycloak', keycloakHealth);
+app.get('/status/makkelijkemarkt', makkelijkeMarktHealth);
+
+// Required for Passport login form
+app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+
+const pool = new Pool(parseDatabaseURL(process.env.DATABASE_URL));
+const sessionStore = new (connectPgSimple(session))({ pool });
+const keycloak = new Keycloak(
+    { store: sessionStore },
+    {
+        'realm'             : process.env.IAM_REALM,
+        'auth-server-url'   : process.env.IAM_URL,
+        'ssl-required'      : 'external',
+        'resource'          : process.env.IAM_CLIENT_ID,
+        'credentials'       : {
+            'secret' : process.env.IAM_CLIENT_SECRET,
+        },
+        'confidential-port' : 0,
+    },
+);
+
+app.use(
+    session({
+        store: sessionStore,
+        secret: process.env.APP_SECRET,
+        resave: false,
+        saveUninitialized: false,
+    }),
+);
+
+app.use(
+    keycloak.middleware({
+        logout: '/logout',
+    }),
+);
+
+// Put the login route before the expired redirect to prevent an
+// endless loop.
+app.get('/login', keycloak.protect(), (req: GrantedRequest, res: Response) => {
+    readOnlyLogin().then(sessionData => {
+        Object.assign(req.session, sessionData);
+
+        if (isMarktondernemer(req)) {
+            res.redirect('/dashboard/');
+        } else if (isMarktmeester(req)) {
+            res.redirect('/markt/');
+        } else {
+            res.redirect('/');
+        }
+    });
+});
 
 app.get('/', (req: Request, res: Response) => {
     res.render('HomePage');
@@ -265,20 +263,6 @@ app.get(
         vendorDashboardPage(req, res, req.params.erkenningsNummer);
     },
 );
-
-app.get('/login', keycloak.protect(), (req: GrantedRequest, res: Response) => {
-    readOnlyLogin().then(sessionData => {
-        Object.assign(req.session, sessionData);
-
-        if (isMarktondernemer(req)) {
-            res.redirect('/dashboard/');
-        } else if (isMarktmeester(req)) {
-            res.redirect('/markt/');
-        } else {
-            res.redirect('/');
-        }
-    });
-});
 
 app.get(
     '/ondernemer/:erkenningsNummer/activatie-qr.svg',
@@ -795,6 +779,8 @@ app.use(express.static('./dist/public/'));
 
 // Static files that require authorization (business logic scripts for example)
 app.use(keycloak.protect(), express.static('./src/www/'));
+
+const port = process.env.PORT || HTTP_DEFAULT_PORT;
 
 app.listen(port, (err: Error | null) => {
     if (err) {
