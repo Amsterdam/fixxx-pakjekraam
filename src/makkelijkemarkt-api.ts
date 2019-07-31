@@ -18,6 +18,13 @@ const axios = require('axios');
 export let init = (config: { url: string; appKey: string }) => {};
 
 const makkelijkeMarktAPI: Promise<AxiosInstance> = new Promise(resolve => {
+    // Overrides the noop `init` definition above with a function that can
+    // resolve the promise we're currently in. This way, some auth parameters
+    // required for all functions in here can be set externally and in here we can
+    // simply call `makkelijkeMarktAPI` and be sure that when it's resolved, the
+    // correct parameters have been set.
+    //
+    // FIXME: Hard to read.
     init = (config: { url: string; appKey: string }) => {
         const api = axios.create({
             baseURL: config.url,
