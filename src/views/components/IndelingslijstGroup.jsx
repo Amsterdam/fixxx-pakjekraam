@@ -38,11 +38,11 @@ const IndelingslijstGroup = ({
                         <th className="IndelingslijstGroup__header IndelingslijstGroup__header-plaats Plaats__prop Plaats__prop-plaats-nr">
                             nr.
                         </th>
-                        <th className="IndelingslijstGroup__header IndelingslijstGroup__vph Plaats__prop Plaats__prop-vph">
+                        <th className="IndelingslijstGroup__header IndelingslijstGroup__vph Plaats__prop Plaats__prop-soll">
                             vph
                         </th>
                         <th className="IndelingslijstGroup__header IndelingslijstGroup__vph Plaats__prop Plaats__prop-naam" />
-                        <th className="IndelingslijstGroup__header IndelingslijstGroup__empty-field Plaats__prop Plaats__prop-vph" />
+                        <th className="IndelingslijstGroup__header IndelingslijstGroup__empty-field Plaats__prop Plaats__prop-soll" />
                         <th className="IndelingslijstGroup__header IndelingslijstGroup__empty-field Plaats__prop Plaats__prop-naam" />
                         <th className="IndelingslijstGroup__header IndelingslijstGroup__status Plaats__prop Plaats__prop-status" />
                     </tr>

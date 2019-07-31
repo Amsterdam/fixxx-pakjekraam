@@ -16,24 +16,24 @@ const transport = nodemailer.createTransport(
     hostname === 'smtp.sendgrid.net' && username === 'apikey'
         ? sgTransport({
               auth: {
-                  api_key: password || searchParams.get('password') // eslint-disable-line camelcase
-              }
+                  api_key: password || searchParams.get('password'), // eslint-disable-line camelcase
+              },
           })
         : {
               host: hostname,
               port,
               auth: {
                   user: username || searchParams.get('username'),
-                  pass: password || searchParams.get('password')
-              }
-          }
+                  pass: password || searchParams.get('password'),
+              },
+          },
 );
 
 const mail = options => {
     if (options.react) {
         options = {
             ...options,
-            html: ReactDOMServer.renderToStaticMarkup(options.react)
+            html: ReactDOMServer.renderToStaticMarkup(options.react),
         };
     }
 
@@ -41,5 +41,5 @@ const mail = options => {
 };
 
 module.exports = {
-    mail
+    mail,
 };

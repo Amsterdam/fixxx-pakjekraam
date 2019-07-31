@@ -121,7 +121,8 @@ $plaatsCellHeight: 16px;
     &__prop-soll {
         text-align: right;
         border-right: none;
-        width: 53px;
+        width: 36px;
+        text-overflow: unset;
     }
     &__prop-naam {
         white-space: nowrap;
@@ -129,7 +130,7 @@ $plaatsCellHeight: 16px;
         text-overflow: ellipsis;
         width: 30%;
         border-left: none;
-        padding-left: 0;
+        padding: 0;
     }
     .Plaats__prop-vph-description {
         border-right: none;

@@ -106,7 +106,7 @@
   },
   "lint-staged": {
     "src/**/*.{css,js,json,jsx,scss,ts,tsx}": [
-      "tslint --type-check --project tsconfig.json --config tslint.json",
+      "prettier --write",
       "git add"
     ]
   }
