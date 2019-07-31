@@ -1,7 +1,15 @@
 const OndernemerMarktHeading = require('./OndernemerMarktHeading');
 const React = require('react');
 const PropTypes = require('prop-types');
-const { formatDayOfWeek, WEEK_DAYS, today, formatDate, relativeHumanDay, endOfWeek } = require('../../util.ts');
+const {
+    formatDayOfWeek,
+    WEEK_DAYS,
+    today,
+    formatDate,
+    relativeHumanDay,
+    endOfWeek,
+    addDays,
+} = require('../../util.ts');
 const { filterRsvpList, isVast } = require('../../domain-knowledge.js');
 
 class AfmeldForm extends React.Component {
@@ -23,7 +31,11 @@ class AfmeldForm extends React.Component {
         );
         const markt = markten.find(m => String(m.id) === currentMarktId);
 
-        const rsvpEntries = filterRsvpList(aanmeldingen.filter(aanmelding => aanmelding.marktId === markt.id), markt);
+        const rsvpEntries = filterRsvpList(
+            aanmeldingen.filter(aanmelding => aanmelding.marktId === markt.id),
+            markt,
+            role === 'marktmeester' ? today() : addDays(today(), 1),
+        );
         const weekAanmeldingen = rsvpEntries.reduce(
             (t, { date, rsvp, index }, i) => {
                 const week = new Date(date) > new Date(endOfWeek()) ? 1 : 0;
