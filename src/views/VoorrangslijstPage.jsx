@@ -22,7 +22,14 @@ class VoorrangslijstPage extends React.Component {
     render() {
         const { markt, aLijst, aanmeldingen, voorkeuren, datum, type, user, toewijzingen } = this.props;
         let { ondernemers } = this.props;
+        const aLijstSollNummers = aLijst.map(ondernemer => ondernemer.sollicitatieNummer);
+        const aLijstErkenningsNummers = aLijst.map(ondernemer => ondernemer.erkenningsnummer);
+
         const itemsOnPage = 40;
+        const aLijstAangemeld = 0;
+        const Aangemeld = 2;
+        const aLijstNietAangemeld = 1;
+        const NietAangemeld = 3;
 
         ondernemers = ondernemers.filter(
             ondernemer =>
@@ -34,21 +41,24 @@ class VoorrangslijstPage extends React.Component {
             ...ondernemers.filter(ondernemer => isAanwezig(aanmeldingen, ondernemer)),
             ...ondernemers.filter(ondernemer => !isAanwezig(aanmeldingen, ondernemer)),
         ];
-        const aLijstAangemeld = 0;
-        const Aangemeld = 1;
-        const aLijstNietAangemeld = 2;
-        const NietAangemeld = 3;
+        const ondernemersErkenningsNummers = ondernemers.map(ondernemer => ondernemer.erkenningsNummer);
+        const ondernemersRest = aLijstErkenningsNummers.filter(nr => !ondernemersErkenningsNummers.includes(nr));
+
         const ondernemersGrouped = ondernemers
             .reduce(
                 (total, ondernemer) => {
                     total[
-                        isAanwezig(aanmeldingen, ondernemer) && aLijst.includes(ondernemer)
+                        isAanwezig(aanmeldingen, ondernemer) &&
+                        aLijstErkenningsNummers.includes(ondernemer.erkenningsNummer)
                             ? aLijstAangemeld
-                            : isAanwezig(aanmeldingen, ondernemer) && !aLijst.includes(ondernemer)
+                            : isAanwezig(aanmeldingen, ondernemer) &&
+                              !aLijstErkenningsNummers.includes(ondernemer.erkenningsNummer)
                             ? Aangemeld
-                            : !isAanwezig(aanmeldingen, ondernemer) && aLijst.includes(ondernemer)
+                            : !isAanwezig(aanmeldingen, ondernemer) &&
+                              aLijstErkenningsNummers.includes(ondernemer.erkenningsNummer)
                             ? aLijstNietAangemeld
-                            : !isAanwezig(aanmeldingen, ondernemer) && !aLijst.includes(ondernemer)
+                            : !isAanwezig(aanmeldingen, ondernemer) &&
+                              !aLijstErkenningsNummers.includes(ondernemer.erkenningsNummer)
                             ? NietAangemeld
                             : NietAangemeld
                     ].push(ondernemer);
@@ -61,9 +71,9 @@ class VoorrangslijstPage extends React.Component {
         const titleBase = type === 'wenperiode' ? 'Sollicitanten' : 'Voorrangslijst';
         const titles = [
             `${titleBase} A lijst, aangemeld: ${markt.naam}`,
-            `${titleBase} aangemeld: ${markt.naam}`,
             `${titleBase} A lijst, niet aangemeld: ${markt.naam}`,
-            `${titleBase} niet aangemeld: ${markt.naam}`,
+            `${titleBase} B lijst, aangemeld: ${markt.naam}`,
+            `${titleBase} B lijst, niet aangemeld: ${markt.naam}`,
         ];
 
         return (

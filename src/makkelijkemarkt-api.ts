@@ -127,7 +127,7 @@ export const getALijst = (token: string, marktId: string, marktDate: string): Pr
 
         return makkelijkeMarktAPI
             .then(api =>
-                api.get(`lijst/week/${marktId}?startDate=${monday}&endDate=${thursday}`, {
+                api.get(`rapport/aanwezigheid/${marktId}/${monday}/${thursday}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
