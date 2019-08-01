@@ -6,6 +6,9 @@ const {
     ISO_THURSDAY,
     ISO_FRIDAY,
     ISO_SATURDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY,
     MILLISECONDS_IN_DAY,
     DAYS_IN_WEEK,
     toISODate,
@@ -55,6 +58,8 @@ const isoMarktDagen = {
     za: ISO_SATURDAY,
     zo: ISO_SUNDAY,
 };
+
+const A_LIJST_DAYS = [FRIDAY, SATURDAY, SUNDAY];
 
 const parseISOMarktDag = dag => (isoMarktDagen.hasOwnProperty(dag) ? isoMarktDagen[dag] : -1);
 
@@ -152,6 +157,7 @@ module.exports = {
     WESTERSTRAAT_ID,
     REIGERSBOS_ID,
     TUSSEN_MEER_ID,
+    A_LIJST_DAYS,
     formatOndernemerName,
     slugifyMarkt,
     parseMarktDag,

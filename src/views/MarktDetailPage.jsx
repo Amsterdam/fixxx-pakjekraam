@@ -1,17 +1,19 @@
 const {
     addDays,
     DAYS_IN_WEEK,
+    SUNDAY,
     formatDayOfWeek,
     formatMonth,
     nextWeek,
     capitalize,
     relativeHumanDay,
+    endOfWeek,
 } = require('../util.ts');
 const React = require('react');
 const PropTypes = require('prop-types');
 const MarktDetailBase = require('./components/MarktDetailBase');
 const today = () => new Date().toISOString().replace(/T.+/, '');
-const { getUpcomingMarktDays, parseMarktDag } = require('../domain-knowledge.js');
+const { getUpcomingMarktDays, parseMarktDag, A_LIJST_DAYS } = require('../domain-knowledge.js');
 
 class MarktDetailPage extends React.Component {
     propTypes = {
@@ -24,7 +26,7 @@ class MarktDetailPage extends React.Component {
     render() {
         const { markt, datum, type, user } = this.props;
         const startDate = addDays(today(), -1);
-        const endDate = nextWeek();
+        const endDate = addDays(endOfWeek(), DAYS_IN_WEEK);
         const marktDagen = (markt.marktDagen || []).map(parseMarktDag);
         const dates = getUpcomingMarktDays(startDate, endDate, (markt.marktDagen || []).map(parseMarktDag)).map(
             (d, i) => {
@@ -35,9 +37,11 @@ class MarktDetailPage extends React.Component {
                     month: formatMonth(d),
                     weekDay: formatDayOfWeek(new Date(d)),
                     marktDag: marktDagen[new Date(d).getDay()],
+                    weekDayInt: new Date(d).getDay(),
                 };
             },
         );
+        const nextVrijday = new Date(addDays(today(), DAYS_IN_WEEK - new Date().getDay()));
 
         return (
             <MarktDetailBase bodyClass="page-markt-detail" datum={datum} type={type} user={user} markt={markt}>
@@ -46,6 +50,64 @@ class MarktDetailPage extends React.Component {
                         <h2>Aan- en afmeldingen wenperiode</h2>
                     </div>
                 </div>
+                <div className="row row--responsive margin-bottom">
+                    <div className="col-1-2 margin-bottom">
+                        <h4>Deze week</h4>
+                        {dates
+                            .filter(({ date }) => new Date(date) < nextVrijday)
+                            .map(({ date, day, month, weekDay, relativeDay, weekDayInt }) => (
+                                <div key={date} className="well">
+                                    <strong>
+                                        {relativeDay !== '' && capitalize(relativeDay) + ', '}{' '}
+                                        {relativeDay !== '' ? weekDay : capitalize(weekDay)} {day} {month}
+                                    </strong>
+                                    <ul className="LinkList">
+                                        <li className="LinkList__item">
+                                            <a href={`./${date}/indelingslijst/?type=wenperiode`} className="Link">
+                                                Afmeldingen vasteplaatshouders
+                                            </a>
+                                        </li>
+                                        <li className="LinkList__item">
+                                            <a href={`./${date}/voorrangslijst/?type=wenperiode`} className="Link">
+                                                {!A_LIJST_DAYS.includes(weekDayInt)
+                                                    ? `Aanmeldingen sollicitanten`
+                                                    : `A- en B lijst aanmeldingen sollicitanten`}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            ))}
+                    </div>
+                    <div className="col-1-2">
+                        <h4>Volgende week</h4>
+                        {dates
+                            .filter(({ date }) => new Date(date) >= nextVrijday)
+                            .map(({ date, day, month, weekDay, relativeDay, weekDayInt }) => (
+                                <div key={date} className="well">
+                                    <strong>
+                                        {relativeDay !== '' && capitalize(relativeDay) + ', '}{' '}
+                                        {relativeDay !== '' ? weekDay : capitalize(weekDay)} {day} {month}
+                                    </strong>
+                                    <ul className="LinkList">
+                                        <li className="LinkList__item">
+                                            <a href={`./${date}/indelingslijst/?type=wenperiode`} className="Link">
+                                                Afmeldingen vasteplaatshouders
+                                            </a>
+                                        </li>
+                                        <li className="LinkList__item">
+                                            <a href={`./${date}/voorrangslijst/?type=wenperiode`} className="Link">
+                                                {!A_LIJST_DAYS.includes(weekDayInt)
+                                                    ? `Aanmeldingen sollicitanten`
+                                                    : `A- en B lijst aanmeldingen sollicitanten`}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            ))}
+                    </div>
+                </div>
+
+                {/*
                 <div className="row row--responsive margin-bottom">
                     <div className="col-1-2">
                         <h4>Vandaag</h4>
@@ -144,6 +206,7 @@ class MarktDetailPage extends React.Component {
                         </ul>
                     </div>
                 </div>
+                    */}
             </MarktDetailBase>
         );
     }

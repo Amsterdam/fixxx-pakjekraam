@@ -5,6 +5,7 @@ const PrintPage = require('./components/PrintPage');
 const PropTypes = require('prop-types');
 const { paginate } = require('../util');
 const { calcVolgorde, isAanwezig } = require('../indeling');
+const { A_LIJST_DAYS } = require('../domain-knowledge.js');
 
 class VoorrangslijstPage extends React.Component {
     propTypes = {
@@ -24,6 +25,7 @@ class VoorrangslijstPage extends React.Component {
         let { ondernemers } = this.props;
         const aLijstSollNummers = aLijst.map(ondernemer => ondernemer.sollicitatieNummer);
         const aLijstErkenningsNummers = aLijst.map(ondernemer => ondernemer.erkenningsnummer);
+        const aLijstDay = A_LIJST_DAYS.includes(new Date(datum).getDay());
 
         const itemsOnPage = 40;
         const aLijstAangemeld = 0;
@@ -70,10 +72,10 @@ class VoorrangslijstPage extends React.Component {
             .map(group => paginate(paginate(group, itemsOnPage), 2));
         const titleBase = type === 'wenperiode' ? 'Sollicitanten' : 'Voorrangslijst';
         const titles = [
-            `${titleBase} A lijst, aangemeld: ${markt.naam}`,
-            `${titleBase} A lijst, niet aangemeld: ${markt.naam}`,
-            `${titleBase} B lijst, aangemeld: ${markt.naam}`,
-            `${titleBase} B lijst, niet aangemeld: ${markt.naam}`,
+            `${titleBase} ${aLijstDay ? `, A lijst` : ``} aangemeld: ${markt.naam}`,
+            `${titleBase} ${aLijstDay ? `, A lijst` : ``} niet aangemeld: ${markt.naam}`,
+            `${titleBase} ${aLijstDay ? `, B lijst` : ``} aangemeld: ${markt.naam}`,
+            `${titleBase} ${aLijstDay ? `, B lijst` : ``} niet aangemeld: ${markt.naam}`,
         ];
 
         return (
