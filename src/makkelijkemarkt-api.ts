@@ -2,7 +2,7 @@ import { AxiosInstance, AxiosResponse } from 'axios';
 // import AxiosLogger from 'axios-logger';
 // import { setupCache } from 'axios-cache-adapter';
 import { addDays, MONDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY } from './util';
-import { MMMarkt, MMOndernemerStandalone, MMSollicitatieStandalone } from './makkelijkemarkt.model';
+import { MMMarkt, MMOndernemerStandalone, MMSollicitatieStandalone, MMOndernemer } from './makkelijkemarkt.model';
 
 const axios = require('axios');
 
@@ -118,7 +118,7 @@ export const getMarkten = (token: string): Promise<MMMarkt[]> =>
 
 const A_LIJST_DAYS = [FRIDAY, SATURDAY, SUNDAY];
 
-export const getALijst = (token: string, marktId: string, marktDate: string): Promise<MMSollicitatieStandalone[]> => {
+export const getALijst = (token: string, marktId: string, marktDate: string): Promise<MMOndernemer[]> => {
     const day = new Date(marktDate).getDay();
 
     if (A_LIJST_DAYS.includes(day)) {

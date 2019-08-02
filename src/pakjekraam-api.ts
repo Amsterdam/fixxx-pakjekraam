@@ -386,7 +386,7 @@ export const getIndelingslijstInput = (token: string, marktId: string, marktDate
             markt,
             marktplaatsen,
             aanwezigheid: aanmeldingen,
-            aLijst: aLijst.map(({ koopman: { erkenningsnummer } }) =>
+            aLijst: aLijst.map(({ erkenningsnummer }) =>
                 ondernemers.find(({ erkenningsNummer }) => erkenningsnummer === erkenningsNummer),
             ),
             rows: (
