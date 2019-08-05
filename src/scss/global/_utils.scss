@@ -25,6 +25,7 @@
     transition: 0.3s;
 
     &:hover {
+        z-index: 1;
         opacity: 0.05;
     }
 }
