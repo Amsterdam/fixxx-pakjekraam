@@ -11,6 +11,8 @@ const Plaats = ({
     first,
     aanmelding,
     toewijzing,
+    plaatsvoorkeuren,
+    type,
 }: {
     plaats: IMarktplaats;
     vph?: IMarktondernemer;
@@ -18,6 +20,8 @@ const Plaats = ({
     first?: boolean;
     aanmelding?: IRSVP;
     toewijzing?: IToewijzing;
+    plaatsvoorkeuren?: any;
+    type?: string;
 }) => {
     const colorList: { [index: string]: string } = {
         'branche-vis': '#343797',
@@ -85,6 +89,12 @@ const Plaats = ({
         return tags.length && key === tags[0].trim();
     });
 
+    const plaatsIds = vph && plaatsvoorkeuren[vph.erkenningsNummer] ?
+        plaatsvoorkeuren[vph.erkenningsNummer].sort((a: any, b: any) =>
+                            b.priority - a.priority).map((plaatsvoorkeur: any) =>
+                            plaatsvoorkeur.plaatsId) : [];
+    const voorkeur = vph && vph.voorkeur;
+
     color = branches.length
         ? colorList[branches[branches.length - 1]]
             ? colorList[branches[branches.length - 1]]
@@ -123,13 +133,16 @@ const Plaats = ({
                 {vph ? vph.description : <strong>{tags.join(' ')}</strong>}
             </td>
             <td className="Plaats__prop Plaats__prop-soll">
-                {ondernemer ? (
+                {type === 'wenperiode' && voorkeur ? <strong>({voorkeur.minimum ?
+                voorkeur.minimum : voorkeur.maximum}, {voorkeur.minimum ?
+                voorkeur.maximum - voorkeur.minimum : 0})</strong> : ''}{ondernemer ? (
                     <a href={`/profile/${toewijzing.erkenningsNummer}`}>
                         <strong>{ondernemer.sollicitatieNummer}</strong>
                     </a>
                 ) : null}
             </td>
-            <td className="Plaats__prop Plaats__prop-naam">{ondernemer ? ondernemer.description : null}</td>
+            <td className="Plaats__prop Plaats__prop-naam">{type === 'wenperiode' ?
+            plaatsIds.join(', ') : ''}{ondernemer ? ondernemer.description : null}</td>
             <td className="Plaats__prop Plaats__prop-status">
                 {ondernemer ? <OndernemerStatus status={ondernemer.status} size="s" /> : null}
             </td>
@@ -144,6 +157,8 @@ Plaats.propTypes = {
     first: PropTypes.bool,
     aanmelding: PropTypes.object,
     toewijzing: PropTypes.object,
+    plaatsvoorkeuren: PropTypes.object,
+    type: PropTypes.string,
 };
 
 export default Plaats;

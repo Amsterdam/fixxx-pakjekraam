@@ -18,6 +18,7 @@ export type IndelingslijstenPageState = {
         paginas: IAllocationPrintout;
         toewijzingen: IToewijzing[];
         markt: IMarkt;
+        voorkeuren: any[];
     };
     marktSlug: string;
     marktId: string;
@@ -38,7 +39,7 @@ export default class IndelingslijstenPage extends React.Component {
 
     public render() {
         const props = this.props as IndelingslijstenPageState;
-        const { aanmeldingen, obstakels, marktplaatsen, ondernemers, paginas, toewijzingen, markt } = props.data;
+        const { aanmeldingen, obstakels, marktplaatsen, ondernemers, paginas, toewijzingen, markt, voorkeuren } = props.data;
         const { datum, type, user } = props;
         const plaatsList = arrayToObject(marktplaatsen, 'plaatsId');
         const vphl = ondernemersToLocatieKeyValue(ondernemers);
@@ -50,6 +51,15 @@ export default class IndelingslijstenPage extends React.Component {
         };
         const title = titleMap[type] || titleMap['indelingslijst'];
         const toewijzingenOptional = type !== 'wenperiode' ? toewijzingen : [];
+
+        const plaatsvoorkeuren = voorkeuren.reduce((t: any, voorkeur: any) => {
+            if (!t[voorkeur.erkenningsNummer]) {
+                t[voorkeur.erkenningsNummer] = [];
+            }
+            t[voorkeur.erkenningsNummer].push(voorkeur);
+
+            return t;
+        }, {});
 
         return (
             <MarktDetailBase
@@ -86,6 +96,7 @@ export default class IndelingslijstenPage extends React.Component {
                                         markt={markt}
                                         datum={datum}
                                         type={type}
+                                        plaatsvoorkeuren={plaatsvoorkeuren}
                                     />
                                 );
                             }

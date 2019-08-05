@@ -112,6 +112,7 @@ PlaatsVPH.propTypes = {
     markt: PropTypes.object.isRequired,
     datum: PropTypes.string,
     type: PropTypes.string,
+    plaatsvoorkeuren: PropTypes.array,
 };
 
 module.exports = PlaatsVPH;

@@ -15,6 +15,7 @@ const IndelingslijstGroup = ({
     toewijzingen,
     type,
     datum,
+    plaatsvoorkeuren,
 }) => {
     let first = true;
     const renderPlaats = props => {
@@ -73,6 +74,7 @@ const IndelingslijstGroup = ({
                             datum,
                             type,
                             toewijzing,
+                            plaatsvoorkeuren,
                         };
 
                         if (plaatsList[plaatsNr]) {
@@ -118,6 +120,7 @@ IndelingslijstGroup.propTypes = {
     markt: PropTypes.object.isRequired,
     type: PropTypes.string,
     datum: PropTypes.string,
+    plaatsvoorkeuren: PropTypes.array,
 };
 
 module.exports = IndelingslijstGroup;
