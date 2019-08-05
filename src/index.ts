@@ -88,8 +88,7 @@ const isMarktmeester = (req: GrantedRequest) => {
 const getErkenningsNummer = (req: GrantedRequest) => {
     const tokenContent = req.kauth.grant.access_token.content as TokenContent & any;
 
-    return isMarktondernemer(req) &&
-           tokenContent.preferred_username.replace(/\./g, '');
+    return isMarktondernemer(req) && tokenContent.preferred_username.replace(/\./g, '');
 };
 
 const app = express();
@@ -121,14 +120,14 @@ const sessionStore = new (connectPgSimple(session))({ pool });
 const keycloak = new Keycloak(
     { store: sessionStore },
     {
-        'realm'             : process.env.IAM_REALM,
-        'auth-server-url'   : process.env.IAM_URL,
-        'ssl-required'      : 'external',
-        'resource'          : process.env.IAM_CLIENT_ID,
-        'credentials'       : {
-            'secret' : process.env.IAM_CLIENT_SECRET,
+        realm: process.env.IAM_REALM,
+        'auth-server-url': process.env.IAM_URL,
+        'ssl-required': 'external',
+        resource: process.env.IAM_CLIENT_ID,
+        credentials: {
+            secret: process.env.IAM_CLIENT_SECRET,
         },
-        'confidential-port' : 0,
+        'confidential-port': 0,
     },
 );
 
@@ -151,6 +150,7 @@ app.use(
 // endless loop.
 app.get('/login', keycloak.protect(), (req: GrantedRequest, res: Response) => {
     readOnlyLogin().then(sessionData => {
+        console.log(sessionData);
         Object.assign(req.session, sessionData);
 
         if (isMarktondernemer(req)) {
