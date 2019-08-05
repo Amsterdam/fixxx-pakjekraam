@@ -497,13 +497,15 @@ export const getVoorrangslijstInput = (token: string, marktId: string, marktDate
         getMarkt(token, marktId),
         getALijst(token, marktId, marktDate),
         getToewijzingen(marktId, marktDate),
-    ]).then(([ondernemers, aanmeldingen, voorkeuren, markt, aLijst, toewijzingen]) => ({
+        getIndelingVoorkeuren(marktId),
+    ]).then(([ondernemers, aanmeldingen, voorkeuren, markt, aLijst, toewijzingen, algemenevoorkeuren]) => ({
         ondernemers,
         aanmeldingen,
         voorkeuren,
         markt,
         aLijst,
         toewijzingen,
+        algemenevoorkeuren,
     }));
 
 export const getMarkten = (token: string) =>

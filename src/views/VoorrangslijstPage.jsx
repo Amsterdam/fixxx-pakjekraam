@@ -18,10 +18,21 @@ class VoorrangslijstPage extends React.Component {
         type: PropTypes.string,
         user: PropTypes.object,
         toewijzingen: PropTypes.array.isRequired,
+        algemenevoorkeuren: PropTypes.array
     };
 
     render() {
-        const { markt, aLijst, aanmeldingen, voorkeuren, datum, type, user, toewijzingen } = this.props;
+        const {
+            markt,
+            aLijst,
+            aanmeldingen,
+            voorkeuren,
+            datum,
+            type,
+            user,
+            toewijzingen,
+            algemenevoorkeuren
+        } = this.props;
         let { ondernemers } = this.props;
         const aLijstSollNummers = aLijst.map(ondernemer => ondernemer.sollicitatieNummer);
         const aLijstErkenningsNummers = aLijst.map(ondernemer => ondernemer.erkenningsnummer);
@@ -35,13 +46,13 @@ class VoorrangslijstPage extends React.Component {
 
         ondernemers = ondernemers.filter(
             ondernemer =>
-                !toewijzingen.find(({ erkenningsNummer }) => erkenningsNummer === ondernemer.erkenningsNummer),
+                !toewijzingen.find(({ erkenningsNummer }) => erkenningsNummer === ondernemer.erkenningsNummer)
         );
 
         ondernemers = calcVolgorde(ondernemers, aLijst);
         ondernemers = [
             ...ondernemers.filter(ondernemer => isAanwezig(aanmeldingen, ondernemer)),
-            ...ondernemers.filter(ondernemer => !isAanwezig(aanmeldingen, ondernemer)),
+            ...ondernemers.filter(ondernemer => !isAanwezig(aanmeldingen, ondernemer))
         ];
         const ondernemersErkenningsNummers = ondernemers.map(ondernemer => ondernemer.erkenningsNummer);
         const ondernemersRest = aLijstErkenningsNummers.filter(nr => !ondernemersErkenningsNummers.includes(nr));
@@ -67,20 +78,33 @@ class VoorrangslijstPage extends React.Component {
 
                     return total;
                 },
-                [[], [], [], []],
+                [[], [], [], []]
             )
             .map(group => paginate(paginate(group, itemsOnPage), 2));
         const titleBase = type === 'wenperiode' ? 'Sollicitanten' : 'Voorrangslijst';
         const titles = [
-            `${titleBase} ${aLijstDay ? `, A lijst` : ``} aangemeld: ${markt.naam}`,
-            `${titleBase} ${aLijstDay ? `, A lijst` : ``} niet aangemeld: ${markt.naam}`,
-            `${titleBase} ${aLijstDay ? `, B lijst` : ``} aangemeld: ${markt.naam}`,
-            `${titleBase} ${aLijstDay ? `, B lijst` : ``} niet aangemeld: ${markt.naam}`,
+            `${titleBase} ${aLijstDay ? ', A lijst' : ''} aangemeld: ${markt.naam}`,
+            `${titleBase} ${aLijstDay ? ', A lijst' : ''} niet aangemeld: ${markt.naam}`,
+            `${titleBase} ${aLijstDay ? ', B lijst' : ''} aangemeld: ${markt.naam}`,
+            `${titleBase} ${aLijstDay ? ', B lijst' : ''} niet aangemeld: ${markt.naam}`
         ];
+        const plaatsvoorkeuren = voorkeuren.reduce((t, voorkeur) => {
+            if (!t[voorkeur.erkenningsNummer]) {
+                t[voorkeur.erkenningsNummer] = [];
+            }
+            t[voorkeur.erkenningsNummer].push(voorkeur);
+
+            return t;
+        }, {});
+        const algemenevoorkeurenObject = algemenevoorkeuren.reduce((t, voorkeur) => {
+            t[voorkeur.erkenningsNummer] = voorkeur;
+
+            return t;
+        }, {});
 
         return (
             <MarktDetailBase
-                bodyClass="page-markt-sollicitanten page-print"
+                bodyClass='page-markt-sollicitanten page-print'
                 title={titleBase}
                 markt={markt}
                 datum={datum}
@@ -107,11 +131,13 @@ class VoorrangslijstPage extends React.Component {
                                           type={type}
                                           datum={datum}
                                           aanmeldingen={aanmeldingen}
+                                          plaatsvoorkeuren={plaatsvoorkeuren}
+                                          algemenevoorkeuren={algemenevoorkeurenObject}
                                       />
                                   ))}
                               </PrintPage>
                           ))
-                        : null,
+                        : null
                 )}
             </MarktDetailBase>
         );

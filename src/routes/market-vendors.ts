@@ -28,7 +28,7 @@ export const voorrangslijstPage = (req: Request, res: Response) => {
     const datum = req.params.datum;
     const type = req.query.type === 'wenperiode' ? 'wenperiode' : 'voorrangslijst';
     getVoorrangslijstInput(req.session.token, req.params.marktId, req.params.datum).then(
-        ({ ondernemers, aanmeldingen, voorkeuren, markt, toewijzingen, aLijst }) => {
+        ({ ondernemers, aanmeldingen, voorkeuren, markt, toewijzingen, aLijst, algemenevoorkeuren }) => {
             const ondernemersFiltered =
                 type === 'wenperiode' ? ondernemers.filter(ondernemer => ondernemer.status !== 'vpl') : ondernemers;
             const toewijzingenOptional = type === 'wenperiode' ? [] : toewijzingen;
@@ -42,6 +42,7 @@ export const voorrangslijstPage = (req: Request, res: Response) => {
                 type,
                 user,
                 toewijzingen: toewijzingenOptional,
+                algemenevoorkeuren,
             });
         },
         internalServerErrorPage(res),

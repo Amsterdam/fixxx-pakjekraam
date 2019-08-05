@@ -6,10 +6,14 @@ const OndernemerList = ({
     ondernemers,
     markt,
     aanmeldingen,
+    plaatsvoorkeuren,
+    algemenevoorkeuren,
 }: {
     ondernemers: IMarktondernemer[];
     markt: IMarkt;
     aanmeldingen: IRSVP[];
+    plaatsvoorkeuren: any;
+    algemenevoorkeuren: any;
 }) => (
     <div className="OndernemerList">
         <span className="OndernemerList__heading">Personen</span>
@@ -18,6 +22,11 @@ const OndernemerList = ({
                 {ondernemers.map(ondernemer => {
                     const aanmelding =
                         ondernemer && aanmeldingen.find(rsvp => rsvp.erkenningsNummer === ondernemer.erkenningsNummer);
+                    const plaatsIds = plaatsvoorkeuren[ondernemer.erkenningsNummer] ?
+                        plaatsvoorkeuren[ondernemer.erkenningsNummer].sort((a: any, b: any) =>
+                            b.priority - a.priority).map((plaatsvoorkeur: any) =>
+                            plaatsvoorkeur.plaatsId) : [];
+                    const algemenevoorkeur = algemenevoorkeuren[ondernemer.erkenningsNummer];
 
                     return (
                         <tr key={ondernemer.erkenningsNummer} className={ondernemer.status}>
@@ -35,6 +44,12 @@ const OndernemerList = ({
                                         : ''
                                 } ${aanmelding && aanmelding.attending ? 'OndernemerList__ondernemer--attending' : ''}`}
                             />
+                            <td>
+                                {algemenevoorkeur ?
+                                <strong>({algemenevoorkeur.minimum}, {algemenevoorkeur.maximum - algemenevoorkeur.minimum}) </strong>
+                                 : ''}{plaatsIds.join(', ')}
+                            </td>
+
                         </tr>
                     );
                 })}
@@ -47,6 +62,8 @@ OndernemerList.propTypes = {
     ondernemers: PropTypes.arrayOf(PropTypes.object),
     markt: PropTypes.object,
     aanmeldingen: PropTypes.array,
+    plaatsvoorkeuren: PropTypes.object,
+    algemenevoorkeuren: PropTypes.object,
 };
 
 module.exports = OndernemerList;
