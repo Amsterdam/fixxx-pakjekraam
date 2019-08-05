@@ -24,15 +24,12 @@ export const readOnlyLogin = (): Promise<{ token: string; expiry: string }> =>
         ...loginSettings,
         username: process.env.API_READONLY_USER,
         password: process.env.API_READONLY_PASS,
-    }).then((session: MMSession) => {
-        console.log(session);
-        return {
-            token: session.uuid,
-            expiry: new Date(
-                new Date(session.creationDate).getTime() + MILLISECONDS_IN_SECOND * session.lifeTime,
-            ).toISOString(),
-        };
-    });
+    }).then((session: MMSession) => ({
+        token: session.uuid,
+        expiry: new Date(
+            new Date(session.creationDate).getTime() + MILLISECONDS_IN_SECOND * session.lifeTime,
+        ).toISOString(),
+    }));
 
 export const checkActivationCode = (username: string, code: string): Promise<boolean> =>
     readOnlyLogin().then(session =>

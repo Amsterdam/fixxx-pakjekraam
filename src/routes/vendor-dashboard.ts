@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { getMarktondernemer } from '../makkelijkemarkt-api';
 import {
     getMarkten,
@@ -9,7 +9,7 @@ import {
 import { errorPage, getQueryErrors } from '../express-util';
 import { tomorrow, nextWeek } from '../util';
 
-export const vendorDashboardPage = (req: Request, res: Response, erkenningsNummer: string) => {
+export const vendorDashboardPage = (req: Request, res: Response, next: NextFunction, erkenningsNummer: string) => {
     const messages = getQueryErrors(req.query);
     const ondernemerPromise = getMarktondernemer(req.session.token, erkenningsNummer);
     const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(erkenningsNummer);
@@ -29,19 +29,21 @@ export const vendorDashboardPage = (req: Request, res: Response, erkenningsNumme
         marktenPromiseProps,
         ondernemerVoorkeurenPromise,
         getAanmeldingenByOndernemer(erkenningsNummer),
-    ]).then(
-        ([ondernemer, markten, plaatsvoorkeuren, aanmeldingen]) => {
-            res.render('OndernemerDashboard', {
-                ondernemer,
-                aanmeldingen,
-                markten,
-                plaatsvoorkeuren,
-                startDate: tomorrow(),
-                endDate: nextWeek(),
-                messages,
-                user: req.session.token,
-            });
-        },
-        err => errorPage(res, err),
-    );
+    ])
+        .then(
+            ([ondernemer, markten, plaatsvoorkeuren, aanmeldingen]) => {
+                res.render('OndernemerDashboard', {
+                    ondernemer,
+                    aanmeldingen,
+                    markten,
+                    plaatsvoorkeuren,
+                    startDate: tomorrow(),
+                    endDate: nextWeek(),
+                    messages,
+                    user: req.session.token,
+                });
+            },
+            err => errorPage(res, err),
+        )
+        .catch(next);
 };

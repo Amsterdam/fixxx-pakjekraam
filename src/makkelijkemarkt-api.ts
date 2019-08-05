@@ -1,25 +1,12 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 // import AxiosLogger from 'axios-logger';
 // import { setupCache } from 'axios-cache-adapter';
-import { addDays, MONDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY, requireEnv } from './util';
-import {
-    MMMarkt,
-    MMOndernemerStandalone,
-    MMSollicitatieStandalone,
-    MMOndernemer,
-    MMSession,
-} from './makkelijkemarkt.model';
-
-const packageJSON = require('../package.json');
-
-requireEnv('API_URL');
-requireEnv('API_MMAPPKEY');
-requireEnv('API_READONLY_USER');
-requireEnv('API_READONLY_PASS');
+import { addDays, MONDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY } from './util';
+import { MMMarkt, MMOndernemerStandalone, MMSollicitatieStandalone, MMOndernemer } from './makkelijkemarkt.model';
 
 const axios = require('axios');
 
-const MILLISECONDS_IN_SECOND = 1000;
+// const MILLISECONDS_IN_SECOND = 1000;
 // const SECONDS_IN_MINUTE = 60;
 // const MINUTES_IN_HOUR = 60;
 // const CACHE_MAXAGE = MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND;
@@ -30,40 +17,6 @@ const MILLISECONDS_IN_SECOND = 1000;
 
 export let init = (config: { url: string; appKey: string }) => {};
 
-const loginSettings = {
-    url: process.env.API_URL,
-    appKey: process.env.API_MMAPPKEY,
-    clientApp: packageJSON.name,
-    clientVersion: packageJSON.version,
-};
-
-const login2 = (data: LoginArgs) =>
-    makkelijkeMarktAPI
-        .then(api =>
-            api.post('login/basicUsername/', {
-                username: data.username,
-                password: data.password,
-                clientApp: data.clientApp,
-                clientVersion: data.clientVersion,
-            }),
-        )
-        .then(response => response.data);
-
-const readOnlyLogin2 = (): Promise<{ token: string; expiry: string }> =>
-    login2({
-        ...loginSettings,
-        username: process.env.API_READONLY_USER,
-        password: process.env.API_READONLY_PASS,
-    }).then((session: MMSession) => {
-        console.log(session);
-        return {
-            token: session.uuid,
-            expiry: new Date(
-                new Date(session.creationDate).getTime() + MILLISECONDS_IN_SECOND * session.lifeTime,
-            ).toISOString(),
-        };
-    });
-
 const makkelijkeMarktAPI: Promise<AxiosInstance> = new Promise(resolve => {
     // Overrides the noop `init` definition above with a function that can
     // resolve the promise we're currently in. This way, some auth parameters
@@ -72,7 +25,6 @@ const makkelijkeMarktAPI: Promise<AxiosInstance> = new Promise(resolve => {
     // correct parameters have been set.
     //
     // FIXME: Hard to read.
-    //login
     init = (config: { url: string; appKey: string }) => {
         const api = axios.create({
             baseURL: config.url,
@@ -88,18 +40,6 @@ const makkelijkeMarktAPI: Promise<AxiosInstance> = new Promise(resolve => {
         resolve(api);
     };
 });
-
-const makkelijkeMarktLoginWrapperAPI: Promise<AxiosInstance> = () =>
-    readOnlyLogin2().then(session => {
-        console.log(session);
-        return makkelijkeMarktAPI.then(api => {
-            api.interceptors.request.use(config => {
-                config.headers.get['Authorization'] = `Bearer ${session.token}`;
-                return config;
-            });
-            return api;
-        });
-    });
 
 type LoginArgs = {
     username: string;
@@ -155,7 +95,15 @@ export const getMarktondernemersByMarkt = (token: string, marktId: string): Prom
         .then(response => response.data);
 
 export const getMarkt = (token: string, marktId: string): Promise<MMMarkt> =>
-    makkelijkeMarktLoginWrapperAPI.then(api => api.get(`markt/${marktId}`)).then(response => response.data);
+    makkelijkeMarktAPI
+        .then(api =>
+            api.get(`markt/${marktId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }),
+        )
+        .then(response => response.data);
 
 export const getMarkten = (token: string): Promise<MMMarkt[]> =>
     makkelijkeMarktAPI

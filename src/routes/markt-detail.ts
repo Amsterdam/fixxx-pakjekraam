@@ -30,23 +30,25 @@ export const marktDetailController = (
         marktPromise,
         getIndelingVoorkeur(erkenningsNummer, req.params.marktId),
         getAllBranches(),
-    ]).then(
-        ([ondernemer, plaatsvoorkeuren, aanmeldingen, markt, voorkeur, branches]) => {
-            console.log(Object.keys(req));
-            console.log(req.session);
-            res.render('OndernemerMarktDetailPage', {
-                ondernemer,
-                plaatsvoorkeuren,
-                aanmeldingen,
-                markt,
-                voorkeur,
-                branches,
-                marktId: req.params.marktId,
-                next: req.query.next,
-                query,
-                messages,
-            });
-        },
-        err => httpErrorPage(res, HTTP_INTERNAL_SERVER_ERROR)(err),
-    );
+    ])
+        .then(
+            ([ondernemer, plaatsvoorkeuren, aanmeldingen, markt, voorkeur, branches]) => {
+                console.log(Object.keys(req));
+                console.log(req.session);
+                res.render('OndernemerMarktDetailPage', {
+                    ondernemer,
+                    plaatsvoorkeuren,
+                    aanmeldingen,
+                    markt,
+                    voorkeur,
+                    branches,
+                    marktId: req.params.marktId,
+                    next: req.query.next,
+                    query,
+                    messages,
+                });
+            },
+            err => httpErrorPage(res, HTTP_INTERNAL_SERVER_ERROR)(err),
+        )
+        .catch(next);
 };

@@ -208,9 +208,15 @@ app.get('/markt/tomorrow.json', keycloak.protect(KeycloakRoles.MARKTBUREAU), (re
     getMarktenByDate(req.session.token, tomorrow()).then(jsonPage(res));
 });
 
-app.get('/markt/:marktId/', keycloak.protect(KeycloakRoles.MARKTMEESTER), (req: Request, res: Response) => {
-    getMarkt(req.session.token, req.params.marktId).then(markt => res.render('MarktDetailPage', { markt }));
-});
+app.get(
+    '/markt/:marktId/',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    (req: Request, res: Response, next: NextFunction) => {
+        getMarkt(req.session.token, req.params.marktId)
+            .then(markt => res.render('MarktDetailPage', { markt }))
+            .catch(next);
+    },
+);
 
 app.get(
     '/markt/:marktId/:marktDate/concept-indelingslijst/',
@@ -252,15 +258,19 @@ app.get(
     },
 );
 
-app.get('/dashboard/', keycloak.protect(KeycloakRoles.MARKTONDERNEMER), (req: GrantedRequest, res: Response) => {
-    vendorDashboardPage(req, res, getErkenningsNummer(req));
-});
+app.get(
+    '/dashboard/',
+    keycloak.protect(KeycloakRoles.MARKTONDERNEMER),
+    (req: GrantedRequest, res: Response, next: NextFunction) => {
+        vendorDashboardPage(req, res, next, getErkenningsNummer(req));
+    },
+);
 
 app.get(
     '/ondernemer/:erkenningsNummer/dashboard/',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
-    (req: Request, res: Response) => {
-        vendorDashboardPage(req, res, req.params.erkenningsNummer);
+    (req: Request, res: Response, next: NextFunction) => {
+        vendorDashboardPage(req, res, next, req.params.erkenningsNummer);
     },
 );
 
@@ -772,6 +782,10 @@ app.get(
         res.render('MarktIndelingPage', {});
     },
 );
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    res.render('ErrorPage', { errorCode: err.response.status });
+});
 
 // Static files that are public (robots.txt, favicon.ico)
 app.use(express.static('./src/public/'));
