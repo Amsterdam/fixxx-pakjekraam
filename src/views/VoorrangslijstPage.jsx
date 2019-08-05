@@ -104,7 +104,7 @@ class VoorrangslijstPage extends React.Component {
 
         return (
             <MarktDetailBase
-                bodyClass='page-markt-sollicitanten page-print'
+                bodyClass="page-markt-sollicitanten page-print"
                 title={titleBase}
                 markt={markt}
                 datum={datum}
