@@ -261,9 +261,6 @@ function splitByArray(orgArr, valueArr) {
         newWrapper.appendChild(newSelectWrapper);
 
         wrapper.parentNode.insertBefore(newWrapper, wrapper);
-
-
-        //decorators['plaatsvoorkeur-prototype'].call(prototype);
     }
   };
 
