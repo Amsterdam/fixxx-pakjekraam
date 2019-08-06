@@ -150,10 +150,10 @@ app.use(
 // endless loop.
 app.get('/login', keycloak.protect(), (req: GrantedRequest, res: Response) => {
     readOnlyLogin().then(sessionData => {
-        console.log(sessionData);
         Object.assign(req.session, sessionData);
-
-        if (isMarktondernemer(req)) {
+        if (req.query.next) {
+            res.redirect(req.query.next);
+        } else if (isMarktondernemer(req)) {
             res.redirect('/dashboard/');
         } else if (isMarktmeester(req)) {
             res.redirect('/markt/');
@@ -784,7 +784,8 @@ app.get(
 );
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    res.render('ErrorPage', { errorCode: err.response.status });
+    console.log(req.originalUrl);
+    res.render('ErrorPage', { errorCode: err.response.status, req });
 });
 
 // Static files that are public (robots.txt, favicon.ico)

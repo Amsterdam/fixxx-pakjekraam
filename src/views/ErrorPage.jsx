@@ -7,25 +7,21 @@ const Header = require('./components/Header');
 class ErrorPage extends React.Component {
     propTypes = {
         errorCode: PropTypes.number,
+        req: PropTypes.object
     };
 
     render() {
-        const { errorCode } = this.props;
+        const { errorCode, req } = this.props;
         const mmLoginError = 401;
 
         return (
             <Page>
                 <Header hideLogout={true} />
                 <Content>
-                    <h1>{errorCode}</h1>
-                    {errorCode !== mmLoginError ? (
-                        <h4>Er is een fout opgetreden</h4>
-                    ) : (
-                        <h4>
-                            Er is een fout opgetreden met het inloggen. Probeer opnieuw in te{' '}
-                            <a href="/login">loggen</a>
-                        </h4>
-                    )}
+                    <h4>
+                        Er is een fout opgetreden. <br/>Probeer opnieuw in te{' '}
+                        <a href={`/login?next=${req ? req.originalUrl : ''}`}>loggen</a>
+                    </h4>
                 </Content>
             </Page>
         );
