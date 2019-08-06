@@ -268,6 +268,76 @@ function splitByArray(orgArr, valueArr) {
   };
 
   var decorators = {
+      'aanwezigheid-form': function () {
+          var form = this,
+               body = _closest(this, 'body'),
+               redirectTo = './?error=aanwezigheid-saved',
+               _getFormData = function(){
+                var out = [],
+                    hiddenFields = form.querySelectorAll('input[name*="[marktId]"], input[name*="[marktDate]"], input[name*="[attending]"]:checked');
+                for (var i = 0; i < hiddenFields.length; i++){
+                    out.push(encodeURIComponent(hiddenFields[i].getAttribute('name')) + '=' + encodeURIComponent(hiddenFields[i].value))
+                }
+                out.push(encodeURIComponent('next') + '=' + encodeURIComponent(redirectTo));
+
+                return out.join('&').replace(/%20/g, '+');;
+              },
+              _process = function (data, selector) {
+                var div = document.createElement('html');
+                div.innerHTML = data;
+                var
+                  result = div.querySelectorAll(selector),
+                  target = document.querySelectorAll(selector);
+                    if (result.length && target.length) {
+                      for (var i = 0; i < target.length; i++) {
+                        target[i].innerHTML = result[i].innerHTML;
+                      }
+                    }
+                    _decorate();
+                    body.classList.remove('in-progress');
+              },
+              _addAlert = function(alertText){
+                var base = document.createElement('div');
+                base.classList.add('Alert');
+                base.textContent = alertText;
+                body.appendChild(base);
+              },
+              _formChange = function(e){
+                console.log('change');
+                console.log(_getFormData());
+                  if(e) {
+                    _submit();
+                  }
+              },
+              _submit = function(e){
+                    if (e && e.x !== 0) {
+                        return;
+                    }
+                    _addAlert('Bezig met bewaren');
+                    body.classList.add('in-progress');
+                    form.request = helpers.ajax({
+                    type: form.method,
+                    url: form.action,
+                    data: _getFormData(),
+                    headers: [["Content-Type", "application/x-www-form-urlencoded"]],
+                    callback: function (data) {
+                      _process(data, form.dataset.resultSelector || 'body');
+                    },
+                    error: function () {
+                        console.log('error');
+                      body.classList.remove('in-progress');
+                      form.classList.add('ajax-error');
+                      _decorate();
+                    }
+                  });
+              },
+              _init = function(){
+
+              };
+          _init();
+          form.addEventListener('change', _formChange);
+          form.addEventListener('submit', _submit);
+      },
       'voorkeur-form': function () {
           var form = this,
               vasteplaatsCount = form.dataset.vasteplaatsCount,

@@ -55,7 +55,13 @@ class AfmeldForm extends React.Component {
         );
 
         return (
-            <form className="Form" method="POST" action="./" encType="application/x-www-form-urlencoded">
+            <form
+                className="Form"
+                method="POST"
+                data-decorator="aanwezigheid-form"
+                action="./"
+                encType="application/x-www-form-urlencoded"
+            >
                 <h1>Aanwezigheid wijzigen</h1>
                 <input
                     id="erkenningsNummer"
