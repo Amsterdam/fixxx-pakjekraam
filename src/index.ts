@@ -784,8 +784,7 @@ app.get(
 );
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-    console.log(req.originalUrl);
-    res.render('ErrorPage', { errorCode: err.response.status, req });
+    res.render('ErrorPage', { errorCode: 500, req });
 });
 
 // Static files that are public (robots.txt, favicon.ico)

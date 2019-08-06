@@ -5,6 +5,7 @@ const PropTypes = require('prop-types');
 const OndernemerProfile = require('./components/OndernemerProfile.jsx');
 const MarktmeesterProfile = require('./components/MarktmeesterProfile.jsx');
 const Header = require('./components/Header');
+const OndernemerProfileHeader = require('./components/OndernemerProfileHeader');
 
 const { isVast } = require('../domain-knowledge.js');
 
@@ -24,7 +25,12 @@ class PublicProfilePage extends React.Component {
 
         return (
             <Page messages={messages}>
-                <Header user={user} />
+                <Header user={ondernemer} logoUrl="/markt/">
+                    <a className="Header__nav-item" href="/markt/">
+                        Markten
+                    </a>
+                    <OndernemerProfileHeader user={ondernemer} />
+                </Header>
                 <Content>
                     <OndernemerProfile ondernemer={ondernemer} />
                 </Content>
