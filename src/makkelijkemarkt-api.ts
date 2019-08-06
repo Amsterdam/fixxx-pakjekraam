@@ -1,9 +1,9 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 // import AxiosLogger from 'axios-logger';
 // import { setupCache } from 'axios-cache-adapter';
-import { addDays, MONDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY } from './util';
+import { addDays, MONDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY, requireEnv } from './util';
 import { MMMarkt, MMOndernemerStandalone, MMSollicitatieStandalone, MMOndernemer } from './makkelijkemarkt.model';
-
+const packageJSON = require('../package.json');
 const axios = require('axios');
 
 // const MILLISECONDS_IN_SECOND = 1000;
@@ -16,6 +16,50 @@ const axios = require('axios');
 // });
 
 export let init = (config: { url: string; appKey: string }) => {};
+
+requireEnv('API_URL');
+requireEnv('API_MMAPPKEY');
+requireEnv('API_READONLY_USER');
+requireEnv('API_READONLY_PASS');
+
+type LoginSettings = {
+    url: string,
+    appKey: string,
+    username: string;
+    password: string;
+    clientApp: string;
+    clientVersion: string;
+};
+const loginSettings = {
+    url: process.env.API_URL,
+    appKey: process.env.API_MMAPPKEY,
+    username: process.env.API_READONLY_USER,
+    password: process.env.API_READONLY_PASS,
+    clientApp: packageJSON.name,
+    clientVersion: packageJSON.version,
+};
+
+const baseLogin = (data: LoginSettings) => {
+    const api = axios.create({
+        baseURL: data.url,
+        headers: {
+            MmAppKey: data.appKey,
+        },
+    });
+    return api.post('login/basicUsername/', {
+        username: data.username,
+        password: data.password,
+        clientApp: data.clientApp,
+        clientVersion: data.clientVersion,
+    }).then((response: any) => {
+        return {
+            token:response.data.uuid,
+            api,
+        }
+    })
+}
+
+
 
 const makkelijkeMarktAPI: Promise<AxiosInstance> = new Promise(resolve => {
     // Overrides the noop `init` definition above with a function that can
@@ -83,16 +127,16 @@ export const getMarktondernemer = (token: string, id: string): Promise<MMOnderne
         )
         .then(response => response.data);
 
-export const getMarktondernemersByMarkt = (token: string, marktId: string): Promise<MMSollicitatieStandalone[]> =>
-    makkelijkeMarktAPI
-        .then(api =>
-            api.get<any, AxiosResponse<MMSollicitatieStandalone[]>>(`lijst/week/${marktId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }),
-        )
-        .then(response => response.data);
+export const getMarktondernemersByMarkt = (token: string, marktId: string): Promise<MMSollicitatieStandalone[]> => {
+    return baseLogin(loginSettings).then((data: { token: string; api: AxiosInstance }) =>
+        data.api.get<any, AxiosResponse<MMSollicitatieStandalone[]>>(`lijst/week/${marktId}`, {
+            headers: {
+                Authorization: `Bearer ${data.token}`,
+            },
+        }),
+
+    ).then((response: any) => response.data)
+}
 
 export const getMarkt = (token: string, marktId: string): Promise<MMMarkt> =>
     makkelijkeMarktAPI
