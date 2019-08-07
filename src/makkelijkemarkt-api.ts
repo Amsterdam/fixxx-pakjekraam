@@ -6,14 +6,12 @@ import { MMMarkt, MMOndernemerStandalone, MMSollicitatieStandalone, MMOndernemer
 const packageJSON = require('../package.json');
 const axios = require('axios');
 
-// const MILLISECONDS_IN_SECOND = 1000;
-// const SECONDS_IN_MINUTE = 60;
-// const MINUTES_IN_HOUR = 60;
-// const CACHE_MAXAGE = MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND;
+import { session } from './model/index';
+import { upsert } from './sequelize-util.js';
 
-// const cache = setupCache({
-//     maxAge: CACHE_MAXAGE,
-// });
+const MILLISECONDS_IN_SECOND = 1000;
+const SECONDS_IN_MINUTE = 60;
+const MINUTES_IN_HOUR = 60;
 
 export let init = (config: { url: string; appKey: string }) => {};
 
@@ -22,44 +20,80 @@ requireEnv('API_MMAPPKEY');
 requireEnv('API_READONLY_USER');
 requireEnv('API_READONLY_PASS');
 
-type LoginSettings = {
-    url: string,
+type ApiConfig = {
+    baseUrl: string,
     appKey: string,
+    loginUrl: string,
     username: string;
     password: string;
     clientApp: string;
     clientVersion: string;
+    sessionKey: string;
+    sessionLifetime: number;
 };
-const loginSettings = {
-    url: process.env.API_URL,
+type apiBaseReturn = {
+    token: string;
+    api: AxiosInstance;
+};
+
+const mmConfig = {
+    baseUrl: process.env.API_URL,
     appKey: process.env.API_MMAPPKEY,
+    loginUrl: 'login/basicUsername/',
     username: process.env.API_READONLY_USER,
     password: process.env.API_READONLY_PASS,
     clientApp: packageJSON.name,
     clientVersion: packageJSON.version,
+    sessionKey: 'mmsession',
+    sessionLifetime: MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE * MINUTES_IN_HOUR * 6,
 };
 
-const baseLogin = (data: LoginSettings) => {
+const apiBase = (config: ApiConfig): Promise<apiBaseReturn> => {
     const api = axios.create({
-        baseURL: data.url,
+        baseURL: config.baseUrl,
         headers: {
-            MmAppKey: data.appKey,
+            MmAppKey: config.appKey,
         },
     });
-    return api.post('login/basicUsername/', {
-        username: data.username,
-        password: data.password,
-        clientApp: data.clientApp,
-        clientVersion: data.clientVersion,
-    }).then((response: any) => {
-        return {
-            token:response.data.uuid,
-            api,
-        }
-    })
-}
 
+    return session.findByPk(config.sessionKey).then((sessionRecord: any) => {
+            const now = new Date();
+            const timePassed = sessionRecord ?
+                new Date(sessionRecord.dataValues.expire).getTime() - now.getTime() :
+                0;
+            if (timePassed <= 0) {
+                console.log('EXPIRED');
 
+                return api.post(config.loginUrl, {
+                    username: config.username,
+                    password: config.password,
+                    clientApp: config.clientApp,
+                    clientVersion: config.clientVersion,
+                }).then((response: any) => {
+                    const expire = now.setTime(now.getTime() + config.sessionLifetime);
+
+                    return upsert(session, {
+                        sid: config.sessionKey,
+                    }, {
+                        sess: { 'token': response.data.uuid },
+                        expire,
+                    }).then(() => ({
+                        token: response.data.uuid,
+                        api,
+                    }));
+                }).then((data: apiBaseReturn) => data);
+            }else {
+                console.log('NOT EXPIRED');
+                const token = sessionRecord.dataValues.sess.token;
+
+                return {
+                    token,
+                    api,
+                };
+            }
+    });
+
+};
 
 const makkelijkeMarktAPI: Promise<AxiosInstance> = new Promise(resolve => {
     // Overrides the noop `init` definition above with a function that can
@@ -128,15 +162,15 @@ export const getMarktondernemer = (token: string, id: string): Promise<MMOnderne
         .then(response => response.data);
 
 export const getMarktondernemersByMarkt = (token: string, marktId: string): Promise<MMSollicitatieStandalone[]> => {
-    return baseLogin(loginSettings).then((data: { token: string; api: AxiosInstance }) =>
+    return apiBase(mmConfig).then((data: { token: string; api: AxiosInstance }) =>
         data.api.get<any, AxiosResponse<MMSollicitatieStandalone[]>>(`lijst/week/${marktId}`, {
             headers: {
                 Authorization: `Bearer ${data.token}`,
             },
         }),
 
-    ).then((response: any) => response.data)
-}
+    ).then((response: any) => response.data);
+};
 
 export const getMarkt = (token: string, marktId: string): Promise<MMMarkt> =>
     makkelijkeMarktAPI

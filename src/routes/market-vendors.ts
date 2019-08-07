@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { getIndelingslijstInput, getSollicitantenlijstInput, getVoorrangslijstInput } from '../pakjekraam-api';
 import { internalServerErrorPage } from '../express-util';
 
@@ -23,7 +23,7 @@ export const sollicitantenPage = (req: Request, res: Response) => {
     );
 };
 
-export const voorrangslijstPage = (req: Request, res: Response) => {
+export const voorrangslijstPage = (req: Request, res: Response, next: NextFunction ) => {
     const user = req.session;
     const datum = req.params.datum;
     const type = req.query.type === 'wenperiode' ? 'wenperiode' : 'voorrangslijst';
@@ -45,6 +45,6 @@ export const voorrangslijstPage = (req: Request, res: Response) => {
                 algemenevoorkeuren,
             });
         },
-        internalServerErrorPage(res),
-    );
+        next,
+    ).catch(next);
 };

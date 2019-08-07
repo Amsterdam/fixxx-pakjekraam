@@ -784,6 +784,7 @@ app.get(
 );
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    console.log(err);
     res.render('ErrorPage', { errorCode: 500, req });
 });
 

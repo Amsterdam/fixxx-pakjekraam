@@ -20,7 +20,7 @@ class ErrorPage extends React.Component {
                 <Content>
                     <h4>
                         Er is een fout opgetreden. <br />
-                        Probeer opnieuw in te <a href={`/login?next=${req ? req.originalUrl : ''}`}>loggen</a>
+                        Probeer opnieuw <a href={`/login?next=${req ? req.originalUrl : ''}`}>in te loggen</a>
                     </h4>
                 </Content>
             </Page>
