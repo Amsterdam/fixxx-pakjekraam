@@ -15,8 +15,9 @@ class PublicProfilePage extends React.Component {
     propTypes = {
         ondernemer: PropTypes.object,
         user: PropTypes.object.isRequired,
-        messages: PropTypes.array,
+        messages: PropTypes.array
     };
+
     render(state) {
         const { ondernemer, user, messages } = this.props;
         const isVastSomewhere = ondernemer.sollicitaties.some(soll => isVast(soll.status));

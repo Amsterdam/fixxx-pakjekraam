@@ -19,8 +19,8 @@ class ErrorPage extends React.Component {
                 <Header hideLogout={true} />
                 <Content>
                     <h4>
-                        Er is een fout opgetreden. <br/>Probeer opnieuw in te{' '}
-                        <a href={`/login?next=${req ? req.originalUrl : ''}`}>loggen</a>
+                        Er is een fout opgetreden. <br />
+                        Probeer opnieuw in te <a href={`/login?next=${req ? req.originalUrl : ''}`}>loggen</a>
                     </h4>
                 </Content>
             </Page>
