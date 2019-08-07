@@ -8,7 +8,6 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import url from 'url';
-import { readOnlyLogin } from './makkelijkemarkt-auth';
 import { getMarkt, getMarktondernemer, getMarktondernemersByMarkt } from './makkelijkemarkt-api';
 import { requireEnv, today, tomorrow } from './util';
 import { HTTP_INTERNAL_SERVER_ERROR, internalServerErrorPage, jsonPage, getQueryErrors } from './express-util';
@@ -149,18 +148,15 @@ app.use(
 // Put the login route before the expired redirect to prevent an
 // endless loop.
 app.get('/login', keycloak.protect(), (req: GrantedRequest, res: Response) => {
-    readOnlyLogin().then(sessionData => {
-        Object.assign(req.session, sessionData);
-        if (req.query.next) {
-            res.redirect(req.query.next);
-        } else if (isMarktondernemer(req)) {
-            res.redirect('/dashboard/');
-        } else if (isMarktmeester(req)) {
-            res.redirect('/markt/');
-        } else {
-            res.redirect('/');
-        }
-    });
+    if (req.query.next) {
+        res.redirect(req.query.next);
+    } else if (isMarktondernemer(req)) {
+        res.redirect('/dashboard/');
+    } else if (isMarktmeester(req)) {
+        res.redirect('/markt/');
+    } else {
+        res.redirect('/');
+    }
 });
 
 app.get('/', (req: Request, res: Response) => {

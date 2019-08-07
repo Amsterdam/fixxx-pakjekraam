@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { sequelize } from '../model/index';
 import { getKeycloakAdmin } from '../keycloak-api';
-import { readOnlyLogin } from '../makkelijkemarkt-auth';
+import { checkLogin } from '../makkelijkemarkt-api';
 import { internalServerErrorPage } from '../express-util';
 
 // This health check page is required for Docker deployments
@@ -36,7 +36,7 @@ export const keycloakHealth = (req: Request, res: Response) => {
 };
 
 export const makkelijkeMarktHealth = (req: Request, res: Response) => {
-    readOnlyLogin()
+    checkLogin()
         .then(() => {
             res.end('Makkelijke Markt API OK!');
         })

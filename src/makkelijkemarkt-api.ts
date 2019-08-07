@@ -1,6 +1,4 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
-// import AxiosLogger from 'axios-logger';
-// import { setupCache } from 'axios-cache-adapter';
 import { addDays, MONDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY, requireEnv } from './util';
 import { MMMarkt, MMOndernemerStandalone, MMSollicitatieStandalone, MMOndernemer } from './makkelijkemarkt.model';
 const packageJSON = require('../package.json');
@@ -31,7 +29,7 @@ type ApiConfig = {
     sessionKey: string;
     sessionLifetime: number;
 };
-type apiBaseReturn = {
+type ApiBaseReturn = {
     token: string;
     api: AxiosInstance;
 };
@@ -48,7 +46,7 @@ const mmConfig = {
     sessionLifetime: MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE * MINUTES_IN_HOUR * 6,
 };
 
-const apiBase = (config: ApiConfig): Promise<apiBaseReturn> => {
+const apiBase = (config: ApiConfig): Promise<ApiBaseReturn> => {
     const api = axios.create({
         baseURL: config.baseUrl,
         headers: {
@@ -81,7 +79,7 @@ const apiBase = (config: ApiConfig): Promise<apiBaseReturn> => {
                         token: response.data.uuid,
                         api,
                     }));
-                }).then((data: apiBaseReturn) => data);
+                }).then((data: ApiBaseReturn) => data);
             }else {
                 console.log('NOT EXPIRED');
                 const token = sessionRecord.dataValues.sess.token;
@@ -95,104 +93,55 @@ const apiBase = (config: ApiConfig): Promise<apiBaseReturn> => {
 
 };
 
-const makkelijkeMarktAPI: Promise<AxiosInstance> = new Promise(resolve => {
-    // Overrides the noop `init` definition above with a function that can
-    // resolve the promise we're currently in. This way, some auth parameters
-    // required for all functions in here can be set externally and in here we can
-    // simply call `makkelijkeMarktAPI` and be sure that when it's resolved, the
-    // correct parameters have been set.
-    //
-    // FIXME: Hard to read.
-    init = (config: { url: string; appKey: string }) => {
-        const api = axios.create({
-            baseURL: config.url,
-            headers: {
-                MmAppKey: config.appKey,
-            },
-            // adapter: process.env.NODE_ENV === 'development' ? cache.adapter : undefined,
-        });
-
-        // if (process.env.NODE_ENV === 'development') {
-        // api.interceptors.request.use(AxiosLogger.requestLogger);
-        // }
-        resolve(api);
-    };
-});
-
-type LoginArgs = {
-    username: string;
-    password: string;
-    clientApp: string;
-    clientVersion: string;
-};
-
-// FIXME: Use RxJS for these asynchronous dependencies
-export const login = (data: LoginArgs) =>
-    makkelijkeMarktAPI
-        .then(api =>
-            api.post('login/basicUsername/', {
-                username: data.username,
-                password: data.password,
-                clientApp: data.clientApp,
-                clientVersion: data.clientVersion,
-            }),
-        )
-        .then(response => response.data);
-
 export const getMarktondernemers = (token: string): Promise<MMSollicitatieStandalone[]> =>
-    makkelijkeMarktAPI
-        .then(api =>
-            api.get<any, AxiosResponse<MMSollicitatieStandalone[]>>('koopman/', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }),
-        )
-        .then(response => response.data);
+    apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
+        api.get<any, AxiosResponse<MMSollicitatieStandalone[]>>('koopman/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }),
+    )
+    .then(response => response.data);
 
 export const getMarktondernemer = (token: string, id: string): Promise<MMOndernemerStandalone> =>
-    makkelijkeMarktAPI
-        .then(api =>
-            api.get<any, AxiosResponse<MMOndernemerStandalone>>(`koopman/erkenningsnummer/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }),
-        )
-        .then(response => response.data);
-
-export const getMarktondernemersByMarkt = (token: string, marktId: string): Promise<MMSollicitatieStandalone[]> => {
-    return apiBase(mmConfig).then((data: { token: string; api: AxiosInstance }) =>
-        data.api.get<any, AxiosResponse<MMSollicitatieStandalone[]>>(`lijst/week/${marktId}`, {
+    apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
+        api.get<any, AxiosResponse<MMOndernemerStandalone>>(`koopman/erkenningsnummer/${id}`, {
             headers: {
-                Authorization: `Bearer ${data.token}`,
+                Authorization: `Bearer ${token}`,
+            },
+        }),
+    )
+    .then(response => response.data);
+
+export const getMarktondernemersByMarkt = (token: string, marktId: string): Promise<MMSollicitatieStandalone[]> =>
+    apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
+        api.get<any, AxiosResponse<MMSollicitatieStandalone[]>>(`lijst/week/${marktId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
             },
         }),
 
     ).then((response: any) => response.data);
-};
 
 export const getMarkt = (token: string, marktId: string): Promise<MMMarkt> =>
-    makkelijkeMarktAPI
-        .then(api =>
-            api.get(`markt/${marktId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }),
-        )
-        .then(response => response.data);
+    apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
+        api.get(`markt/${marktId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }),
+    )
+    .then(response => response.data);
 
 export const getMarkten = (token: string): Promise<MMMarkt[]> =>
-    makkelijkeMarktAPI
-        .then(api =>
-            api.get('markt/', {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }),
-        )
-        .then(response => response.data);
+    apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
+        api.get('markt/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }),
+    )
+    .then(response => response.data);
 
 const A_LIJST_DAYS = [FRIDAY, SATURDAY, SUNDAY];
 
@@ -203,8 +152,7 @@ export const getALijst = (token: string, marktId: string, marktDate: string): Pr
         const monday = addDays(marktDate, MONDAY - day),
             thursday = addDays(marktDate, THURSDAY - day);
 
-        return makkelijkeMarktAPI
-            .then(api =>
+        return apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
                 api.get(`rapport/aanwezigheid/${marktId}/${monday}/${thursday}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -216,3 +164,25 @@ export const getALijst = (token: string, marktId: string, marktDate: string): Pr
         return new Promise(resolve => resolve([]));
     }
 };
+
+export const checkActivationCode = (username: string, code: string): Promise<boolean> =>
+    getMarktondernemer(session.token, username).then(
+        ondernemer => {
+            if (!ondernemer.pasUid) {
+                // This method of activation only works for people with a `pasUid`
+                throw new Error('Incorrect username/password');
+            } else {
+                return typeof code === 'string' && code.length > 0 && code === ondernemer.pasUid;
+            }
+        },
+        (err: Error) => {
+            console.log(err);
+            throw new Error('Incorrect username/password');
+        },
+    );
+
+export const checkLogin = (): Promise<any> =>
+    apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
+        console.log('Login OK'),
+    )
+    .then(response => response);
