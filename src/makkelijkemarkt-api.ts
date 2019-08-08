@@ -9,7 +9,7 @@ import { upsert } from './sequelize-util.js';
 
 const MILLISECONDS_IN_SECOND = 1000;
 const SECONDS_IN_MINUTE = 60;
-const MINUTES_IN_HOUR = 60;
+//const MINUTES_IN_HOUR = 60;
 
 export let init = (config: { url: string; appKey: string }) => {};
 
@@ -43,7 +43,7 @@ const mmConfig = {
     clientApp: packageJSON.name,
     clientVersion: packageJSON.version,
     sessionKey: 'mmsession',
-    sessionLifetime: MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE * MINUTES_IN_HOUR * 6,
+    sessionLifetime: MILLISECONDS_IN_SECOND * SECONDS_IN_MINUTE * 6,
 };
 
 const apiBase = (config: ApiConfig): Promise<ApiBaseReturn> => {
