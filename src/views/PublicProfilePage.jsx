@@ -15,7 +15,7 @@ class PublicProfilePage extends React.Component {
     propTypes = {
         ondernemer: PropTypes.object,
         user: PropTypes.object.isRequired,
-        messages: PropTypes.array
+        messages: PropTypes.array,
     };
 
     render(state) {

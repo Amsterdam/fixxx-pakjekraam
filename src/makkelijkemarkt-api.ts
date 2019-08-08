@@ -113,13 +113,29 @@ export const getMarktondernemer = (id: string): Promise<MMOndernemerStandalone> 
     .then(response => response.data);
 
 export const getMarktondernemersByMarkt = (marktId: string): Promise<MMSollicitatieStandalone[]> =>
-    apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
-        api.get<any, AxiosResponse<MMSollicitatieStandalone[]>>(`lijst/week/${marktId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        }),
+    apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) => {
+            const recursiveCall = ((p: number, total: any[]): any => {
 
+                return new Promise((resolve) => {
+                    api.get(`sollicitaties/markt/${marktId}?listOffset=${p}&includeDoorgehaald=0`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }).then(response => {
+                        if (response.data.length > 0) {
+
+                            return resolve(recursiveCall(p + 100, [...total, ...response.data]));
+                        } else {
+
+                            return resolve(total);
+                        }
+                    });
+
+                });
+            });
+
+            return recursiveCall(0, []);
+        }
     ).then((response: any) => response.data);
 
 export const getMarkt = (marktId: string): Promise<MMMarkt> =>
