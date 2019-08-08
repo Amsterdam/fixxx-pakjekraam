@@ -11,8 +11,6 @@ const MILLISECONDS_IN_SECOND = 1000;
 const SECONDS_IN_MINUTE = 60;
 const MINUTES_IN_HOUR = 60;
 
-export let init = (config: { url: string; appKey: string }) => {};
-
 requireEnv('API_URL');
 requireEnv('API_MMAPPKEY');
 requireEnv('API_READONLY_USER');
@@ -29,6 +27,7 @@ type ApiConfig = {
     sessionKey: string;
     sessionLifetime: number;
 };
+
 type ApiBaseReturn = {
     token: string;
     api: AxiosInstance;

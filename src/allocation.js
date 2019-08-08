@@ -1,5 +1,4 @@
 const models = require('./model/index.ts');
-const { init, login } = require('./makkelijkemarkt-api.ts');
 const { getMarkten, getIndelingslijst } = require('./pakjekraam-api.ts');
 const packageJSON = require('../package.json');
 const { flatten, tomorrow } = require('./util.ts');
