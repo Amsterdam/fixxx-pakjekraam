@@ -8,8 +8,8 @@ import { filterRsvpList, isVast } from '../domain-knowledge.js';
 import { mail } from '../mail.js';
 
 export const applicationMailPage = (req: Request, res: Response) => {
-    const ondernemerPromise = getMarktondernemer(req.session.token, req.params.erkenningsNummer);
-    const marktPromise = getMarkt(req.session.token, req.params.marktId);
+    const ondernemerPromise = getMarktondernemer(req.params.erkenningsNummer);
+    const marktPromise = getMarkt(req.params.marktId);
     const aanmeldingenPromise = getAanmeldingenMarktOndern(req.params.marktId, req.params.erkenningsNummer);
     Promise.all([ondernemerPromise, marktPromise, aanmeldingenPromise]).then(([ondernemer, markt, aanmeldingen]) => {
         const marktDate = new Date(req.params.marktDate);

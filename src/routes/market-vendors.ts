@@ -3,31 +3,28 @@ import { getIndelingslijstInput, getSollicitantenlijstInput, getVoorrangslijstIn
 import { internalServerErrorPage } from '../express-util';
 
 export const vasteplaatshoudersPage = (req: Request, res: Response) => {
-    const user = req.session.token;
     const datum = req.params.datum;
     const type = 'vasteplaatshouders';
-    getIndelingslijstInput(req.session.token, req.params.marktId, datum).then(data => {
-        res.render('VastplaatshoudersPage', { data, datum, type, user });
+    getIndelingslijstInput(req.params.marktId, datum).then(data => {
+        res.render('VastplaatshoudersPage', { data, datum, type });
     }, internalServerErrorPage(res));
 };
 
 export const sollicitantenPage = (req: Request, res: Response) => {
-    const user = req.session.token;
     const datum = req.params.datum;
     const type = 'sollicitanten';
-    getSollicitantenlijstInput(req.session.token, req.params.marktId, req.params.datum).then(
+    getSollicitantenlijstInput(req.params.marktId, req.params.datum).then(
         ({ ondernemers, aanmeldingen, voorkeuren, markt }) => {
-            res.render('SollicitantenPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type, user });
+            res.render('SollicitantenPage', { ondernemers, aanmeldingen, voorkeuren, markt, datum, type });
         },
         internalServerErrorPage(res),
     );
 };
 
 export const voorrangslijstPage = (req: Request, res: Response, next: NextFunction ) => {
-    const user = req.session;
     const datum = req.params.datum;
     const type = req.query.type === 'wenperiode' ? 'wenperiode' : 'voorrangslijst';
-    getVoorrangslijstInput(req.session.token, req.params.marktId, req.params.datum).then(
+    getVoorrangslijstInput(req.params.marktId, req.params.datum).then(
         ({ ondernemers, aanmeldingen, voorkeuren, markt, toewijzingen, aLijst, algemenevoorkeuren }) => {
             const ondernemersFiltered =
                 type === 'wenperiode' ? ondernemers.filter(ondernemer => ondernemer.status !== 'vpl') : ondernemers;
@@ -40,7 +37,6 @@ export const voorrangslijstPage = (req: Request, res: Response, next: NextFuncti
                 markt,
                 datum,
                 type,
-                user,
                 toewijzingen: toewijzingenOptional,
                 algemenevoorkeuren,
             });

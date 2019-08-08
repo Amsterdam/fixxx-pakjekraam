@@ -93,7 +93,7 @@ const apiBase = (config: ApiConfig): Promise<ApiBaseReturn> => {
 
 };
 
-export const getMarktondernemers = (token: string): Promise<MMSollicitatieStandalone[]> =>
+export const getMarktondernemers = (): Promise<MMSollicitatieStandalone[]> =>
     apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
         api.get<any, AxiosResponse<MMSollicitatieStandalone[]>>('koopman/', {
             headers: {
@@ -103,7 +103,7 @@ export const getMarktondernemers = (token: string): Promise<MMSollicitatieStanda
     )
     .then(response => response.data);
 
-export const getMarktondernemer = (token: string, id: string): Promise<MMOndernemerStandalone> =>
+export const getMarktondernemer = (id: string): Promise<MMOndernemerStandalone> =>
     apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
         api.get<any, AxiosResponse<MMOndernemerStandalone>>(`koopman/erkenningsnummer/${id}`, {
             headers: {
@@ -113,7 +113,7 @@ export const getMarktondernemer = (token: string, id: string): Promise<MMOnderne
     )
     .then(response => response.data);
 
-export const getMarktondernemersByMarkt = (token: string, marktId: string): Promise<MMSollicitatieStandalone[]> =>
+export const getMarktondernemersByMarkt = (marktId: string): Promise<MMSollicitatieStandalone[]> =>
     apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
         api.get<any, AxiosResponse<MMSollicitatieStandalone[]>>(`lijst/week/${marktId}`, {
             headers: {
@@ -123,7 +123,7 @@ export const getMarktondernemersByMarkt = (token: string, marktId: string): Prom
 
     ).then((response: any) => response.data);
 
-export const getMarkt = (token: string, marktId: string): Promise<MMMarkt> =>
+export const getMarkt = (marktId: string): Promise<MMMarkt> =>
     apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
         api.get(`markt/${marktId}`, {
             headers: {
@@ -133,7 +133,7 @@ export const getMarkt = (token: string, marktId: string): Promise<MMMarkt> =>
     )
     .then(response => response.data);
 
-export const getMarkten = (token: string): Promise<MMMarkt[]> =>
+export const getMarkten = (): Promise<MMMarkt[]> =>
     apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
         api.get('markt/', {
             headers: {
@@ -145,7 +145,7 @@ export const getMarkten = (token: string): Promise<MMMarkt[]> =>
 
 const A_LIJST_DAYS = [FRIDAY, SATURDAY, SUNDAY];
 
-export const getALijst = (token: string, marktId: string, marktDate: string): Promise<MMOndernemer[]> => {
+export const getALijst = (marktId: string, marktDate: string): Promise<MMOndernemer[]> => {
     const day = new Date(marktDate).getDay();
 
     if (A_LIJST_DAYS.includes(day)) {
@@ -165,14 +165,17 @@ export const getALijst = (token: string, marktId: string, marktDate: string): Pr
     }
 };
 
-export const checkActivationCode = (username: string, code: string): Promise<boolean> =>
-    getMarktondernemer(session.token, username).then(
+export const checkActivationCode = (username: string, code: string): Promise<any> =>
+    getMarktondernemer(username).then(
         ondernemer => {
             if (!ondernemer.pasUid) {
                 // This method of activation only works for people with a `pasUid`
                 throw new Error('Incorrect username/password');
             } else {
-                return typeof code === 'string' && code.length > 0 && code === ondernemer.pasUid;
+                return {
+                    isValid: typeof code === 'string' && code.length > 0 && code === ondernemer.pasUid,
+                    erkenningsNummer: ondernemer.erkenningsnummer,
+                };
             }
         },
         (err: Error) => {

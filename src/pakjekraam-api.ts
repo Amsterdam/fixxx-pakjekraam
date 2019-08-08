@@ -315,21 +315,21 @@ const convertOndernemer = (data: MMOndernemerStandalone): IMarktondernemer => ({
     sollicitatieNummer: 0,
 });
 
-export const getMarktondernemer = (token: string, erkenningsNummer: string) =>
-    getMarktondernemerMM(token, erkenningsNummer).then(ondernemer => convertOndernemer(ondernemer));
+export const getMarktondernemer = (erkenningsNummer: string) =>
+    getMarktondernemerMM(erkenningsNummer).then(ondernemer => convertOndernemer(ondernemer));
 
-export const getMarktondernemers = (token: string) =>
-    getMarktondernemersMM(token).then(sollictaties =>
+export const getMarktondernemers = () =>
+    getMarktondernemersMM().then(sollictaties =>
         sollictaties.filter(sollictatie => !sollictatie.doorgehaald).map(convertSollicitatie),
     );
 
-export const getMarktondernemersByMarkt = (token: string, marktId: string) =>
-    getMarktondernemersByMarktMM(token, marktId).then(sollictaties =>
+export const getMarktondernemersByMarkt = (marktId: string) =>
+    getMarktondernemersByMarktMM(marktId).then(sollictaties =>
         sollictaties.filter(sollictatie => !sollictatie.doorgehaald).map(convertSollicitatie),
     );
 
-export const getIndelingslijstInput = (token: string, marktId: string, marktDate: string) => {
-    const ondernemersPromise = getMarktondernemersByMarktMM(token, marktId).then(ondernemers =>
+export const getIndelingslijstInput = (marktId: string, marktDate: string) => {
+    const ondernemersPromise = getMarktondernemersByMarktMM(marktId).then(ondernemers =>
         ondernemers.filter(ondernemer => !ondernemer.doorgehaald).map(convertSollicitatie),
     );
     const voorkeurenPromise = getIndelingVoorkeuren(marktId, marktDate).then(voorkeuren =>
@@ -356,8 +356,8 @@ export const getIndelingslijstInput = (token: string, marktId: string, marktDate
         getBranches(marktId),
         getMarktPaginas(marktId),
         getMarktGeografie(marktId),
-        getMarkt(token, marktId),
-        getALijst(token, marktId, marktDate),
+        getMarkt(marktId),
+        getALijst(marktId, marktDate),
     ]).then(args => {
         const [
             marktProperties,
@@ -405,8 +405,8 @@ export const getIndelingslijstInput = (token: string, marktId: string, marktDate
     });
 };
 
-export const getIndelingslijst = (token: string, marktId: string, date: string) =>
-    getIndelingslijstInput(token, marktId, date).then(data => {
+export const getIndelingslijst = (marktId: string, date: string) =>
+    getIndelingslijstInput(marktId, date).then(data => {
         const logMessage = `Marktindeling berekenen: ${data.markt.naam}`;
 
         console.time(logMessage);
@@ -416,9 +416,9 @@ export const getIndelingslijst = (token: string, marktId: string, date: string) 
         return indeling;
     });
 
-export const getToewijzingslijst = (token: string, marktId: string, marktDate: string) =>
+export const getToewijzingslijst = (marktId: string, marktDate: string) =>
     // TODO: Request only necessary data, `getIndelingslijstInput` returns too much
-    Promise.all([getIndelingslijstInput(token, marktId, marktDate), getToewijzingen(marktId, marktDate)]).then(
+    Promise.all([getIndelingslijstInput(marktId, marktDate), getToewijzingen(marktId, marktDate)]).then(
         ([data, toewijzingen]) => ({
             ...data,
             toewijzingen,
@@ -426,9 +426,9 @@ export const getToewijzingslijst = (token: string, marktId: string, marktDate: s
         }),
     );
 
-export const getMailContext = (token: string, marktId: string, erkenningsNr: string, marktDate: string) =>
+export const getMailContext = (marktId: string, erkenningsNr: string, marktDate: string) =>
     Promise.all([
-        getIndelingslijst(token, marktId, marktDate),
+        getIndelingslijst(marktId, marktDate),
         getVoorkeurenMarktOndern(marktId, erkenningsNr),
         getAanmeldingenMarktOndern(marktId, erkenningsNr),
         getAllBranches(),
@@ -470,14 +470,14 @@ export const getMailContext = (token: string, marktId: string, erkenningsNr: str
         };
     });
 
-export const getSollicitantenlijstInput = (token: string, marktId: string, date: string) =>
+export const getSollicitantenlijstInput = (marktId: string, date: string) =>
     Promise.all([
-        getMarktondernemersByMarkt(token, marktId).then(ondernemers =>
+        getMarktondernemersByMarkt(marktId).then(ondernemers =>
             ondernemers.filter(({ status }) => !isVast(status)),
         ),
         getAanmeldingen(marktId, date),
         getPlaatsvoorkeuren(marktId),
-        getMarkt(token, marktId),
+        getMarkt(marktId),
     ]).then(args => {
         const [ondernemers, aanmeldingen, voorkeuren, markt] = args;
 
@@ -489,13 +489,13 @@ export const getSollicitantenlijstInput = (token: string, marktId: string, date:
         };
     });
 
-export const getVoorrangslijstInput = (token: string, marktId: string, marktDate: string) =>
+export const getVoorrangslijstInput = (marktId: string, marktDate: string) =>
     Promise.all([
-        getMarktondernemersByMarkt(token, marktId),
+        getMarktondernemersByMarkt(marktId),
         getAanmeldingen(marktId, marktDate),
         getPlaatsvoorkeuren(marktId),
-        getMarkt(token, marktId),
-        getALijst(token, marktId, marktDate),
+        getMarkt(marktId),
+        getALijst(marktId, marktDate),
         getToewijzingen(marktId, marktDate),
         getIndelingVoorkeuren(marktId),
     ]).then(([ondernemers, aanmeldingen, voorkeuren, markt, aLijst, toewijzingen, algemenevoorkeuren]) => ({
@@ -508,15 +508,15 @@ export const getVoorrangslijstInput = (token: string, marktId: string, marktDate
         algemenevoorkeuren,
     }));
 
-export const getMarkten = (token: string) =>
-    getMakkelijkeMarkten(token)
+export const getMarkten = () =>
+    getMakkelijkeMarkten()
         // Only show markten for which JSON data with location info exists
         .then(markten => markten.filter(markt => fs.existsSync(`data/${slugifyMarkt(markt.id)}/locaties.json`)));
 
-export const getMarktenByDate = (token: string, marktDate: string) => {
+export const getMarktenByDate = (marktDate: string) => {
     const day = new Date(marktDate).getDay();
 
-    return getMarkten(token).then(markten =>
+    return getMarkten().then(markten =>
         markten.filter(({ marktDagen }) => marktDagen.map(parseMarktDag).includes(day)),
     );
 };

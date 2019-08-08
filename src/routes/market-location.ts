@@ -15,21 +15,20 @@ import models from '../model/index';
 export const marketLocationPage = (
     req: Request,
     res: Response,
-    token: string,
     erkenningsNummer: string,
     query: any,
     currentMarktId: string,
     role: string,
 ) => {
     const messages = getQueryErrors(req.query);
-    const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
+    const ondernemerPromise = getMarktondernemer(erkenningsNummer);
     const marktenPromise = ondernemerPromise
         .then(ondernemer =>
             Promise.all(
                 ondernemer.sollicitaties
                     .filter(sollicitatie => !sollicitatie.doorgehaald)
                     .map(sollicitatie => String(sollicitatie.markt.id))
-                    .map(marktId => getMarkt(token, marktId)),
+                    .map(marktId => getMarkt(marktId)),
             ),
         )
         .then(markten =>

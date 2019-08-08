@@ -11,9 +11,9 @@ import { tomorrow, nextWeek } from '../util';
 
 export const vendorDashboardPage = (req: Request, res: Response, next: NextFunction, erkenningsNummer: string) => {
     const messages = getQueryErrors(req.query);
-    const ondernemerPromise = getMarktondernemer(req.session.token, erkenningsNummer);
+    const ondernemerPromise = getMarktondernemer(erkenningsNummer);
     const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(erkenningsNummer);
-    const marktenPromise = getMarkten(req.session.token);
+    const marktenPromise = getMarkten();
     const marktenPromiseProps = marktenPromise.then(markten => {
         const propsPromise = markten.map(markt => {
             return getMarktProperties(String(markt.id)).then(props => ({
@@ -40,7 +40,6 @@ export const vendorDashboardPage = (req: Request, res: Response, next: NextFunct
                     startDate: tomorrow(),
                     endDate: nextWeek(),
                     messages,
-                    user: req.session.token,
                 });
             },
             err => errorPage(res, err),

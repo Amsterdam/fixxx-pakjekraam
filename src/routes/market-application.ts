@@ -9,15 +9,14 @@ import { upsert } from '../sequelize-util.js';
 
 export const marketApplicationPage = (
     res: Response,
-    token: string,
     erkenningsNummer: string,
     marktId: string,
     query: any,
 ) => {
     Promise.all([
-        getMarktondernemer(token, erkenningsNummer),
+        getMarktondernemer(erkenningsNummer),
         getAanmeldingenByOndernemer(erkenningsNummer),
-        getMarkt(token, marktId),
+        getMarkt(marktId),
     ]).then(
         ([ondernemer, aanmeldingen, markt]) => {
             res.render('AanmeldPage', { ondernemer, aanmeldingen, markt, date: tomorrow() });
@@ -66,18 +65,17 @@ export const handleMarketApplication = (req: Request, res: Response, next: NextF
 
 export const attendancePage = (
     res: Response,
-    token: string,
     erkenningsNummer: string,
     currentMarktId: string,
     query: any,
     role: string,
 ) => {
-    const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
+    const ondernemerPromise = getMarktondernemer(erkenningsNummer);
     const marktenPromise = ondernemerPromise.then(ondernemer =>
         Promise.all(
             ondernemer.sollicitaties
                 .map(sollicitatie => String(sollicitatie.markt.id))
-                .map(marktId => getMarkt(token, marktId)),
+                .map(marktId => getMarkt(marktId)),
         ),
     );
 

@@ -8,7 +8,6 @@ import { formatDate } from '../util';
 
 export const allocationMailPage = (req: Request, res: Response) => {
     const mailContextPromise = getMailContext(
-        req.session.token,
         req.params.marktId,
         req.params.erkenningsNummer,
         req.params.marktDate,

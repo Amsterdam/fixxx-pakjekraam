@@ -8,8 +8,8 @@ import { mail } from '../mail.js';
 import { groupBy } from '../util';
 
 export const preferencesMailPage = (req: Request, res: Response) => {
-    const ondernemerPromise = getMarktondernemer(req.session.token, req.params.erkenningsNummer);
-    const marktPromise = getMarkt(req.session.token, req.params.marktId);
+    const ondernemerPromise = getMarktondernemer(req.params.erkenningsNummer);
+    const marktPromise = getMarkt(req.params.marktId);
     const voorkeurenPromise = getVoorkeurenMarktOndern(req.params.marktId, req.params.erkenningsNummer);
     Promise.all([ondernemerPromise, marktPromise, voorkeurenPromise]).then(([ondernemer, markt, voorkeuren]) => {
         const marktDate = new Date(req.params.marktDate);

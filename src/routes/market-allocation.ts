@@ -3,20 +3,18 @@ import { getIndelingslijst, getToewijzingslijst } from '../pakjekraam-api';
 import { internalServerErrorPage } from '../express-util';
 
 export const indelingslijstPage = (req: Request, res: Response) => {
-    const user = req.session.token;
     const { marktDate } = req.params;
     const type = 'concept-indelingslijst';
-    getIndelingslijst(req.session.token, req.params.marktId, marktDate).then(data => {
-        res.render('IndelingslijstPage.tsx', { data, datum: marktDate, type, user });
+    getIndelingslijst(req.params.marktId, marktDate).then(data => {
+        res.render('IndelingslijstPage.tsx', { data, datum: marktDate, type });
     }, internalServerErrorPage(res));
 };
 
 export const marketAllocationPage = (req: Request, res: Response) => {
-    const user = req.session.token;
     const { marktDate } = req.params;
     const type = req.query.type === 'wenperiode' ? 'wenperiode' : 'indelingslijst';
 
-    getToewijzingslijst(req.session.token, req.params.marktId, marktDate).then(data => {
-        res.render('IndelingslijstPage.tsx', { data, datum: marktDate, type, user });
+    getToewijzingslijst(req.params.marktId, marktDate).then(data => {
+        res.render('IndelingslijstPage.tsx', { data, datum: marktDate, type });
     }, internalServerErrorPage(res));
 };

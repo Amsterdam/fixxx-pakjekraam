@@ -18,9 +18,9 @@ export const marktDetailController = (
     erkenningsNummer: string,
 ): void => {
     const messages = getQueryErrors(req.query);
-    const ondernemerPromise = getMarktondernemer(req.session.token, erkenningsNummer);
+    const ondernemerPromise = getMarktondernemer(erkenningsNummer);
     const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(erkenningsNummer);
-    const marktPromise = req.params.marktId ? getMarkt(req.session.token, req.params.marktId) : Promise.resolve(null);
+    const marktPromise = req.params.marktId ? getMarkt(req.params.marktId) : Promise.resolve(null);
     const query = req.query;
 
     Promise.all([

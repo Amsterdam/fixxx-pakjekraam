@@ -60,15 +60,14 @@ export const updateMarketPreferences = (req: Request, res: Response, next: NextF
 export const marketPreferencesPage = (
     req: Request,
     res: Response,
-    token: string,
     erkenningsNummer: string,
     marktId: string,
     marktDate: string,
     role: string,
 ) => {
     const messages = getQueryErrors(req.query);
-    const ondernemerPromise = getMarktondernemer(token, erkenningsNummer);
-    const marktPromise = marktId ? getMarkt(token, marktId) : Promise.resolve(null);
+    const ondernemerPromise = getMarktondernemer(erkenningsNummer);
+    const marktPromise = marktId ? getMarkt(marktId) : Promise.resolve(null);
 
     // TODO: Only allow relative URLs in `next`, to prevent redirection to 3rd party phishing sites
     const next = req.query.next;

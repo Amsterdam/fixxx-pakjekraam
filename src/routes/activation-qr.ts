@@ -4,7 +4,7 @@ import { HTTP_PAGE_NOT_FOUND, httpErrorPage } from '../express-util';
 import * as qs from 'qs';
 
 export const activationQRPage = (req: Request, res: Response) => {
-    getMarktondernemer(req.session.token, req.params.erkenningsNummer).then(ondernemer => {
+    getMarktondernemer(req.params.erkenningsNummer).then(ondernemer => {
         const params = {
             username: req.params.erkenningsNummer,
             code: ondernemer.pasUid,
