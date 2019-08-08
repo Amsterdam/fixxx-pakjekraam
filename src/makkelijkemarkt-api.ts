@@ -135,8 +135,8 @@ export const getMarktondernemersByMarkt = (marktId: string): Promise<MMSollicita
             });
 
             return recursiveCall(0, []);
-        }
-    ).then((response: any) => response.data);
+        },
+    ).then((response: any) => response);
 
 export const getMarkt = (marktId: string): Promise<MMMarkt> =>
     apiBase(mmConfig).then(({ token, api }: ApiBaseReturn) =>
