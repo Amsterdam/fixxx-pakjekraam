@@ -15,7 +15,7 @@ const IndelingslijstGroup = ({
     toewijzingen,
     type,
     datum,
-    plaatsvoorkeuren,
+    plaatsvoorkeuren
 }) => {
     let first = true;
     const renderPlaats = props => {
@@ -35,7 +35,10 @@ const IndelingslijstGroup = ({
             <table className="IndelingslijstGroup__table" cellPadding="0" cellSpacing="0">
                 <thead className="IndelingslijstGroup__wrapper">
                     <tr className="IndelingslijstGroup__header-row">
-                        <th className="IndelingslijstGroup__header IndelingslijstGroup__header-properties Plaats__prop Plaats__prop-properties" />
+                        <th className="IndelingslijstGroup__header
+                                       IndelingslijstGroup__header-properties
+                                       Plaats__prop Plaats__prop-properties"
+                        />
                         <th className="IndelingslijstGroup__header IndelingslijstGroup__header-plaats Plaats__prop Plaats__prop-plaats-nr">
                             nr.
                         </th>
@@ -66,7 +69,7 @@ const IndelingslijstGroup = ({
                             obstakels: obstakelList,
                             ondernemer: toewijzing
                                 ? ondernemers.find(
-                                      ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer,
+                                      ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer
                                   )
                                 : null,
                             aanmelding,
@@ -74,7 +77,7 @@ const IndelingslijstGroup = ({
                             datum,
                             type,
                             toewijzing,
-                            plaatsvoorkeuren,
+                            plaatsvoorkeuren
                         };
 
                         if (plaatsList[plaatsNr]) {
@@ -120,7 +123,7 @@ IndelingslijstGroup.propTypes = {
     markt: PropTypes.object.isRequired,
     type: PropTypes.string,
     datum: PropTypes.string,
-    plaatsvoorkeuren: PropTypes.array,
+    plaatsvoorkeuren: PropTypes.object
 };
 
 module.exports = IndelingslijstGroup;

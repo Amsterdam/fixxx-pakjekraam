@@ -54,11 +54,11 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
         stn: '#C0C0C0',
         promo: '#C0C0C0',
         'eigen-materiaal': '#C0C0C0',
-        'kraam-8-meter': '#ff7700',
+        'kraam-8-meter': '#ff7700'
     };
 
-    let plaatsProps = plaats.properties || [],
-        tags = plaats.tags || [];
+    let plaatsProps = plaats.properties || [];
+    let tags = plaats.tags || [];
     const branches = plaats.branches || [];
 
     plaatsProps = plaatsProps.filter(word => !['dubble'].includes(word));
@@ -98,7 +98,7 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
                     </a>
                 ) : null}
             </td>
-            <td className={`Plaats__prop Plaats__prop-naam`}>{vph ? vph.description : <strong>{tags}</strong>}</td>
+            <td className="Plaats__prop Plaats__prop-naam">{vph ? vph.description : <strong>{tags}</strong>}</td>
             <td className="Plaats__prop Plaats__prop-empty-fields" />
             <td className="Plaats__prop Plaats__prop-empty-fields" />
         </tr>
@@ -112,7 +112,7 @@ PlaatsVPH.propTypes = {
     markt: PropTypes.object.isRequired,
     datum: PropTypes.string,
     type: PropTypes.string,
-    plaatsvoorkeuren: PropTypes.array,
+    plaatsvoorkeuren: PropTypes.object
 };
 
 module.exports = PlaatsVPH;
