@@ -6,10 +6,11 @@ const PropTypes = require('prop-types');
 
 class HomePage extends React.Component {
     propTypes = {
-        user: PropTypes.object,
+        user: PropTypes.object
     };
 
     render() {
+        console.log('console.log werkt');
         return (
             <Page>
                 <Header hideLogout={true} />
