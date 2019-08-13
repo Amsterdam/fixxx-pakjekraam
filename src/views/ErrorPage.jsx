@@ -5,13 +5,14 @@ const PropTypes = require('prop-types');
 const Header = require('./components/Header');
 
 class ErrorPage extends React.Component {
-    propTypes = {
-        errorCode: PropTypes.number,
-        req: PropTypes.object
-    };
+    // propTypes = {
+    //     stack: PropTypes.string,
+    //     errorCode: PropTypes.number,
+    //     req: PropTypes.object
+    // };
 
     render() {
-        const { errorCode, req } = this.props;
+        const { message, stack, errorCode, req } = this.props;
         const mmLoginError = 401;
 
         return (
@@ -22,6 +23,10 @@ class ErrorPage extends React.Component {
                         Er is een fout opgetreden. <br />
                         Probeer opnieuw <a href={`/login?next=${req ? req.originalUrl : ''}`}>in te loggen</a>
                     </h4>
+
+                    <p>{message}</p>
+
+                    <p>{stack}</p>
                 </Content>
             </Page>
         );
