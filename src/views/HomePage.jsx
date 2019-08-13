@@ -10,7 +10,6 @@ class HomePage extends React.Component {
     };
 
     render() {
-        console.log('console.log werkt');
         return (
             <Page>
                 <Header hideLogout={true} />
