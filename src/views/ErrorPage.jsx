@@ -5,11 +5,12 @@ const PropTypes = require('prop-types');
 const Header = require('./components/Header');
 
 class ErrorPage extends React.Component {
-    // propTypes = {
-    //     stack: PropTypes.string,
-    //     errorCode: PropTypes.number,
-    //     req: PropTypes.object
-    // };
+    propTypes = {
+        message: propTypes.string,
+        stack: PropTypes.string,
+        errorCode: PropTypes.number,
+        req: PropTypes.object
+    };
 
     render() {
         const { message, stack, errorCode, req } = this.props;
