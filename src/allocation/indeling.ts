@@ -148,14 +148,17 @@ const Indeling = {
         };
     },
 
-    // Returns the desired spots that are still available for this ondernemer in the
-    // current indeling.
     getAvailablePlaatsenFor: (indeling: IMarktindeling, ondernemer: IMarktondernemer): IMarktplaats[] => {
-        return Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer)
-        .filter(voorkeur => {
-             return ~indeling.openPlaatsen.findIndex(({ plaatsId }) => plaatsId === voorkeur.plaatsId);
-         })
-        .map(({ plaatsId }) => ({ plaatsId }));
+        // Verwerk verplaatsingsvoorkeuren enkel als de ondernemer ook wil verplaatsen.
+        // Een VPH met 2 plaatsen die maar 1 verplaatsingsvoorkeur opgeeft wordt niet
+        // beschouwd als iemand die wil verplaatsen.
+        const plaatsen = Ondernemer.wantsToMove(indeling, ondernemer) ?
+                         <IMarktplaats[]> Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer) :
+                         Ondernemer.getVastePlaatsen(ondernemer);
+
+        return plaatsen.filter(plaats =>
+            ~indeling.openPlaatsen.findIndex(({ plaatsId }) => plaatsId === plaats.plaatsId)
+        );
     },
 
     isAanwezig: (aanwezigheid: IRSVP[], ondernemer: IMarktondernemer) => {

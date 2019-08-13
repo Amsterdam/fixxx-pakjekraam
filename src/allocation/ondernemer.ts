@@ -127,12 +127,9 @@ const Ondernemer = {
     } ,
 
     wantsToMove: (indeling: IMarktindeling, ondernemer: IMarktondernemer): boolean => {
-        if (!Ondernemer.heeftVastePlaatsen(ondernemer)) {
-            return false;
-        }
-
+        const plaatsen   = Ondernemer.getVastePlaatsen(ondernemer);
         const voorkeuren = Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer, false);
-        return voorkeuren.length >= ondernemer.plaatsen.length;
+        return voorkeuren.length >= plaatsen.length;
     }
 };
 

@@ -350,6 +350,25 @@ describe('Een ondernemer krijgt voorkeur', () => {
 });
 
 describe('Een vasteplaatshouder die wil verplaatsen', () => {
+    it('wordt enkel verplaatst als zij genoeg voorkeuren hebben opgegeven', () => {
+        const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, aanmelding, voorkeur }) => ({
+            ondernemers: [
+                ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1', '2'] }),
+                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['4'] })
+            ],
+            marktplaatsen: [plaats(), plaats(), plaats(), plaats(), plaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '5', priority: FIRST_CHOICE })
+            ]
+        }));
+
+        expect(toewijzingen.length).toBe(2);
+        expect(afwijzingen.length).toBe(0);
+        expect(findPlaatsen(toewijzingen, 1)).toStrictEqual(['1', '2']);
+        expect(findPlaatsen(toewijzingen, 2)).toStrictEqual(['5']);
+    });
+
     it('mag dit voor sollicitanten worden ingedeeld', () => {
         /*
          * Scenario:
