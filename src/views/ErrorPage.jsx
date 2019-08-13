@@ -6,7 +6,7 @@ const Header = require('./components/Header');
 
 class ErrorPage extends React.Component {
     propTypes = {
-        message: propTypes.string,
+        message: PropTypes.string,
         stack: PropTypes.string,
         errorCode: PropTypes.number,
         req: PropTypes.object
