@@ -32,14 +32,17 @@ class AfmeldForm extends React.Component {
             soll => !soll.doorgehaald && String(soll.markt.id) === currentMarktId
         );
         const markt = markten.find(m => String(m.id) === currentMarktId);
-        const OFFSET = 11; // from 24:00 to 13:00
+        const OFFSET = 9; // from 24:00 to 16:00
         const now = addMinutes(new Date(), (MINUTES_IN_HOUR * OFFSET));
+        const now2 = new Date().toISOString();
+        const tzo = String(new Date().getTimezoneOffset());
 
         const rsvpEntries = filterRsvpList(
             aanmeldingen.filter(aanmelding => aanmelding.marktId === markt.id),
             markt,
             role === 'marktmeester' ? now : addDays(now, 1)
         );
+
         const weekAanmeldingen = rsvpEntries.reduce(
             (t, { date, rsvp, index }, i) => {
                 const week = new Date(date) > new Date(endOfWeek()) ? 1 : 0;
@@ -65,6 +68,9 @@ class AfmeldForm extends React.Component {
                 data-decorator="aanwezigheid-form"
                 action="./"
                 encType="application/x-www-form-urlencoded"
+                data-date2={now2}
+                data-date={new Date()}
+                data-tzo={tzo}
             >
                 <h1>Aanwezigheid wijzigen</h1>
                 <input
