@@ -98,6 +98,12 @@ export const addDays = (offsetDate: string | number, days: number): string => {
     return date.toISOString().replace(/T.+/, '');
 };
 
+export const addMinutes = (offsetDate: string | number, minutes: number): string => {
+    const date = new Date(offsetDate);
+
+    return new Date(date.getTime() + minutes * 60000).toISOString().replace(/T.+/, '');
+};
+
 export const tomorrow = (): string => addDays(Date.now(), 1);
 
 export const endOfWeek = (): string => {

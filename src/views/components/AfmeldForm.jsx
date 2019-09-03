@@ -3,12 +3,14 @@ const React = require('react');
 const PropTypes = require('prop-types');
 const {
     formatDayOfWeek,
+    addMinutes,
     WEEK_DAYS,
+    MINUTES_IN_HOUR,
     today,
     formatDate,
     relativeHumanDay,
     endOfWeek,
-    addDays,
+    addDays
 } = require('../../util.ts');
 const { filterRsvpList, isVast } = require('../../domain-knowledge.js');
 
@@ -21,20 +23,23 @@ class AfmeldForm extends React.Component {
         endDate: PropTypes.string.isRequired,
         currentMarktId: PropTypes.string,
         query: PropTypes.string,
-        role: PropTypes.string,
+        role: PropTypes.string
     };
 
     render() {
         const { markten, ondernemer, currentMarktId, query, role, aanmeldingen } = this.props;
         const sollicitatie = ondernemer.sollicitaties.find(
-            soll => !soll.doorgehaald && String(soll.markt.id) === currentMarktId,
+            soll => !soll.doorgehaald && String(soll.markt.id) === currentMarktId
         );
         const markt = markten.find(m => String(m.id) === currentMarktId);
+        const OFFSET = 14; //from 24:00 to 10:00
+        const TZ_CORRECTION = new Date().getTimezoneOffset() / MINUTES_IN_HOUR;
+        const now = addMinutes(new Date(), (MINUTES_IN_HOUR * (OFFSET - TZ_CORRECTION)));
 
         const rsvpEntries = filterRsvpList(
             aanmeldingen.filter(aanmelding => aanmelding.marktId === markt.id),
             markt,
-            role === 'marktmeester' ? today() : addDays(today(), 1),
+            role === 'marktmeester' ? now : addDays(now, 1)
         );
         const weekAanmeldingen = rsvpEntries.reduce(
             (t, { date, rsvp, index }, i) => {
@@ -46,12 +51,12 @@ class AfmeldForm extends React.Component {
                     index,
                     attending,
                     date,
-                    weekDay: formatDayOfWeek(date),
+                    weekDay: formatDayOfWeek(date)
                 });
 
                 return t;
             },
-            [[], []],
+            [[], []]
         );
 
         return (
@@ -82,7 +87,7 @@ class AfmeldForm extends React.Component {
                 {weekAanmeldingen.map((week, i) => (
                     <div key={i}>
                         <span className="OndernemerMarktAanwezigheid__divider">
-                            {i === 0 ? `Deze week` : `Volgende week`}
+                            {i === 0 ? 'Deze week' : 'Volgende week'}
                         </span>
                         <ul className="CheckboxList">
                             {week.map(({ date, attending, index, weekDay }) => (
