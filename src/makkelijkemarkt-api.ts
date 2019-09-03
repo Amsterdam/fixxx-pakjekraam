@@ -58,8 +58,26 @@ const apiBase = (config: ApiConfig): Promise<ApiBaseReturn> => {
       if (error.response.status === 401) {
         //place your reentry code
         console.log('axios 401');
+        return api.post(config.loginUrl, {
+            username: config.username,
+            password: config.password,
+            clientApp: config.clientApp,
+            clientVersion: config.clientVersion,
+        }).then((res: any) => {
+            console.log('res.data');
+            console.log(res.data);
+            return upsert(session, {
+                sid: config.sessionKey,
+            }, {
+                sess: { 'token': res.data.uuid },
+            }).then(() => ({
+                token: res.data.uuid,
+                api,
+            }));
+        }).then((data: ApiBaseReturn) => data);
+      }else {
+        return error;
       }
-      return error;
     });
 
     return session.findByPk(config.sessionKey).then((sessionRecord: any) => {
@@ -90,13 +108,14 @@ const apiBase = (config: ApiConfig): Promise<ApiBaseReturn> => {
                 }).then((data: ApiBaseReturn) => data);
             }else {
                 console.log('NOT EXPIRED');
-                const token = sessionRecord.dataValues.sess.token;
 
-                return {
-                    token,
-                    api,
-                };
             }
+            const token = sessionRecord.dataValues.sess.token;
+
+            return {
+                token,
+                api,
+            };
     });
 
 };
