@@ -32,7 +32,7 @@ class AfmeldForm extends React.Component {
             soll => !soll.doorgehaald && String(soll.markt.id) === currentMarktId
         );
         const markt = markten.find(m => String(m.id) === currentMarktId);
-        const OFFSET = 14; //from 24:00 to 10:00
+        const OFFSET = 14; // from 24:00 to 10:00
         const TZ_CORRECTION = new Date().getTimezoneOffset() / MINUTES_IN_HOUR;
         const now = addMinutes(new Date(), (MINUTES_IN_HOUR * (OFFSET - TZ_CORRECTION)));
 
