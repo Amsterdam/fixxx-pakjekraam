@@ -52,6 +52,15 @@ const apiBase = (config: ApiConfig): Promise<ApiBaseReturn> => {
             MmAppKey: config.appKey,
         },
     });
+    api.interceptors.response.use((response: any) => {
+        return response;
+    }, (error: any) => {
+      if (error.response.status === 401) {
+        //place your reentry code
+        console.log('axios 401');
+      }
+      return error;
+    });
 
     return session.findByPk(config.sessionKey).then((sessionRecord: any) => {
             const now = new Date();
