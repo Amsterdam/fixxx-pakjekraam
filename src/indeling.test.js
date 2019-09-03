@@ -567,7 +567,7 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
         expect(findPlaatsen(toewijzingen, 3)).toStrictEqual(['5']);
     });
 
-    it('Een VPH kan verplaatsen naar een vrijgekomen plaats van een andere VPH', () => {
+    it('kan naar een vrijgekomen plaats van een andere VPH', () => {
         /*
          * Scenario:
          * - 2 marktplaatsen
@@ -613,6 +613,25 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
         expect(toewijzingen.length).toBe(2);
         expect(afwijzingen.length).toBe(0);
         expect(findPlaatsen(toewijzingen, 1)).toStrictEqual(['5', '6']);
+        expect(findPlaatsen(toewijzingen, 2)).toStrictEqual(['3']);
+    });
+
+    it('met meerdere plaatsen blijft staan als onvoldoende voorkeuren vrij zijn', () => {
+        const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
+            ondernemers: [
+                ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1', '2'] }),
+                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['3'] })
+            ],
+            marktplaatsen: [plaats(), plaats(), plaats(), plaats(), plaats(), plaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '4', priority: SECOND_CHOICE })
+            ]
+        }));
+
+        expect(toewijzingen.length).toBe(2);
+        expect(afwijzingen.length).toBe(0);
+        expect(findPlaatsen(toewijzingen, 1)).toStrictEqual(['1', '2']);
         expect(findPlaatsen(toewijzingen, 2)).toStrictEqual(['3']);
     });
 });
@@ -820,14 +839,8 @@ describe('Een ondernemer die wil uitbreiden', () => {
             ondernemers: [ondernemer({ voorkeur: { minimum: 2, anywhere: false } })],
             marktplaatsen: [plaats(), plaats({ inactive: true }), plaats(), plaats()],
             voorkeuren: [
-                voorkeur({
-                    sollicitatieNummer: 1,
-                    plaatsId: '1'
-                }),
-                voorkeur({
-                    sollicitatieNummer: 1,
-                    plaatsId: '2'
-                })
+                voorkeur({sollicitatieNummer: 1, plaatsId: '1'}),
+                voorkeur({sollicitatieNummer: 1, plaatsId: '2'})
             ]
         }));
 

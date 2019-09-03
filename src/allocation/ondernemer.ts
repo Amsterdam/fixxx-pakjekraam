@@ -43,24 +43,14 @@ const Ondernemer = {
         ondernemer: IMarktondernemer,
         includeVastePlaatsen: boolean = true
     ): IPlaatsvoorkeur[] => {
-        let vastePlaatsenAsVoorkeur = <IPlaatsvoorkeur[]>[];
         // Merge de vaste plaatsen van deze ondernemer...
-        if (includeVastePlaatsen) {
-            const plaatsen = Ondernemer.getVastePlaatsen(ondernemer);
-            vastePlaatsenAsVoorkeur = plaatsen.map(plaats => ({
-                ...plaats,
-                erkenningsNummer: ondernemer.erkenningsNummer,
-                marktId: markt.marktId,
-                priority: 0
-            }));
-        }
+        const vastePlaatsen = Ondernemer.getVastePlaatsen(markt, ondernemer);
         // ...samen met hun verplaatsingsvoorkeuren. Sorteer aflopend op prioriteit...
         const voorkeuren = [
-            ...vastePlaatsenAsVoorkeur,
+            ...(includeVastePlaatsen ? vastePlaatsen : []),
             ...markt.voorkeuren.filter(voorkeur => voorkeur.erkenningsNummer === ondernemer.erkenningsNummer)
         ].sort(priorityCompare);
-
-        // ...en haal duplicaten eruit.
+        // ...en elimineer duplicaten na sortering.
         return voorkeuren.reduce((unique, voorkeur) => {
             if (!~unique.findIndex(({ plaatsId }) => plaatsId === voorkeur.plaatsId)) {
                 unique.push(voorkeur);
@@ -76,9 +66,14 @@ const Ondernemer = {
                1;
     },
 
-    getVastePlaatsen: (ondernemer: IMarktondernemer): IMarktplaats[] => {
+    getVastePlaatsen: (markt: IMarkt, ondernemer: IMarktondernemer): IPlaatsvoorkeur[] => {
         const { plaatsen = [] } = ondernemer;
-        return plaatsen.map(plaatsId => ({ plaatsId }));
+        return plaatsen.map(plaatsId => ({
+            plaatsId,
+            erkenningsNummer: ondernemer.erkenningsNummer,
+            marktId: markt.marktId,
+            priority: 0
+        }));
     },
 
     heeftVastePlaats: (ondernemer: IMarktondernemer, plaats: IMarktplaats): boolean => {
@@ -127,7 +122,7 @@ const Ondernemer = {
     } ,
 
     wantsToMove: (indeling: IMarktindeling, ondernemer: IMarktondernemer): boolean => {
-        const plaatsen   = Ondernemer.getVastePlaatsen(ondernemer);
+        const plaatsen   = Ondernemer.getVastePlaatsen(indeling, ondernemer);
         const voorkeuren = Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer, false);
         return voorkeuren.length >= plaatsen.length;
     }

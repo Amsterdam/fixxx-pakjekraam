@@ -66,12 +66,13 @@ const Indeling = {
     },
 
     assignVastePlaatsen: (indeling: IMarktindeling, ondernemer: IMarktondernemer): IMarktindeling => {
-        const beschikbaar = Indeling.getAvailablePlaatsenFor(indeling, ondernemer);
+        const beschikbaar = Indeling.getAvailablePlaatsenForVPH(indeling, ondernemer);
 
         if (beschikbaar.length === 0) {
             return Indeling.assignPlaats(indeling, ondernemer, null, 'reject');
         } else {
-            const { voorkeur = { maximum: Infinity }, plaatsen = [] } = ondernemer;
+            const { voorkeur = { maximum: Infinity } } = ondernemer;
+            const { plaatsen = [] } = ondernemer;
             const maxPlaatsen = Math.min(voorkeur.maximum, beschikbaar.length, plaatsen.length);
 
             return beschikbaar
@@ -119,7 +120,7 @@ const Indeling = {
             mogelijkePlaatsen
         );
 
-        if (ondernemer.voorkeur && typeof ondernemer.voorkeur.anywhere === 'boolean' && !ondernemer.voorkeur.anywhere) {
+        if (ondernemer.voorkeur && ondernemer.voorkeur.anywhere === false) {
             const voorkeurIds = voorkeuren.map(({ plaatsId }) => plaatsId);
             mogelijkePlaatsen = mogelijkePlaatsen.filter(({ plaatsId }) => voorkeurIds.includes(plaatsId));
         }
@@ -148,13 +149,27 @@ const Indeling = {
         };
     },
 
-    getAvailablePlaatsenFor: (indeling: IMarktindeling, ondernemer: IMarktondernemer): IMarktplaats[] => {
+    getAvailablePlaatsenForVPH: (indeling: IMarktindeling, ondernemer: IMarktondernemer): IMarktplaats[] => {
         // Verwerk verplaatsingsvoorkeuren enkel als de ondernemer ook wil verplaatsen.
         // Een VPH met 2 plaatsen die maar 1 verplaatsingsvoorkeur opgeeft wordt niet
-        // beschouwd als iemand die wil verplaatsen.
-        const plaatsen = Ondernemer.wantsToMove(indeling, ondernemer) ?
-                         <IMarktplaats[]> Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer) :
-                         Ondernemer.getVastePlaatsen(ondernemer);
+        // beschouwd als iemand die wil verplaatsen. De voorkeursplaats wordt in dit geval
+        // dan ook genegeerd.
+        //
+        // Tevens, als er niet genoeg voorkeuren vrij zijn om het gewenste aantal kramen te
+        // kunnen verplaatsen worden de resterende voorkeursplaatsen ook genegeerd.
+        let plaatsen;
+        const vastePlaatsen = Ondernemer.getVastePlaatsen(indeling, ondernemer);
+
+        if (!Ondernemer.wantsToMove(indeling, ondernemer)) {
+            plaatsen = vastePlaatsen;
+        } else {
+            const availableVoorkeuren = Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer, false).filter(voorkeur =>
+                ~indeling.openPlaatsen.findIndex(({ plaatsId }) => plaatsId === voorkeur.plaatsId)
+            );
+            plaatsen = availableVoorkeuren.length >= vastePlaatsen.length ?
+                       Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer) :
+                       vastePlaatsen;
+        }
 
         return plaatsen.filter(plaats =>
             ~indeling.openPlaatsen.findIndex(({ plaatsId }) => plaatsId === plaats.plaatsId)

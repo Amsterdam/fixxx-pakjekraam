@@ -38,6 +38,7 @@ export interface IMarktScenarioStub {
 export interface IMarktplaatsStub {
     plaatsId?: string;
     branches?: string[];
+    inactive?: boolean;
 }
 
 export interface IMarktondernemerStub {

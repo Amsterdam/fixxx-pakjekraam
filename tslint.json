@@ -55,7 +55,7 @@
     "member-access": true,
     "newline-before-return": false,
     "new-parens": true,
-    "no-boolean-literal-compare": true,
+    "no-boolean-literal-compare": false,
     "no-consecutive-blank-lines": [true, 2],
     "no-debugger": true,
     "no-eval": true,
