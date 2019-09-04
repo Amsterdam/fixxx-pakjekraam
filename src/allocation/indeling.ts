@@ -52,12 +52,14 @@ const Indeling = {
             }
 
             const mogelijkePlaatsen = plaatsen || indeling.openPlaatsen;
-            const plaats = Indeling.findBestePlaats(indeling, ondernemer, mogelijkePlaatsen, maximum);
-            if (!plaats) {
-                throw 'Geen plaats gevonden';
+            const bestePlaatsen = Indeling.findBestePlaatsen(indeling, ondernemer, mogelijkePlaatsen, maximum);
+            if (!bestePlaatsen.length) {
+                throw 'Geen plaats(en) gevonden';
             }
 
-            return Indeling._assignPlaats(indeling, ondernemer, plaats, 'reassign');
+            return bestePlaatsen.reduce((indeling, plaats) => {
+                return Indeling._assignPlaats(indeling, ondernemer, plaats, 'merge');
+            }, indeling);
         } catch (errorMessage) {
             return handleRejection === 'reject' ?
                    Indeling._rejectOndernemer(indeling, ondernemer, errorMessage) :
@@ -69,11 +71,12 @@ const Indeling = {
         const beschikbaar = Indeling.getAvailablePlaatsenForVPH(indeling, ondernemer);
 
         if (beschikbaar.length === 0) {
-            return Indeling.assignPlaats(indeling, ondernemer, null, 'reject');
+            const minimum = Ondernemer.getMinimumSize(ondernemer);
+            return Indeling.assignPlaats(indeling, ondernemer, null, 'reject', minimum);
         } else {
-            const { voorkeur = { maximum: Infinity } } = ondernemer;
             const { plaatsen = [] } = ondernemer;
-            const maxPlaatsen = Math.min(voorkeur.maximum, beschikbaar.length, plaatsen.length);
+            const { maximum = Infinity } = ondernemer.voorkeur || {};
+            const maxPlaatsen = Math.min(maximum, beschikbaar.length, plaatsen.length);
 
             return beschikbaar
             .slice(0, maxPlaatsen)
@@ -83,7 +86,7 @@ const Indeling = {
         }
     },
 
-    findBestePlaats: (
+    findBestePlaatsen: (
         indeling: IMarktindeling,
         ondernemer: IMarktondernemer,
         openPlaatsen: IMarktplaats[],
@@ -136,7 +139,7 @@ const Indeling = {
             });
         }
 
-        return mogelijkePlaatsen[0];
+        return mogelijkePlaatsen.slice(0, maximum);
     },
 
     generateExpansionQueue: (indeling: IMarktindeling): IMarktindeling => {
@@ -223,7 +226,7 @@ const Indeling = {
 
         const adjacent = Markt.getAdjacentPlaatsen(indeling, plaatsen, 1);
         const openAdjacent = intersection(adjacent, indeling.openPlaatsen);
-        const uitbreidingPlaats = Indeling.findBestePlaats(indeling, ondernemer, openAdjacent);
+        const [uitbreidingPlaats] = Indeling.findBestePlaatsen(indeling, ondernemer, openAdjacent);
 
         if (!uitbreidingPlaats) {
             return Indeling._removeFromExpansionQueue(indeling, toewijzing);

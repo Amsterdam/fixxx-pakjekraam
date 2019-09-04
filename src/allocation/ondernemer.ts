@@ -59,11 +59,14 @@ const Ondernemer = {
         }, []);
     },
 
+    getMinimumSize: (ondernemer: IMarktondernemer): number => {
+        const { plaatsen = [] } = ondernemer;
+        const { minimum = Infinity } = ondernemer.voorkeur || {};
+        return Math.min(plaatsen.length, minimum);
+    },
     getTargetSize: (ondernemer: IMarktondernemer): number => {
-        const voorkeur = ondernemer.voorkeur;
-        return voorkeur ?
-               Math.max(1, voorkeur.minimum || null, voorkeur.maximum || null) :
-               1;
+        const { minimum = 1, maximum = 0 } = ondernemer.voorkeur || {};
+        return Math.max(1, minimum, maximum);
     },
 
     getVastePlaatsen: (markt: IMarkt, ondernemer: IMarktondernemer): IPlaatsvoorkeur[] => {

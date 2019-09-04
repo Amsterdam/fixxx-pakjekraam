@@ -99,6 +99,22 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
         expect(findPlaatsen(toewijzingen, 1)).toStrictEqual(['2', '3', '4']);
     });
 
+    it('krijgt hetzelfde aantal willekeurige plaatsen als zijn vaste plaatsen niet beschikbaar zijn', () => {
+        const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
+            ondernemers: [
+                ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1', '2'] }),
+                ondernemer()
+            ],
+            marktplaatsen: [
+                plaats({ inactive: true }), plaats({ inactive: true }),
+                plaats(), plaats()
+            ]
+        }));
+
+        expect(toewijzingen.length).toBe(1);
+        expect(findPlaatsen(toewijzingen, 1)).toStrictEqual(['3', '4']);
+    });
+
     it('kan zijn aantal vaste plaatsen verkleinen door een maximum in te stellen', () => {
         /*
          * Scenario:
