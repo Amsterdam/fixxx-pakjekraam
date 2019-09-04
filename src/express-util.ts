@@ -33,6 +33,7 @@ const humanReadableMessage = {
 };
 
 export const httpErrorPage = (res: Response, errorCode: number) => (err: Error | string) => {
+    console.log(err);
     res.render('ErrorPage.jsx', { errorCode });
 };
 

@@ -7,8 +7,8 @@
 
     td,
     th {
-        padding: 0 5px;
-        font-size: 14px;
+        padding: 2px 5px;
+        font-size: $fs-70;
         line-height: 5mm;
         //height: 5mm;
         border: none;
@@ -76,6 +76,8 @@
     }
     &__heading {
         display: block;
+        font-size: $fs-70;
+        font-weight: 600;
         margin: $vm2 0;
     }
 }

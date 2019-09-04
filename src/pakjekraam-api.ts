@@ -94,6 +94,14 @@ export const getAanmeldingenByOndernemer = (erkenningsNummer: string): Promise<I
         })
         .then(aanmeldingen => aanmeldingen);
 
+export const getToewijzingenByOndernemer = (marktId: string, erkenningsNummer: string): Promise<IToewijzing[]> =>
+    allocation
+        .findAll<Allocation>({
+            where: { marktId, erkenningsNummer },
+            raw: true,
+        })
+        .then(toewijzingen => toewijzingen.reduce(groupAllocationRows, []));
+
 export const getToewijzingen = (marktId: string, marktDate: string): Promise<IToewijzing[]> =>
     allocation
         .findAll<Allocation>({

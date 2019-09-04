@@ -12,14 +12,17 @@ $inputMaxWidth: 620px;
     outline-offset: 0;
     outline: 2px solid transparent;
     transition: border-color 0.4s, outline 0.4s;
+    
     &:hover {
         border-color: $primary-black;
         color: $primary-black;
     }
+
     &:focus {
         outline-offset: 0;
         outline: 2px solid $support-focus;
     }
+
     [disabled="disabled"] {
         border-color: $neutral-grey3;
         color: $neutral-grey3;

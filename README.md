@@ -17,3 +17,16 @@ Draai `( . .env && npm run dev)` tijdens development (code wijzigen zorgt voor r
 ### Installatie via Docker (development)
 
 Je kunt ook opstarten via docker, via `docker compose up`.
+
+### Compileren van SCSS
+
+Om de SCSS naar CSS te compilen draai je `npm run watch`. Als je de wijzigingen wilt zien refresh je je browser.
+
+### Compileren van JS
+
+Dit is niet nodig, je kunt de wijzigingen simpelweg in /src/public/js/script.js doen.
+
+
+### Ondernemer account
+Registratienummer: 20181102.02
+Passid: 04A20FBAAE4F84
