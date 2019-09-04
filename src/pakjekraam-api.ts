@@ -428,7 +428,7 @@ export const getToewijzingslijst = (marktId: string, marktDate: string) =>
 
 export const getMailContext = (marktId: string, erkenningsNr: string, marktDate: string) =>
     Promise.all([
-        getIndelingslijst(marktId, marktDate),
+        getToewijzingslijst(marktId, marktDate),
         getVoorkeurenMarktOndern(marktId, erkenningsNr),
         getAanmeldingenMarktOndern(marktId, erkenningsNr),
         getAllBranches(),
