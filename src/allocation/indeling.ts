@@ -162,6 +162,7 @@ const Indeling = {
         // kunnen verplaatsen worden de resterende voorkeursplaatsen ook genegeerd.
         let plaatsen;
         const vastePlaatsen = Ondernemer.getVastePlaatsen(indeling, ondernemer);
+        const minimum       = Ondernemer.getMinimumSize(ondernemer);
 
         if (!Ondernemer.wantsToMove(indeling, ondernemer)) {
             plaatsen = vastePlaatsen;
@@ -169,7 +170,7 @@ const Indeling = {
             const availableVoorkeuren = Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer, false).filter(voorkeur =>
                 ~indeling.openPlaatsen.findIndex(({ plaatsId }) => plaatsId === voorkeur.plaatsId)
             );
-            plaatsen = availableVoorkeuren.length >= vastePlaatsen.length ?
+            plaatsen = availableVoorkeuren.length >= Math.min(minimum, vastePlaatsen.length) ?
                        Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer) :
                        vastePlaatsen;
         }
