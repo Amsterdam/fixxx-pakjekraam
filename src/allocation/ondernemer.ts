@@ -4,14 +4,14 @@ import {
     IMarktindeling,
     IMarktondernemer,
     IMarktplaats,
-    IPlaatsvoorkeur
+    IPlaatsvoorkeur,
+    IToewijzing
 } from '../markt.model';
 
 import {
     count,
     sum
 } from '../util';
-
 
 const priorityCompare = (voorkeurA?: IPlaatsvoorkeur, voorkeurB?: IPlaatsvoorkeur): number => {
     const prioA = voorkeurA && typeof voorkeurA.priority === 'number' ? voorkeurA.priority : 0;
@@ -21,6 +21,16 @@ const priorityCompare = (voorkeurA?: IPlaatsvoorkeur, voorkeurB?: IPlaatsvoorkeu
 };
 
 const Ondernemer = {
+    canExpandInIteration: (indeling: IMarktindeling, toewijzing: IToewijzing): boolean => {
+        const { ondernemer, plaatsen } = toewijzing;
+        const currentSize = plaatsen.length;
+        const targetSize  = Ondernemer.getTargetSize(ondernemer);
+        const maxSize     = Math.min(targetSize, indeling.expansionIteration);
+
+        return currentSize < maxSize &&
+               !Ondernemer.isInMaxedOutBranche(indeling, ondernemer);
+    },
+
     getBrancheIds: (markt: IMarkt, ondernemer: IMarktondernemer) => {
       return ondernemer.voorkeur && ondernemer.voorkeur.branches ||
              [];
@@ -119,14 +129,17 @@ const Ondernemer = {
         return ondernemer.status === 'vpl' || ondernemer.status === 'vkk';
     },
 
-    wantsExpansion: (indeling: IMarktindeling, ondernemer: IMarktondernemer): number => {
-        const targetSize = Ondernemer.getTargetSize(ondernemer);
-        return Math.max(0, targetSize - indeling.expansionIteration);
+    wantsExpansion: (toewijzing: IToewijzing): boolean => {
+        const { ondernemer, plaatsen } = toewijzing;
+        const targetSize               = Ondernemer.getTargetSize(ondernemer);
+        const currentSize              = plaatsen.length;
+        return currentSize < targetSize;
     } ,
 
     wantsToMove: (indeling: IMarktindeling, ondernemer: IMarktondernemer): boolean => {
         const plaatsen   = Ondernemer.getVastePlaatsen(indeling, ondernemer);
         const voorkeuren = Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer, false);
+
         return voorkeuren.length >= plaatsen.length;
     }
 };

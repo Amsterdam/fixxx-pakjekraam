@@ -684,24 +684,29 @@ describe('Een ondernemer die wil uitbreiden', () => {
     });
 
     it('kan niet verder vergroten dan is toegestaan', () => {
-        /*
-         * Scenario:
-         * - 3 marktplaatsen
-         * - 1 ondernemer met een meervoudige plaats
-         */
+        // `expansionLimit` beschrijft de maximum _uitbreiding_, dus een VPH met twee vaste plaatsen
+        // kan per definitie een plaats meer krijgen dan een sollicitant (of een VPH met 1 plaats).
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
-            ondernemers: [ondernemer({ sollicitatieNummer: 1, voorkeur: { maximum: 3 } })],
-            marktplaatsen: [plaats(), plaats(), plaats()],
-            voorkeuren: [
-                voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
-                voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: SECOND_CHOICE }),
-                voorkeur({ sollicitatieNummer: 1, plaatsId: '1', priority: THIRD_CHOICE })
+            ondernemers: [
+                ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['3', '4'], voorkeur: { maximum: 4 } }),
+                ondernemer({ sollicitatieNummer: 2, voorkeur: { maximum: 3 } })
             ],
-            expansionLimit: 2
+            marktplaatsen: [plaats(), plaats(), plaats(), plaats(), plaats(), plaats()],
+            voorkeuren: [
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '4', priority: SECOND_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '5', priority: THIRD_CHOICE }),
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '6', priority: THIRD_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '1', priority: FIRST_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '2', priority: SECOND_CHOICE }),
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '3', priority: THIRD_CHOICE })
+            ],
+            expansionLimit: 3
         }));
 
-        expect(toewijzingen.length).toBe(1);
-        expect(findPlaatsen(toewijzingen, 1)).toStrictEqual(['2', '3']);
+        expect(toewijzingen.length).toBe(2);
+        expect(findPlaatsen(toewijzingen, 1)).toStrictEqual(['3', '4', '5']);
+        expect(findPlaatsen(toewijzingen, 2)).toStrictEqual(['1', '2']);
     });
 
     it('kan een minimum aantal gewenste plaatsen opgeven', () => {
@@ -802,7 +807,7 @@ describe('Een ondernemer die wil uitbreiden', () => {
         expect(findPlaatsen(toewijzingen, 2)).toStrictEqual(['4', '5']);
     });
 
-    it('Ondernemers kunnen eerst uitbreiden naar 2 plaatsen, voordat anderen mogen uitbreiden naar meer plaatsen', () => {
+    it('kan eerst uitbreiden naar 2 plaatsen voordat anderen mogen uitbreiden naar meer plaatsen', () => {
         /*
          * Scenario:
          * - 3 marktplaatsen

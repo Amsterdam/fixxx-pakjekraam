@@ -5,8 +5,7 @@ import {
     IMarktondernemer,
     IMarktplaats,
     IPlaatsvoorkeur,
-    IRSVP,
-    IToewijzing
+    IRSVP
 } from '../markt.model';
 
 import {
@@ -58,7 +57,7 @@ const Indeling = {
             }
 
             return bestePlaatsen.reduce((indeling, plaats) => {
-                return Indeling._assignPlaats(indeling, ondernemer, plaats, 'merge');
+                return Indeling._assignPlaats(indeling, ondernemer, plaats);
             }, indeling);
         } catch (errorMessage) {
             return handleRejection === 'reject' ?
@@ -81,7 +80,7 @@ const Indeling = {
             return beschikbaar
             .slice(0, maxPlaatsen)
             .reduce((indeling, plaats) => {
-                return Indeling._assignPlaats(indeling, ondernemer, plaats, 'merge');
+                return Indeling._assignPlaats(indeling, ondernemer, plaats);
             }, indeling);
         }
     },
@@ -142,16 +141,6 @@ const Indeling = {
         return mogelijkePlaatsen.slice(0, maximum);
     },
 
-    generateExpansionQueue: (indeling: IMarktindeling): IMarktindeling => {
-        const queue = indeling.toewijzingen.filter(({ ondernemer }) => {
-            return Ondernemer.wantsExpansion(indeling, ondernemer);
-        });
-        return {
-            ...indeling,
-            expansionQueue: queue
-        };
-    },
-
     getAvailablePlaatsenForVPH: (indeling: IMarktindeling, ondernemer: IMarktondernemer): IMarktplaats[] => {
         // Verwerk verplaatsingsvoorkeuren enkel als de ondernemer ook wil verplaatsen.
         // Een VPH met 2 plaatsen die maar 1 verplaatsingsvoorkeur opgeeft wordt niet
@@ -193,22 +182,37 @@ const Indeling = {
         }
     },
 
-    processExpansionQueue: (indeling: IMarktindeling): IMarktindeling => {
+    performExpansion: (indeling: IMarktindeling): IMarktindeling => {
+        let queue = indeling.toewijzingen.filter(toewijzing => {
+            return Ondernemer.wantsExpansion(toewijzing);
+        });
+
         while (indeling.expansionIteration <= indeling.expansionLimit) {
-            // TODO: Remove items from expansion queue for which expansion was impossible,
-            // skip those in the next iteration.
+            queue = queue.reduce((newQueue, toewijzing) => {
+                const { ondernemer } = toewijzing;
 
-            indeling = indeling.expansionQueue
-            .filter(toewijzing => {
-                const { ondernemer, plaatsen } = toewijzing;
-                const currentSize = plaatsen.length;
+                if (Ondernemer.canExpandInIteration(indeling, toewijzing)) {
+                    const adjacent            = Markt.getAdjacentPlaatsen(indeling, toewijzing.plaatsen, 1);
+                    const openAdjacent        = intersection(adjacent, indeling.openPlaatsen);
+                    const [uitbreidingPlaats] = Indeling.findBestePlaatsen(indeling, ondernemer, openAdjacent);
+
+                    if (!uitbreidingPlaats) {
+                        return newQueue;
+                    }
+
+                    indeling = Indeling._assignPlaats(indeling, ondernemer, uitbreidingPlaats);
+                    toewijzing = Toewijzing.find(indeling, ondernemer);
+                }
+
                 const targetSize  = Ondernemer.getTargetSize(ondernemer);
-                const maxSize     = Math.min(targetSize, indeling.expansionIteration, indeling.expansionLimit);
+                const currentSize = toewijzing.plaatsen.length;
 
-                return currentSize < maxSize &&
-                       !Ondernemer.isInMaxedOutBranche(indeling, ondernemer);
-            })
-            .reduce(Indeling._assignExpansion, indeling);
+                if (currentSize < targetSize) {
+                    newQueue.push(toewijzing);
+                }
+
+                return newQueue;
+            }, []);
 
             indeling.expansionIteration++;
         }
@@ -216,46 +220,11 @@ const Indeling = {
         return indeling;
     },
 
-    _assignExpansion: (indeling: IMarktindeling, toewijzing: IToewijzing): IMarktindeling => {
-        const { ondernemer, plaatsen } = toewijzing;
-        const targetSize = Ondernemer.getTargetSize(ondernemer);
-        const currentSize = plaatsen.length;
-
-        if (currentSize >= targetSize) {
-            return indeling;
-        }
-
-        const adjacent = Markt.getAdjacentPlaatsen(indeling, plaatsen, 1);
-        const openAdjacent = intersection(adjacent, indeling.openPlaatsen);
-        const [uitbreidingPlaats] = Indeling.findBestePlaatsen(indeling, ondernemer, openAdjacent);
-
-        if (!uitbreidingPlaats) {
-            return Indeling._removeFromExpansionQueue(indeling, toewijzing);
-        }
-
-        // Remove vrije plaats
-        indeling = {
-            ...indeling,
-            openPlaatsen: indeling.openPlaatsen.filter(plaats => plaats.plaatsId !== uitbreidingPlaats.plaatsId)
-        };
-
-        const uitbreiding = {
-            ...toewijzing,
-            plaatsen: [...toewijzing.plaatsen, uitbreidingPlaats.plaatsId]
-        };
-
-        // TODO: Merge `toewijzing` and `uitbreiding` objects, add to `indeling`
-        indeling = Toewijzing.replace(indeling, toewijzing, uitbreiding);
-        return currentSize + 1 < targetSize ?
-               Indeling._replaceInExpansionQueue(indeling, toewijzing, uitbreiding) :
-               Indeling._removeFromExpansionQueue(indeling, toewijzing);
-    },
-
     _assignPlaats: (
         indeling: IMarktindeling,
         ondernemer: IMarktondernemer,
         plaats: IMarktplaats,
-        conflictResolution: 'merge' | 'reassign' | 'keep-both' = 'keep-both'
+        conflictResolution: 'merge' | 'reassign' = 'merge'
     ): IMarktindeling => {
         const { erkenningsNummer } = ondernemer;
         const existingToewijzing = Toewijzing.find(indeling, ondernemer);
@@ -265,9 +234,7 @@ const Indeling = {
             if (conflictResolution === 'merge') {
                 newToewijzing = Toewijzing.merge(existingToewijzing, newToewijzing);
             }
-            if (conflictResolution !== 'keep-both') {
-                indeling = Toewijzing.remove(indeling, existingToewijzing);
-            }
+            indeling = Toewijzing.remove(indeling, existingToewijzing);
         }
 
         indeling = Toewijzing.add(indeling, newToewijzing);
@@ -296,20 +263,6 @@ const Indeling = {
             toewijzingQueue: indeling.toewijzingQueue.filter(ondernemer =>
                 ondernemer.erkenningsNummer !== erkenningsNummer
             )
-        };
-    },
-
-    _removeFromExpansionQueue: (indeling: IMarktindeling, toewijzing: IToewijzing) => {
-        return {
-            ...indeling,
-            expansionQueue: (indeling.expansionQueue || []).filter(t => t !== toewijzing)
-        };
-    },
-
-    _replaceInExpansionQueue: (indeling: IMarktindeling, current: IToewijzing, replacement: IToewijzing) => {
-        return {
-            ...indeling,
-            expansionQueue: indeling.expansionQueue.map(item => (item === current ? replacement : item))
         };
     }
 };

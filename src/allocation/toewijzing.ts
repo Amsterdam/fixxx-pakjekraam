@@ -13,32 +13,35 @@ import {
 export default {
     create: (markt: IMarkt, plaats: IMarktplaats, ondernemer: IMarktondernemer): IToewijzing => {
         return {
-            marktId: markt.marktId,
-            marktDate: markt.marktDate,
-            plaatsen: [plaats.plaatsId],
+            marktId          : markt.marktId,
+            marktDate        : markt.marktDate,
+            plaatsen         : [plaats.plaatsId],
             ondernemer,
-            erkenningsNummer: ondernemer.erkenningsNummer
+            erkenningsNummer : ondernemer.erkenningsNummer
         };
     },
 
-    remove: (indeling: IMarktindeling, toewijzing: IToewijzing) => {
+    remove: (indeling: IMarktindeling, toewijzing: IToewijzing): IMarktindeling => {
         const { marktplaatsen, openPlaatsen, toewijzingen } = indeling;
 
-        if (toewijzingen.includes(toewijzing)) {
-            const plaatsen = marktplaatsen.filter(plaats => toewijzing.plaatsen.includes(plaats.plaatsId));
-
-            return {
-                ...indeling,
-                toewijzingen: toewijzingen.filter(t => t !== toewijzing),
-                openPlaatsen: [...openPlaatsen, ...plaatsen]
-            };
-        } else {
+        if (!toewijzingen.includes(toewijzing)) {
             return indeling;
         }
+
+        const plaatsen = marktplaatsen.filter(plaats =>
+            toewijzing.plaatsen.includes(plaats.plaatsId)
+        );
+        return {
+            ...indeling,
+            toewijzingen: toewijzingen.filter(t => t !== toewijzing),
+            openPlaatsen: [...openPlaatsen, ...plaatsen]
+        };
     },
 
     find: (indeling: IMarktindeling, ondernemer: IMarktondernemer) => {
-        return indeling.toewijzingen.find(toewijzing => toewijzing.erkenningsNummer === ondernemer.erkenningsNummer);
+        return indeling.toewijzingen.find(toewijzing =>
+            toewijzing.erkenningsNummer === ondernemer.erkenningsNummer
+        );
     },
 
     add: (indeling: IMarktindeling, toewijzing: IToewijzing): IMarktindeling => {
@@ -46,13 +49,6 @@ export default {
             ...indeling,
             openPlaatsen: indeling.openPlaatsen.filter(plaats => !toewijzing.plaatsen.includes(plaats.plaatsId)),
             toewijzingen: [...indeling.toewijzingen, toewijzing]
-        };
-    },
-
-    replace: (indeling: IMarktindeling, remove: IToewijzing, add: IToewijzing): IMarktindeling => {
-        return {
-            ...indeling,
-            toewijzingen: [...indeling.toewijzingen.filter(item => item !== remove), add]
         };
     },
 
