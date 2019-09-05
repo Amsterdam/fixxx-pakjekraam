@@ -12,7 +12,6 @@ const { isVast } = require('../domain-knowledge.js');
 const today = () => new Date().toISOString().replace(/T.+/, '');
 
 class PublicProfilePage extends React.Component {
-    
     propTypes = {
         ondernemer: PropTypes.object,
         user: PropTypes.object.isRequired,
@@ -20,7 +19,6 @@ class PublicProfilePage extends React.Component {
     };
 
     render(state) {
-
         const { ondernemer, user, messages } = this.props;
         const isVastSomewhere = ondernemer.sollicitaties.some(soll => isVast(soll.status));
         const isSollicitantSomewhere = ondernemer.sollicitaties.some(soll => soll.status === 'soll');
@@ -38,8 +36,6 @@ class PublicProfilePage extends React.Component {
                 </Content>
             </Page>
         );
-
     }
 }
-
 module.exports = PublicProfilePage;

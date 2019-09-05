@@ -41,15 +41,10 @@ class OndernemerMarktDetailPage extends React.Component {
             today(),
         );
 
-        // const marktDate = tomorrow();
-        let dateOfTomorrow = tomorrow();
-        // let dateOfYesterday = yesterday();
-
+        const dateOfTomorrow = tomorrow();
         const toewijzingTomorrow = toewijzingen.find( toewijzing => {
-            return toewijzing.marktDate == dateOfTomorrow 
-        })
-
-        console.log(toewijzingTomorrow);
+            return toewijzing.marktDate == dateOfTomorrow;
+        });
 
         return (
             <Page messages={messages}>
@@ -66,7 +61,6 @@ class OndernemerMarktDetailPage extends React.Component {
                         loting op de markt voorrang op ondernemers die zich niet digitaal hebben aangemeld.
                     </p>
                     <p>De loting en de indeling verloopt verder zoals u gewend bent.</p>
-                    
                     <OndernemerMarktHeading sollicitatie={sollicitatie} markt={markt} />
                     {!voorkeur || !voorkeur.brancheId ? (
                         <Alert type="warning" inline={true}>
@@ -81,7 +75,6 @@ class OndernemerMarktDetailPage extends React.Component {
                         <AlertLine title={`Morgen ingedeeld`} type="success" message={`Je bent morgen (${toewijzingTomorrow.marktDate}) voor de volgende plekken ingedeeld: ${toewijzingTomorrow.plaatsen.join(', ')}`} inline={true}></AlertLine>
                         : <AlertLine title={`Uitslag indeling`} type="default" message={`Je bent morgen (nog) niet ingedeeld`}></AlertLine>
                     }
-                    
                     <div className="row row--responsive">
                         <div className="col-1-2">
                             <OndernemerMarktAanwezigheid
