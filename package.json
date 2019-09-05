@@ -13,6 +13,7 @@
     "deploy": "time ts-node src/deploy.js",
     "clean": "rm -rf dist/* node_modules/.cache/",
     "prestart": "npm run deploy",
+    "dev-server":"( . .env && npm run dev)",
     "start": "ts-node src/index.ts",
     "predev": "npm run build && npm run deploy",
     "dev": "ts-node-dev --ignore-watch node_modules src/index.ts",

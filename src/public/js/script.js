@@ -329,7 +329,6 @@ function splitByArray(orgArr, valueArr) {
                   });
               },
               _init = function(){
-
               };
           _init();
           form.addEventListener('change', _formChange);

@@ -1,0 +1,28 @@
+.AlertLine{
+
+
+    padding-left: 17px;
+    border-left: 2px solid $neutral-grey3;
+
+    &--default {
+        border-color: $primary-darkblue;
+    }
+    &--error {
+        border-color: $primary-red;
+    }
+    &--success {
+        border-color: $supplement-lightgreen;
+    }
+
+
+    &__title {
+        @include h4;
+        margin: 0;
+    }
+    &__message {
+        @include p1;
+        margin-top: 3px;
+    }
+    
+
+}

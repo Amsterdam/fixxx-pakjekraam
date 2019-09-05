@@ -1,9 +1,11 @@
 const models = require('./model/index.ts');
 const { getMarkten, getIndelingslijst } = require('./pakjekraam-api.ts');
 const packageJSON = require('../package.json');
-const { flatten, tomorrow } = require('./util.ts');
+const { flatten, tomorrow, addDays } = require('./util.ts');
 
-const marktDate = tomorrow();
+const friday = () => addDays(Date.now(), 2);
+
+const marktDate = friday();
 const marktData = getMarkten();
 const indelingen = marktData.then(markten => Promise.all(markten.map(markt => getIndelingslijst(markt.id, marktDate))));
 

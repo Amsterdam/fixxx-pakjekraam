@@ -9,9 +9,10 @@ const OndernemerMarktHeading = require('./components/OndernemerMarktHeading');
 const OndernemerMarktVoorkeuren = require('./components/OndernemerMarktVoorkeuren');
 const OndernemerMarktAanwezigheid = require('./components/OndernemerMarktAanwezigheid');
 const OndernemerMarktAlgVoorkeuren = require('./components/OndernemerMarktAlgVoorkeuren');
-const { today } = require('../util.ts');
+const { today, tomorrow, yesterday } = require('../util.ts');
 const Button = require('./components/Button');
 const Alert = require('./components/Alert');
+const AlertLine = require('./components/AlertLine');
 const { getMarktDays, parseMarktDag, filterRsvpList } = require('../domain-knowledge.js');
 
 class OndernemerMarktDetailPage extends React.Component {
@@ -24,13 +25,14 @@ class OndernemerMarktDetailPage extends React.Component {
         voorkeur: PropTypes.object.isRequired,
         branches: PropTypes.object.isRequired,
         messages: PropTypes.array,
+        toewijzingen: PropTypes.array,
         startDate: PropTypes.string.isRequired,
         endDate: PropTypes.string.isRequired,
         user: PropTypes.object,
     };
 
     render() {
-        const { ondernemer, plaatsvoorkeuren, aanmeldingen, messages, markt, marktId, voorkeur, branches } = this.props;
+        const { ondernemer, plaatsvoorkeuren, aanmeldingen, messages, markt, marktId, voorkeur, branches, toewijzingen } = this.props;
         const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
 
         const rsvpEntries = filterRsvpList(
@@ -38,6 +40,16 @@ class OndernemerMarktDetailPage extends React.Component {
             markt,
             today(),
         );
+
+        // const marktDate = tomorrow();
+        let dateOfTomorrow = tomorrow();
+        // let dateOfYesterday = yesterday();
+
+        const toewijzingTomorrow = toewijzingen.find( toewijzing => {
+            return toewijzing.marktDate == dateOfTomorrow 
+        })
+
+        console.log(toewijzingTomorrow);
 
         return (
             <Page messages={messages}>
@@ -54,7 +66,7 @@ class OndernemerMarktDetailPage extends React.Component {
                         loting op de markt voorrang op ondernemers die zich niet digitaal hebben aangemeld.
                     </p>
                     <p>De loting en de indeling verloopt verder zoals u gewend bent.</p>
-
+                    
                     <OndernemerMarktHeading sollicitatie={sollicitatie} markt={markt} />
                     {!voorkeur || !voorkeur.brancheId ? (
                         <Alert type="warning" inline={true}>
@@ -64,12 +76,19 @@ class OndernemerMarktDetailPage extends React.Component {
                             </span>
                         </Alert>
                     ) : null}
+
+                    { toewijzingTomorrow ?
+                        <AlertLine title={`Morgen ingedeeld`} type="success" message={`Je bent morgen (${toewijzingTomorrow.marktDate}) voor de volgende plekken ingedeeld: ${toewijzingTomorrow.plaatsen.join(', ')}`} inline={true}></AlertLine>
+                        : <AlertLine title={`Uitslag indeling`} type="default" message={`Je bent morgen (nog) niet ingedeeld`}></AlertLine>
+                    }
+                    
                     <div className="row row--responsive">
                         <div className="col-1-2">
                             <OndernemerMarktAanwezigheid
                                 markt={markt}
                                 ondernemer={ondernemer}
                                 sollicitatie={sollicitatie}
+                                toewijzingen={toewijzingen}
                                 rsvpEntries={rsvpEntries}
                             />
                         </div>

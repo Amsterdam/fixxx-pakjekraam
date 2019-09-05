@@ -105,6 +105,7 @@ export const addMinutes = (offsetDate: string | number, minutes: number): string
 };
 
 export const tomorrow = (): string => addDays(Date.now(), 1);
+export const yesterday = (): string => addDays(Date.now(), -1);
 
 export const endOfWeek = (): string => {
     const date = new Date();
