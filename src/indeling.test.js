@@ -1,5 +1,7 @@
 /* eslint-disable no-magic-numbers */
 /* eslint-disable no-var */
+/* eslint-disable vars-on-top */
+/* eslint-disable no-redeclare */
 
 const { calcToewijzingen } = require('./indeling.ts');
 const { marktScenario } = require('./indeling-scenario.ts');
@@ -178,7 +180,37 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
         expect(isRejected(afwijzingen, 99)).toBe(true);
     });
 
-    it('krijgt geen dagvergunning indien het maximum aantal branche-plaatsen worden overschreden ', () => {
+    it('wordt afgewezen als niet aan zijn minimum voorkeur wordt voldaan', () => {
+        var { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
+            ondernemers: [
+                ondernemer({ status: 'vpl', plaatsen: ['1', '2'], voorkeur: { minimum: 2 } }),
+                ondernemer({ voorkeur: { minimum: 2 } })
+            ],
+            marktplaatsen: [
+                plaats(), plaats({ inactive: true }), plaats({ inactive: true })
+            ]
+        }));
+
+        expect(toewijzingen.length).toBe(0);
+        expect(afwijzingen.length).toBe(2);
+
+        var { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
+            ondernemers: [
+                ondernemer({ voorkeur: { minimum: 3 } }),
+                ondernemer({ voorkeur: { minimum: 2 } })
+            ],
+            marktplaatsen: [
+                plaats(), plaats(), plaats()
+            ],
+            expansionLimit: 2
+        }));
+
+        expect(toewijzingen.length).toBe(1);
+        expect(afwijzingen.length).toBe(1);
+        expect(findPlaatsen(toewijzingen, 2)).toStrictEqual(['2', '3']);
+    });
+
+    it('krijgt geen dagvergunning indien het maximum aantal branche-plaatsen worden overschreden', () => {
         /*
          * Scenario:
          * - 2 marktplaatsen
@@ -831,21 +863,6 @@ describe('Een ondernemer die wil uitbreiden', () => {
         expect(afwijzingen.length).toBe(0);
         expect(findPlaatsen(toewijzingen, 1)).toStrictEqual(['3', '4']);
         expect(findPlaatsen(toewijzingen, 2)).toStrictEqual(['1', '2']);
-    });
-
-    it.skip('wordt afgewezen als niet aan zijn minimum voorkeur wordt voldaan', () => {
-        /*
-         * Scenario:
-         * - 2 marktplaatsen
-         * - 1 ondernemer met een dubbele plaats
-         */
-        const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
-            ondernemers: [ondernemer({ voorkeur: { minimum: 2 } })],
-            marktplaatsen: [plaats()]
-        }));
-
-        expect(toewijzingen.length).toBe(0);
-        expect(afwijzingen.length).toBe(1);
     });
 
     it.skip('Een ondernemer kan kiezen NIET te verschuiven om het minimum aantal plaatsen te krijgen', () => {

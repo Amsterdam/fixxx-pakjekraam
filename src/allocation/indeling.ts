@@ -28,6 +28,10 @@ const ADJACENT_UNAVAILABLE: IAfwijzingReason = {
     code: 3,
     message: 'Geen geschikte plaats(en) gevonden'
 };
+const MINIMUM_UNAVAILABLE: IAfwijzingReason = {
+    code: 4,
+    message: 'Minimum aantal plaatsen niet beschikbaar'
+};
 
 // `voorkeuren` should always be sorted by priority DESC, because we're using its array
 // indices to sort by priority. See `Ondernemer.getPlaatsVoorkeuren()`.
@@ -191,7 +195,10 @@ const Indeling = {
             Ondernemer.wantsExpansion(toewijzing)
         );
 
-        while (indeling.expansionIteration <= indeling.expansionLimit) {
+        while (
+            indeling.openPlaatsen.length && queue.length &&
+            indeling.expansionIteration <= indeling.expansionLimit
+        ) {
             queue = queue.reduce((newQueue, toewijzing) => {
                 const { ondernemer } = toewijzing;
 
@@ -200,12 +207,10 @@ const Indeling = {
                     const openAdjacent        = intersection(adjacent, indeling.openPlaatsen);
                     const [uitbreidingPlaats] = Indeling.findBestePlaatsen(indeling, ondernemer, openAdjacent);
 
-                    if (!uitbreidingPlaats) {
-                        return newQueue;
+                    if (uitbreidingPlaats) {
+                        indeling   = Indeling._assignPlaats(indeling, ondernemer, uitbreidingPlaats);
+                        toewijzing = Toewijzing.find(indeling, ondernemer);
                     }
-
-                    indeling   = Indeling._assignPlaats(indeling, ondernemer, uitbreidingPlaats);
-                    toewijzing = Toewijzing.find(indeling, ondernemer);
                 }
 
                 if (Ondernemer.wantsExpansion(toewijzing)) {
@@ -218,7 +223,14 @@ const Indeling = {
             indeling.expansionIteration++;
         }
 
-        return indeling;
+        // The people still in the queue have fewer places than desired. Check if they
+        // must be rejected because of their `minimum` setting.
+        return queue.reduce((indeling, { ondernemer, plaatsen }) => {
+            const { minimum = 0 } = ondernemer.voorkeur || {};
+            return minimum > plaatsen.length ?
+                   Indeling._rejectOndernemer(indeling, ondernemer, MINIMUM_UNAVAILABLE) :
+                   indeling;
+        }, indeling);
     },
 
     _assignPlaats: (
@@ -252,6 +264,11 @@ const Indeling = {
             reason,
             ondernemer
         });
+
+        const toewijzing = Toewijzing.find(indeling, ondernemer);
+        if (toewijzing) {
+            indeling = Toewijzing.remove(indeling, toewijzing);
+        }
 
         return {
             ...indeling,
