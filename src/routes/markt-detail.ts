@@ -57,6 +57,7 @@ export const marktDetailController = (
                     query,
                     messages,
                     toewijzingen,
+                    eggie: req.query.eggie || false,
                 });
             },
             err => httpErrorPage(res, HTTP_INTERNAL_SERVER_ERROR)(err),

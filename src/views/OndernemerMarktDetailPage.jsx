@@ -29,10 +29,11 @@ class OndernemerMarktDetailPage extends React.Component {
         startDate: PropTypes.string.isRequired,
         endDate: PropTypes.string.isRequired,
         user: PropTypes.object,
+        eggie: PropTypes.boolean,
     };
 
     render() {
-        const { ondernemer, plaatsvoorkeuren, aanmeldingen, messages, markt, marktId, voorkeur, branches, toewijzingen } = this.props;
+        const { ondernemer, plaatsvoorkeuren, aanmeldingen, messages, markt, marktId, voorkeur, branches, toewijzingen, eggie } = this.props;
         const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
 
         const rsvpEntries = filterRsvpList(
@@ -41,6 +42,7 @@ class OndernemerMarktDetailPage extends React.Component {
             today(),
         );
 
+        console.log(eggie);
         const dateOfTomorrow = tomorrow();
         const toewijzingTomorrow = toewijzingen.find( toewijzing => {
             return toewijzing.marktDate == dateOfTomorrow;
@@ -71,10 +73,11 @@ class OndernemerMarktDetailPage extends React.Component {
                         </Alert>
                     ) : null}
 
-                    { toewijzingTomorrow ?
+                    { eggie && toewijzingTomorrow ? (
                         <AlertLine title={`Morgen ingedeeld`} type="success" message={`Je bent morgen (${toewijzingTomorrow.marktDate}) voor de volgende plekken ingedeeld: ${toewijzingTomorrow.plaatsen.join(', ')}`} inline={true}></AlertLine>
-                        : <AlertLine title={`Uitslag indeling`} type="default" message={`Je bent morgen (nog) niet ingedeeld`}></AlertLine>
-                    }
+                    ) : eggie && !toewijzingTomorrow ? (
+                        <AlertLine title={`Uitslag indeling`} type="default" message={`Je bent morgen (nog) niet ingedeeld`}></AlertLine>
+                    ) : null}
                     <div className="row row--responsive">
                         <div className="col-1-2">
                             <OndernemerMarktAanwezigheid
