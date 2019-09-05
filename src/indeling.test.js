@@ -1,8 +1,8 @@
+/* eslint-disable no-magic-numbers */
+/* eslint-disable no-var */
+
 const { calcToewijzingen } = require('./indeling.ts');
 const { marktScenario } = require('./indeling-scenario.ts');
-
-
-/* eslint-disable no-magic-numbers */
 
 const FIRST_CHOICE = Number.MAX_SAFE_INTEGER;
 const SECOND_CHOICE = FIRST_CHOICE - 1;
@@ -684,8 +684,6 @@ describe('Een ondernemer die wil uitbreiden', () => {
     });
 
     it('kan niet verder vergroten dan is toegestaan', () => {
-        // `expansionLimit` beschrijft de maximum _uitbreiding_, dus een VPH met twee vaste plaatsen
-        // kan per definitie een plaats meer krijgen dan een sollicitant (of een VPH met 1 plaats).
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['3', '4'], voorkeur: { maximum: 4 } }),

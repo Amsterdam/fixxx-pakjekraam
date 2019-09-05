@@ -1,3 +1,5 @@
+/* eslint-disable no-magic-numbers */
+
 const Markt = require('./allocation/markt.ts').default;
 
 describe('Aanliggende plaatsen', () => {

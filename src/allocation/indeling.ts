@@ -16,13 +16,17 @@ import Markt from './markt';
 import Ondernemer from './ondernemer';
 import Toewijzing from './toewijzing';
 
-const FULL_REASON: IAfwijzingReason = {
+const MARKET_FULL: IAfwijzingReason = {
     code: 1,
     message: 'Alle marktplaatsen zijn reeds ingedeeld'
 };
-const BRANCHE_FULL_REASON: IAfwijzingReason = {
+const BRANCHE_FULL: IAfwijzingReason = {
     code: 2,
     message: 'Alle marktplaatsen voor deze branch zijn reeds ingedeeld'
+};
+const ADJACENT_UNAVAILABLE: IAfwijzingReason = {
+    code: 3,
+    message: 'Geen geschikte plaats(en) gevonden'
 };
 
 // `voorkeuren` should always be sorted by priority DESC, because we're using its array
@@ -45,15 +49,15 @@ const Indeling = {
     ): IMarktindeling => {
         try {
             if (indeling.openPlaatsen.length === 0) {
-                throw FULL_REASON;
+                throw MARKET_FULL;
             } else if (Ondernemer.isInMaxedOutBranche(indeling, ondernemer)) {
-                throw BRANCHE_FULL_REASON;
+                throw BRANCHE_FULL;
             }
 
             const mogelijkePlaatsen = plaatsen || indeling.openPlaatsen;
             const bestePlaatsen = Indeling.findBestePlaatsen(indeling, ondernemer, mogelijkePlaatsen, maximum);
             if (!bestePlaatsen.length) {
-                throw 'Geen plaats(en) gevonden';
+                throw ADJACENT_UNAVAILABLE;
             }
 
             return bestePlaatsen.reduce((indeling, plaats) => {
@@ -183,9 +187,9 @@ const Indeling = {
     },
 
     performExpansion: (indeling: IMarktindeling): IMarktindeling => {
-        let queue = indeling.toewijzingen.filter(toewijzing => {
-            return Ondernemer.wantsExpansion(toewijzing);
-        });
+        let queue = indeling.toewijzingen.filter(toewijzing =>
+            Ondernemer.wantsExpansion(toewijzing)
+        );
 
         while (indeling.expansionIteration <= indeling.expansionLimit) {
             queue = queue.reduce((newQueue, toewijzing) => {
@@ -200,14 +204,11 @@ const Indeling = {
                         return newQueue;
                     }
 
-                    indeling = Indeling._assignPlaats(indeling, ondernemer, uitbreidingPlaats);
+                    indeling   = Indeling._assignPlaats(indeling, ondernemer, uitbreidingPlaats);
                     toewijzing = Toewijzing.find(indeling, ondernemer);
                 }
 
-                const targetSize  = Ondernemer.getTargetSize(ondernemer);
-                const currentSize = toewijzing.plaatsen.length;
-
-                if (currentSize < targetSize) {
+                if (Ondernemer.wantsExpansion(toewijzing)) {
                     newQueue.push(toewijzing);
                 }
 
@@ -223,26 +224,21 @@ const Indeling = {
     _assignPlaats: (
         indeling: IMarktindeling,
         ondernemer: IMarktondernemer,
-        plaats: IMarktplaats,
-        conflictResolution: 'merge' | 'reassign' = 'merge'
+        plaats: IMarktplaats
     ): IMarktindeling => {
-        const { erkenningsNummer } = ondernemer;
         const existingToewijzing = Toewijzing.find(indeling, ondernemer);
         let newToewijzing = Toewijzing.create(indeling, plaats, ondernemer);
 
         if (existingToewijzing) {
-            if (conflictResolution === 'merge') {
-                newToewijzing = Toewijzing.merge(existingToewijzing, newToewijzing);
-            }
-            indeling = Toewijzing.remove(indeling, existingToewijzing);
+            newToewijzing = Toewijzing.merge(existingToewijzing, newToewijzing);
         }
 
-        indeling = Toewijzing.add(indeling, newToewijzing);
+        indeling = Toewijzing.replace(indeling, existingToewijzing, newToewijzing);
 
         return {
             ...indeling,
-            toewijzingQueue: indeling.toewijzingQueue.filter(ondernemer =>
-                ondernemer.erkenningsNummer !== erkenningsNummer
+            toewijzingQueue: indeling.toewijzingQueue.filter(({ erkenningsNummer }) =>
+                erkenningsNummer !== ondernemer.erkenningsNummer
             )
         };
     },
