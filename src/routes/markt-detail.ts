@@ -41,12 +41,10 @@ export const marktDetailController = (
     ])
         .then(
             ([ondernemer, plaatsvoorkeuren, aanmeldingen, markt, voorkeur, branches, toewijzingen]) => {
-
                 // console.log(Object.keys(req));
                 // console.log(req.session);
                 // console.log('welke');
                 // console.log(toewijzingen);
-                
                 res.render('OndernemerMarktDetailPage', {
                     ondernemer,
                     plaatsvoorkeuren,

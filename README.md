@@ -26,3 +26,5 @@ Om de SCSS naar CSS te compilen draai je `npm run watch`. Als je de wijzigingen 
 ### Compileren van JS
 
 Dit is niet nodig, je kunt de wijzigingen simpelweg in /src/public/js/script.js doen.
+
+### 
