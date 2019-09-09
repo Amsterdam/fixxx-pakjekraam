@@ -12,6 +12,7 @@ export type EmailVplPlaatsConfirmProps = {
     ondernemer: IMarktondernemer;
     voorkeuren: IPlaatsvoorkeur[];
     branches: IBranche[];
+    telefoonnummer: string;
 };
 
 export class EmailVplPlaatsConfirm extends React.Component {
@@ -22,10 +23,11 @@ export class EmailVplPlaatsConfirm extends React.Component {
         ondernemer: PropTypes.any.isRequired,
         voorkeuren: PropTypes.array,
         branches: PropTypes.array,
+        telefoonnummer: PropTypes.string,
     };
 
     public render() {
-        const { markt, marktplaatsen, marktDate, ondernemer, voorkeuren, branches } = this
+        const { markt, marktplaatsen, marktDate, ondernemer, voorkeuren, branches, telefoonnummer } = this
             .props as EmailVplPlaatsConfirmProps;
         const fontGray = { color: '#767676' };
         const marktBranches = arrayToObject(marktplaatsen.filter(plaats => plaats.branches), 'plaatsId');
@@ -78,9 +80,13 @@ export class EmailVplPlaatsConfirm extends React.Component {
                 </EmailContent>
                 <EmailContent>
                     <p style={fontGray}>
-                        Als u bijvoorbeeld door ziekte toch niet kunt komen verzoeken wij u dit uiterlijk 08:45 aan de
-                        marktmeester telefonisch te melden zodat een andere koopman uw plaats kan krijgen.
+                        Als u onverwachts toch niet kunt komen verzoeken wij u dit uiterlijk 08.45 uur aan de
+                        marktmeester te melden zodat een andere koopman uw plaats kan krijgen.
                     </p>
+                    {telefoonnummer ? (
+                    <p style={fontGray}>
+                        Dit kan telefonisch via: {telefoonnummer}.
+                    </p>) : null }
                 </EmailContent>
 
                 <p>
