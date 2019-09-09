@@ -60,8 +60,10 @@ export const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktinde
      * Stap 3:
      * beperkt de indeling tot kramen met een bepaalde verkoopinrichting
      */
-    // const brancheKramen = indeling.openPlaatsen.filter(plaats => count(plaats.branches) > 0);
-    const brancheOndernemers = indeling.toewijzingQueue.filter(ondernemer => Ondernemer.isInBranche(indeling, ondernemer));
+    const brancheOndernemers = indeling.toewijzingQueue.filter(ondernemer =>
+        Ondernemer.isInBranche(indeling, ondernemer)
+    );
+
     indeling = brancheOndernemers.reduce((indeling, ondernemer, index, ondernemers) => {
         const ondernemerBranchePlaatsen = indeling.openPlaatsen.filter(plaats =>
             intersects(plaats.branches, ondernemer.voorkeur && ondernemer.voorkeur.branches)
@@ -75,17 +77,17 @@ export const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktinde
      * beperkt de indeling tot kramen met een toewijzingsbeperking (branche, eigen materieel)
      * en ondernemers met een bijbehorende eigenschap
      */
-    // const verkoopinrichtingKramen = indeling.openPlaatsen.filter(plaats => count(plaats.verkoopinrichting) > 0);
-    const verkoopinrichtingOndernemers = indeling.toewijzingQueue.filter(
-        ondernemer => count(ondernemer.voorkeur && ondernemer.voorkeur.verkoopinrichting) > 0
+    const verkoopinrichtingOndernemers = indeling.toewijzingQueue.filter(ondernemer =>
+        count(ondernemer.voorkeur && ondernemer.voorkeur.verkoopinrichting) > 0
     );
 
     indeling = verkoopinrichtingOndernemers.reduce((indeling, ondernemer, index, ondernemers) => {
-        const ondernemerVerkoopinrichtingPlaatsen = indeling.openPlaatsen.filter(plaats =>
-            intersects(plaats.verkoopinrichting, ondernemer.voorkeur ? ondernemer.voorkeur.verkoopinrichting : [])
-        );
+        const plaatsen = indeling.openPlaatsen.filter(plaats => {
+            const { verkoopinrichting = [] } = ondernemer.voorkeur || {};
+            return intersects(plaats.verkoopinrichting, verkoopinrichting);
+        });
 
-        return Indeling.assignPlaats(indeling, ondernemer, ondernemerVerkoopinrichtingPlaatsen, 'ignore');
+        return Indeling.assignPlaats(indeling, ondernemer, plaatsen, 'ignore');
     }, indeling);
 
     /*
@@ -106,8 +108,7 @@ export const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktinde
      * Stap 7:
      * Verwerk uitbreidingsvoorkeuren
      */
-    indeling = Indeling.generateExpansionQueue(indeling);
-    indeling = Indeling.processExpansionQueue(indeling);
+    indeling = Indeling.performExpansion(indeling);
 
     return indeling;
 };
