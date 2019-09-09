@@ -15,6 +15,7 @@ import { calcToewijzingen } from './indeling';
 import {
     IMarkt,
     IBranche,
+    IMarktInfo,
     IMarktProperties,
     IMarktondernemer,
     IMarktondernemerVoorkeur,
@@ -40,11 +41,13 @@ const loadJSON = <T>(path: string, defaultValue: T = null): Promise<T> =>
         console.log(`Load ${path}`);
         fs.readFile(path, (err, data) => {
             if (err) {
+                console.log(err);
                 resolve(defaultValue);
             } else {
                 try {
                     resolve(JSON.parse(String(data)));
                 } catch (e) {
+                    console.log(e);
                     reject(e);
                 }
             }
@@ -216,7 +219,7 @@ const groupByErkenningsNummer = (
 ): IMarktondernemerVoorkeur[][] => {
     let group;
 
-    for (let i = groups.length; i--; ) {
+    for (let i = groups.length; i--;) {
         if (groups[i][0].erkenningsNummer === voorkeur.erkenningsNummer) {
             group = groups[i];
             break;
@@ -288,6 +291,8 @@ export const getMarktPaginas = (marktId: string): Promise<IAllocationPrintout> =
 export const getMarktGeografie = (marktId: string): Promise<{ obstakels: IObstakelBetween[] }> =>
     loadJSON(`./data/${slugifyMarkt(marktId)}/geografie.json`, { obstakels: [] });
 
+export const getMarktInfo = (marktId: string): Promise<IMarktInfo> =>
+    loadJSON(`./data/${slugifyMarkt(marktId)}/info.json`);
 /*
  * Convert an object from Makkelijke Markt to our own type of `IMarktondernemer` object
  */
@@ -364,6 +369,7 @@ export const getIndelingslijstInput = (marktId: string, marktDate: string) => {
         getBranches(marktId),
         getMarktPaginas(marktId),
         getMarktGeografie(marktId),
+        // getMarktInfo(marktId),
         getMarkt(marktId),
         getALijst(marktId, marktDate),
     ]).then(args => {
@@ -537,9 +543,9 @@ export const isConflictingApplication = (existing: IRSVP[], application: IRSVP):
     // TODO: In addition to `attending`, check the vendors 'default days' and `isVast()`
     application.attending
         ? existing
-              .filter(a => String(a.marktId) !== String(application.marktId))
-              .filter(a => a.marktDate === application.marktDate)
-              .filter(a => a.attending !== null && !!a.attending)
+            .filter(a => String(a.marktId) !== String(application.marktId))
+            .filter(a => a.marktDate === application.marktDate)
+            .filter(a => a.attending !== null && !!a.attending)
         : [];
 
 export const getConflictingApplications = (application: IRSVP): Promise<IRSVP[]> =>

@@ -184,3 +184,10 @@ export interface IPlaatsvoorkeurRow {
     plaatsId: string;
     priority: number;
 }
+
+export interface IMarktInfo {
+    telefoonnummer: string;
+    erkenningsNummer: ErkenningsNummer;
+    marktdagen: string;
+    indelingstijdstip: string;
+}

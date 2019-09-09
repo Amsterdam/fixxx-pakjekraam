@@ -33,6 +33,7 @@ export type EmailIndelingProps = {
     branches: IBranche[];
     subject: string;
     eggie: boolean;
+    telefoonnummer: string;
 };
 
 export class EmailIndeling extends React.Component {
@@ -48,10 +49,11 @@ export class EmailIndeling extends React.Component {
         branches: PropTypes.array,
         subject: PropTypes.string,
         eggie: PropTypes.bool,
+        telefoonnummer: PropTypes.string,
     };
 
     public render() {
-        const { ondernemer, toewijzing, afwijzing, voorkeuren, subject, eggie } = this.props as EmailIndelingProps;
+        const { ondernemer, toewijzing, afwijzing, voorkeuren, subject, eggie, telefoonnummer } = this.props as EmailIndelingProps;
         const infoLink = 'https://www.amsterdam.nl/ondernemen/markt-straathandel/digitaal-indelen-plein-40-45/';
         let template;
 
@@ -86,7 +88,6 @@ export class EmailIndeling extends React.Component {
                             <br />
                             Er verandert verder niets tijdens de wenperiode.
                         </p>
-
                         <p>
                             <strong>Meer informatie?</strong>
                             <br />
@@ -95,10 +96,8 @@ export class EmailIndeling extends React.Component {
                         </p>
                         <p>
                             Hebt u daarna nog vragen? Stuur ons dan een e-mail via{' '}
-                            <a href="mailto: marktbureau@amsterdam.nl">marktbureau@amsterdam.nl</a> of bel ons via 14
-                            020.
+                            <a href="mailto: marktbureau@amsterdam.nl">marktbureau@amsterdam.nl</a> of bel ons via {telefoonnummer}.
                         </p>
-
                         <p>
                             Met vriendelijke groet,
                             <br />
