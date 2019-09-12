@@ -271,6 +271,7 @@
     "vars-on-top": ["error"],
     "wrap-iife": ["error"],
     "wrap-regexp": ["off"],
+    "whitespace": false,
     "yield-star-spacing": ["error"],
     "yoda": ["error", "never"],
     "valid-typeof": ["error"]

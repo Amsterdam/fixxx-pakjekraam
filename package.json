@@ -23,7 +23,7 @@
     "test": "jest --verbose --silent --rootDir ./src/",
     "lint": "concurrently 'npm:lint:*'",
     "lint:eslint": "eslint './src/**/*.js' './src/**/*.jsx'",
-    "lint:tslint": "tslint --type-check --project tsconfig.json --config tslint.json './src/**/*.ts' './src/**/*.tsx'",
+    "lint:tslint": "tslint --project tsconfig.json --config tslint.json './src/**/*.ts' './src/**/*.tsx'",
     "lint-fix": "npm run lint-fix:eslint; npm run lint-fix:prettier; npm run lint-fix:tslint",
     "lint-fix:eslint": "npm run lint:eslint -- --fix",
     "lint-fix:prettier": "prettier --write '**/*.js' '**/*.css' '**/*.scss' '**/*.json' '**/*.jsx' '*.yml'",
