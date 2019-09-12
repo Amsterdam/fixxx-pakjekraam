@@ -5,4 +5,26 @@
     & > *:first-child {
         margin-top: 0;
     }
+
+    &__update-row{
+        // background: red;
+
+        &__heading{
+            margin-bottom: $gutter-sm;
+        }
+
+        &__status{
+            display: inline;
+            &--aangemeld{
+                color: $supplement-darkgreen;
+            }
+            &--niet-aangemeld{
+                color:$neutral-grey4;
+            }
+        }
+        &__toewijzing{
+            margin: 0;
+        }
+    }
+
 }

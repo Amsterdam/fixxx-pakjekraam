@@ -11,8 +11,9 @@
         border-color: $primary-red;
     }
     &--success {
-        border-color: $supplement-lightgreen;
+        border-color:  $supplement-darkgreen;
     }
+
 
 
     &__title {
@@ -22,6 +23,13 @@
     &__message {
         @include p1;
         margin-top: 3px;
+    }
+
+    &--title-small{
+        .AlertLine__title {
+            font-size: $default-font-size;
+            
+        }
     }
     
 

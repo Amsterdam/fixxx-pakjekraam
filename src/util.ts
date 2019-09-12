@@ -59,6 +59,11 @@ export const formatISODayOfWeek = (day: number) => ISO_WEEK_DAYS[day];
 export const formatDayOfWeek = (date: string) => WEEK_DAYS[new Date(date).getDay()];
 export const formatMonth = (date: string) => monthName[new Date(date).getMonth()];
 
+export const getMaDiWoDoOfToday = () => {
+    const dayOfWeek = WEEK_DAYS[new Date().getDay()];
+    return dayOfWeek.substring(0,2);
+};
+
 export const formatDate = (date: string): string =>
     `${new Date(date).getDate()} ${formatMonth(date).slice(0, shortMonthCharCount)} '${String(
         new Date(date).getFullYear(),

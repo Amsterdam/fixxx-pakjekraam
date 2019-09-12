@@ -110,6 +110,7 @@ const obstakelsToLocatieKeyValue = array =>
 
 const filterRsvpList = (aanmeldingen, markt, startDate, endDate) => {
     let rsvpIndex = 0;
+
     const dates = getMarktDays(
         startDate ? startDate : addDays(Date.now(), 1),
         endDate ? endDate : addDays(endOfWeek(), DAYS_IN_WEEK),

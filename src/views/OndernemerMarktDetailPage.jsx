@@ -42,7 +42,6 @@ class OndernemerMarktDetailPage extends React.Component {
             today(),
         );
 
-        console.log(eggie);
         const dateOfTomorrow = tomorrow();
         const toewijzingTomorrow = toewijzingen.find( toewijzing => {
             return toewijzing.marktDate == dateOfTomorrow;

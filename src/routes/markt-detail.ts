@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { getMarkt, getMarktondernemer } from '../makkelijkemarkt-api';
-import { getToewijzingenByOndernemer } from '../pakjekraam-api';
+
 
 import {
     getAllBranches,
     getIndelingVoorkeur,
     getAanmeldingenByOndernemer,
+    getToewijzingenByOndernemerEnMarkt,
     getOndernemerVoorkeuren,
 } from '../pakjekraam-api';
 
@@ -24,7 +25,6 @@ export const marktDetailController = (
 
     const messages = getQueryErrors(req.query);
     const ondernemerPromise = getMarktondernemer(erkenningsNummer);
-    const toewijzingenPromise = getToewijzingenByOndernemer(marktId, erkenningsNummer);
     const ondernemerVoorkeurenPromise = getOndernemerVoorkeuren(erkenningsNummer);
 
     const marktPromise = marktId ? getMarkt(marktId) : Promise.resolve(null);
@@ -37,7 +37,7 @@ export const marktDetailController = (
         marktPromise,
         getIndelingVoorkeur(erkenningsNummer, req.params.marktId),
         getAllBranches(),
-        toewijzingenPromise
+        getToewijzingenByOndernemerEnMarkt(marktId, erkenningsNummer)
     ])
         .then(
             ([ondernemer, plaatsvoorkeuren, aanmeldingen, markt, voorkeur, branches, toewijzingen]) => {
