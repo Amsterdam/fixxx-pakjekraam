@@ -24,10 +24,20 @@ const MarktDayLink = ({ type, markt, offsetDate, direction = 1 }) => {
         targetDate = dates[dates.length - 1];
     }
 
+    console.log(type);
+
+    let typeLink = null;
+    if (type == 'wenperiode') {
+        typeLink = 'indelingslijst/?type=wenperiode';
+    } else {
+        typeLink = type;
+    }
+
+
     return (
         <a
             className={`MarktDayLink MarktDayLink--${direction > 0 ? `right` : `left`}`}
-            href={`/markt/${markt.id}/${targetDate}/${type}/`}
+            href={`/markt/${markt.id}/${targetDate}/${typeLink}`}
         >
             {formatDayOfWeek(targetDate)}
         </a>
