@@ -13,8 +13,8 @@ const toewijzingData = indelingen.then(markten =>
             markt.toewijzingen.map(toewijzing => ({
                 ...toewijzing,
                 marktId: markt.marktId,
-                marktDate
-            }))
+                marktDate,
+            })),
         )
         .reduce(flatten, [])
         .map(toewijzing =>
@@ -22,18 +22,18 @@ const toewijzingData = indelingen.then(markten =>
                 marktId: toewijzing.marktId,
                 marktDate: toewijzing.marktDate,
                 plaatsId,
-                erkenningsNummer: toewijzing.erkenningsNummer
-            }))
+                erkenningsNummer: toewijzing.erkenningsNummer,
+            })),
         )
-        .reduce(flatten, [])
+        .reduce(flatten, []),
 );
 
 models.sequelize
     .transaction(transaction =>
         // TODO: In the future, never destroy existing allocations
         Promise.all([models.allocation.destroy({ transaction, where: { marktDate } })]).then(() =>
-            toewijzingData.then(rows => models.allocation.bulkCreate(rows, { validate: true, transaction }))
-        )
+            toewijzingData.then(rows => models.allocation.bulkCreate(rows, { validate: true, transaction })),
+        ),
     )
     .then(
         affectedRows => {
@@ -41,5 +41,5 @@ models.sequelize
         },
         err => {
             process.exit(1);
-        }
+        },
     );

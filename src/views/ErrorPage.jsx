@@ -9,7 +9,7 @@ class ErrorPage extends React.Component {
         message: PropTypes.string,
         stack: PropTypes.string,
         errorCode: PropTypes.number,
-        req: PropTypes.object
+        req: PropTypes.object,
     };
 
     render() {

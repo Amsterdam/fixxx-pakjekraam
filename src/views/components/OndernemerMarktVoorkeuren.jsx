@@ -21,12 +21,10 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, ondernemer, query,
         .sort((a, b) => b.priority - a.priority)
         .reduce((t, e) => {
             !t.includes(e.priority) && t.push(e.priority);
-
             return t;
         }, [])
         .reduce((t, p) => {
             t.push(entriesFiltered.filter(e => e.priority === p));
-
             return t;
         }, []);
 

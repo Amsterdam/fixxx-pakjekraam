@@ -33,7 +33,18 @@ class OndernemerMarktDetailPage extends React.Component {
     };
 
     render() {
-        const { ondernemer, plaatsvoorkeuren, aanmeldingen, messages, markt, marktId, voorkeur, branches, toewijzingen, eggie } = this.props;
+        const {
+            ondernemer,
+            plaatsvoorkeuren,
+            aanmeldingen,
+            messages,
+            markt,
+            marktId,
+            voorkeur,
+            branches,
+            toewijzingen,
+            eggie,
+        } = this.props;
         const sollicitatie = ondernemer.sollicitaties.find(soll => soll.markt.id === markt.id && !soll.doorgehaald);
 
         const rsvpEntries = filterRsvpList(
@@ -43,7 +54,7 @@ class OndernemerMarktDetailPage extends React.Component {
         );
 
         const dateOfTomorrow = tomorrow();
-        const toewijzingTomorrow = toewijzingen.find( toewijzing => {
+        const toewijzingTomorrow = toewijzingen.find(toewijzing => {
             return toewijzing.marktDate == dateOfTomorrow;
         });
 
@@ -72,10 +83,21 @@ class OndernemerMarktDetailPage extends React.Component {
                         </Alert>
                     ) : null}
 
-                    { eggie && toewijzingTomorrow ? (
-                        <AlertLine title={`Morgen ingedeeld`} type="success" message={`Je bent morgen (${toewijzingTomorrow.marktDate}) voor de volgende plekken ingedeeld: ${toewijzingTomorrow.plaatsen.join(', ')}`} inline={true}></AlertLine>
+                    {eggie && toewijzingTomorrow ? (
+                        <AlertLine
+                            title={`Morgen ingedeeld`}
+                            type="success"
+                            message={`Je bent morgen (${
+                                toewijzingTomorrow.marktDate
+                            }) voor de volgende plekken ingedeeld: ${toewijzingTomorrow.plaatsen.join(', ')}`}
+                            inline={true}
+                        />
                     ) : eggie && !toewijzingTomorrow ? (
-                        <AlertLine title={`Uitslag indeling`} type="default" message={`Je bent morgen (nog) niet ingedeeld`}></AlertLine>
+                        <AlertLine
+                            title={`Uitslag indeling`}
+                            type="default"
+                            message={`Je bent morgen (nog) niet ingedeeld`}
+                        />
                     ) : null}
                     <div className="row row--responsive">
                         <div className="col-1-2">

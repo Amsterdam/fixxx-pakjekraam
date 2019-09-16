@@ -24,32 +24,39 @@ class OndernemerDashboard extends React.Component {
 
     render() {
         const { ondernemer, messages, plaatsvoorkeuren, markten, user, aanmeldingen, toewijzingen, eggie } = this.props;
+
         const marktenEnabled = markten.filter(m => m.enabled);
         const sollicitaties = ondernemer.sollicitaties.filter(soll => {
             return !soll.doorgehaald && marktenEnabled.map(markt => markt.id).includes(soll.markt.id);
         });
-        const marktenPlusAanmelding = sollicitaties.map( sollicitatie => {
-            const marktVoorSollicitatie = marktenEnabled.find( markt => markt.id == sollicitatie.markt.id);
-            const aanmeldingenVoorDezeMarkt = aanmeldingen.filter( aanmelding => {
+        const marktenPlusAanmelding = sollicitaties.map(sollicitatie => {
+            const marktVoorSollicitatie = marktenEnabled.find(markt => markt.id == sollicitatie.markt.id);
+            const aanmeldingenVoorDezeMarkt = aanmeldingen.filter(aanmelding => {
                 return aanmelding.marktId == marktVoorSollicitatie.id;
             });
-            marktVoorSollicitatie.aanmeldingVandaag = aanmeldingenVoorDezeMarkt.find( aanmelding => aanmelding.marktDate == today() );
-            marktVoorSollicitatie.aanmeldingMorgen = aanmeldingenVoorDezeMarkt.find( aanmelding => aanmelding.marktDate == tomorrow() );
+            marktVoorSollicitatie.aanmeldingVandaag = aanmeldingenVoorDezeMarkt.find(
+                aanmelding => aanmelding.marktDate == today(),
+            );
+            marktVoorSollicitatie.aanmeldingMorgen = aanmeldingenVoorDezeMarkt.find(
+                aanmelding => aanmelding.marktDate == tomorrow(),
+            );
             return marktVoorSollicitatie;
         });
-        const marktenPlusToewijzing = marktenPlusAanmelding.map( markt => {
-            const toewijzingenVoorDezeMarkt = toewijzingen.filter( toewijzing => {
+        const marktenPlusToewijzing = marktenPlusAanmelding.map(markt => {
+            const toewijzingenVoorDezeMarkt = toewijzingen.filter(toewijzing => {
                 return toewijzing.marktId == markt.id;
             });
-            markt.toewijzingVandaag = toewijzingenVoorDezeMarkt.find( aanmelding => aanmelding.marktDate == today() );
-            markt.toewijzingMorgen = toewijzingenVoorDezeMarkt.find( aanmelding => aanmelding.marktDate == tomorrow() );
+            markt.toewijzingVandaag = toewijzingenVoorDezeMarkt.find(aanmelding => aanmelding.marktDate == today());
+            markt.toewijzingMorgen = toewijzingenVoorDezeMarkt.find(aanmelding => aanmelding.marktDate == tomorrow());
             return markt;
         });
 
-        const marktenPlusGeopend = marktenPlusToewijzing.map( markt => {
-            markt.geopend = markt.marktDagen.includes( getMaDiWoDoOfToday() );
+        const marktenPlusGeopend = marktenPlusToewijzing.map(markt => {
+            markt.geopend = markt.marktDagen.includes(getMaDiWoDoOfToday());
             return markt;
         });
+
+        console.log(marktenPlusGeopend);
 
         return (
             <Page messages={messages}>
@@ -69,7 +76,7 @@ class OndernemerDashboard extends React.Component {
 
                     <h1 className="h1">Mijn markten</h1>
                     <div className="row row--responsive">
-                        {marktenPlusToewijzing.map(markt => (
+                        {marktenPlusGeopend.map(markt => (
                             <div key={markt.id} className="col-1-2">
                                 <OndernemerMarktTile
                                     markt={markt}
@@ -80,7 +87,7 @@ class OndernemerDashboard extends React.Component {
                                     toewijzingMorgen={markt.toewijzingMorgen}
                                     eggie={eggie}
                                     time={new Date()}
-                                    />
+                                />
                             </div>
                         ))}
                     </div>

@@ -13,7 +13,7 @@
     "deploy": "time ts-node src/deploy.js",
     "clean": "rm -rf dist/* node_modules/.cache/",
     "prestart": "npm run deploy",
-    "dev-server":"( . .env && npm run dev)",
+    "dev-server": "( . .env && npm run dev)",
     "start": "ts-node src/index.ts",
     "predev": "npm run build && npm run deploy",
     "dev": "ts-node-dev --ignore-watch node_modules src/index.ts",
@@ -26,7 +26,7 @@
     "lint:tslint": "tslint --project tsconfig.json --config tslint.json './src/**/*.ts' './src/**/*.tsx'",
     "lint-fix": "npm run lint-fix:eslint; npm run lint-fix:prettier; npm run lint-fix:tslint",
     "lint-fix:eslint": "npm run lint:eslint -- --fix",
-    "lint-fix:prettier": "prettier --write '**/*.js' '**/*.css' '**/*.scss' '**/*.json' '**/*.jsx' '*.yml'",
+    "lint-fix:prettier": "prettier --write '**/*.js' '**/*.json' '**/*.jsx' '*.yml'",
     "lint-fix:tslint": "npm run lint:tslint -- --fix",
     "lint-non-npm": "git ls-files '*.yml' | tr '\n' '\\0' | xargs -0 yamllint",
     "prewatch": "npm run clean && npm run build",
@@ -106,7 +106,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,json,jsx}": [
-        "eslint"
+      "eslint"
     ],
     "src/**/*.{ts,tsx}": [
       "tslint --type-check --project tsconfig.json --config tslint.json"

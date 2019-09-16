@@ -1,6 +1,4 @@
-.AlertLine{
-
-
+.AlertLine {
     padding-left: 17px;
     border-left: 2px solid $neutral-grey3;
 
@@ -11,10 +9,8 @@
         border-color: $primary-red;
     }
     &--success {
-        border-color:  $supplement-darkgreen;
+        border-color: $supplement-darkgreen;
     }
-
-
 
     &__title {
         @include h4;
@@ -25,12 +21,9 @@
         margin-top: 3px;
     }
 
-    &--title-small{
+    &--title-small {
         .AlertLine__title {
             font-size: $default-font-size;
-            
         }
     }
-    
-
 }

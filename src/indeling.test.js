@@ -31,7 +31,7 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [ondernemer()],
-            marktplaatsen: [plaats()]
+            marktplaatsen: [plaats()],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -46,7 +46,7 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [ondernemer({ status: 'vpl', plaatsen: ['1'] }), ondernemer()],
-            marktplaatsen: [plaats({ inactive: true })]
+            marktplaatsen: [plaats({ inactive: true })],
         }));
 
         expect(toewijzingen.length).toBe(0);
@@ -57,14 +57,14 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ voorkeur: { anywhere: false, maximum: 3 } }),
-                ondernemer({ voorkeur: { anywhere: false } })
+                ondernemer({ voorkeur: { anywhere: false } }),
             ],
             marktplaatsen: [plaats(), plaats(), plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: SECOND_CHOICE }),
-                voorkeur({ sollicitatieNummer: 2, plaatsId: '2' })
-            ]
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '2' }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -80,7 +80,7 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['2'] })],
-            marktplaatsen: [plaats(), plaats()]
+            marktplaatsen: [plaats(), plaats()],
         }));
         expect(toewijzingen.length).toBe(1);
         expect(findPlaatsen(toewijzingen, 1)).toStrictEqual(['2']);
@@ -94,7 +94,7 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['2', '3', '4'] })],
-            marktplaatsen: [plaats(), plaats(), plaats(), plaats()]
+            marktplaatsen: [plaats(), plaats(), plaats(), plaats()],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -103,14 +103,8 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
 
     it('krijgt hetzelfde aantal willekeurige plaatsen als zijn vaste plaatsen niet beschikbaar zijn', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
-            ondernemers: [
-                ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1', '2'] }),
-                ondernemer()
-            ],
-            marktplaatsen: [
-                plaats({ inactive: true }), plaats({ inactive: true }),
-                plaats(), plaats()
-            ]
+            ondernemers: [ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1', '2'] }), ondernemer()],
+            marktplaatsen: [plaats({ inactive: true }), plaats({ inactive: true }), plaats(), plaats()],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -124,12 +118,14 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
          * - 1 ondernemer met een meervoudige plaats
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
-            ondernemers: [ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1', '2'], voorkeur: { maximum: 1 } })],
+            ondernemers: [
+                ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1', '2'], voorkeur: { maximum: 1 } }),
+            ],
             marktplaatsen: [plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
-                voorkeur({ sollicitatieNummer: 1, plaatsId: '1', priority: SECOND_CHOICE })
-            ]
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '1', priority: SECOND_CHOICE }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -147,12 +143,15 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, voorkeur: { branches: ['standwerker'] } }),
-                ondernemer({ sollicitatieNummer: 2, voorkeur: { branches: ['standwerker'] } })
+                ondernemer({ sollicitatieNummer: 2, voorkeur: { branches: ['standwerker'] } }),
             ],
             marktplaatsen: [plaats(), plaats({ branches: ['standwerker'] })],
-            branches: [{
-                brancheId: 'standwerker', verplicht: true
-            }]
+            branches: [
+                {
+                    brancheId: 'standwerker',
+                    verplicht: true,
+                },
+            ],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -167,11 +166,8 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
          * - 2 ondernemers
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
-            ondernemers: [
-                ondernemer({ sollicitatieNummer: 99 }),
-                ondernemer({ sollicitatieNummer: 42 })
-            ],
-            marktplaatsen: [plaats()]
+            ondernemers: [ondernemer({ sollicitatieNummer: 99 }), ondernemer({ sollicitatieNummer: 42 })],
+            marktplaatsen: [plaats()],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -184,25 +180,18 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
         var { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [
                 ondernemer({ status: 'vpl', plaatsen: ['1', '2'], voorkeur: { minimum: 2 } }),
-                ondernemer({ voorkeur: { minimum: 2 } })
+                ondernemer({ voorkeur: { minimum: 2 } }),
             ],
-            marktplaatsen: [
-                plaats(), plaats({ inactive: true }), plaats({ inactive: true })
-            ]
+            marktplaatsen: [plaats(), plaats({ inactive: true }), plaats({ inactive: true })],
         }));
 
         expect(toewijzingen.length).toBe(0);
         expect(afwijzingen.length).toBe(2);
 
         var { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
-            ondernemers: [
-                ondernemer({ voorkeur: { minimum: 3 } }),
-                ondernemer({ voorkeur: { minimum: 2 } })
-            ],
-            marktplaatsen: [
-                plaats(), plaats(), plaats()
-            ],
-            expansionLimit: 2
+            ondernemers: [ondernemer({ voorkeur: { minimum: 3 } }), ondernemer({ voorkeur: { minimum: 2 } })],
+            marktplaatsen: [plaats(), plaats(), plaats()],
+            expansionLimit: 2,
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -220,15 +209,15 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 99, voorkeur: { branches: ['branche-x'] } }),
-                ondernemer({ sollicitatieNummer: 42, voorkeur: { branches: ['branche-x'] } })
+                ondernemer({ sollicitatieNummer: 42, voorkeur: { branches: ['branche-x'] } }),
             ],
             marktplaatsen: [plaats(), plaats()],
             branches: [
                 {
                     brancheId: 'branche-x',
-                    maximumPlaatsen: 1
-                }
-            ]
+                    maximumPlaatsen: 1,
+                },
+            ],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -247,13 +236,15 @@ describe('Een ondernemer die ingedeeld wil worden', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 99, voorkeur: { branches: ['branche-x'] } }),
-                ondernemer({ sollicitatieNummer: 42, voorkeur: { branches: ['branche-x'] } })
+                ondernemer({ sollicitatieNummer: 42, voorkeur: { branches: ['branche-x'] } }),
             ],
             marktplaatsen: [plaats(), plaats()],
-            branches: [{
-                brancheId: 'branche-x',
-                maximumToewijzingen: 1
-            }]
+            branches: [
+                {
+                    brancheId: 'branche-x',
+                    maximumToewijzingen: 1,
+                },
+            ],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -274,9 +265,9 @@ describe('Een ondernemer krijgt voorkeur', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 42, status: 'soll' }),
-                ondernemer({ sollicitatieNummer: 99, status: 'vpl' })
+                ondernemer({ sollicitatieNummer: 99, status: 'vpl' }),
             ],
-            marktplaatsen: [plaats()]
+            marktplaatsen: [plaats()],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -294,9 +285,9 @@ describe('Een ondernemer krijgt voorkeur', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 42, status: 'soll' }),
-                ondernemer({ sollicitatieNummer: 99, status: 'vkk' })
+                ondernemer({ sollicitatieNummer: 99, status: 'vkk' }),
             ],
-            marktplaatsen: [plaats()]
+            marktplaatsen: [plaats()],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -317,13 +308,13 @@ describe('Een ondernemer krijgt voorkeur', () => {
                 ondernemer({ sollicitatieNummer: 2, status: 'vkk' }),
                 ondernemer({ sollicitatieNummer: 3, status: 'soll' }),
                 ondernemer({ sollicitatieNummer: 4, status: 'vkk', plaatsen: ['2'] }),
-                ondernemer({ sollicitatieNummer: 5, status: 'vpl', plaatsen: ['1'] })
+                ondernemer({ sollicitatieNummer: 5, status: 'vpl', plaatsen: ['1'] }),
             ],
             marktplaatsen: [plaats(), plaats(), plaats(), plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '1' }),
-                voorkeur({ sollicitatieNummer: 2, plaatsId: '2' })
-            ]
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '2' }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(5);
@@ -343,9 +334,9 @@ describe('Een ondernemer krijgt voorkeur', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 42 }),
-                ondernemer({ sollicitatieNummer: 99, voorkeur: { branches: ['branche-x'] } })
+                ondernemer({ sollicitatieNummer: 99, voorkeur: { branches: ['branche-x'] } }),
             ],
-            marktplaatsen: [plaats({ branches: ['branche-x'] })]
+            marktplaatsen: [plaats({ branches: ['branche-x'] })],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -363,9 +354,9 @@ describe('Een ondernemer krijgt voorkeur', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 42 }),
-                ondernemer({ sollicitatieNummer: 99, voorkeur: { verkoopinrichting: ['eigen-materieel'] } })
+                ondernemer({ sollicitatieNummer: 99, voorkeur: { verkoopinrichting: ['eigen-materieel'] } }),
             ],
-            marktplaatsen: [plaats({ verkoopinrichting: ['eigen-materieel'] })]
+            marktplaatsen: [plaats({ verkoopinrichting: ['eigen-materieel'] })],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -382,12 +373,9 @@ describe('Een ondernemer krijgt voorkeur', () => {
          * - 1 ondernemer niet op de A-lijst met hoge anceniteit
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
-            ondernemers: [
-                ondernemer({ sollicitatieNummer: 42 }),
-                ondernemer({ sollicitatieNummer: 99 })
-            ],
+            ondernemers: [ondernemer({ sollicitatieNummer: 42 }), ondernemer({ sollicitatieNummer: 99 })],
             marktplaatsen: [plaats()],
-            aLijst: [ondernemer({ sollicitatieNummer: 99 })]
+            aLijst: [ondernemer({ sollicitatieNummer: 99 })],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -402,13 +390,13 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, aanmelding, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1', '2'] }),
-                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['4'] })
+                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['4'] }),
             ],
             marktplaatsen: [plaats(), plaats(), plaats(), plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: FIRST_CHOICE }),
-                voorkeur({ sollicitatieNummer: 2, plaatsId: '5', priority: FIRST_CHOICE })
-            ]
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '5', priority: FIRST_CHOICE }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -431,8 +419,8 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
             marktplaatsen: [plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2' }),
-                voorkeur({ sollicitatieNummer: 2, plaatsId: '2' })
-            ]
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '2' }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -449,13 +437,9 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
          *   en heeft een voorkeur geuit om op tweede plaats te staan
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
-            ondernemers: [
-                ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1'] })
-            ],
+            ondernemers: [ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1'] })],
             marktplaatsen: [plaats(), plaats()],
-            voorkeuren: [
-                voorkeur({ sollicitatieNummer: 1, plaatsId: '2' })
-            ]
+            voorkeuren: [voorkeur({ sollicitatieNummer: 1, plaatsId: '2' })],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -472,10 +456,10 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1'] }),
-                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['2'] })
+                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['2'] }),
             ],
             marktplaatsen: [plaats(), plaats()],
-            voorkeuren: [voorkeur({ sollicitatieNummer: 1, plaatsId: '2' })]
+            voorkeuren: [voorkeur({ sollicitatieNummer: 1, plaatsId: '2' })],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -494,14 +478,14 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, aanmelding, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 42, plaatsen: ['2'], status: 'vpl' }),
-                ondernemer({ sollicitatieNummer: 99 })
+                ondernemer({ sollicitatieNummer: 99 }),
             ],
             aanwezigheid: [
                 aanmelding({ sollicitatieNummer: 42, attending: false }),
-                aanmelding({ sollicitatieNummer: 99, attending: true })
+                aanmelding({ sollicitatieNummer: 99, attending: true }),
             ],
             marktplaatsen: [plaats(), plaats()],
-            voorkeuren: [voorkeur({ sollicitatieNummer: 99, plaatsId: '2' })]
+            voorkeuren: [voorkeur({ sollicitatieNummer: 99, plaatsId: '2' })],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -518,13 +502,13 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ status: 'vpl', plaatsen: ['1'] }),
-                ondernemer({ status: 'vpl', plaatsen: ['2'] })
+                ondernemer({ status: 'vpl', plaatsen: ['2'] }),
             ],
             marktplaatsen: [plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2' }),
-                voorkeur({ sollicitatieNummer: 2, plaatsId: '1' })
-            ]
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '1' }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -541,14 +525,14 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1'] }),
-                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['2'] })
+                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['2'] }),
             ],
             marktplaatsen: [plaats(), plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: SECOND_CHOICE }),
-                voorkeur({ sollicitatieNummer: 2, plaatsId: '1', priority: FIRST_CHOICE })
-            ]
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '1', priority: FIRST_CHOICE }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -566,15 +550,15 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1'] }),
                 ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['3'] }),
-                ondernemer({ sollicitatieNummer: 3, status: 'vpl', plaatsen: ['2'] })
+                ondernemer({ sollicitatieNummer: 3, status: 'vpl', plaatsen: ['2'] }),
             ],
             marktplaatsen: [plaats(), plaats(), plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: FIRST_CHOICE }),
                 voorkeur({ sollicitatieNummer: 2, plaatsId: '1', priority: FIRST_CHOICE }),
                 voorkeur({ sollicitatieNummer: 3, plaatsId: '1', priority: FIRST_CHOICE }),
-                voorkeur({ sollicitatieNummer: 3, plaatsId: '3', priority: SECOND_CHOICE })
-            ]
+                voorkeur({ sollicitatieNummer: 3, plaatsId: '3', priority: SECOND_CHOICE }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(3);
@@ -597,15 +581,15 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1'] }),
                 ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['2'] }),
-                ondernemer({ sollicitatieNummer: 3, status: 'vpl', plaatsen: ['3'] })
+                ondernemer({ sollicitatieNummer: 3, status: 'vpl', plaatsen: ['3'] }),
             ],
             marktplaatsen: [plaats(), plaats(), plaats(), plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '4', priority: FIRST_CHOICE }),
                 voorkeur({ sollicitatieNummer: 2, plaatsId: '1', priority: FIRST_CHOICE }),
                 voorkeur({ sollicitatieNummer: 3, plaatsId: '1', priority: FIRST_CHOICE }),
-                voorkeur({ sollicitatieNummer: 3, plaatsId: '5', priority: SECOND_CHOICE })
-            ]
+                voorkeur({ sollicitatieNummer: 3, plaatsId: '5', priority: SECOND_CHOICE }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(3);
@@ -624,13 +608,13 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1'] }),
-                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['2'] })
+                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['2'] }),
             ],
             marktplaatsen: [plaats(), plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2' }),
-                voorkeur({ sollicitatieNummer: 2, plaatsId: '3' })
-            ]
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '3' }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -648,14 +632,14 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1', '2'] }),
-                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['3'] })
+                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['3'] }),
             ],
             marktplaatsen: [plaats(), plaats(), plaats(), plaats(), plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '5', priority: FIRST_CHOICE }),
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '6', priority: SECOND_CHOICE }),
-                voorkeur({ sollicitatieNummer: 2, plaatsId: '5', priority: FIRST_CHOICE })
-            ]
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '5', priority: FIRST_CHOICE }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -668,13 +652,13 @@ describe('Een vasteplaatshouder die wil verplaatsen', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1', '2'] }),
-                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['3'] })
+                ondernemer({ sollicitatieNummer: 2, status: 'vpl', plaatsen: ['3'] }),
             ],
             marktplaatsen: [plaats(), plaats(), plaats(), plaats(), plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: FIRST_CHOICE }),
-                voorkeur({ sollicitatieNummer: 1, plaatsId: '4', priority: SECOND_CHOICE })
-            ]
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '4', priority: SECOND_CHOICE }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -693,7 +677,7 @@ describe('Een ondernemer die wil uitbreiden', () => {
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [ondernemer({ sollicitatieNummer: 1, voorkeur: { maximum: 2 } })],
-            marktplaatsen: [plaats(), plaats()]
+            marktplaatsen: [plaats(), plaats()],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -708,7 +692,7 @@ describe('Een ondernemer die wil uitbreiden', () => {
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [ondernemer({ sollicitatieNummer: 1, voorkeur: { maximum: 3 } })],
-            marktplaatsen: [plaats(), plaats(), plaats()]
+            marktplaatsen: [plaats(), plaats(), plaats()],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -719,7 +703,7 @@ describe('Een ondernemer die wil uitbreiden', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['3', '4'], voorkeur: { maximum: 4 } }),
-                ondernemer({ sollicitatieNummer: 2, voorkeur: { maximum: 3 } })
+                ondernemer({ sollicitatieNummer: 2, voorkeur: { maximum: 3 } }),
             ],
             marktplaatsen: [plaats(), plaats(), plaats(), plaats(), plaats(), plaats()],
             voorkeuren: [
@@ -729,9 +713,9 @@ describe('Een ondernemer die wil uitbreiden', () => {
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '6', priority: THIRD_CHOICE }),
                 voorkeur({ sollicitatieNummer: 2, plaatsId: '1', priority: FIRST_CHOICE }),
                 voorkeur({ sollicitatieNummer: 2, plaatsId: '2', priority: SECOND_CHOICE }),
-                voorkeur({ sollicitatieNummer: 2, plaatsId: '3', priority: THIRD_CHOICE })
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '3', priority: THIRD_CHOICE }),
             ],
-            expansionLimit: 3
+            expansionLimit: 3,
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -747,7 +731,7 @@ describe('Een ondernemer die wil uitbreiden', () => {
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [ondernemer({ sollicitatieNummer: 1, voorkeur: { minimum: 2 } })],
-            marktplaatsen: [plaats(), plaats()]
+            marktplaatsen: [plaats(), plaats()],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -765,10 +749,12 @@ describe('Een ondernemer die wil uitbreiden', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [ondernemer({ sollicitatieNummer: 1, voorkeur: { maximum: 3, branches: ['branche-x'] } })],
             marktplaatsen: [plaats(), plaats(), plaats()],
-            branches: [{
-                brancheId: 'branche-x',
-                maximumPlaatsen: 2
-            }]
+            branches: [
+                {
+                    brancheId: 'branche-x',
+                    maximumPlaatsen: 2,
+                },
+            ],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -784,7 +770,7 @@ describe('Een ondernemer die wil uitbreiden', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [ondernemer({ sollicitatieNummer: 1, voorkeur: { maximum: 2 } })],
             marktplaatsen: [plaats(), plaats()],
-            rows: [['1'], ['2']]
+            rows: [['1'], ['2']],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -804,8 +790,8 @@ describe('Een ondernemer die wil uitbreiden', () => {
             marktplaatsen: [plaats(), plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
-                voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: SECOND_CHOICE })
-            ]
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: SECOND_CHOICE }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -827,8 +813,8 @@ describe('Een ondernemer die wil uitbreiden', () => {
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: FIRST_CHOICE }),
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: SECOND_CHOICE }),
                 voorkeur({ sollicitatieNummer: 2, plaatsId: '5', priority: FIRST_CHOICE }),
-                voorkeur({ sollicitatieNummer: 2, plaatsId: '4', priority: SECOND_CHOICE })
-            ]
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '4', priority: SECOND_CHOICE }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -847,7 +833,7 @@ describe('Een ondernemer die wil uitbreiden', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ voorkeur: { maximum: 3 }, plaatsen: ['3', '4'], status: 'vpl' }),
-                ondernemer({ voorkeur: { maximum: 2 } })
+                ondernemer({ voorkeur: { maximum: 2 } }),
             ],
             marktplaatsen: [plaats(), plaats(), plaats(), plaats()],
             voorkeuren: [
@@ -855,8 +841,8 @@ describe('Een ondernemer die wil uitbreiden', () => {
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '4', priority: SECOND_CHOICE }),
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: THIRD_CHOICE }),
                 voorkeur({ sollicitatieNummer: 2, plaatsId: '1', priority: FIRST_CHOICE }),
-                voorkeur({ sollicitatieNummer: 2, plaatsId: '2', priority: SECOND_CHOICE })
-            ]
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '2', priority: SECOND_CHOICE }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -876,8 +862,8 @@ describe('Een ondernemer die wil uitbreiden', () => {
             marktplaatsen: [plaats(), plaats({ inactive: true }), plaats(), plaats()],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '1' }),
-                voorkeur({ sollicitatieNummer: 1, plaatsId: '2' })
-            ]
+                voorkeur({ sollicitatieNummer: 1, plaatsId: '2' }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(0);
@@ -896,13 +882,13 @@ describe('Een ondernemer die wil uitbreiden', () => {
             voorkeuren: [
                 voorkeur({
                     sollicitatieNummer: 1,
-                    plaatsId: '1'
+                    plaatsId: '1',
                 }),
                 voorkeur({
                     sollicitatieNummer: 2,
-                    plaatsId: '2'
-                })
-            ]
+                    plaatsId: '2',
+                }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -921,7 +907,7 @@ describe('Edge cases', () => {
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
             ondernemers: [ondernemer({ status: 'vpl', plaatsen: ['1', '2', '3'] })],
-            marktplaatsen: [plaats(), plaats({ inactive: true }), plaats()]
+            marktplaatsen: [plaats(), plaats({ inactive: true }), plaats()],
         }));
 
         // TODO: What should happen in this case?
@@ -935,12 +921,8 @@ describe('Edge cases', () => {
          * - 1 ondernemer die deze als vaste plaatsen heeft
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
-            ondernemers: [
-                ondernemer({ status: 'vpl', plaatsen: ['1', '2'] })
-            ],
-            marktplaatsen: [
-                plaats({ inactive: true }), plaats()
-            ]
+            ondernemers: [ondernemer({ status: 'vpl', plaatsen: ['1', '2'] })],
+            marktplaatsen: [plaats({ inactive: true }), plaats()],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -961,11 +943,8 @@ describe('Edge cases', () => {
          * - 1 sollicitant
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
-            ondernemers: [
-                ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1', '2'] }),
-                ondernemer()
-            ],
-            marktplaatsen: [plaats({ inactive: true }), plaats(), plaats()]
+            ondernemers: [ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1', '2'] }), ondernemer()],
+            marktplaatsen: [plaats({ inactive: true }), plaats(), plaats()],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -983,10 +962,8 @@ describe('Edge cases', () => {
          * - 1 ondernemer die deze als vaste plaatsen heeft
          */
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats }) => ({
-            ondernemers: [
-                ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['3', '4'] })
-            ],
-            marktplaatsen: [plaats(), plaats(), plaats({ inactive: true }), plaats()]
+            ondernemers: [ondernemer({ sollicitatieNummer: 1, status: 'vpl', plaatsen: ['3', '4'] })],
+            marktplaatsen: [plaats(), plaats(), plaats({ inactive: true }), plaats()],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -1013,20 +990,20 @@ describe('Edge cases', () => {
                 voorkeur({
                     sollicitatieNummer: 1,
                     plaatsId: '4',
-                    priority: FIRST_CHOICE
+                    priority: FIRST_CHOICE,
                 }),
                 voorkeur({
                     sollicitatieNummer: 1,
                     plaatsId: '1',
-                    priority: SECOND_CHOICE
+                    priority: SECOND_CHOICE,
                 }),
                 voorkeur({
                     sollicitatieNummer: 1,
                     plaatsId: '2',
-                    priority: THIRD_CHOICE
-                })
+                    priority: THIRD_CHOICE,
+                }),
             ],
-            rows: [['1', '2', '3', '4', '1']]
+            rows: [['1', '2', '3', '4', '1']],
         }));
 
         expect(toewijzingen.length).toBe(1);
@@ -1045,20 +1022,20 @@ describe('Edge cases', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, voorkeur: { maximum: 2 } }),
-                ondernemer({ sollicitatieNummer: 2, voorkeur: { maximum: 2, branches: ['branche-x'] } })
+                ondernemer({ sollicitatieNummer: 2, voorkeur: { maximum: 2, branches: ['branche-x'] } }),
             ],
             marktplaatsen: [
                 plaats(),
                 plaats(),
                 plaats({ branches: ['branche-x'] }),
-                plaats({ branches: ['branche-x'] })
+                plaats({ branches: ['branche-x'] }),
             ],
             voorkeuren: [
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '3', priority: FIRST_CHOICE }),
                 voorkeur({ sollicitatieNummer: 1, plaatsId: '2', priority: SECOND_CHOICE }),
                 voorkeur({ sollicitatieNummer: 2, plaatsId: '4', priority: FIRST_CHOICE }),
-                voorkeur({ sollicitatieNummer: 2, plaatsId: '3', priority: SECOND_CHOICE })
-            ]
+                voorkeur({ sollicitatieNummer: 2, plaatsId: '3', priority: SECOND_CHOICE }),
+            ],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -1076,10 +1053,10 @@ describe('Edge cases', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [
                 ondernemer({ sollicitatieNummer: 1, voorkeur: { maximum: 2 } }),
-                ondernemer({ sollicitatieNummer: 2, voorkeur: { maximum: 2 } })
+                ondernemer({ sollicitatieNummer: 2, voorkeur: { maximum: 2 } }),
             ],
             marktplaatsen: [plaats(), plaats(), plaats(), plaats()],
-            rows: [['1', '2'], ['3', '4']]
+            rows: [['1', '2'], ['3', '4']],
         }));
 
         expect(toewijzingen.length).toBe(2);
@@ -1092,7 +1069,7 @@ describe('Edge cases', () => {
         const { toewijzingen, afwijzingen } = calc(({ ondernemer, plaats, voorkeur }) => ({
             ondernemers: [ondernemer({ sollicitatieNummer: 1, voorkeur: { maximum: 2 } })],
             marktplaatsen: [plaats(), plaats()],
-            obstakels: [{ kraamA: '1', kraamB: '2', obstakel: ['boom'] }]
+            obstakels: [{ kraamA: '1', kraamB: '2', obstakel: ['boom'] }],
         }));
 
         expect(toewijzingen.length).toBe(1);

@@ -16,7 +16,7 @@ const {
     today,
     nextWeek,
     endOfWeek,
-    stringSort
+    stringSort,
 } = require('./util.ts');
 
 const DAPPERMARKT_ID = 16;
@@ -32,7 +32,7 @@ const slugs = {
     [PLEIN_40_45_ID]: 'plein-40-45',
     [WESTERSTRAAT_ID]: 'westerstraat',
     [REIGERSBOS_ID]: 'reigersbos',
-    [TUSSEN_MEER_ID]: 'tussen-meer'
+    [TUSSEN_MEER_ID]: 'tussen-meer',
 };
 
 const slugifyMarkt = marktId => slugs[marktId] || String(marktId);
@@ -44,7 +44,7 @@ const dagen = {
     wo: 3,
     do: 4,
     vr: 5,
-    za: 6
+    za: 6,
 };
 
 const parseMarktDag = dag => (dagen.hasOwnProperty(dag) ? dagen[dag] : -1);
@@ -56,7 +56,7 @@ const isoMarktDagen = {
     do: ISO_THURSDAY,
     vr: ISO_FRIDAY,
     za: ISO_SATURDAY,
-    zo: ISO_SUNDAY
+    zo: ISO_SUNDAY,
 };
 
 const A_LIJST_DAYS = [FRIDAY, SATURDAY, SUNDAY];
@@ -114,14 +114,14 @@ const filterRsvpList = (aanmeldingen, markt, startDate, endDate) => {
     const dates = getMarktDays(
         startDate ? startDate : addDays(Date.now(), 1),
         endDate ? endDate : addDays(endOfWeek(), DAYS_IN_WEEK),
-        (markt.marktDagen || []).map(parseMarktDag)
+        (markt.marktDagen || []).map(parseMarktDag),
     );
     const newAanmeldingen = aanmeldingen.sort((a, b) => b.updatedAt - a.updatedAt);
     // TODO: Replace non-pure `rsvpIndex` with grouping by `markt.id` afterwards
     const rsvpList = dates.map(date => ({
         date,
         rsvp: newAanmeldingen.find(aanmelding => aanmelding.marktDate === date),
-        index: rsvpIndex++
+        index: rsvpIndex++,
     }));
 
     return rsvpList;
@@ -170,5 +170,5 @@ module.exports = {
     obstakelsToLocatieKeyValue,
     filterRsvpList,
     plaatsSort,
-    isErkenningsnummer
+    isErkenningsnummer,
 };

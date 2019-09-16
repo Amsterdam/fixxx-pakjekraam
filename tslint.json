@@ -78,14 +78,7 @@
       }
     ],
     "variable-name": [true, "check-format", "allow-leading-underscore", "ban-keywords", "allow-pascal-case"],
-    "whitespace": [
-      false,
-      "check-branch",
-      "check-module",
-      "check-separator",
-      "check-type",
-      "check-preblock"
-    ],
+    "whitespace": [false, "check-branch", "check-module", "check-separator", "check-type", "check-preblock"],
     "array-bracket-spacing": false,
     "arrow-parens": false,
     "block-spacing": true,
@@ -126,6 +119,7 @@
     "valid-typeof": true
   },
   "jsRules": {
+    "no-magic-numbers": [false],
     "align": {
       "options": ["parameters", "statements"]
     },
@@ -199,12 +193,7 @@
       "options": ["ban-keywords", "check-format", "allow-pascal-case"]
     },
     "whitespace": {
-      "options": [
-        "check-branch",
-        "check-separator",
-        "check-type",
-        "check-typecast"
-      ]
+      "options": ["check-branch", "check-separator", "check-type", "check-typecast"]
     }
   }
 }

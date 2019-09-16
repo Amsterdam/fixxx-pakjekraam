@@ -10,7 +10,7 @@ const {
     formatDate,
     relativeHumanDay,
     endOfWeek,
-    addDays
+    addDays,
 } = require('../../util.ts');
 const { filterRsvpList, isVast } = require('../../domain-knowledge.js');
 
@@ -23,22 +23,22 @@ class AfmeldForm extends React.Component {
         endDate: PropTypes.string.isRequired,
         currentMarktId: PropTypes.string,
         query: PropTypes.string,
-        role: PropTypes.string
+        role: PropTypes.string,
     };
 
     render() {
         const { markten, ondernemer, currentMarktId, query, role, aanmeldingen } = this.props;
         const sollicitatie = ondernemer.sollicitaties.find(
-            soll => !soll.doorgehaald && String(soll.markt.id) === currentMarktId
+            soll => !soll.doorgehaald && String(soll.markt.id) === currentMarktId,
         );
         const markt = markten.find(m => String(m.id) === currentMarktId);
         const OFFSET = 5; // from 24:00 to 21:00
-        const now = addMinutes(new Date(), (MINUTES_IN_HOUR * OFFSET));
+        const now = addMinutes(new Date(), MINUTES_IN_HOUR * OFFSET);
 
         const rsvpEntries = filterRsvpList(
             aanmeldingen.filter(aanmelding => aanmelding.marktId === markt.id),
             markt,
-            role === 'marktmeester' ? now : addDays(now, 1)
+            role === 'marktmeester' ? now : addDays(now, 1),
         );
 
         const weekAanmeldingen = rsvpEntries.reduce(
@@ -51,12 +51,12 @@ class AfmeldForm extends React.Component {
                     index,
                     attending,
                     date,
-                    weekDay: formatDayOfWeek(date)
+                    weekDay: formatDayOfWeek(date),
                 });
 
                 return t;
             },
-            [[], []]
+            [[], []],
         );
 
         return (

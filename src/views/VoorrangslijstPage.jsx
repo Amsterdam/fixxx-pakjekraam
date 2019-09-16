@@ -20,7 +20,7 @@ class VoorrangslijstPage extends React.Component {
         type: PropTypes.string,
         user: PropTypes.object,
         toewijzingen: PropTypes.array.isRequired,
-        algemenevoorkeuren: PropTypes.array
+        algemenevoorkeuren: PropTypes.array,
     };
 
     render() {
@@ -33,7 +33,7 @@ class VoorrangslijstPage extends React.Component {
             type,
             user,
             toewijzingen,
-            algemenevoorkeuren
+            algemenevoorkeuren,
         } = this.props;
         let { ondernemers } = this.props;
         const aLijstSollNummers = aLijst.map(ondernemer => ondernemer.sollicitatieNummer);
@@ -48,13 +48,13 @@ class VoorrangslijstPage extends React.Component {
 
         ondernemers = ondernemers.filter(
             ondernemer =>
-                !toewijzingen.find(({ erkenningsNummer }) => erkenningsNummer === ondernemer.erkenningsNummer)
+                !toewijzingen.find(({ erkenningsNummer }) => erkenningsNummer === ondernemer.erkenningsNummer),
         );
 
         ondernemers = Ondernemers.sort(ondernemers, aLijst);
         ondernemers = [
             ...ondernemers.filter(ondernemer => Indeling.isAanwezig(aanmeldingen, ondernemer)),
-            ...ondernemers.filter(ondernemer => !Indeling.isAanwezig(aanmeldingen, ondernemer))
+            ...ondernemers.filter(ondernemer => !Indeling.isAanwezig(aanmeldingen, ondernemer)),
         ];
         const ondernemersErkenningsNummers = ondernemers.map(ondernemer => ondernemer.erkenningsNummer);
         const ondernemersRest = aLijstErkenningsNummers.filter(nr => !ondernemersErkenningsNummers.includes(nr));
@@ -80,7 +80,7 @@ class VoorrangslijstPage extends React.Component {
 
                     return total;
                 },
-                [[], [], [], []]
+                [[], [], [], []],
             )
             .map(group => paginate(paginate(group, itemsOnPage), 2));
         const titleBase = type === 'wenperiode' ? 'Sollicitanten' : 'Voorrangslijst';
@@ -88,7 +88,7 @@ class VoorrangslijstPage extends React.Component {
             `${titleBase} ${aLijstDay ? ', A lijst' : ''} aangemeld: ${markt.naam}`,
             `${titleBase} ${aLijstDay ? ', A lijst' : ''} niet aangemeld: ${markt.naam}`,
             `${titleBase} ${aLijstDay ? ', B lijst' : ''} aangemeld: ${markt.naam}`,
-            `${titleBase} ${aLijstDay ? ', B lijst' : ''} niet aangemeld: ${markt.naam}`
+            `${titleBase} ${aLijstDay ? ', B lijst' : ''} niet aangemeld: ${markt.naam}`,
         ];
         const plaatsvoorkeuren = voorkeuren.reduce((t, voorkeur) => {
             if (!t[voorkeur.erkenningsNummer]) {
@@ -139,7 +139,7 @@ class VoorrangslijstPage extends React.Component {
                                   ))}
                               </PrintPage>
                           ))
-                        : null
+                        : null,
                 )}
             </MarktDetailBase>
         );

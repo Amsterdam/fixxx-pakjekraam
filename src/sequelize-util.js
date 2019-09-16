@@ -4,12 +4,12 @@
  */
 const upsert = (model, where, data) =>
     model
-    .findOrCreate({
-        where,
-        defaults: data
-    })
-    .spread((inst, created) => (created ? inst : inst.update(data)));
+        .findOrCreate({
+            where,
+            defaults: data,
+        })
+        .spread((inst, created) => (created ? inst : inst.update(data)));
 
 module.exports = {
-    upsert
+    upsert,
 };

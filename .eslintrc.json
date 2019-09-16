@@ -226,10 +226,7 @@
     "operator-assignment": ["off"],
     "operator-linebreak": ["off", "before"],
     "padded-blocks": ["error", "never"],
-    "padding-line-between-statements": [
-        "off",
-        { "blankLine": "always", "prev": "*", "next": "return" }
-    ],
+    "padding-line-between-statements": ["off", { "blankLine": "always", "prev": "*", "next": "return" }],
     "prefer-arrow-callback": ["off"],
     "prefer-const": ["error"],
     "prefer-destructuring": ["off"],

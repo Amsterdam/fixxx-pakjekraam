@@ -9,6 +9,7 @@ import {
 } from '../pakjekraam-api';
 import { errorPage, getQueryErrors } from '../express-util';
 import { tomorrow, nextWeek } from '../util';
+// import { parse } from '@babel/core';
 // import { promises } from 'fs';
 
 export const vendorDashboardPage = (req: Request, res: Response, next: NextFunction, erkenningsNummer: string) => {
@@ -36,7 +37,7 @@ export const vendorDashboardPage = (req: Request, res: Response, next: NextFunct
         getToewijzingenByOndernemer(erkenningsNummer)
     ])
         .then(
-            ([ondernemer, markten, plaatsvoorkeuren, aanmeldingen, toewijzingen]) => {
+            ([ ondernemer, markten, plaatsvoorkeuren, aanmeldingen, toewijzingen ]) => {
 
                 res.render('OndernemerDashboard', {
                     ondernemer,
@@ -47,7 +48,7 @@ export const vendorDashboardPage = (req: Request, res: Response, next: NextFunct
                     endDate: nextWeek(),
                     messages,
                     toewijzingen,
-                    eggie: req.query.eggie || false,
+                    eggie: req.query.eggie ? JSON.parse(req.query.eggie) : false,
                 });
             },
             err => errorPage(res, err),

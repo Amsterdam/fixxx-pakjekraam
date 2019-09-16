@@ -3,22 +3,22 @@
 const Markt = require('./allocation/markt.ts').default;
 
 describe('Aanliggende plaatsen', () => {
-    const getAdjacent = (marketDef, placeIds, depth=1, obstakels) => {
+    const getAdjacent = (marketDef, placeIds, depth = 1, obstakels) => {
         const markt = {
-            rows          : marketDef.map(ids => ids.map(plaatsId => ({ plaatsId }))),
+            rows: marketDef.map(ids => ids.map(plaatsId => ({ plaatsId }))),
             obstakels,
-            marktId       : '0',
-            marktDate     : 'unused',
-            naam          : 'unused',
-            branches      : [],
-            marktplaatsen : [],
-            voorkeuren    : [],
-            ondernemers   : []
+            marktId: '0',
+            marktDate: 'unused',
+            naam: 'unused',
+            branches: [],
+            marktplaatsen: [],
+            voorkeuren: [],
+            ondernemers: [],
         };
 
         return Markt.getAdjacentPlaatsen(markt, placeIds, depth)
-        .map(({ plaatsId }) => plaatsId)
-        .sort();
+            .map(({ plaatsId }) => plaatsId)
+            .sort();
     };
 
     describe('Get adjacent for single place', () => {
@@ -70,7 +70,13 @@ describe('Aanliggende plaatsen', () => {
             expect(getAdjacent([['1', '2', '3', '4', '5', '6']], ['2', '3'])).toStrictEqual(['1', '4']);
             expect(getAdjacent([['1', '2', '3', '4', '5', '6']], ['2', '3'], 2)).toStrictEqual(['1', '4', '5']);
             expect(getAdjacent([['1', '2', '3', '4', '5', '6']], ['3', '4'], 2)).toStrictEqual(['1', '2', '5', '6']);
-            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '7', '8']], ['3', '4'], 3)).toStrictEqual(['1', '2', '5', '6', '7']);
+            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '7', '8']], ['3', '4'], 3)).toStrictEqual([
+                '1',
+                '2',
+                '5',
+                '6',
+                '7',
+            ]);
         });
     });
 
@@ -84,36 +90,77 @@ describe('Aanliggende plaatsen', () => {
             expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['1'])).toStrictEqual(['2', '6']);
             expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['1'], 2)).toStrictEqual(['2', '3', '5', '6']);
             expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['2'], 2)).toStrictEqual(['1', '3', '4', '6']);
-            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['1'], 3)).toStrictEqual(['2', '3', '4', '5', '6']);
+            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['1'], 3)).toStrictEqual([
+                '2',
+                '3',
+                '4',
+                '5',
+                '6',
+            ]);
             expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['6'])).toStrictEqual(['1', '5']);
             expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['6'], 2)).toStrictEqual(['1', '2', '4', '5']);
-            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['6'], 3)).toStrictEqual(['1', '2', '3', '4', '5']);
+            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['6'], 3)).toStrictEqual([
+                '1',
+                '2',
+                '3',
+                '4',
+                '5',
+            ]);
         });
 
         it('goes around when multi-place needle is at beginning/end', () => {
             expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['1', '2'])).toStrictEqual(['3', '6']);
-            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['1', '2'], 2)).toStrictEqual(['3', '4', '5', '6']);
-            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['1', '2'], 3)).toStrictEqual(['3', '4', '5', '6']);
+            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['1', '2'], 2)).toStrictEqual([
+                '3',
+                '4',
+                '5',
+                '6',
+            ]);
+            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['1', '2'], 3)).toStrictEqual([
+                '3',
+                '4',
+                '5',
+                '6',
+            ]);
             expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['5', '6'])).toStrictEqual(['1', '4']);
-            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['5', '6'], 2)).toStrictEqual(['1', '2', '3', '4']);
-            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['5', '6'], 3)).toStrictEqual(['1', '2', '3', '4']);
+            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['5', '6'], 2)).toStrictEqual([
+                '1',
+                '2',
+                '3',
+                '4',
+            ]);
+            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['5', '6'], 3)).toStrictEqual([
+                '1',
+                '2',
+                '3',
+                '4',
+            ]);
         });
 
         it('stops looking when depth is infinite', () => {
-            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['6'], Infinity)).toStrictEqual(['1', '2', '3', '4', '5']);
+            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['6'], Infinity)).toStrictEqual([
+                '1',
+                '2',
+                '3',
+                '4',
+                '5',
+            ]);
         });
     });
 
     describe('Get adjacent with obstacles', () => {
-        const obstacles = [{
-            kraamA   : '2',
-            kraamB   : '3',
-            obstakel : ['lantaarnpaal']
-        }, {
-            kraamA   : '6',
-            kraamB   : '1',
-            obstakel : ['lantaarnpaal']
-        }];
+        const obstacles = [
+            {
+                kraamA: '2',
+                kraamB: '3',
+                obstakel: ['lantaarnpaal'],
+            },
+            {
+                kraamA: '6',
+                kraamB: '1',
+                obstakel: ['lantaarnpaal'],
+            },
+        ];
 
         it('stops expanding at an obstacle in a linear row', () => {
             expect(getAdjacent([['1', '2', '3', '4', '5', '6']], ['2'], 1, obstacles)).toStrictEqual(['1']);
@@ -127,7 +174,11 @@ describe('Aanliggende plaatsen', () => {
             expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['2'], 1, obstacles)).toStrictEqual(['1']);
             expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['2'], 2, obstacles)).toStrictEqual(['1']);
             expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['1'], 2, obstacles)).toStrictEqual(['2']);
-            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['4'], 3, obstacles)).toStrictEqual(['3', '5', '6']);
+            expect(getAdjacent([['1', '2', '3', '4', '5', '6', '1']], ['4'], 3, obstacles)).toStrictEqual([
+                '3',
+                '5',
+                '6',
+            ]);
         });
     });
 });

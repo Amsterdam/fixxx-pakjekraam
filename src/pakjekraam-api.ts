@@ -54,7 +54,29 @@ const loadJSON = <T>(path: string, defaultValue: T = null): Promise<T> =>
         });
     });
 
+const toewijzingenPerDatum = (toewijzingen: IToewijzing[], row: Allocation): IToewijzing[] => {
+
+    const { marktId, marktDate, erkenningsNummer } = row;
+
+    const existing = toewijzingen.find(toewijzing => toewijzing.marktDate === marktDate);
+
+    const voorkeur: IToewijzing = {
+        marktId,
+        marktDate,
+        erkenningsNummer,
+        plaatsen: [...(existing ? existing.plaatsen : []), row.plaatsId],
+    };
+
+    if (existing) {
+        return [...toewijzingen.filter(toewijzing => toewijzing.marktDate !== marktDate), voorkeur];
+    } else {
+        return [...toewijzingen, voorkeur];
+    }
+
+};
+
 const groupAllocationRows = (toewijzingen: IToewijzing[], row: Allocation): IToewijzing[] => {
+
     const { marktId, marktDate, erkenningsNummer } = row;
 
     const existing = toewijzingen.find(toewijzing => toewijzing.erkenningsNummer === erkenningsNummer);
@@ -103,7 +125,9 @@ export const getToewijzingenByOndernemer = (erkenningsNummer: string): Promise<I
                 where: { erkenningsNummer },
                 raw: true,
             })
-            .then(toewijzingen => toewijzingen.reduce(groupAllocationRows, []));
+            .then(toewijzingen => {
+                return toewijzingen.reduce(toewijzingenPerDatum, []);
+            });
 
 export const getToewijzingenByOndernemerEnMarkt = (marktId: string, erkenningsNummer: string): Promise<IToewijzing[]> =>
     allocation
@@ -350,9 +374,11 @@ export const getMarktondernemersByMarkt = (marktId: string) =>
     );
 
 export const getIndelingslijstInput = (marktId: string, marktDate: string) => {
+
     const ondernemersPromise = getMarktondernemersByMarktMM(marktId).then(ondernemers =>
         ondernemers.filter(ondernemer => !ondernemer.doorgehaald).map(convertSollicitatie),
     );
+
     const voorkeurenPromise = getIndelingVoorkeuren(marktId, marktDate).then(voorkeuren =>
         voorkeuren.map(convertVoorkeur),
     );

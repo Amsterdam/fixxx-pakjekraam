@@ -54,7 +54,7 @@ const PlaatsVPH = ({ plaats, vph, first, aanmelding, markt, datum, type }) => {
         stn: '#C0C0C0',
         promo: '#C0C0C0',
         'eigen-materiaal': '#C0C0C0',
-        'kraam-8-meter': '#ff7700'
+        'kraam-8-meter': '#ff7700',
     };
 
     let plaatsProps = plaats.properties || [];
@@ -112,7 +112,7 @@ PlaatsVPH.propTypes = {
     markt: PropTypes.object.isRequired,
     datum: PropTypes.string,
     type: PropTypes.string,
-    plaatsvoorkeuren: PropTypes.object
+    plaatsvoorkeuren: PropTypes.object,
 };
 
 module.exports = PlaatsVPH;

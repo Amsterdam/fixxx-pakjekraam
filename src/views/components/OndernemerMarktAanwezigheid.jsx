@@ -8,6 +8,7 @@ const { isVast, formatOndernemerName } = require('../../domain-knowledge.js');
 const OndernemerMarktAanwezigheid = ({ markt, rsvpEntries, sollicitatie, ondernemer, toewijzingen }) => {
     const blockUrl = `../../afmelden/${markt.id}/`;
     const lastDivider = false;
+
     const weekAanmeldingen = rsvpEntries.reduce(
         (t, { date, rsvp, index }, i) => {
             const week = new Date(date) > new Date(endOfWeek()) ? 1 : 0;

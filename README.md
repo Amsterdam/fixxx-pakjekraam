@@ -27,4 +27,5 @@ Om de SCSS naar CSS te compilen draai je `npm run watch`. Als je de wijzigingen 
 
 Dit is niet nodig, je kunt de wijzigingen simpelweg in /src/public/js/script.js doen.
 
-### 
+### Concept indeling doen kan via volgende format:
+http://localhost:8080/markt/20/2019-09-10/concept-indelingslijst
