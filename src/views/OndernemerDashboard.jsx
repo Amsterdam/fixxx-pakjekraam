@@ -87,6 +87,8 @@ class OndernemerDashboard extends React.Component {
                                     toewijzingVandaag={markt.toewijzingVandaag}
                                     toewijzingMorgen={markt.toewijzingMorgen}
                                     eggie={eggie}
+                                    today={ today() }
+                                    tomorrow={ tomorrow() }
                                 />
                             </div>
                         ))}

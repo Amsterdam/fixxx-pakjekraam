@@ -2,13 +2,13 @@ const PropTypes = require('prop-types');
 const React = require('react');
 const AlertLine = require('./AlertLine');
 
-const Content = ({ time, eggie, aanmeldingVandaag, aanmeldingMorgen, toewijzingVandaag, toewijzingMorgen }) => {
+const Content = ({ time, eggie, today, tomorrow, aanmeldingVandaag, aanmeldingMorgen, toewijzingVandaag, toewijzingMorgen }) => {
     return (
         <div>
             {time.getHours() > 21 && time.getHours() < 24 ? (
                 <div className="OndernemerMarktTile__update-row">
                     <h4 className="OndernemerMarktTile__update-row__heading">
-                        Morgen ({aanmeldingMorgen.marktDate})
+                        Morgen ({tomorrow})
                         {aanmeldingMorgen.attending ? (
                             <span className="OndernemerMarktTile__update-row__status OndernemerMarktTile__update-row__status--aangemeld">
                                 {' '}
@@ -37,7 +37,7 @@ const Content = ({ time, eggie, aanmeldingVandaag, aanmeldingMorgen, toewijzingV
             {time.getHours() >= 0 && time.getHours() < 18 && aanmeldingVandaag ? (
                 <div className="OndernemerMarktTile__update-row">
                     <h4 className="OndernemerMarktTile__update-row__heading">
-                        Vandaag ({aanmeldingMorgen.marktDate})
+                        Vandaag ({today})
                         {aanmeldingVandaag.attending ? (
                             <span className="OndernemerMarktTile__update-row__status OndernemerMarktTile__update-row__status--aangemeld">
                                 {' '}
@@ -70,6 +70,8 @@ const Content = ({ time, eggie, aanmeldingVandaag, aanmeldingMorgen, toewijzingV
 Content.propTypes = {
     time: PropTypes.instanceOf(Date),
     eggie: PropTypes.bool,
+    today: PropTypes.string,
+    tomorrow: PropTypes.string,
     aanmeldingVandaag: PropTypes.object,
     aanmeldingMorgen: PropTypes.object,
     toewijzingVandaag: PropTypes.object,

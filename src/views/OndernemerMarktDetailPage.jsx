@@ -90,7 +90,7 @@ class OndernemerMarktDetailPage extends React.Component {
                         </Alert>
                     ) : null}
 
-                    <Uitslag time={new Date()} eggie={eggie} toewijzingVandaag={toewijzingVandaag} toewijzingMorgen={toewijzingMorgen} aanmeldingVandaag={aanmeldingVandaag} aanmeldingMorgen={aanmeldingMorgen}/>
+                    <Uitslag time={new Date()} today={today()} tomorrow={tomorrow()} eggie={eggie} toewijzingVandaag={toewijzingVandaag} toewijzingMorgen={toewijzingMorgen} aanmeldingVandaag={aanmeldingVandaag} aanmeldingMorgen={aanmeldingMorgen}/>
 
                     <div className="row row--responsive">
                         <div className="col-1-2">
