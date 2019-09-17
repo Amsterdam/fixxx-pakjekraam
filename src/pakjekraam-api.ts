@@ -135,7 +135,7 @@ export const getToewijzingenByOndernemerEnMarkt = (marktId: string, erkenningsNu
             where: { marktId, erkenningsNummer },
             raw: true,
         })
-        .then(toewijzingen => toewijzingen.reduce(groupAllocationRows, []));
+        .then(toewijzingen => toewijzingen.reduce(toewijzingenPerDatum, []));
 
 export const getToewijzingen = (marktId: string, marktDate: string): Promise<IToewijzing[]> =>
     allocation

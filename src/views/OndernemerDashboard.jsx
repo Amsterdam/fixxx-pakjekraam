@@ -26,9 +26,11 @@ class OndernemerDashboard extends React.Component {
         const { ondernemer, messages, plaatsvoorkeuren, markten, user, aanmeldingen, toewijzingen, eggie } = this.props;
 
         const marktenEnabled = markten.filter(m => m.enabled);
+
         const sollicitaties = ondernemer.sollicitaties.filter(soll => {
             return !soll.doorgehaald && marktenEnabled.map(markt => markt.id).includes(soll.markt.id);
         });
+
         const marktenPlusAanmelding = sollicitaties.map(sollicitatie => {
             const marktVoorSollicitatie = marktenEnabled.find(markt => markt.id == sollicitatie.markt.id);
             const aanmeldingenVoorDezeMarkt = aanmeldingen.filter(aanmelding => {
@@ -42,6 +44,7 @@ class OndernemerDashboard extends React.Component {
             );
             return marktVoorSollicitatie;
         });
+
         const marktenPlusToewijzing = marktenPlusAanmelding.map(markt => {
             const toewijzingenVoorDezeMarkt = toewijzingen.filter(toewijzing => {
                 return toewijzing.marktId == markt.id;
@@ -55,8 +58,6 @@ class OndernemerDashboard extends React.Component {
             markt.geopend = markt.marktDagen.includes(getMaDiWoDoOfToday());
             return markt;
         });
-
-        console.log(marktenPlusGeopend);
 
         return (
             <Page messages={messages}>
@@ -86,7 +87,6 @@ class OndernemerDashboard extends React.Component {
                                     toewijzingVandaag={markt.toewijzingVandaag}
                                     toewijzingMorgen={markt.toewijzingMorgen}
                                     eggie={eggie}
-                                    time={new Date()}
                                 />
                             </div>
                         ))}

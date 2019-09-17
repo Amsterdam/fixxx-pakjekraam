@@ -13,6 +13,7 @@ const { today, tomorrow, yesterday } = require('../util.ts');
 const Button = require('./components/Button');
 const Alert = require('./components/Alert');
 const AlertLine = require('./components/AlertLine');
+const Uitslag = require('./components/Uitslag');
 const { getMarktDays, parseMarktDag, filterRsvpList } = require('../domain-knowledge.js');
 
 class OndernemerMarktDetailPage extends React.Component {
@@ -58,6 +59,12 @@ class OndernemerMarktDetailPage extends React.Component {
             return toewijzing.marktDate == dateOfTomorrow;
         });
 
+        const aanmeldingVandaag = aanmeldingen.find(aanmelding => aanmelding.marktDate == today());
+        const aanmeldingMorgen = aanmeldingen.find(aanmelding => aanmelding.marktDate == tomorrow());
+        const toewijzingVandaag = toewijzingen.find(aanmelding => aanmelding.marktDate == today());
+        const toewijzingMorgen = toewijzingen.find(aanmelding => aanmelding.marktDate == tomorrow());
+        const time = new Date();
+
         return (
             <Page messages={messages}>
                 <Header user={ondernemer} logoUrl="../../dashboard/">
@@ -83,22 +90,8 @@ class OndernemerMarktDetailPage extends React.Component {
                         </Alert>
                     ) : null}
 
-                    {eggie && toewijzingTomorrow ? (
-                        <AlertLine
-                            title={`Morgen ingedeeld`}
-                            type="success"
-                            message={`Je bent morgen (${
-                                toewijzingTomorrow.marktDate
-                            }) voor de volgende plekken ingedeeld: ${toewijzingTomorrow.plaatsen.join(', ')}`}
-                            inline={true}
-                        />
-                    ) : eggie && !toewijzingTomorrow ? (
-                        <AlertLine
-                            title={`Uitslag indeling`}
-                            type="default"
-                            message={`Je bent morgen (nog) niet ingedeeld`}
-                        />
-                    ) : null}
+                    <Uitslag time={new Date()} eggie={eggie} toewijzingVandaag={toewijzingVandaag} toewijzingMorgen={toewijzingMorgen} aanmeldingVandaag={aanmeldingVandaag} aanmeldingMorgen={aanmeldingMorgen}/>
+
                     <div className="row row--responsive">
                         <div className="col-1-2">
                             <OndernemerMarktAanwezigheid
