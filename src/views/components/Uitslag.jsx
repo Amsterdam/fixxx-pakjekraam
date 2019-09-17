@@ -1,6 +1,7 @@
 const PropTypes = require('prop-types');
 const React = require('react');
 const AlertLine = require('./AlertLine');
+const { formatDate } = require('../../util.ts');
 
 const Content = ({ time, eggie, today, tomorrow, aanmeldingVandaag, aanmeldingMorgen, toewijzingVandaag, toewijzingMorgen }) => {
     return (
@@ -8,7 +9,7 @@ const Content = ({ time, eggie, today, tomorrow, aanmeldingVandaag, aanmeldingMo
             {time.getHours() > 21 && time.getHours() < 24 ? (
                 <div className="OndernemerMarktTile__update-row">
                     <h4 className="OndernemerMarktTile__update-row__heading">
-                        Morgen ({tomorrow})
+                        Morgen ({formatDate(tomorrow)})
                         {aanmeldingMorgen.attending ? (
                             <span className="OndernemerMarktTile__update-row__status OndernemerMarktTile__update-row__status--aangemeld">
                                 {' '}
@@ -37,7 +38,7 @@ const Content = ({ time, eggie, today, tomorrow, aanmeldingVandaag, aanmeldingMo
             {time.getHours() >= 0 && time.getHours() < 18 && aanmeldingVandaag ? (
                 <div className="OndernemerMarktTile__update-row">
                     <h4 className="OndernemerMarktTile__update-row__heading">
-                        Vandaag ({today})
+                        Vandaag ({formatDate(today)})
                         {aanmeldingVandaag.attending ? (
                             <span className="OndernemerMarktTile__update-row__status OndernemerMarktTile__update-row__status--aangemeld">
                                 {' '}
