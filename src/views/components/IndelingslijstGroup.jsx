@@ -18,6 +18,7 @@ const IndelingslijstGroup = ({
     plaatsvoorkeuren,
 }) => {
     let first = true;
+
     const renderPlaats = props => {
         return type === 'vasteplaatshouders' ? <PlaatsVPH {...props} /> : <Plaats {...props} />;
     };

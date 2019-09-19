@@ -100,7 +100,6 @@ class VoorrangslijstPage extends React.Component {
         }, {});
         const algemenevoorkeurenObject = algemenevoorkeuren.reduce((t, voorkeur) => {
             t[voorkeur.erkenningsNummer] = voorkeur;
-
             return t;
         }, {});
 

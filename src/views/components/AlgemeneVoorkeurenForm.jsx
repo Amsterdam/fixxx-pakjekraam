@@ -195,7 +195,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
                         <div className={`Fieldset ${advanced ? null : 'hidden'}`}>
                             <h2 className="Fieldset__header">Langdurige afwezigheid</h2>
                             <p className="InputField  InputField--text">
-                                <label class="Label" htmlFor="absentFrom">Ik ben afwezig vanaf: </label>
+                                <label className="Label" htmlFor="absentFrom">Ik ben afwezig vanaf: </label>
                                 <input
                                     id="absentFrom"
                                     type="text"
@@ -206,7 +206,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
                                 />
                             </p>
                             <p className="InputField InputField--text">
-                                <label class="Label" htmlFor="absentUntil">Ik ben afwezig tot:</label>
+                                <label className="Label" htmlFor="absentUntil">Ik ben afwezig tot:</label>
                                 <input
                                     id="absentUntil"
                                     type="text"

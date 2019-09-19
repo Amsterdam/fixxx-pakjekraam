@@ -182,6 +182,14 @@ export const isEqualArray = (a: any[], b: any[]): boolean => {
            a.every((value, index) => value === b[index]);
 };
 
+export const arrayToChunks = function(array: [], size: number) {
+    const results = [];
+    while (array.length) {
+      results.push(array.splice(0, size));
+    }
+    return results;
+  };
+
 export const paginate = <T>(arr: T[], count: number): T[][] => {
     return arr.reduce((t, a, i) => {
         !(i % count) && t.push([]);

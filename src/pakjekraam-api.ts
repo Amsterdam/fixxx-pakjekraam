@@ -535,7 +535,28 @@ export const getSollicitantenlijstInput = (marktId: string, date: string) =>
             voorkeuren,
             markt,
         };
+
     });
+
+export const getAfmeldingenVasteplaatshoudersInput = (marktId: string, marktDate: string) =>
+    Promise.all([
+        getMarktondernemersByMarkt(marktId),
+        getAanmeldingen(marktId, marktDate),
+        getPlaatsvoorkeuren(marktId),
+        getMarkt(marktId),
+        getALijst(marktId, marktDate),
+        getToewijzingen(marktId, marktDate),
+        getIndelingVoorkeuren(marktId),
+    ]).then(([ondernemers, aanmeldingen, voorkeuren, markt, aLijst, toewijzingen, algemenevoorkeuren]) => ({
+        ondernemers,
+        aanmeldingen,
+        voorkeuren,
+        markt,
+        aLijst,
+        toewijzingen,
+        algemenevoorkeuren,
+    }));
+
 
 export const getVoorrangslijstInput = (marktId: string, marktDate: string) =>
     Promise.all([

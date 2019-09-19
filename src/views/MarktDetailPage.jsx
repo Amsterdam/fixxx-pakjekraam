@@ -64,7 +64,12 @@ class MarktDetailPage extends React.Component {
                                     <ul className="LinkList">
                                         <li className="LinkList__item">
                                             <a href={`./${date}/indelingslijst/?type=wenperiode`} className="Link">
-                                                Afmeldingen vasteplaatshouders
+                                                Indelingslijst
+                                            </a>
+                                        </li>
+                                        <li className="LinkList__item">
+                                            <a href={`./${date}/concept-indelingslijst/?type=wenperiode`} className="Link">
+                                                Concept indelingslijst
                                             </a>
                                         </li>
                                         <li className="LinkList__item">
@@ -72,6 +77,11 @@ class MarktDetailPage extends React.Component {
                                                 {!A_LIJST_DAYS.includes(weekDayInt)
                                                     ? `Aanmeldingen sollicitanten`
                                                     : `A- en B lijst aanmeldingen sollicitanten`}
+                                            </a>
+                                        </li>
+                                        <li className="LinkList__item">
+                                            <a href={`./${date}/afmeldingen-vasteplaatshouders/`} className="Link">
+                                                Afmeldingen vasteplaatshouders
                                             </a>
                                         </li>
                                     </ul>
