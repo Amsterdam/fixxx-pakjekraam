@@ -74,14 +74,14 @@ export const initVoorkeur = (sequelize: Sequelize) => {
             type: DataTypes.BOOLEAN,
             allowNull: true,
         },
-        absentFrom: {
-            type: DataTypes.DATEONLY,
-            allowNull: true,
-        },
-        absentUntil: {
-            type: DataTypes.DATEONLY,
-            allowNull: true,
-        },
+        // absentFrom: {
+        //     type: DataTypes.DATEONLY,
+        //     allowNull: true,
+        // },
+        // absentUntil: {
+        //     type: DataTypes.DATEONLY,
+        //     allowNull: true,
+        // },
     };
 
     Voorkeur.init(attributes, {

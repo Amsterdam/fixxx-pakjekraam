@@ -1,8 +1,8 @@
-const React = require('react');
+import * as React from 'react';
 const EmailBase = require('./components/EmailBase.jsx');
 const EmailContent = require('./components/EmailContent.jsx');
 
-class EmailPage extends React.Component {
+export class EmailPage extends React.Component {
     render() {
         return (
             <EmailBase lang="nl" appName={`Kies je kraam`} domain={`kiesjekraam.amsterdam.nl`} subject={`Onderwerp`}>
@@ -34,4 +34,4 @@ class EmailPage extends React.Component {
     }
 }
 
-module.exports = EmailPage;
+export default EmailPage;
