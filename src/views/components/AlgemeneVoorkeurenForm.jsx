@@ -145,9 +145,8 @@ class AlgemeneVoorkeurenForm extends React.Component {
                             <label htmlFor="inrichting">Ja, ik kom met een eigen verkoopwagen/eigen materiaal.</label>
                         </p>
                     </div>
-                    {/* <div className={`Fieldset ${advanced ? null : 'hidden'}`}>
+                    <div className="hidden">
                         <h2 className="Fieldset__header">Hoeveel plaatsen hebt u echt nodig?</h2>
-
                         <p className="InputField InputField--number">
                             <label htmlFor="minimum" className="Label">
                                 Minimaal aantal kramen:
@@ -161,12 +160,11 @@ class AlgemeneVoorkeurenForm extends React.Component {
                                 width={5}
                             />
                         </p>
-                    </div> */}
-                    {/* <div className={`Fieldset ${advanced ? null : 'hidden'}`}>
+                    </div>
+                    <div className="hidden">
                         <h2 className="Fieldset__header">
                             Als er ruimte is, hoeveel plaatsen zou je graag in totaal willen?
                         </h2>
-
                         <p className="InputField InputField--number">
                             <label htmlFor="maximum" className="Label">
                                 Maximaal aantal kramen:
@@ -180,7 +178,7 @@ class AlgemeneVoorkeurenForm extends React.Component {
                                 width={5}
                             />
                         </p>
-                    </div> */}
+                    </div>
                     {/* {vast ? (
                         <div className={`Fieldset ${advanced ? null : 'hidden'}`}>
                             <h2 className="Fieldset__header">Op welke dagen kom je normaal gesproken?</h2>
