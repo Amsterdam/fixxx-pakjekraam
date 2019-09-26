@@ -18,6 +18,10 @@ class Page extends React.Component {
                     <title>{this.props.title || 'Kies je kraam'}</title>
                     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
                     <link rel="stylesheet" type="text/css" href="/style/screen.css" />
+                    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+                    <link rel="icon" type="image/png" href="/favicon_32x32.png" sizes="32x32" />
+                    <link rel="icon" type="image/png" href="/favicon_192×192.png" sizes="192×192" />
+                    <link rel="shortcut icon" href="/favicon.ico" />
                 </head>
                 <body className={this.props.bodyClass}>
                     {(this.props.messages || []).map(message => (
