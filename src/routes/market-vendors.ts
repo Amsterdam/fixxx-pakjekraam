@@ -39,10 +39,9 @@ export const afmeldingenVasteplaatshoudersPage = (req: Request, res: Response, n
             ([data]) => {
 
                 const { ondernemers, aanmeldingen } = data;
-
                 const vasteplaatshouders = ondernemers.filter(ondernemer => ondernemer.status === 'vpl');
                 const vasteplaatshoudersAfwezig = vasteplaatshouders.filter( ondernemer => {
-                    !Indeling.isAanwezig(ondernemer, aanmeldingen, datum);
+                    return !Indeling.isAanwezig(ondernemer, aanmeldingen, new Date(datum));
                 });
 
                 res.render('AfmeldingenVasteplaatshoudersPage', {
