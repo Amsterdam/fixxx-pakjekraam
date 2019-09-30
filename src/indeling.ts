@@ -18,6 +18,11 @@ import Ondernemer from './allocation/ondernemer';
  */
 
 export const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktindeling => {
+    const marktDate = new Date(markt.marktDate);
+    if (!+marktDate) {
+        throw Error('Invalid market date');
+    }
+
     let indeling: IMarktindeling = {
         ...markt,
         toewijzingQueue: [],

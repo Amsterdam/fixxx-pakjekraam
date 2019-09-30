@@ -24,6 +24,7 @@ export interface IMarktScenario {
 }
 
 export interface IMarktScenarioStub {
+    marktDate?: string,
     aanwezigheid?: IRSVP[];
     marktplaatsen?: IMarktplaats[];
     ondernemers?: IMarktondernemer[];
@@ -57,7 +58,7 @@ export interface IPlaatsvoorkeurStub {
 }
 
 export interface IRSVPStub {
-    plaatsId: string;
+    // plaatsId: string;
     erkenningsNummer?: string;
     sollicitatieNummer?: number;
     attending?: boolean;
