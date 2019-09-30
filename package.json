@@ -32,7 +32,7 @@
     "lint-non-npm": "git ls-files '*.yml' | tr '\n' '\\0' | xargs -0 yamllint",
     "prewatch": "npm run clean && npm run build",
     "mailing-list": "ts-node src/mailing-list.tsx",
-    "mail-test": "( . .env && ts-node src/mailing-test.tsx)",
+    "mail-test": "( . .env && ts-node src/mailing-list.tsx)",
     "watch": "gulp watch"
   },
   "author": "",
