@@ -208,16 +208,14 @@ const Indeling = {
         aanmeldingen: IRSVP[],
         marktDate: Date
     ) => {
+        const { absentFrom = null, absentUntil = null } = ondernemer.voorkeur || {};
 
-        // Als een ondernemer (of marktmeester) zijn afwezigheid heeft ingevuld
-        if ( Boolean(ondernemer.voorkeur.absentFrom) && Boolean(ondernemer.voorkeur.absentUntil) ) {
-            const absentFrom = new Date(ondernemer.voorkeur.absentFrom);
-            const absentUntil = new Date(ondernemer.voorkeur.absentUntil);
-            // En de marktdatum valt binnen de afwezig vanaf en afwezig tot, geeft de functie false terug
-            if (marktDate >= absentFrom && marktDate <= absentUntil) {
-                console.log(`${ondernemer.description} is voor langere tijd afwezig`);
-                return false;
-            }
+        if (
+            absentFrom && absentUntil &&
+            marktDate >= new Date(absentFrom) &&
+            marktDate <= new Date(absentUntil)
+        ) {
+            return false;
         }
 
         const rsvp = aanmeldingen.find(aanmelding =>

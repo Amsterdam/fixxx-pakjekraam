@@ -9,14 +9,14 @@ import {
 } from './indeling-scenario.model';
 
 import {
-    log
 } from './util';
 
 const VOORKEUR_MINIMUM_PRIORITY = 0;
 const VOORKEUR_DEFAULT_PRIORITY = VOORKEUR_MINIMUM_PRIORITY + 1;
 
 const isVast = (status: DeelnemerStatus): boolean =>
-    status === DeelnemerStatus.VASTE_PLAATS || status === DeelnemerStatus.TIJDELIJKE_VASTE_PLAATS;
+    status === DeelnemerStatus.VASTE_PLAATS ||
+    status === DeelnemerStatus.TIJDELIJKE_VASTE_PLAATS;
 
 const ondernemerAanmelding = (ondernemer: IMarktondernemer, marktId: string, marktDate: string): IRSVP => ({
     marktId,
@@ -30,8 +30,8 @@ const ondernemerAanmelding = (ondernemer: IMarktondernemer, marktId: string, mar
  */
 const deFactoAanmeldingen = (ondernemers: IMarktondernemer[], marktId: string, marktDate: string): IRSVP[] =>
     ondernemers
-        .filter(ondernemer => isVast(ondernemer.status))
-        .map(ondernemer => ondernemerAanmelding(ondernemer, marktId, marktDate));
+    .filter(ondernemer => isVast(ondernemer.status))
+    .map(ondernemer => ondernemerAanmelding(ondernemer, marktId, marktDate));
 
 /*
  * Compare RSVP objects, return `true` when they are about the same RSVP
@@ -194,8 +194,6 @@ const marktScenario = (callback: (utils: scenarioUtils) => IMarktScenarioStub): 
             ondernemerAanmelding(ondernemer, markt.marktId, markt.marktDate)
         );
     }
-
-    log(markt);
 
     return markt;
 };

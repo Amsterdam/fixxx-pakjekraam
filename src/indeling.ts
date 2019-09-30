@@ -34,8 +34,10 @@ export const calcToewijzingen = (markt: IMarkt & IMarktindelingSeed): IMarktinde
     };
 
     indeling.toewijzingQueue = indeling.ondernemers
-        .filter(ondernemer => Indeling.isAanwezig(ondernemer, indeling.aanwezigheid, new Date(indeling.marktDate) ))
-        .sort((a, b) => Ondernemers.compare(a, b, indeling.aLijst));
+    .filter(ondernemer =>
+        Indeling.isAanwezig(ondernemer, indeling.aanwezigheid, new Date(indeling.marktDate))
+    )
+    .sort((a, b) => Ondernemers.compare(a, b, indeling.aLijst));
 
     // Stap 1: Deel vasteplaatshouders in
     // ----------------------------------
