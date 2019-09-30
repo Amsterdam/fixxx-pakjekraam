@@ -9,6 +9,7 @@ import {
 } from './indeling-scenario.model';
 
 import {
+    flatten
 } from './util';
 
 const VOORKEUR_MINIMUM_PRIORITY = 0;
@@ -164,13 +165,19 @@ const marktScenario = (callback: (utils: scenarioUtils) => IMarktScenarioStub): 
     };
 
     if (seed.rows) {
+        if (!markt.marktplaatsen.length) {
+            markt.marktplaatsen = seed.rows
+            .reduce(flatten, [])
+            .reduce((a, b) => a.includes(b) ? a : [...a, b], [])
+            .map(plaatsId => ({ plaatsId }));
+        }
         markt.rows = seed.rows.map(row =>
             row.map(plaatsRef => markt.marktplaatsen.find(({ plaatsId }) => plaatsId === plaatsRef))
         );
     } else {
         /*
          * When no physical distribution is provided,
-         * assume there is one big row that is ordered by `plaatsId` in alphanumeric order.
+         * assume there is one big row that is ordered by `plaatsId` in numeric order.
          */
         markt.rows = [
             [...markt.marktplaatsen].sort((plaatsA, plaatsB) => Number(plaatsA.plaatsId) - Number(plaatsB.plaatsId))
