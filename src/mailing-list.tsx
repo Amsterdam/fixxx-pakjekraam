@@ -1,8 +1,8 @@
-// import * as React from 'react';
-// import { EmailIndeling } from './views/EmailIndeling';
+import * as React from 'react';
+import { EmailIndeling } from './views/EmailIndeling';
 import { defer } from 'rxjs';
 import { shareReplay, tap, combineLatest } from 'rxjs/operators';
-// import { mail } from './mail.js';
+import { mail } from './mail.js';
 import { requireEnv, tomorrow } from './util';
 import {
     getAanmeldingen,
@@ -54,73 +54,68 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                     console.log('Marktondernemers', ondernemers ? ondernemers.length : 0);
                     console.log('Toewijzingen', toewijzingen ? toewijzingen.length : 0);
 
-                    // console.log(ondernemers);
-
                     const registeredUsers = users
-                        .filter( username => ondernemers.some( erkenningsNummer  => erkenningsNummer === username) )
-                        .filter(user => Boolean(user.email));
+                        .filter(({ username }) =>
+                            ondernemers.some(({ erkenningsNummer }) => erkenningsNummer === username.replace('.','') ),
+                        )
+                        .filter(user => !!user.email);
 
-                    console.log(registeredUsers);
+                    console.log(
+                        'Geregistreerde marktondernemers met e-mail',
+                        registeredUsers ? registeredUsers.length : 0,
+                    );
 
-                    // console.log(
-                    //     'Geregistreerde marktondernemers met e-mail',
-                    //     registeredUsers ? registeredUsers.length : 0,
-                    // );
+                    toewijzingen
+                        .map(toewijzing => {
+                            const ondernemer = ondernemers.find(
+                                ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer,
+                            );
+                            const user = users.find(({ username }) => username.replace('.','') === toewijzing.erkenningsNummer);
 
-                    // toewijzingen
-                    //     .map(toewijzing => {
-                    //         const ondernemer = ondernemers.find(
-                    //             ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer,
-                    //         );
-                    //         const user = users.find(({ username }) => username === toewijzing.erkenningsNummer);
+                            return {
+                                toewijzing,
+                                ondernemer,
+                                user,
+                            };
+                        })
+                        .filter(({ user }) => !!user && !!user.email)
+                        .map(({ ondernemer, user, toewijzing }) => {
+                            const props = {
+                                markt,
+                                marktplaatsen,
+                                marktDate,
+                                ondernemer,
+                                voorkeuren: plaatsvoorkeuren,
+                                aanmeldingen,
+                                branches,
+                                toewijzing,
+                            };
 
-                    //         return {
-                    //             toewijzing,
-                    //             ondernemer,
-                    //             user,
-                    //         };
-                    //     })
-                    //     .filter(({ user }) => !!user && !!user.email)
-                    //     .map(({ ondernemer, user, toewijzing }) => {
-                    //         const props = {
-                    //             markt,
-                    //             marktplaatsen,
-                    //             marktDate,
-                    //             ondernemer,
-                    //             voorkeuren: plaatsvoorkeuren,
-                    //             aanmeldingen,
-                    //             branches,
-                    //             toewijzing,
-                    //         };
+                            console.log(
+                                `Stuur e-mail naar ${user.email}! Ondernemer is ingedeeld op plaats ${
+                                    toewijzing.plaatsen
+                                }`,
+                            );
 
-                    //         console.log(
-                    //             `Stuur e-mail naar ${user.email}! Ondernemer is ingedeeld op plaats ${
-                    //                 toewijzing.plaatsen
-                    //             }`,
-                    //         );
+                            const subject = `${markt.naam} indeling voor ${marktDate}`;
 
-                    //         const subject = `${markt.naam} indeling voor ${marktDate}`;
-
-                    //         console.log(subject);
-
-                    //         const testEmail = {
-                    //             from: process.env.MAILER_FROM,
-                    //             to: user.email,
-                    //             subject,
-                    //             react: <EmailIndeling {...props} />,
-                    //         };
-
-                    //         mail(testEmail).then(
-                    //             () => {
-                    //                 console.log('E-mail is verstuurd.');
-                    //                 process.exit(0);
-                    //             },
-                    //             (err: Error) => {
-                    //                 console.error('E-mail sturen mislukt.', err);
-                    //                 process.exit(1);
-                    //             },
-                    //         );
-                    //     });
+                            const testEmail = {
+                                from: process.env.MAILER_FROM,
+                                to: user.email,
+                                subject,
+                                react: <EmailIndeling {...props} />,
+                            };
+                            mail(testEmail).then(
+                                () => {
+                                    console.log('E-mail is verstuurd.');
+                                    process.exit(0);
+                                },
+                                (err: Error) => {
+                                    console.error('E-mail sturen mislukt.', err);
+                                    process.exit(1);
+                                },
+                            );
+                        });
                 }),
             ),
     ),

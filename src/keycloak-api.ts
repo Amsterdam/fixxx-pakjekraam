@@ -39,7 +39,7 @@ export const userExists = (username: string): Promise<boolean> =>
         .then(requireOne)
         .then(() => true, () => false);
 
-export const getAllUsers = () => getKeycloakAdmin().then(kcAdminClient => kcAdminClient.users.find());
+export const getAllUsers = () => getKeycloakAdmin().then(kcAdminClient => kcAdminClient.users.find({ max: -1 }));
 
 module.exports = {
     getAllUsers,
