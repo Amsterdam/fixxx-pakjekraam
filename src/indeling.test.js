@@ -6,6 +6,8 @@
 const { calcToewijzingen } = require('./indeling.ts');
 const { marktScenario } = require('./indeling-scenario.ts');
 
+const { pluck } = require('./util.ts');
+
 const FIRST_CHOICE = Number.MAX_SAFE_INTEGER;
 const SECOND_CHOICE = FIRST_CHOICE - 1;
 const THIRD_CHOICE = FIRST_CHOICE - 2;
@@ -230,12 +232,47 @@ describe('Een VPH die ingedeeld wil worden', () => {
     });
 });
 
+describe('Een VPH die niet ingedeeld wil worden', () => {
+    it('kan zijn aanwezigheid voor een bepaalde periode uitschakelen', () => {
+        const { toewijzingen, afwijzingen, openPlaatsen } = calc({
+            marktDate: '2019-02-01',
+            ondernemers: [
+                { sollicitatieNummer: 1, status: 'vpl', plaatsen: ['1'], voorkeur: {
+                    absentFrom: new Date('2019-01-29'),
+                    absentUntil: new Date('2019-02-02')
+                } },
+                { sollicitatieNummer: 2, status: 'vpl', plaatsen: ['2'], voorkeur: {
+                    absentFrom: new Date('2019-01-29'),
+                    absentUntil: new Date('2019-02-01')
+                } },
+                { sollicitatieNummer: 3, status: 'vpl', plaatsen: ['3'], voorkeur: {
+                    absentFrom: new Date('2019-02-01'),
+                    absentUntil: new Date('2019-02-03')
+                } },
+                { sollicitatieNummer: 4, status: 'vpl', plaatsen: ['4'], voorkeur: {
+                    absentFrom: new Date('2019-01-29'),
+                    absentUntil: new Date('2019-01-31')
+                } },
+                { sollicitatieNummer: 5, status: 'vpl', plaatsen: ['5'], voorkeur: {
+                    absentFrom: new Date('2019-02-02'),
+                    absentUntil: new Date('2019-02-03')
+                } }
+            ],
+            marktplaatsen: [{}, {}, {}, {}, {}]
+        });
+
+        expect(findOndernemers(toewijzingen)).toStrictEqual([4, 5]);
+        expect(findOndernemers(afwijzingen)).toStrictEqual([]);
+        expect(pluck(openPlaatsen, 'plaatsId')).toStrictEqual(['1', '2', '3']);
+    });
+});
+
 describe('Een VPH die wil verplaatsen', () => {
     it('mag dit voor sollicitanten worden ingedeeld', () => {
         const { toewijzingen, afwijzingen } = calc({
             ondernemers: [
                 { sollicitatieNummer: 1 },
-                { sollicitatieNummer: 2, plaatsen: ['1'], status: 'vpl' }
+                { sollicitatieNummer: 2, status: 'vpl', plaatsen: ['1'] }
             ],
             marktplaatsen: [{}, {}],
             voorkeuren: [

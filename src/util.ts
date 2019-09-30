@@ -168,6 +168,12 @@ export const arrayToObject = <T, K extends keyof T>(array: T[], keyField: K): { 
     }, {});
 };
 
+export const pluck = <T>(array: T[], key: string): any[] => {
+    return array.reduce((result: any[], el: { [index: string]: any }): any => {
+        return key in el ? result.concat(el[key]) : result;
+    }, []);
+};
+
 export const count = <T>(arrayMaybe: T | T[]): number => {
     return arrayMaybe ? (Array.isArray(arrayMaybe) ? arrayMaybe.length : 1) : 0;
 };
