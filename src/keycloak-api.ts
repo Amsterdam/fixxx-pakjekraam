@@ -36,7 +36,10 @@ export const getKeycloakAdmin = () => {
 export const userExists = (username: string): Promise<boolean> =>
     getKeycloakAdmin()
         .then(kcAdminClient => kcAdminClient.users.findOne({ username } as any))
-        .then(requireOne)
+        .then( user => {
+            console.log(user);
+            return requireOne(user);
+        })
         .then(() => true, () => false);
 
 export const getAllUsers = () => getKeycloakAdmin().then(kcAdminClient => kcAdminClient.users.find({ max: -1 }));

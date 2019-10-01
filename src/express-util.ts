@@ -18,7 +18,10 @@ export const publicErrors = {
     PLAATSVOORKEUREN_SAVED: 'plaatsvoorkeuren-saved',
     ALGEMENE_VOORKEUREN_SAVED: 'algemene-voorkeuren-saved',
     ACTIVATION_FAILED: 'activation-failed',
+    ACTIVATION_CODE_NOT_SET: 'activation-code-not-set',
     NON_MATCHING_PASSWORDS: 'non-matching-passwords',
+    ACCOUNT_EXISTS_ALREADY: 'account-exists-already',
+    USERNAME_CONTAINS_DOT: 'account-exists-already',
 };
 
 const humanReadableMessage = {
@@ -28,8 +31,12 @@ const humanReadableMessage = {
     [publicErrors.ALGEMENE_VOORKEUREN_SAVED]: 'Uw marktprofiel is bewaard',
     [publicErrors.ACTIVATION_FAILED]:
         'De ingevoerde activatie-code klopt niet of is verlopen. Controleer de ingevulde gegevens.',
+    [publicErrors.ACCOUNT_EXISTS_ALREADY]:
+        'Het account met dit registratienummer bestaat al.',
     [publicErrors.NON_MATCHING_PASSWORDS]: `De ingevoerde wachtwoorden komen niet overeen.
         Let op dat u geen fout maakt bij het kiezen van een wachtwoord.`,
+    [publicErrors.ACTIVATION_CODE_NOT_SET]: 'U heeft geen activatie-code ingevoerd.',
+    [publicErrors.USERNAME_CONTAINS_DOT]: 'De ingevoerde gebruiksnaam mag geen punt bevatten.',
 };
 
 export const httpErrorPage = (res: Response, errorCode: number) => (err: Error | string) => {

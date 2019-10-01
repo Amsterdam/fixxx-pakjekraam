@@ -21,6 +21,7 @@ class ActivateForm extends React.Component {
                             id="username"
                             name="username"
                             autoComplete="username"
+                            required
                             defaultValue={this.props.username}
                         />
                     </p>
@@ -33,6 +34,7 @@ class ActivateForm extends React.Component {
                             id="code"
                             name="code"
                             type="code"
+                            required
                             defaultValue={this.props.code}
                         />
                     </p>

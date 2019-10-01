@@ -125,10 +125,12 @@ export const getALijst = (marktId: string, marktDate: string): Promise<MMOnderne
 export const checkActivationCode = (username: string, code: string): Promise<any> =>
     getMarktondernemer(username).then(
         ondernemer => {
+            console.log(ondernemer);
             if (!ondernemer.pasUid) {
                 // This method of activation only works for people with a `pasUid`
                 throw new Error('Incorrect username/password');
             } else {
+                // console.log(ondernemer);
                 return {
                     isValid: typeof code === 'string' && code.length > 0 && code === ondernemer.pasUid,
                     erkenningsNummer: ondernemer.erkenningsnummer,
