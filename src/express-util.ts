@@ -36,7 +36,7 @@ const humanReadableMessage = {
     [publicErrors.NON_MATCHING_PASSWORDS]: `De ingevoerde wachtwoorden komen niet overeen.
         Let op dat u geen fout maakt bij het kiezen van een wachtwoord.`,
     [publicErrors.ACTIVATION_CODE_NOT_SET]: 'U heeft geen activatie-code ingevoerd.',
-    [publicErrors.USERNAME_CONTAINS_DOT]: 'De ingevoerde gebruiksnaam mag geen punt bevatten.',
+    [publicErrors.USERNAME_CONTAINS_DOT]: 'Het ingevoerde registratienummer mag geen punt bevatten.',
 };
 
 export const httpErrorPage = (res: Response, errorCode: number) => (err: Error | string) => {
