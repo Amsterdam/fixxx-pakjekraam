@@ -56,7 +56,7 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
 
                     const registeredUsers = users
                         .filter(({ username }) =>
-                            ondernemers.some(({ erkenningsNummer }) => erkenningsNummer === username.replace('.','') ),
+                            ondernemers.some(({ erkenningsNummer }) => erkenningsNummer.replace('.','') === username.replace('.','') ),
                         )
                         .filter(user => !!user.email);
 
@@ -68,10 +68,11 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                     toewijzingen
                         .map(toewijzing => {
                             const ondernemer = ondernemers.find(
-                                ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer,
+                                ({ erkenningsNummer }) => erkenningsNummer.replace('.','') === toewijzing.erkenningsNummer.replace('.',''),
                             );
-                            const user = users.find(({ username }) => username.replace('.','') === toewijzing.erkenningsNummer);
-
+                            const user = users.find(
+                                ({ username }) => username.replace('.','') === toewijzing.erkenningsNummer.replace('.','')
+                            );
                             return {
                                 toewijzing,
                                 ondernemer,

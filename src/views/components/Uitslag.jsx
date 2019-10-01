@@ -19,15 +19,9 @@ const Content = ({ time, eggie, today, tomorrow, aanmeldingVandaag, aanmeldingMo
                     <h4 className="OndernemerMarktTile__update-row__heading">
                         Morgen ({formatDate(tomorrow)})
                         {aanmeldingMorgen.attending ? (
-                            <span className="OndernemerMarktTile__update-row__status OndernemerMarktTile__update-row__status--aangemeld">
-                                {' '}
-                                aangemeld
-                            </span>
+                            <span className="OndernemerMarktTile__update-row__status OndernemerMarktTile__update-row__status--aangemeld">aangemeld</span>
                         ) : (
-                            <span className="OndernemerMarktTile__update-row__status OndernemerMarktTile__update-row__status--niet-aangemeld">
-                                {' '}
-                                niet aangemeld
-                            </span>
+                            <span className="OndernemerMarktTile__update-row__status OndernemerMarktTile__update-row__status--niet-aangemeld">niet aangemeld</span>
                         )}
                     </h4>
                     {!toewijzingMorgen && eggie ? (
