@@ -15,9 +15,6 @@ export const activationPage = (req: Request, res: Response) => {
 export const handleActivation = (req: Request, res: Response) => {
     const { username, code } = req.body;
 
-    console.log(code);
-    console.log(username);
-
     if (username.includes('.')) {
         console.log('Username can not contains dots');
         res.redirect(
