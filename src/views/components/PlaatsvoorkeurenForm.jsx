@@ -25,7 +25,7 @@ class PlaatsvoorkeurenForm extends React.Component {
         const defaultVoorkeur = {
             minimum: defaultPlaatsCount,
             maximum: defaultPlaatsCount,
-            anwhere: true,
+            anywhere: !isVast(sollicitatie.status),
             inactive: false,
         };
 
@@ -379,7 +379,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         id="anywhere"
                                         type="checkbox"
                                         name="anywhere"
-                                        defaultChecked={voorkeur.anywhere !== false}
+                                        defaultChecked={voorkeur.anywhere}
                                     />
                                     <label htmlFor="anywhere">
                                         {isVast(sollicitatie.status) ? (
