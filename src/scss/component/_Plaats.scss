@@ -20,6 +20,16 @@ $plaatsCellHeight: 16px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+
+        .Icon{
+            position: absolute;
+            left: 2px;
+            top: 2px;
+        }
+
+    }
+    &__prop-vph{
+        // padding-left: 1rem;
     }
     &__target {
         display: block;
@@ -121,7 +131,7 @@ $plaatsCellHeight: 16px;
     &__prop-soll {
         text-align: right;
         border-right: none;
-        width: 36px;
+        width: 39px;
         text-overflow: unset;
     }
     &__prop-naam {
