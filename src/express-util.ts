@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { stringify } from 'qs';
 
 interface ErrorMessage {
     code: string;
@@ -21,21 +22,23 @@ export const publicErrors = {
     ACTIVATION_CODE_NOT_SET: 'activation-code-not-set',
     NON_MATCHING_PASSWORDS: 'non-matching-passwords',
     ACCOUNT_EXISTS_ALREADY: 'account-exists-already',
-    USERNAME_CONTAINS_DOT: 'account-exists-already',
+    ACTIVATION_CODE_INCORRECT: 'activation-code-incorrect',
+    USERNAME_CONTAINS_DOT: 'username-contains-dots',
 };
 
 const humanReadableMessage = {
-    [publicErrors.INCORRECT_CREDENTIALS]: 'Uw gebruikersnaam of wachtwoord is incorrect',
+    [publicErrors.INCORRECT_CREDENTIALS]: 'Uw gebruikersnaam/registratienummer of wachtwoord is incorrect',
     [publicErrors.AANWEZIGHEID_SAVED]: 'Uw aan- of afmeldingen zijn bewaard',
     [publicErrors.PLAATSVOORKEUREN_SAVED]: 'Uw plaatsvoorkeuren zijn bewaard',
     [publicErrors.ALGEMENE_VOORKEUREN_SAVED]: 'Uw marktprofiel is bewaard',
     [publicErrors.ACTIVATION_FAILED]:
         'De ingevoerde activatie-code klopt niet of is verlopen. Controleer de ingevulde gegevens.',
-    [publicErrors.ACCOUNT_EXISTS_ALREADY]:
-        'Het account met dit registratienummer bestaat al.',
+    [publicErrors.ACTIVATION_CODE_NOT_SET]: 'U hebt geen activatie-code ingevoerd.',
     [publicErrors.NON_MATCHING_PASSWORDS]: `De ingevoerde wachtwoorden komen niet overeen.
         Let op dat u geen fout maakt bij het kiezen van een wachtwoord.`,
-    [publicErrors.ACTIVATION_CODE_NOT_SET]: 'U heeft geen activatie-code ingevoerd.',
+    [publicErrors.ACCOUNT_EXISTS_ALREADY]:
+        'Er bestaat al een account met dit registratienummer.',
+    [publicErrors.ACTIVATION_CODE_INCORRECT]: 'De ingevoerde activatie-code is onjuist.',
     [publicErrors.USERNAME_CONTAINS_DOT]: 'Het ingevoerde registratienummer mag geen punt bevatten.',
 };
 
@@ -77,4 +80,13 @@ export const jsonPage = (res: Response) => (data: any) => {
         'Content-Type': 'application/json; charset=UTF-8',
     });
     res.send(JSON.stringify(data, null, '  '));
+};
+
+export const redirectWithParams = (res: Response, params: Object) => {
+    return res.redirect(
+        `${res.req.url}${stringify(
+            params,
+            { addQueryPrefix: true },
+        )}`,
+    );
 };
