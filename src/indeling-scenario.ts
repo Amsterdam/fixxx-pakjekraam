@@ -129,10 +129,7 @@ const marktScenario = (seed: IMarktScenarioStub): IMarktScenario => {
             erkenningsNummer,
             description: 'Jane Doe',
             ...data,
-            voorkeur: {
-                maximum: data.plaatsen ? data.plaatsen.length : null,
-                ...data.voorkeur
-            }
+            voorkeur: { ...data.voorkeur }
         };
     });
 

@@ -10,6 +10,8 @@ import {
     flatten
 } from '../util';
 
+type FilterFunction = (plaats: IMarktplaats) => boolean;
+
 const Markt = {
     // Get adjacent places for one or multiple `plaatsIds`. The places passed in
     // `plaatsIds` are expected to be adjacent, or this function's behavior is
@@ -22,7 +24,7 @@ const Markt = {
         markt: IMarkt,
         plaatsIds: PlaatsId[],
         depth: number = 1,
-        filter?: (plaats: IMarktplaats) => boolean
+        filter: FilterFunction = null
     ): IMarktplaats[] => {
         if (!depth) {
             return [];
@@ -64,19 +66,22 @@ const Markt = {
     // array are spliced out.
     groupByAdjacent: (
         markt: IMarkt,
-        plaatsen: IPlaatsvoorkeur[],
+        plaatsen: IPlaatsvoorkeur[] = [],
+        filter: FilterFunction = null,
         result: IPlaatsvoorkeur[][] = []
     ): IPlaatsvoorkeur[][] => {
-        if (!plaatsen || !plaatsen.length) {
+        plaatsen = filter ?
+                   plaatsen.filter(filter) :
+                   plaatsen.slice(0);
+
+        if (!plaatsen.length) {
             return result;
         }
 
         const { rows, obstakels } = markt;
-        plaatsen                  = plaatsen.slice(0);
-
-        const start = plaatsen.shift();
-        let current = start;
-        let dir     = -1;
+        const start               = plaatsen.shift();
+        let current               = start;
+        let dir                   = -1;
 
         const group = [current];
         result.push(group);
@@ -84,7 +89,7 @@ const Markt = {
         while (current) {
             const currentId                   = current.plaatsId;
             const row                         = Markt._findRowForPlaatsen(rows, [currentId]);
-            const { plaatsId: nextId = null } = Markt._getAdjacent(row, currentId, dir, 1, obstakels)[0] || {};
+            const { plaatsId: nextId = null } = Markt._getAdjacent(row, currentId, dir, 1, obstakels, filter)[0] || {};
             const nextIndex                   = plaatsen.findIndex(({ plaatsId }) => plaatsId === nextId);
 
             if (nextIndex === -1) {
@@ -113,7 +118,7 @@ const Markt = {
         // group.sort(({ priority: a = 1 }, { priority: b = 1 }) => b - a);
 
         return plaatsen.length ?
-               Markt.groupByAdjacent(markt, plaatsen, result) :
+               Markt.groupByAdjacent(markt, plaatsen, filter, result) :
                result;
     },
 
@@ -154,7 +159,7 @@ const Markt = {
         dir: number,
         depth: number = 1,
         obstacles: IObstakelBetween[] = [],
-        filter?: (plaats: IMarktplaats) => boolean
+        filter: FilterFunction = null
     ): IMarktplaats[] => {
         const isCircular = row[0].plaatsId === row[row.length-1].plaatsId;
         // The first and last element are equal, so remove the one at the end.

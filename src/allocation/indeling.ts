@@ -1,12 +1,12 @@
 import {
     IAfwijzingReason,
-    IBranche,
+    IMarkt,
     IMarktindeling,
+    IMarktindelingSeed,
     IMarktondernemer,
     IMarktplaats,
     IPlaatsvoorkeur,
-    IRSVP,
-    PlaatsId
+    IRSVP
 } from '../markt.model';
 
 import {
@@ -17,6 +17,7 @@ import {
 
 import Markt from './markt';
 import Ondernemer from './ondernemer';
+import Ondernemers from './ondernemers';
 import Toewijzing from './toewijzing';
 
 const MARKET_FULL: IAfwijzingReason = {
@@ -36,28 +37,45 @@ const MINIMUM_UNAVAILABLE: IAfwijzingReason = {
     message: 'Minimum aantal plaatsen niet beschikbaar'
 };
 
-// `voorkeuren` should always be sorted by priority DESC, because we're using its array
-// indices to sort by priority. See `Ondernemer.getPlaatsVoorkeuren()`.
-const plaatsVoorkeurCompare = (plaatsA: IMarktplaats, plaatsB: IMarktplaats, voorkeuren: IPlaatsvoorkeur[]): number => {
-    const max = voorkeuren.length;
-    const a   = voorkeuren.findIndex(({ plaatsId }) => plaatsId === plaatsA.plaatsId);
-    const b   = voorkeuren.findIndex(({ plaatsId }) => plaatsId === plaatsB.plaatsId);
-    // ~-1 == 0, so we can kick a or b to EOL if it's not found.
-    return (~a ? a : max) - (~b ? b : max);
-};
-// Sort DESC on branche overlap with provided `branches` array. The more overlap, the better.
-const brancheCompare = (a: IMarktplaats, b: IMarktplaats, branches: IBranche[]): number => {
-    return intersection(b.branches, branches).length -
-           intersection(a.branches, branches).length;
-};
-
 const Indeling = {
+    init: (markt: IMarkt & IMarktindelingSeed): IMarktindeling => {
+        const marktDate = new Date(markt.marktDate);
+        if (!+marktDate) {
+            throw Error('Invalid market date');
+        }
+
+        const openPlaatsen    = markt.marktplaatsen.filter(plaats => !plaats.inactive);
+        const toewijzingQueue = markt.ondernemers
+        .filter(ondernemer =>
+            Indeling.isAanwezig(ondernemer, markt.aanwezigheid, new Date(markt.marktDate))
+        )
+        .sort((a, b) => Ondernemers.compare(a, b, markt.aLijst));
+        const expansionLimit  = Math.min(
+            Number.isFinite(markt.expansionLimit) ? markt.expansionLimit : Infinity,
+            markt.marktplaatsen.length
+        );
+
+        return {
+            ...markt,
+            openPlaatsen,
+
+            expansionQueue     : [],
+            expansionIteration : 1,
+            expansionLimit,
+
+            toewijzingQueue,
+            afwijzingen        : [],
+            toewijzingen       : [],
+            voorkeuren         : [...markt.voorkeuren]
+        };
+    },
+
     assignPlaats: (
         indeling: IMarktindeling,
         ondernemer: IMarktondernemer,
         plaatsen: IMarktplaats[],
         handleRejection: 'reject' | 'ignore' = 'reject',
-        maximum: number = 1
+        minimumSize?: number
     ): IMarktindeling => {
         try {
             if (indeling.openPlaatsen.length === 0) {
@@ -70,7 +88,17 @@ const Indeling = {
                 throw Error('assignPlaats vereist een set aan open plaatsen');
             }
 
-            const bestePlaatsen = Indeling.findBestePlaatsen(indeling, ondernemer, plaatsen, maximum);
+            let bestePlaatsen;
+            const strategy = Indeling.determineStrategy(indeling);
+            if ((!minimumSize || minimumSize === 1) && strategy === 'optimistic') {
+                const targetSize = Ondernemer.getTargetSize(ondernemer);
+                const happySize  = Math.min(targetSize, 2);
+                bestePlaatsen = Indeling._findBestePlaatsen(indeling, ondernemer, plaatsen, happySize);
+            }
+            if( !bestePlaatsen || !bestePlaatsen.length ) {
+                bestePlaatsen = Indeling._findBestePlaatsen(indeling, ondernemer, plaatsen, minimumSize);
+            }
+
             if (!bestePlaatsen.length) {
                 throw ADJACENT_UNAVAILABLE;
             }
@@ -89,106 +117,75 @@ const Indeling = {
         indeling: IMarktindeling,
         ondernemer: IMarktondernemer
     ): IMarktindeling => {
-        const available   = Indeling.findBestePlaatsenForVPH(indeling, ondernemer);
-        // const { anywhere  = false } = ondernemer.voorkeur || {};
-        // const startSize   = Ondernemer.getStartSize(ondernemer);
-        const minimumSize = Ondernemer.getMinimumSize(ondernemer);
+        const strategy   = Indeling.determineStrategy(indeling);
+        const startSize  = Ondernemer.getStartSize(ondernemer);
+        // const { anywhere = false } = ondernemer.voorkeur || {};
+        const anywhere   = false;
 
-        if (available.length && available.length >= minimumSize) {
-            return available.reduce((indeling, plaats) => {
+        let bestePlaatsen;
+        if (startSize === 1 && strategy === 'optimistic') {
+            const targetSize = Ondernemer.getTargetSize(ondernemer);
+            const happySize  = Math.min(targetSize, 2);
+            bestePlaatsen = Indeling._findBestePlaatsenForVPH(indeling, ondernemer, happySize);
+        }
+        if (!bestePlaatsen || !bestePlaatsen.length) {
+            bestePlaatsen = Indeling._findBestePlaatsenForVPH(indeling, ondernemer, startSize);
+        }
+
+        if (bestePlaatsen.length) {
+            return bestePlaatsen.reduce((indeling, plaats) => {
                 return Toewijzing.add(indeling, ondernemer, plaats);
             }, indeling);
-        } else /*if (anywhere)*/ {
-            /*const openPlaatsen = indeling.openPlaatsen.filter(plaats =>
-                Indeling._isAvailable(indeling, plaats)
-            );
-            return Indeling.assignPlaats(indeling, ondernemer, openPlaatsen, 'reject', startSize);
-        } else {*/
+        } else if (anywhere) {
+            // TODO: Momenteel onbereikbare code — nog onbekend wat er moet gebeuren met
+            //       flexibel indelen voor VPH.
+            return Indeling.assignPlaats(indeling, ondernemer, indeling.openPlaatsen, 'reject', startSize);
+        } else {
             return Indeling._rejectOndernemer(indeling, ondernemer, ADJACENT_UNAVAILABLE);
         }
     },
 
-    findBestePlaatsen: (
+    canBeAssignedTo: (
         indeling: IMarktindeling,
         ondernemer: IMarktondernemer,
-        openPlaatsen: IMarktplaats[],
-        maximum: number = 1
-    ) => {
-        const expansionSize        = maximum - 1;
-        const voorkeuren           = Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer);
-        const ondernemerBranches   = Ondernemer.getBranches(indeling, ondernemer);
-
+        plaats: IMarktplaats
+    ): boolean => {
         const { anywhere = true }  = ondernemer.voorkeur || {};
+        const voorkeuren           = Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer);
         const voorkeurIds          = voorkeuren.map(({ plaatsId }) => plaatsId);
+        const ondernemerBranches   = Ondernemer.getBranches(indeling, ondernemer);
         const verplichteBrancheIds = ondernemerBranches
                                     .filter(({ verplicht = false }) => verplicht)
                                     .map(({ brancheId }) => brancheId);
 
-        const mogelijkePlaatsen = openPlaatsen.filter(({ plaatsId, branches = [] }) => {
-            if (
-                // Ondernemer is in verplichte branche, maar plaats voldoet daar niet aan.
-                verplichteBrancheIds.length && !intersects(verplichteBrancheIds, branches) ||
-                // Ondernemer wil niet willekeurig ingedeeld worden en plaats staat niet in voorkeuren.
-                !anywhere && !voorkeurIds.includes(plaatsId) ||
-                // Niet genoeg vrije aansluitende plaatsen om maximum te verzadigen.
-                Indeling._getAvailableAdjacentFor(indeling, [plaatsId], expansionSize).length < expansionSize
-            ) {
-                return false;
-            } else {
-                return true;
-            }
-        });
-
-        // Sorteer plaatsen op voorkeursprioriteit, daarna op overlap in ondernemersbranches.
-        return mogelijkePlaatsen
-        .sort((a, b) => {
-            return plaatsVoorkeurCompare(a, b, voorkeuren) ||
-                   brancheCompare(a, b, ondernemerBranches);
-        })
-        .slice(0, maximum);
+        return !(
+            // Ondernemer is in verplichte branche, maar plaats voldoet daar niet aan.
+            verplichteBrancheIds.length && !intersects(verplichteBrancheIds, plaats.branches) ||
+            // Ondernemer heeft een EVI, maar de plaats is hier niet geschikt voor.
+            Ondernemer.heeftEVI(ondernemer) && !plaats.verkoopinrichting ||
+            // Ondernemer wil niet willekeurig ingedeeld worden en plaats is geen voorkeur.
+            !anywhere && !voorkeurIds.includes(plaats.plaatsId) ||
+            // Marktplaats is niet beschikbaar
+            !Indeling._isAvailable(indeling, plaats)
+        );
     },
 
-    findBestePlaatsenForVPH: (
-        indeling: IMarktindeling,
-        ondernemer: IMarktondernemer
-    ): IMarktplaats[] => {
-        const wantsToMove = Ondernemer.wantsToMove(indeling, ondernemer);
-        const startSize   = Ondernemer.getStartSize(ondernemer);
-        const voorkeuren  = Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer);
-        const available   = voorkeuren.filter(plaats =>
-            Indeling._isAvailable(indeling, plaats)
-        );
-        const grouped     = Markt.groupByAdjacent(indeling, available);
+    determineStrategy: (
+        indeling: IMarktindeling
+    ): 'optimistic' | 'conservative' => {
+        const minRequired = indeling.toewijzingQueue.reduce((sum, ondernemer) => {
+            const startSize  = Ondernemer.getStartSize(ondernemer);
+            const targetSize = Ondernemer.getTargetSize(ondernemer);
+            const happySize  = Ondernemer.isVast(ondernemer) && startSize >= 2 ?
+                               startSize :
+                               Math.min(targetSize, 2);
 
-        return grouped.reduce((result, group) => {
-            if (wantsToMove && result.length) {
-                return result;
-            }
+            return sum + happySize;
+        }, 0);
 
-            if (group.length < startSize) {
-                const depth     = startSize - group.length;
-                const plaatsIds = group.map(({ plaatsId }) => plaatsId);
-                const extra     = Indeling._getAvailableAdjacentFor(indeling, plaatsIds, depth);
-                group = group.concat(<IPlaatsvoorkeur[]> extra);
-                // group = Markt.groupByAdjacent(indeling, group)[0];
-            }
-
-            if (
-                !wantsToMove && group.length > result.length ||
-                group.length >= startSize
-            ) {
-                // Reduceer het aantal plaatsen tot `startSize`, maar pak de subset
-                // waar de plaats met de hoogste prioriteit in zit.
-                return group.reduce((best, plaats, index) => {
-                    const current = group.slice(index, index+startSize);
-                    const bestSum = best.map(({ priority }) => priority).reduce(sum, 0);
-                    const curSum  = current.map(({ priority }) => priority).reduce(sum, 0);
-                    return !best.length || curSum > bestSum ? current : best;
-                }, []);
-            } else {
-                return result;
-            }
-        }, []);
+        return indeling.openPlaatsen.length >= minRequired ?
+               'optimistic' :
+               'conservative';
     },
 
     // Als niet alle vaste plaatsen van een VPH beschikbaar zijn zal hij
@@ -209,7 +206,6 @@ const Indeling = {
         marktDate: Date
     ) => {
         const { absentFrom = null, absentUntil = null } = ondernemer.voorkeur || {};
-
         if (
             absentFrom && absentUntil &&
             marktDate >= new Date(absentFrom) &&
@@ -218,19 +214,14 @@ const Indeling = {
             return false;
         }
 
-        const rsvp = aanmeldingen.find(aanmelding =>
-            aanmelding.erkenningsNummer === ondernemer.erkenningsNummer
+        const rsvp = aanmeldingen.find(({ erkenningsNummer }) =>
+            erkenningsNummer === ondernemer.erkenningsNummer
         );
-
-        // Vasteplaatshouders die niets hebben laten weten en die hebben bevestigd dat ze
-        // komen worden meegeteld als aanwezig. Alleen de expliciete afmeldingen worden
-        // niet in overweging genomen in de indeling van kramen.
-        if (ondernemer.status === 'vpl') {
-            return !rsvp || !!rsvp.attending || rsvp.attending === null;
-        } else {
-            return !!rsvp && !!rsvp.attending;
-        }
-
+        // Bij de indeling van VPHs worden alleen expliciete afmeldingen in beschouwing
+        // genomen. Anders wordt een VPH automatisch als aangemeld beschouwd.
+        return Ondernemer.isVast(ondernemer) ?
+               !rsvp || !!rsvp.attending || rsvp.attending === null :
+               !!rsvp && !!rsvp.attending;
     },
 
     performExpansion: (
@@ -240,16 +231,22 @@ const Indeling = {
             Ondernemer.wantsExpansion(toewijzing)
         );
 
+        indeling = { ...indeling, expansionIteration: 1 };
+
         while (
-            indeling.openPlaatsen.length && queue.length &&
+            indeling.openPlaatsen.length &&
+            queue.length &&
             indeling.expansionIteration <= indeling.expansionLimit
         ) {
             queue = queue.reduce((newQueue, toewijzing) => {
                 const { ondernemer } = toewijzing;
 
                 if (Ondernemer.canExpandInIteration(indeling, toewijzing)) {
-                    const openAdjacent        = Indeling._getAvailableAdjacentFor(indeling, toewijzing.plaatsen, 1);
-                    const [uitbreidingPlaats] = Indeling.findBestePlaatsen(indeling, ondernemer, openAdjacent);
+                    const plaatsFilter = (plaats: IMarktplaats): boolean => {
+                        return Indeling.canBeAssignedTo(indeling, ondernemer, plaats);
+                    };
+                    const openAdjacent = Markt.getAdjacentPlaatsen(indeling, toewijzing.plaatsen, 1, plaatsFilter);
+                    const [uitbreidingPlaats] = Indeling._findBestePlaatsen(indeling, ondernemer, openAdjacent);
 
                     if (uitbreidingPlaats) {
                         indeling   = Toewijzing.add(indeling, ondernemer, uitbreidingPlaats);
@@ -277,13 +274,108 @@ const Indeling = {
         }, indeling);
     },
 
-    _getAvailableAdjacentFor: (
+    _findBestGroup: (
         indeling: IMarktindeling,
-        plaatsIds: PlaatsId[],
-        depth: number = 1
+        ondernemer: IMarktondernemer,
+        groups: IPlaatsvoorkeur[][],
+        size: number = 1,
+        filter?: (plaats: IMarktplaats) => boolean,
+        compare?: (best: IPlaatsvoorkeur[], current: IPlaatsvoorkeur[]) => number
     ): IMarktplaats[] => {
-        return Markt.getAdjacentPlaatsen(indeling, plaatsIds, depth, (plaats) =>
-            Indeling._isAvailable(indeling, plaats)
+        return groups.reduce((result, group) => {
+            if (group.length < size) {
+                const depth     = size - group.length;
+                const plaatsIds = group.map(({ plaatsId }) => plaatsId);
+                const extra     = Markt.getAdjacentPlaatsen(indeling, plaatsIds, depth, filter);
+                group = group.concat(<IPlaatsvoorkeur[]> extra);
+                // Zet de zojuist toegevoegde plaatsen op de juiste plek.
+                group = Markt.groupByAdjacent(indeling, group)[0];
+            }
+
+            if (group.length >= size) {
+                // Stop `reduce` loop.
+                groups.length = 0;
+                // Reduceer het aantal plaatsen tot `size`.
+                // Pak de subset met de hoogste totale prioriteit.
+                return group.reduce((best, plaats, index) => {
+                    const current = group.slice(index, index+size);
+                    return (!best.length || compare(best, current) < 0) ?
+                           current :
+                           best;
+                }, []);
+            } else {
+                return result;
+            }
+        }, []);
+    },
+
+    _findBestePlaatsen: (
+        indeling: IMarktindeling,
+        ondernemer: IMarktondernemer,
+        openPlaatsen: IMarktplaats[],
+        size: number = 1
+    ): IMarktplaats[] => {
+        const voorkeuren           = Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer);
+        const ondernemerBranches   = Ondernemer.getBranches(indeling, ondernemer);
+
+        const plaatsFilter = (plaats: IMarktplaats): boolean => {
+            return Indeling.canBeAssignedTo(indeling, ondernemer, plaats);
+        };
+
+        // 1. Converteer geschikte plaatsen naar IPlaatsvoorkeur (zodat elke optie
+        //    een `priority` heeft).
+        // 2. Sorteer op branche overlap en `priority`.
+        const plaatsen = <IPlaatsvoorkeur[]> openPlaatsen
+        .map(plaats => {
+            const { priority = 0 } = voorkeuren.find(({ plaatsId }) => plaatsId === plaats.plaatsId) || {};
+            return { ...plaats, priority };
+        })
+        .sort((a, b) =>
+            intersection(b.branches, ondernemerBranches).length -
+            intersection(a.branches, ondernemerBranches).length
+            ||
+            b.priority - a.priority
+        );
+        // 3. Maak groepen van de plaatsen waar deze ondernemer kan staan (Zie `plaatsFilter`)
+        const groups = Markt.groupByAdjacent(indeling, plaatsen, plaatsFilter);
+        // 4. Geef de meest geschikte groep terug.
+        return Indeling._findBestGroup(
+            indeling,
+            ondernemer,
+            groups,
+            size,
+            plaatsFilter,
+            (best, current) => {
+                // TODO: Kijkt enkel naar `priority`, maar branche overlap is belangrijker.
+                const bestScore = best.map(({ priority }) => priority).reduce(sum, 0);
+                const curScore  = current.map(({ priority }) => priority).reduce(sum, 0);
+                return bestScore - curScore;
+            }
+        );
+    },
+
+    _findBestePlaatsenForVPH: (
+        indeling: IMarktindeling,
+        ondernemer: IMarktondernemer,
+        size: number = 1
+    ): IMarktplaats[] => {
+        const plaatsFilter = (plaats: IMarktplaats): boolean => {
+            return Indeling.canBeAssignedTo(indeling, ondernemer, plaats);
+        };
+        const voorkeuren   = Ondernemer.getPlaatsVoorkeuren(indeling, ondernemer);
+        const groups       = Markt.groupByAdjacent(indeling, voorkeuren, plaatsFilter);
+
+        return Indeling._findBestGroup(
+            indeling,
+            ondernemer,
+            groups,
+            size,
+            plaatsFilter,
+            (best, current) => {
+                const bestScore = best.map(({ priority }) => priority).reduce(sum, 0);
+                const curScore  = current.map(({ priority }) => priority).reduce(sum, 0);
+                return bestScore - curScore;
+            }
         );
     },
 
@@ -301,16 +393,22 @@ const Indeling = {
         ondernemer: IMarktondernemer,
         reason: IAfwijzingReason
     ): IMarktindeling => {
-        return {
-            ...Toewijzing.remove(indeling, ondernemer),
-            afwijzingen: indeling.afwijzingen.concat({
+        indeling = Toewijzing.remove(indeling, ondernemer);
+
+        const afwijzing = indeling.afwijzingen.find(({ erkenningsNummer }) =>
+            erkenningsNummer === ondernemer.erkenningsNummer
+        );
+        if( !afwijzing ) {
+            indeling.afwijzingen = indeling.afwijzingen.concat({
                 marktId          : indeling.marktId,
                 marktDate        : indeling.marktDate,
                 erkenningsNummer : ondernemer.erkenningsNummer,
                 reason,
                 ondernemer
-            })
-        };
+            });
+        }
+
+        return indeling;
     }
 };
 

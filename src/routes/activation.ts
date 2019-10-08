@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 import { checkActivationCode } from '../makkelijkemarkt-api';
 import { userExists } from '../keycloak-api';
-import { publicErrors, getQueryErrors } from '../express-util';
-import { stringify } from 'qs';
+import { publicErrors, getQueryErrors, httpErrorPage, redirectWithParams } from '../express-util';
 
 export const activationPage = (req: Request, res: Response) => {
     res.render('ActivatePage', {
@@ -17,79 +16,37 @@ export const handleActivation = (req: Request, res: Response) => {
 
     if (username.includes('.')) {
         console.log('Username can not contains dots');
-        res.redirect(
-            `/activeren${stringify(
-                {
-                    username,
-                    code,
-                    error: publicErrors.USERNAME_CONTAINS_DOT,
-                },
-                { addQueryPrefix: true },
-            )}`,
-        );
+        return redirectWithParams(res, { error:publicErrors.ACTIVATION_CODE_INCORRECT, username, code });
     }
 
     if (!code) {
         console.log('Activatie-code is not set');
-        res.redirect(
-            `/activeren${stringify(
-                {
-                    username,
-                    error: publicErrors.ACTIVATION_CODE_NOT_SET,
-                },
-                { addQueryPrefix: true },
-            )}`,
-        );
+        return redirectWithParams(res, { error:publicErrors.ACTIVATION_CODE_INCORRECT, username, code });
     }
 
     checkActivationCode(username, code)
         .then((isValid: boolean) => {
             if (!isValid) {
-                console.log('Registratienummer and Activatie-code combination is not valid');
-                // Go to the activation failed page
-                throw new Error();
+                return redirectWithParams(res, { error:publicErrors.ACTIVATION_CODE_INCORRECT, username, code });
+            } else {
+                return isValid;
             }
-            console.log(username);
-            return isValid;
         })
         .then(() => userExists(username))
         .then((isExistingUser: boolean) => {
-            console.log(isExistingUser);
             if (isExistingUser) {
-                console.log('User already exists');
-                // Go to the activation failed page
-                res.redirect(
-                    `/activeren${stringify(
-                        {
-                            username,
-                            code,
-                            error: publicErrors.ACCOUNT_EXISTS_ALREADY,
-                        },
-                        { addQueryPrefix: true },
-                    )}`,
-                );
-                throw new Error();
+                console.log(`User with erkenningsnummer ${username} already exists`);
+                return redirectWithParams(res, { error:publicErrors.ACTIVATION_CODE_INCORRECT, username, code });
+            } else {
+                return isExistingUser;
             }
-            return isExistingUser;
         })
-        .then(
-            () => {
-                req.session.activation = {
-                    username,
-                };
-                res.redirect('/registreren');
+        .then( () => {
+                req.session.activation = { username };
+                return res.redirect('/registreren');
             },
-            () => {
-                res.redirect(
-                    `/activeren${stringify(
-                        {
-                            username,
-                            code,
-                            error: publicErrors.ACTIVATION_FAILED,
-                        },
-                        { addQueryPrefix: true },
-                    )}`,
-                );
-            },
-        );
+        )
+        .catch( e => {
+            httpErrorPage(res, e);
+        });
 };

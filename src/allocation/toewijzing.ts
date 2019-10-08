@@ -28,15 +28,22 @@ const Toewijzing = {
             toewijzingQueue: indeling.toewijzingQueue.filter(({ erkenningsNummer }) =>
                 erkenningsNummer !== ondernemer.erkenningsNummer
             ),
-            openPlaatsen: indeling.openPlaatsen.filter(plaats =>
-                !toewijzing.plaatsen.includes(plaats.plaatsId)
+            openPlaatsen: indeling.openPlaatsen.filter(({ plaatsId }) =>
+                !toewijzing.plaatsen.includes(plaatsId)
             ),
             // Als er al een toewijzing bestond moet die worden vervangen met de nieuwe
             // toewijzing. Anders kan de nieuwe toewijzing simpelweg aan de lijst toegevoegd
             // worden.
             toewijzingen: ~index ?
                           [...toewijzingen.slice(0, index), toewijzing, ...toewijzingen.slice(index+1)] :
-                          toewijzingen.concat(toewijzing)
+                          toewijzingen.concat(toewijzing),
+            // In de laatste stap van de berekening wordt geprobeerd afgewezen ondernemers
+            // opnieuw in te delen (omdat sommigen met een te hoog `minimum` wellicht zijn
+            // afgewezen waardoor er ruimte vrij is gekomen). Als zo'n afgewezen ondernemer
+            // dan alsnog wordt toegewezen moet zijn afwijzing verwijderd worden.
+            afwijzingen: indeling.afwijzingen.filter(({ erkenningsNummer }) =>
+                erkenningsNummer !== ondernemer.erkenningsNummer
+            )
         };
     },
 
@@ -54,8 +61,12 @@ const Toewijzing = {
         ondernemer: IMarktondernemer
     ): IMarktindeling => {
         const toewijzing = Toewijzing.find(indeling, ondernemer);
+        const toewijzingQueue = indeling.toewijzingQueue.filter(({ erkenningsNummer }) =>
+            erkenningsNummer !== ondernemer.erkenningsNummer
+        );
+
         if (!toewijzing) {
-            return indeling;
+            return { ...indeling, toewijzingQueue };
         }
 
         const { marktplaatsen, openPlaatsen, toewijzingen } = indeling;
@@ -65,9 +76,7 @@ const Toewijzing = {
 
         return {
             ...indeling,
-            toewijzingQueue: indeling.toewijzingQueue.filter(({ erkenningsNummer }) =>
-                erkenningsNummer !== ondernemer.erkenningsNummer
-            ),
+            toewijzingQueue,
             toewijzingen: toewijzingen.filter(t => t !== toewijzing),
             openPlaatsen: [...openPlaatsen, ...plaatsen]
         };

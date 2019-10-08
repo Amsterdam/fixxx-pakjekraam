@@ -16,7 +16,7 @@ class ActivateForm extends React.Component {
                         <label className="Label" htmlFor="username">
                             Registratienummer:
                         </label>
-                        <span className="Fieldset__sub-header">Het ingevoerde registratienummer mag <b>geen punt</b> bevatten.</span>
+                        <span className="Fieldset__sub-header">Hier vult u uw registratienummer in <b>zonder punt</b>.</span>
                         <input
                             className="Input Input--text"
                             id="username"

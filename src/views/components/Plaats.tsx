@@ -89,6 +89,11 @@ const Plaats = ({
         return tags.length && key === tags[0].trim();
     });
 
+    const vphIsGewisseld = () => {
+        if ( !ondernemer || !vph ) { return false; }
+        return vph !== ondernemer;
+    };
+
     const plaatsIds = vph && plaatsvoorkeuren[vph.erkenningsNummer] ?
         plaatsvoorkeuren[vph.erkenningsNummer].sort((a: any, b: any) =>
                             b.priority - a.priority).map((plaatsvoorkeur: any) =>
@@ -105,8 +110,6 @@ const Plaats = ({
         <tr
             className={`
                 Plaats ${first && 'Plaats--first'} ${tags.join(' ')} ${
-                aanmelding ? ' Plaats--vph-attendance-verified' : ''
-            }${
                 aanmelding && aanmelding.attending !== null && !aanmelding.attending
                     ? ' Plaats--vph-attendance-not-attending'
                     : ''
@@ -122,6 +125,7 @@ const Plaats = ({
             </td>
 
             <td className="Plaats__prop Plaats__prop-soll Plaats__prop-vph">
+                {vphIsGewisseld() ? <span className="Icon Icon--wissel Icon--table"></span> : null}
                 <span id={`soll-${vph && vph.sollicitatieNummer}`} />
                 {vph ? (
                     <a href={`/profile/${vph.erkenningsNummer}`}>

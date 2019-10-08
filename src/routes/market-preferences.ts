@@ -76,9 +76,7 @@ export const updateMarketPreferences = (req: Request, res: Response, next: NextF
     const formError = algemeneVoorkeurenFormCheckForError(req.body);
 
     if (formError !== null) {
-        console.log('hey open up !');
-        console.log(formError);
-        res.redirect(`./?error=${formError}`);
+        return res.redirect(`./?error=${formError}`);
     }
 
     const { marktId } = data;

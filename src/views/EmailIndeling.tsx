@@ -91,7 +91,7 @@ export class EmailIndeling extends React.Component {
                         <p>
                             <strong>Meer informatie?</strong>
                             <br />
-                            Op deze <a href={infoLink}>website</a> kunt u veel informatie vinden over digitaal indelen.
+                            Op deze <a href={infoLink} target="_blank">website</a> kunt u veel informatie vinden over digitaal indelen.
                             Wij raden u aan dit te lezen als u wilt weten hoe het precies werkt.
                         </p>
                         <p>

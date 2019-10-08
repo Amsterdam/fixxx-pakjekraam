@@ -33,18 +33,11 @@ const Ondernemer = {
                !Ondernemer.isInMaxedOutBranche(indeling, ondernemer);
     },
 
-    getBrancheIds: (
-        markt: IMarkt,
-        ondernemer: IMarktondernemer
-    ) => {
-        return ondernemer.voorkeur && ondernemer.voorkeur.branches || [];
-    },
-
     getBranches: (
         markt: IMarkt,
         ondernemer: IMarktondernemer
     ): IBranche[] => {
-        const brancheIds = Ondernemer.getBrancheIds(markt, ondernemer);
+        const { branches: brancheIds = [] } = ondernemer.voorkeur || {};
 
         return brancheIds.reduce((branches, brancheId) => {
             const branche = markt.branches.find(b => b.brancheId === brancheId);
@@ -81,19 +74,15 @@ const Ondernemer = {
         }, []);
     },
 
-    getMinimumSize: (ondernemer: IMarktondernemer): number => {
-        const { plaatsen = [] } = ondernemer;
-        const { minimum = 0, maximum = Infinity } = ondernemer.voorkeur || {};
-        return minimum || Math.min(plaatsen.length, maximum) || 1;
-    },
     getStartSize: (ondernemer: IMarktondernemer): number => {
         const { plaatsen = [] } = ondernemer;
-        const { maximum = plaatsen.length } = ondernemer.voorkeur || {};
-        return Math.min(plaatsen.length, maximum) || 1;
+        const { minimum = Infinity, maximum = Infinity } = ondernemer.voorkeur || {};
+        return Math.min(plaatsen.length, minimum, maximum) || 1;
     },
     getTargetSize: (ondernemer: IMarktondernemer): number => {
+        const { plaatsen = [] } = ondernemer;
         const { minimum = 1, maximum = 0 } = ondernemer.voorkeur || {};
-        return Math.max(1, minimum, maximum);
+        return maximum || Math.max(plaatsen.length, minimum, 1);
     },
 
     getVastePlaatsen: (
@@ -107,6 +96,16 @@ const Ondernemer = {
             marktId: markt.marktId,
             priority: 0
         }));
+    },
+
+    heeftBranche: (ondernemer: IMarktondernemer): boolean => {
+        const { branches: brancheIds = [] } = ondernemer.voorkeur || {};
+        return !!brancheIds.length;
+    },
+
+    heeftEVI: (ondernemer: IMarktondernemer): boolean => {
+        const { verkoopinrichting = [] } = ondernemer.voorkeur || {};
+        return !!verkoopinrichting.length;
     },
 
     heeftVastePlaats: (
@@ -126,12 +125,11 @@ const Ondernemer = {
     },
 
     isInBranche: (
-        markt: IMarkt,
         ondernemer: IMarktondernemer,
-        branche?: IBranche
+        branche: IBranche
     ): boolean => {
-        const brancheIds = Ondernemer.getBrancheIds(markt, ondernemer);
-        return branche ? brancheIds.includes(branche.brancheId) : !!brancheIds.length;
+        const { branches: brancheIds = [] } = ondernemer.voorkeur || {};
+        return brancheIds.includes(branche.brancheId);
     },
 
     isInMaxedOutBranche: (
@@ -145,8 +143,8 @@ const Ondernemer = {
         // of plaatsen.
         return !!branches.find(branche => {
             const { maximumToewijzingen, maximumPlaatsen } = branche;
-            const brancheToewijzingen = indeling.toewijzingen.filter(toewijzing =>
-                Ondernemer.isInBranche(indeling, toewijzing.ondernemer, branche)
+            const brancheToewijzingen = indeling.toewijzingen.filter(({ ondernemer }) =>
+                Ondernemer.isInBranche(ondernemer, branche)
             );
             const branchePlaatsen = brancheToewijzingen
                                     .map(toewijzing => toewijzing.plaatsen.length)

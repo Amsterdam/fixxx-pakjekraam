@@ -51,7 +51,7 @@
     "curly": true,
     "import-spacing": true,
     "match-default-export-name": true,
-    "max-line-length": [true, 140],
+    "max-line-length": [true, 170],
     "member-access": true,
     "newline-before-return": false,
     "new-parens": true,

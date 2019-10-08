@@ -25,7 +25,7 @@ class PlaatsvoorkeurenForm extends React.Component {
         const defaultVoorkeur = {
             minimum: defaultPlaatsCount,
             maximum: defaultPlaatsCount,
-            anwhere: true,
+            anywhere: !isVast(sollicitatie.status),
             inactive: false,
         };
 
@@ -191,11 +191,11 @@ class PlaatsvoorkeurenForm extends React.Component {
                                         entries[0].priority !== 1 && entries[0].priority !== 2
                                             ? 'PlaatsvoorkeurenForm__list-item--sortable'
                                             : null
-                                    } ${entries[0].readonly ? 'PlaatsvoorkeurenForm__list-item--hidden' : null}
+                                        } ${entries[0].readonly ? 'PlaatsvoorkeurenForm__list-item--hidden' : null}
                                         ${
-                                            entries[0].priority !== 2
-                                                ? 'PlaatsvoorkeurenForm__list-item--readonly'
-                                                : null
+                                        entries[0].priority !== 2
+                                            ? 'PlaatsvoorkeurenForm__list-item--readonly'
+                                            : null
                                         }`}
                                     key={i}
                                     style={{ ...{ order: entries[0].priority } }}
@@ -366,34 +366,37 @@ class PlaatsvoorkeurenForm extends React.Component {
 
                         <input type="hidden" name="marktId" defaultValue={markt.id} />
                         <input type="hidden" name="marktDate" defaultValue={marktDate} />
-                        <div className={`Fieldset`}>
-                            <h2 className="Fieldset__header">
-                                Flexibel indelen?
-                                <br />
-                                Dan deelt het systeem u in op beschikbare plaatsen.
-                            </h2>
-                            <p className="InputField InputField--checkbox">
-                                <input
-                                    id="anywhere"
-                                    type="checkbox"
-                                    name="anywhere"
-                                    defaultChecked={voorkeur.anywhere !== false}
-                                />
-                                <label htmlFor="anywhere">
-                                    {isVast(sollicitatie.status) ? (
-                                        <span>
-                                            Ja, ik wil liever kunnen vergroten dan alleen op mijn eigen plaats(en)
-                                            staan.
-                                        </span>
-                                    ) : (
-                                        <span>
-                                            Als mijn voorkeursplaatsen niet beschikbaar zijn, wil ik automatisch op een
-                                            losse plaats ingedeeld worden.
-                                        </span>
-                                    )}
-                                </label>
-                            </p>
-                        </div>
+                        {/* Dit veld willen we alleen laten zien aan marktmeesters en sollicitanten */}
+                        { role == 'marktmeester' || (role == 'marktondernemer' && !isVast(sollicitatie.status)) ? (
+                            <div className={`Fieldset`}>
+                                <h2 className="Fieldset__header">
+                                    Flexibel indelen?
+                                    <br />
+                                    Dan deelt het systeem u in op beschikbare plaatsen.
+                                </h2>
+                                <p className="InputField InputField--checkbox">
+                                    <input
+                                        id="anywhere"
+                                        type="checkbox"
+                                        name="anywhere"
+                                        defaultChecked={voorkeur.anywhere}
+                                    />
+                                    <label htmlFor="anywhere">
+                                        {isVast(sollicitatie.status) ? (
+                                            <span>
+                                                Ja, ik wil liever kunnen vergroten dan alleen op mijn eigen plaats(en)
+                                                staan.
+                                            </span>
+                                        ) : (
+                                                <span>
+                                                    Als mijn voorkeursplaatsen niet beschikbaar zijn, wil ik automatisch op een
+                                                    losse plaats ingedeeld worden.
+                                            </span>
+                                            )}
+                                    </label>
+                                </p>
+                            </div>
+                        ) : null}
                     </div>
 
                     <p className="InputField InputField--submit" id="bottom-buttons">
@@ -406,7 +409,7 @@ class PlaatsvoorkeurenForm extends React.Component {
                                 role === 'marktmeester'
                                     ? `/profile/${ondernemer.erkenningsnummer}?error=plaatsvoorkeuren-saved`
                                     : `/markt-detail/${markt.id}?error=plaatsvoorkeuren-saved#plaatsvoorkeuren`
-                            }`}
+                                }`}
                         >
                             Bewaar
                         </button>

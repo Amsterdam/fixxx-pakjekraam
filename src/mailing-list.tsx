@@ -3,7 +3,7 @@ import { EmailIndeling } from './views/EmailIndeling';
 import { defer } from 'rxjs';
 import { shareReplay, tap, combineLatest } from 'rxjs/operators';
 import { mail } from './mail.js';
-import { requireEnv, tomorrow } from './util';
+import { requireEnv, tomorrow, yyyyMmDdtoDDMMYYYY } from './util';
 import {
     getAanmeldingen,
     getAllBranches,
@@ -16,6 +16,8 @@ import {
 import { retry } from './rxjs-util';
 import { getAllUsers } from './keycloak-api';
 import { checkLogin } from './makkelijkemarkt-api';
+import { getMarktInfo } from './pakjekraam-api';
+
 
 requireEnv('MAILER_FROM');
 
@@ -48,7 +50,16 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                     getAanmeldingen(String(markt.id), marktDate),
                     getMarktplaatsen(String(markt.id)),
                     getAllBranches(),
-                ]).then(([ondernemers, toewijzingen, plaatsvoorkeuren, aanmeldingen, marktplaatsen, branches]) => {
+                    getMarktInfo(String(markt.id)),
+                ]).then(([
+                    ondernemers,
+                    toewijzingen,
+                    plaatsvoorkeuren,
+                    aanmeldingen,
+                    marktplaatsen,
+                    branches,
+                    marktInfoJSON
+                ]) => {
 
                     console.log(`Verstuur mails voor de marktindeling van ${markt.id} op datum ${marktDate}`);
                     console.log('Marktondernemers', ondernemers ? ondernemers.length : 0);
@@ -56,7 +67,7 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
 
                     const registeredUsers = users
                         .filter(({ username }) =>
-                            ondernemers.some(({ erkenningsNummer }) => erkenningsNummer.replace('.','') === username.replace('.','') ),
+                            ondernemers.some(({ erkenningsNummer }) => erkenningsNummer.replace('.', '') === username.replace('.', '')),
                         )
                         .filter(user => !!user.email);
 
@@ -68,10 +79,10 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                     toewijzingen
                         .map(toewijzing => {
                             const ondernemer = ondernemers.find(
-                                ({ erkenningsNummer }) => erkenningsNummer.replace('.','') === toewijzing.erkenningsNummer.replace('.',''),
+                                ({ erkenningsNummer }) => erkenningsNummer.replace('.', '') === toewijzing.erkenningsNummer.replace('.', ''),
                             );
                             const user = users.find(
-                                ({ username }) => username.replace('.','') === toewijzing.erkenningsNummer.replace('.','')
+                                ({ username }) => username.replace('.', '') === toewijzing.erkenningsNummer.replace('.', '')
                             );
                             return {
                                 toewijzing,
@@ -90,22 +101,24 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                                 aanmeldingen,
                                 branches,
                                 toewijzing,
+                                telefoonnummer: marktInfoJSON.telefoonnummer
                             };
 
                             console.log(
                                 `Stuur e-mail naar ${user.email}! Ondernemer is ingedeeld op plaats ${
-                                    toewijzing.plaatsen
+                                toewijzing.plaatsen
                                 }`,
                             );
 
-                            const subject = `${markt.naam} indeling voor ${marktDate}`;
+                            const formattedMarkDate = yyyyMmDdtoDDMMYYYY(marktDate);
 
                             const testEmail = {
                                 from: process.env.MAILER_FROM,
                                 to: user.email,
-                                subject,
+                                subject: `Toewijzing ${formattedMarkDate} ${markt.naam}`,
                                 react: <EmailIndeling {...props} />,
                             };
+
                             mail(testEmail).then(
                                 () => {
                                     console.log('E-mail is verstuurd.');
@@ -116,6 +129,7 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                                     process.exit(1);
                                 },
                             );
+
                         });
                 }),
             ),
