@@ -16,12 +16,12 @@ export const handleActivation = (req: Request, res: Response) => {
 
     if (username.includes('.')) {
         console.log('Username can not contains dots');
-        return redirectWithParams(res, { error:publicErrors.ACTIVATION_CODE_INCORRECT, username, code });
+        return redirectWithParams(res, { error:publicErrors.USERNAME_CONTAINS_DOT, username, code });
     }
 
     if (!code) {
         console.log('Activatie-code is not set');
-        return redirectWithParams(res, { error:publicErrors.ACTIVATION_CODE_INCORRECT, username, code });
+        return redirectWithParams(res, { error:publicErrors.ACTIVATION_CODE_NOT_SET, username, code });
     }
 
     checkActivationCode(username, code)
@@ -36,7 +36,7 @@ export const handleActivation = (req: Request, res: Response) => {
         .then((isExistingUser: boolean) => {
             if (isExistingUser) {
                 console.log(`User with erkenningsnummer ${username} already exists`);
-                return redirectWithParams(res, { error:publicErrors.ACTIVATION_CODE_INCORRECT, username, code });
+                return redirectWithParams(res, { error:publicErrors.ACCOUNT_EXISTS_ALREADY, username, code });
             } else {
                 return isExistingUser;
             }
