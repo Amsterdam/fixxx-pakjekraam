@@ -10,20 +10,24 @@ import { Voorkeur } from '../model/voorkeur.model';
 
 import moment from 'moment';
 
-export const algemeneVoorkeurenFormCheckForError = (body: any) => {
-    const { absentFrom, absentUntil } = body;
+export const algemeneVoorkeurenFormCheckForError = (body: any, role: string) => {
+
     let error = null;
 
-    if (absentUntil !== '' ) {
-        if ( !moment(absentUntil, 'DD-MM-YYYY',true).isValid()) {
-            error = 'Datum afwezigheid vanaf heeft niet het juiste format. Gebruik dd-mm-yyyy.';
+    if (role === 'marktmeester') {
+        const { absentFrom, absentUntil } = body;
+        if (absentUntil) {
+            if ( !moment(absentUntil, 'DD-MM-YYYY', true).isValid()) {
+                error = 'Datum afwezigheid vanaf heeft niet het juiste format. Gebruik dd-mm-yyyy.';
+            }
+        }
+        if (absentFrom) {
+            if ( !moment(absentFrom, 'DD-MM-YYYY',true).isValid()) {
+                error = 'Datum afwezigheid tot en met heeft niet het juiste format. Gebruik dd-mm-yyyy.';
+            }
         }
     }
-    if (absentFrom !== '' ) {
-        if ( !moment(absentFrom, 'DD-MM-YYYY',true).isValid()) {
-            error = 'Datum afwezigheid tot en met heeft niet het juiste format. Gebruik dd-mm-yyyy.';
-        }
-    }
+
     return error;
 };
 
@@ -37,8 +41,6 @@ export const algemeneVoorkeurenFormData = (body: any): IMarktondernemerVoorkeurR
 
     let absentFromDate = null;
     let absentUntilDate = null;
-
-    console.log(absentFrom);
 
     if (absentFrom) {
         absentFromDate = ddmmyyyyToDate(absentFrom);
@@ -65,11 +67,11 @@ export const algemeneVoorkeurenFormData = (body: any): IMarktondernemerVoorkeurR
     return voorkeur;
 };
 
-export const updateMarketPreferences = (req: Request, res: Response, next: NextFunction, erkenningsNummer: string) => {
+export const updateMarketPreferences = (req: Request, res: Response, next: NextFunction, erkenningsNummer: string, role: string) => {
 
     const data = algemeneVoorkeurenFormData(req.body);
-    const formError = algemeneVoorkeurenFormCheckForError(req.body);
 
+    const formError = algemeneVoorkeurenFormCheckForError(req.body, role);
     if (formError !== null) {
         return res.redirect(`./?error=${formError}`);
     }

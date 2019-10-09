@@ -86,7 +86,6 @@ const isMarktmeester = (req: GrantedRequest) => {
 
 const getErkenningsNummer = (req: GrantedRequest) => {
     const tokenContent = req.kauth.grant.access_token.content as TokenContent & any;
-
     return isMarktondernemer(req) && tokenContent.preferred_username.replace(/\./g, '');
 };
 
@@ -587,7 +586,7 @@ app.post(
     ['/algemene-voorkeuren/', '/algemene-voorkeuren/:marktId/', '/algemene-voorkeuren/:marktId/:marktDate/'],
     keycloak.protect(KeycloakRoles.MARKTONDERNEMER),
     (req: GrantedRequest, res: Response, next: NextFunction) =>
-        updateMarketPreferences(req, res, next, getErkenningsNummer(req)),
+        updateMarketPreferences(req, res, next, getErkenningsNummer(req), KeycloakRoles.MARKTONDERNEMER),
 );
 
 app.post(
@@ -598,7 +597,7 @@ app.post(
     ],
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     (req: Request, res: Response, next: NextFunction) =>
-        updateMarketPreferences(req, res, next, req.params.erkenningsNummer),
+        updateMarketPreferences(req, res, next, req.params.erkenningsNummer, KeycloakRoles.MARKTMEESTER),
 );
 
 app.get(
