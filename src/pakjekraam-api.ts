@@ -199,28 +199,6 @@ const indelingVoorkeurMerge = (
     if (b.inrichting !== null) {
         merged.inrichting = b.inrichting;
     }
-    if (b.monday !== null) {
-        merged.monday = b.monday;
-    }
-    if (b.tuesday !== null) {
-        merged.tuesday = b.tuesday;
-    }
-    if (b.wednesday !== null) {
-        merged.wednesday = b.wednesday;
-    }
-    if (b.thursday !== null) {
-        merged.thursday = b.thursday;
-    }
-    if (b.friday !== null) {
-        merged.friday = b.friday;
-    }
-    if (b.saturday !== null) {
-        merged.saturday = b.saturday;
-    }
-    if (b.sunday !== null) {
-        merged.sunday = b.sunday;
-    }
-
     return merged;
 };
 

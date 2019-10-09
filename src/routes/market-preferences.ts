@@ -38,11 +38,13 @@ export const algemeneVoorkeurenFormData = (body: any): IMarktondernemerVoorkeurR
     let absentFromDate = null;
     let absentUntilDate = null;
 
-    if (absentFrom !== '' || null ) {
+    console.log(absentFrom);
+
+    if (absentFrom) {
         absentFromDate = ddmmyyyyToDate(absentFrom);
     }
 
-    if (absentUntil !== '' || null ) {
+    if (absentUntil) {
         absentUntilDate = ddmmyyyyToDate(absentUntil);
     }
 
@@ -58,13 +60,6 @@ export const algemeneVoorkeurenFormData = (body: any): IMarktondernemerVoorkeurR
         inrichting: inrichting || null,
         absentFrom: absentFromDate || null,
         absentUntil: absentUntilDate || null,
-        monday: !!body.monday || null,
-        tuesday: !!body.tuesday || null,
-        wednesday: !!body.wednesday || null,
-        thursday: !!body.thursday || null,
-        friday: !!body.friday || null,
-        saturday: !!body.saturday || null,
-        sunday: !!body.sunday || null,
     };
 
     return voorkeur;

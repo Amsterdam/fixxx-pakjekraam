@@ -36,16 +36,15 @@ http://localhost:8080/markt/20/2019-09-10/concept-indelingslijst
 Migrations in this project are implemented with Sequelize.
 
 ### Creating a migration
-npx sequelize-cli migration:generate --name "remove days from marktVoorkeuren"
+`npx sequelize-cli migration:generate --name "remove days from marktVoorkeuren"`
 
 ### Running migration
-npx sequelize-cli db:migrate
+`npx sequelize-cli db:migrate`
 
 ### Undo a migration
-npx sequelize-cli db:migrate:undo
+`npx sequelize-cli db:migrate:undo`
 
-### Init
-
-// Source: https://sequelize.org/master/manual/migrations.html
-// Info for our case http://bitsandbites.me/blog/2014/06/24/sequelize-migrations-mid-project/
-// Stackoverflow about generating migrations mid project https://stackoverflow.com/questions/27835801/how-to-auto-generate-migrations-with-sequelize-cli-from-sequelize-models
+### Documengtation migrations
+- Source: https://sequelize.org/master/manual/migrations.html
+- Info for our case http://bitsandbites.me/blog/2014/06/24/sequelize-migrations-mid-project/
+- Stackoverflow about generating migrations mid project https://stackoverflow.com/questions/27835801/how-to-auto-generate-migrations-with-sequelize-cli-from-sequelize-models

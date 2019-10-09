@@ -18,34 +18,6 @@ export const initVoorkeur = (sequelize: Sequelize) => {
             allowNull: true,
             unique: 'key',
         },
-        monday: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true,
-        },
-        tuesday: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true,
-        },
-        wednesday: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true,
-        },
-        thursday: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true,
-        },
-        friday: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true,
-        },
-        saturday: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true,
-        },
-        sunday: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true,
-        },
         anywhere: {
             type: DataTypes.BOOLEAN,
             allowNull: true,

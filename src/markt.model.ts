@@ -105,13 +105,6 @@ export interface IMarktondernemerVoorkeurRow {
     brancheId?: BrancheId;
     parentBrancheId?: BrancheId;
     inrichting?: string;
-    monday: boolean;
-    tuesday: boolean;
-    wednesday: boolean;
-    thursday: boolean;
-    friday: boolean;
-    saturday: boolean;
-    sunday: boolean;
 }
 
 export interface IMarktondernemer extends IMarktdeelnemer {

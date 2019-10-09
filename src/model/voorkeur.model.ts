@@ -6,13 +6,6 @@ export class Voorkeur extends Model<IMarktondernemerVoorkeurRow, IMarktonderneme
     public erkenningsNummer!: string;
     public marktId: string;
     public marktDate: string | null;
-    public monday: boolean | null;
-    public tuesday: boolean | null;
-    public wednesday: boolean | null;
-    public thursday: boolean | null;
-    public friday: boolean | null;
-    public saturday: boolean | null;
-    public sunday: boolean | null;
     public anywhere: boolean | null;
     public minimum?: number | null;
     public maximum?: number | null;
