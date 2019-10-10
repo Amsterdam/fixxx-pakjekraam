@@ -31,8 +31,9 @@ import { RSVP } from './model/rsvp.model';
 import { Allocation } from './model/allocation.model';
 import { Plaatsvoorkeur } from './model/plaatsvoorkeur.model';
 import { Voorkeur } from './model/voorkeur.model';
+import { convertSollicitatieToOndernemer as convertSollicitatie } from './model/ondernemer.functions';
 
-import { MMOndernemerStandalone, MMSollicitatieStandalone } from './makkelijkemarkt.model';
+import { MMOndernemerStandalone } from './makkelijkemarkt.model';
 
 import * as fs from 'fs';
 
@@ -306,27 +307,7 @@ export const getMarktInfo = (marktId: string): Promise<IMarktInfo> =>
 /*
  * Convert an object from Makkelijke Markt to our own type of `IMarktondernemer` object
  */
-const convertSollicitatie = (data: MMSollicitatieStandalone): IMarktondernemer => {
-    const {
-        koopman: { erkenningsnummer },
-        sollicitatieNummer,
-        status,
-        markt,
-    } = data;
 
-    return {
-        description: formatOndernemerName(data.koopman),
-        erkenningsNummer: erkenningsnummer,
-        plaatsen: data.vastePlaatsen,
-        voorkeur: {
-            marktId: String(markt.id),
-            erkenningsNummer: erkenningsnummer,
-            maximum: Math.max(1, (data.vastePlaatsen || []).length),
-        },
-        sollicitatieNummer,
-        status,
-    };
-};
 
 /*
  * Convert an object from Makkelijke Markt to our own type of `IMarktondernemer` object
@@ -551,7 +532,6 @@ export const getAfmeldingenVasteplaatshoudersInput = (marktId: string, marktDate
         toewijzingen,
         algemenevoorkeuren,
     }));
-
 
 export const getVoorrangslijstInput = (marktId: string, marktDate: string) =>
     Promise.all([

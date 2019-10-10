@@ -38,13 +38,12 @@ import {
 import { marketPreferencesPage, updateMarketPreferences } from './routes/market-preferences';
 import { vendorDashboardPage } from './routes/vendor-dashboard';
 import { marketLocationPage, updateMarketLocation } from './routes/market-location';
-import { marketAllocationPage } from './routes/market-allocation';
 import { preferencesMailPage } from './routes/mail-preferences';
 import { applicationMailPage } from './routes/mail-application';
 import { allocationMailPage } from './routes/mail-allocation';
 import { activationQRPage } from './routes/activation-qr';
 import { vasteplaatshoudersPage, sollicitantenPage, voorrangslijstPage, afmeldingenVasteplaatshoudersPage } from './routes/market-vendors';
-import { indelingslijstPage } from './routes/market-allocation';
+import { indelingslijstPage, marketAllocationPage, indelingPage } from './routes/market-allocation';
 import { KeycloakRoles } from './permissions';
 const Pool = require('pg-pool');
 
@@ -223,6 +222,12 @@ app.get(
     '/markt/:marktId/:marktDate/indelingslijst/',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     marketAllocationPage,
+);
+
+app.get(
+    '/markt/:marktId/:marktDate/indeling/',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    indelingPage,
 );
 
 app.get(

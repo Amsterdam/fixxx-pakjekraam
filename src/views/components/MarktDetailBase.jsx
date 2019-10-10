@@ -8,14 +8,14 @@ const MarktDayLink = require('./MarktDayLink');
 const MarktDetailHeader = require('./MarktDetailHeader');
 const PrintButton = require('./PrintButton');
 
-const MarktDetailBase = ({ children, bodyClass, title, markt, type, datum, user, buttonLabel, showDate }) => {
+const MarktDetailBase = ({ children, bodyClass, title, markt, type, datum, buttonLabel, showDate }) => {
     const relativeDatum = d => {
         return formatDayOfWeek(d) + ', ' + new Date(d).getDate() + ' ' + formatMonth(d);
     };
 
     return (
         <Page bodyClass={bodyClass}>
-            <Header user={user}>
+            <Header>
                 <a className="Header__nav-item" href="/markt/">
                     Markten
                 </a>
@@ -45,7 +45,6 @@ MarktDetailBase.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     bodyClass: PropTypes.string,
     markt: PropTypes.object,
-    user: PropTypes.object,
     title: PropTypes.string,
     datum: PropTypes.string,
     type: PropTypes.string,

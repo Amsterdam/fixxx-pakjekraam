@@ -31,7 +31,6 @@ class SollicitantenPage extends React.Component {
                 markt={markt}
                 datum={datum}
                 type={type}
-                user={user}
                 showDate={false}
             >
                 {paginasLists.map((pagina, i) => (

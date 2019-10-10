@@ -10,47 +10,51 @@ import { IRSVP, IMarktplaats, IMarktondernemer, IToewijzing, IMarkt, IObstakelBe
 import { IAllocationPrintout } from '../model/printout.model';
 
 export type IndelingslijstenPageState = {
-    data: {
-        aanmeldingen: IRSVP[];
-        obstakels: IObstakelBetween[];
-        marktplaatsen: IMarktplaats[];
-        ondernemers: IMarktondernemer[];
-        paginas: IAllocationPrintout;
-        toewijzingen: IToewijzing[];
-        markt: IMarkt;
-        voorkeuren: any[];
-    };
-    marktSlug: string;
+    aanmeldingen: IRSVP[];
+    obstakels: IObstakelBetween[];
+    marktplaatsen: IMarktplaats[];
+    ondernemers: IMarktondernemer[];
+    paginas: IAllocationPrintout;
+    toewijzingen: IToewijzing[];
+    markt: IMarkt;
+    voorkeuren: any[];
     marktId: string;
     datum: string;
     type: string;
-    user: any;
 };
 
 export default class IndelingslijstenPage extends React.Component {
     public propTypes: ValidationMap<IndelingslijstenPageState> = {
-        data: PropTypes.any,
-        marktSlug: PropTypes.string,
+        aanmeldingen: PropTypes.array,
+        obstakels: PropTypes.array,
+        marktplaatsen: PropTypes.array,
+        ondernemers: PropTypes.array,
+        paginas: PropTypes.array,
+        toewijzingen: PropTypes.array,
+        markt: PropTypes.any,
+        voorkeuren: PropTypes.array,
         marktId: PropTypes.string,
         datum: PropTypes.string,
         type: PropTypes.string,
-        user: PropTypes.any,
     };
 
     public render() {
+
         const props = this.props as IndelingslijstenPageState;
-        const { aanmeldingen, obstakels, marktplaatsen, ondernemers, paginas, toewijzingen, markt, voorkeuren } = props.data;
-        const { datum, type, user } = props;
+        const { aanmeldingen, obstakels, marktplaatsen, ondernemers, paginas, markt, voorkeuren, datum, type } = props;
+        let { toewijzingen } = props;
         const plaatsList = arrayToObject(marktplaatsen, 'plaatsId');
         const vphl = ondernemersToLocatieKeyValue(ondernemers);
         const obstakelList = obstakelsToLocatieKeyValue(obstakels);
 
         const titleMap: { [index: string]: string } = {
             indelingslijst: 'Indelingslijst',
+            indeling: 'Indeling',
             'concept-indelingslijst': 'Concept indelingslijst',
         };
         const title = titleMap[type] || titleMap['indelingslijst'];
-        const toewijzingenOptional = type !== 'wenperiode' ? toewijzingen : [];
+
+        toewijzingen = type !== 'wenperiode' ? toewijzingen : [];
 
         const plaatsvoorkeuren = voorkeuren.reduce((t: any, voorkeur: any) => {
             if (!t[voorkeur.erkenningsNummer]) {
@@ -68,7 +72,6 @@ export default class IndelingslijstenPage extends React.Component {
                 markt={markt}
                 type={type}
                 datum={datum}
-                user={user}
                 showDate={true}
             >
                 {paginas.map((page, j) => (
@@ -84,20 +87,20 @@ export default class IndelingslijstenPage extends React.Component {
                                 return <Street key={`page-street-${i}`} title={pageItem.title} />;
                             } else {
                                 return (
-                                    <IndelingslijstGroup
-                                        key={`page-group-${i}`}
-                                        page={pageItem}
-                                        plaatsList={plaatsList}
-                                        vphl={vphl}
-                                        obstakelList={obstakelList}
-                                        aanmeldingen={aanmeldingen}
-                                        toewijzingen={toewijzingenOptional}
-                                        ondernemers={ondernemers}
-                                        markt={markt}
-                                        datum={datum}
-                                        type={type}
-                                        plaatsvoorkeuren={plaatsvoorkeuren}
-                                    />
+                                        <IndelingslijstGroup
+                                            key={`page-group-${i}`}
+                                            page={pageItem}
+                                            plaatsList={plaatsList}
+                                            vphl={vphl}
+                                            obstakelList={obstakelList}
+                                            aanmeldingen={aanmeldingen}
+                                            toewijzingen={toewijzingen}
+                                            ondernemers={ondernemers}
+                                            markt={markt}
+                                            datum={datum}
+                                            type={type}
+                                            plaatsvoorkeuren={plaatsvoorkeuren}
+                                        />
                                 );
                             }
                         })}

@@ -39,7 +39,6 @@ class VastplaatshoudersPage extends React.Component {
                 markt={markt}
                 datum={datum}
                 type={type}
-                user={user}
                 showDate={false}
             >
                 {paginas.map((pagina, i) => (

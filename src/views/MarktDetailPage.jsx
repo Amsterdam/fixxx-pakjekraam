@@ -44,7 +44,7 @@ class MarktDetailPage extends React.Component {
         const nextVrijday = new Date(addDays(today(), DAYS_IN_WEEK - new Date().getDay()));
 
         return (
-            <MarktDetailBase bodyClass="page-markt-detail" datum={datum} type={type} user={user} markt={markt}>
+            <MarktDetailBase bodyClass="page-markt-detail" datum={datum} type={type} markt={markt}>
                 <div className="row row--responsive">
                     <div className="col-1-2">
                         <h2>Aan- en afmeldingen wenperiode</h2>
@@ -62,9 +62,14 @@ class MarktDetailPage extends React.Component {
                                         {relativeDay !== '' ? weekDay : capitalize(weekDay)} {day} {month}
                                     </strong>
                                     <ul className="LinkList">
+                                    <li className="LinkList__item">
+                                            <a href={`./${date}/indeling/`} className="Link">
+                                                Indeling
+                                            </a>
+                                        </li>
                                         <li className="LinkList__item">
                                             <a href={`./${date}/indelingslijst/?type=wenperiode`} className="Link">
-                                                Indelingslijst
+                                                Originele positie vasteplaatshouders
                                             </a>
                                         </li>
                                         <li className="LinkList__item">
