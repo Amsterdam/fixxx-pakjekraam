@@ -42,6 +42,7 @@ import { preferencesMailPage } from './routes/mail-preferences';
 import { applicationMailPage } from './routes/mail-application';
 import { allocationMailPage } from './routes/mail-allocation';
 import { activationQRPage } from './routes/activation-qr';
+import { deleteUserPage, deleteUser } from './routes/users';
 import { vasteplaatshoudersPage, sollicitantenPage, voorrangslijstPage, afmeldingenVasteplaatshoudersPage } from './routes/market-vendors';
 import { indelingslijstPage, marketAllocationPage, indelingPage } from './routes/market-allocation';
 import { KeycloakRoles } from './permissions';
@@ -647,6 +648,22 @@ app.get(
             req.params.marktDate,
             KeycloakRoles.MARKTONDERNEMER,
         );
+    },
+);
+
+app.post(
+    '/verwijder-ondernemer/',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    (req: Request, res: Response) => {
+        deleteUser(req, res, req.params.erkenningsNummer);
+    },
+);
+
+app.get(
+    '/verwijder-ondernemer/',
+    keycloak.protect(KeycloakRoles.MARKTMEESTER),
+    (req: Request, res: Response) => {
+        deleteUserPage(req, res);
     },
 );
 
