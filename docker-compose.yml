@@ -8,6 +8,8 @@ services:
       - POSTGRES_DB
     networks:
       - bridge
+    ports:
+      - "5432:5432"
 
   migrate:
     build:

@@ -655,7 +655,7 @@ app.post(
     '/verwijder-ondernemer/',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     (req: Request, res: Response) => {
-        deleteUser(req, res, req.params.erkenningsNummer);
+        deleteUser(req, res, req.body.erkenningsNummer);
     },
 );
 
@@ -663,7 +663,7 @@ app.get(
     '/verwijder-ondernemer/',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
     (req: Request, res: Response) => {
-        deleteUserPage(req, res);
+        deleteUserPage(req, res, null, null);
     },
 );
 
