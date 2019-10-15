@@ -68,6 +68,7 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                     const registeredUsers = users
                         .filter(({ username }) =>
                             ondernemers.some(({ erkenningsNummer }) => erkenningsNummer.replace('.', '') === username.replace('.', '')),
+
                         )
                         .filter(user => !!user.email);
 
@@ -84,6 +85,7 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                             const user = users.find(
                                 ({ username }) => username.replace('.', '') === toewijzing.erkenningsNummer.replace('.', '')
                             );
+
                             return {
                                 toewijzing,
                                 ondernemer,
@@ -111,14 +113,12 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                             );
 
                             const formattedMarkDate = yyyyMmDdtoDDMMYYYY(marktDate);
-
                             const testEmail = {
                                 from: process.env.MAILER_FROM,
                                 to: user.email,
                                 subject: `Toewijzing ${formattedMarkDate} ${markt.naam}`,
                                 react: <EmailIndeling {...props} />,
                             };
-
                             mail(testEmail).then(
                                 () => {
                                     console.log('E-mail is verstuurd.');
