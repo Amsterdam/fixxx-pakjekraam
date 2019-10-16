@@ -3,6 +3,7 @@ const Plaats = require('./Plaats.tsx').default;
 const PlaatsVPH = require('./PlaatsVPH');
 const PropTypes = require('prop-types');
 const React = require('react');
+const { ondernemerIsAfgemeld } = require('../../model/ondernemer.functions');
 
 const IndelingslijstGroup = ({
     page,
@@ -63,17 +64,18 @@ const IndelingslijstGroup = ({
 
                         const toewijzing = (toewijzingen || []).find(({ plaatsen }) => plaatsen.includes(plaatsNr));
 
+                        const ondernemer = ondernemers.find(
+                            ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer,
+                        );
+
                         const plaatsProps = {
                             first,
                             key: plaatsNr,
                             vph: vphl[plaatsNr],
                             plaats: plaatsList[plaatsNr],
                             obstakels: obstakelList,
-                            ondernemer: toewijzing
-                                ? ondernemers.find(
-                                      ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer,
-                                  )
-                                : null,
+                            ondernemer,
+                            isAfgemeld: ondernemerIsAfgemeld(ondernemer, aanmeldingen, datum),
                             aanmelding,
                             markt,
                             datum,
