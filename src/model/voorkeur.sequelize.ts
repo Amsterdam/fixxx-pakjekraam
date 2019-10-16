@@ -3,7 +3,7 @@ import { Voorkeur } from './voorkeur.model';
 
 export const initVoorkeur = (sequelize: Sequelize) => {
     const attributes = {
-        erkenningsNummer: {
+        erkennings_nummer: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: 'key',
