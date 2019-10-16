@@ -14,7 +14,9 @@ module.exports = {
         return voorkeuren.map( voorkeur => {
           return queryInterface.bulkUpdate(tabel, {
             erkenningsNummer: voorkeur.erkenningsNummer.replace(".", "")
-          },voorkeur.id, { transaction });
+          }, {
+            id: voorkeur.id
+          }, { transaction });
         })
       })
       .catch(e => {
