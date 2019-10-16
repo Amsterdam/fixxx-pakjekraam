@@ -91,11 +91,6 @@ const Plaats = ({
         return tags.length && key === tags[0].trim();
     });
 
-    // const vphIsGewisseld = () => {
-    //     if ( !ondernemer || !vph ) { return false; }
-    //     return vph !== ondernemer;
-    // };
-
     const plaatsIds = vph && plaatsvoorkeuren[vph.erkenningsNummer] ?
         plaatsvoorkeuren[vph.erkenningsNummer].sort((a: any, b: any) =>
                             b.priority - a.priority).map((plaatsvoorkeur: any) =>
@@ -125,7 +120,6 @@ const Plaats = ({
                 {plaats.plaatsId}
                 {color && <PrintableBackground color={color} />}
             </td>
-
             <td className="Plaats__prop Plaats__prop-soll Plaats__prop-vph">
                 {isAfgemeld ? <span className="Icon Icon--wissel Icon--table"></span> : null}
                 <span id={`soll-${vph && vph.sollicitatieNummer}`} />

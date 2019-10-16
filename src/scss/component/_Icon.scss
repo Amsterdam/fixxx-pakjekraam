@@ -24,6 +24,13 @@
         }
     }
 
+    &--afgemeld{
+        &:before{
+            content: "≡";
+            letter-spacing: -2px;
+        }
+    }
+
     &--table{
         height: 100%;
 

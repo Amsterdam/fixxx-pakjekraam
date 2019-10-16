@@ -13,9 +13,14 @@ export const ondernemerIsAfgemeld = (ondernemer: IMarktondernemer,
     aanmeldingen: IRSVP[],
     marktDate: Date): Boolean => {
 
+    console.log(ondernemer.erkenningsNummer);
+    // console.log(aanmeldingen);
+
+
     const rsvp = aanmeldingen.find(({ erkenningsNummer }) =>
         erkenningsNummer === ondernemer.erkenningsNummer
     );
+
 
     // Bij de indeling van VPHs worden alleen expliciete afmeldingen in beschouwing
     // genomen. Anders wordt een VPH automatisch als aangemeld beschouwd.

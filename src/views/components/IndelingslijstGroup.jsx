@@ -64,9 +64,9 @@ const IndelingslijstGroup = ({
 
                         const toewijzing = (toewijzingen || []).find(({ plaatsen }) => plaatsen.includes(plaatsNr));
 
-                        const ondernemer = ondernemers.find(
+                        const ondernemer = toewijzing ? ondernemers.find(
                             ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer,
-                        );
+                        ) : null;
 
                         const plaatsProps = {
                             first,
@@ -75,7 +75,7 @@ const IndelingslijstGroup = ({
                             plaats: plaatsList[plaatsNr],
                             obstakels: obstakelList,
                             ondernemer,
-                            isAfgemeld: ondernemerIsAfgemeld(ondernemer, aanmeldingen, datum),
+                            isAfgemeld: toewijzing ? ondernemerIsAfgemeld(ondernemer, aanmeldingen, datum) : false,
                             aanmelding,
                             markt,
                             datum,
