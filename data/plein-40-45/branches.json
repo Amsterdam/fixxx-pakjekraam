@@ -1,0 +1,23 @@
+[
+  {
+    "id": "bak",
+    "verplicht": true
+  },
+   {
+    "id": "107-vis-nat",
+    "verplicht": true
+  },
+  {
+    "id": "302-bloemen-planten",
+    "verplicht": true
+  },
+  {
+    "id": "109-zuivel-poelier-eieren",
+    "verplicht": true
+  },
+  {
+    "id": "101-agf-exotische-groenten",
+		"verplicht": false,
+		"maximumPlaatsen": 24
+  }
+]

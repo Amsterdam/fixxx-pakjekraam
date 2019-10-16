@@ -1,150 +1,200 @@
 [
   {
-    "brancheId": "1",
-    "description": "brood en banket"
+    "brancheId": "101-agf-exotische-groenten",
+    "description": "AGF & exotische groenten",
+    "color": "#2bb527"
   },
   {
-    "brancheId": "2",
-    "description": "vlees en vleeswaren"
+    "brancheId": "102-bio-health-fairtrade",
+    "description": "Biologisch, health & fairtrade producten"
   },
   {
-    "brancheId": "agf",
-    "description": "aardappelen, groente en fruit"
+    "brancheId": "103-brood-banket",
+    "description": "Brood & Banket"
   },
   {
-    "brancheId": "4",
-    "description": "kaas en zuivel"
+    "brancheId": "104-hummus-kruiden-olijven",
+    "description": "Hummus, kruiden & olijven"
   },
   {
-    "brancheId": "5",
-    "description": "ijs"
+    "brancheId": "105-noten-zuidvruchten",
+    "description": "Noten & zuidvruchten",
+    "color": "#fd9bcb"
   },
   {
-    "brancheId": "6",
-    "description": "gebakken vis"
+    "brancheId": "106-o-k-oliebollen",
+    "description": "O&K - Oliebollen"
   },
   {
-    "brancheId": "natte-vis",
-    "description": "natte vis"
+    "brancheId": "107-vis-nat",
+    "description": "Vis (nat)",
+    "color": "#ceffff"
   },
   {
-    "brancheId": "kip",
-    "description": "poelier"
+    "brancheId": "108-vleeswaren",
+    "description": "Vleeswaren (geen poelier)"
   },
   {
-    "brancheId": "9",
-    "description": "noten/zuidvruchten"
+    "brancheId": "109-zuivel-poelier-eieren",
+    "description": "Zuivel, poelier & eieren",
+    "color": "#825ffd"
   },
   {
-    "brancheId": "10",
-    "description": "hummus/olijven"
+    "brancheId": "201-broodjes-belegd",
+    "description": "Broodjes belegd"
   },
   {
-    "brancheId": "12",
-    "description": "oudhollands gebak (poffertjes, stroopwafels, pannenkoeken)"
+    "brancheId": "202-hotdogs",
+    "description": "Broodjes belegd"
   },
   {
-    "brancheId": "exo-groente",
-    "description": "exotische groenten"
+    "brancheId": "203-ijs",
+    "description": "Ijs"
   },
   {
-    "brancheId": "patat",
-    "description": "patat en snacks"
+    "brancheId": "204-koffie-versnaperingen",
+    "description": "Koffie & versnaperingen"
   },
   {
-    "brancheId": "15",
-    "description": "health products"
+    "brancheId": "205-loempias",
+    "description": "Loempia's",
+    "color": "#fd9bcb"
   },
   {
-    "brancheId": "16",
-    "description": "parfumerie/persoonlijke verzorging"
+    "brancheId": "206-oudhollands-gebak-snoepwaren",
+    "description": "Oudhollands gebak & snoepwaren",
+    "color": "#fd9bcb"
   },
   {
-    "brancheId": "horloges",
-    "description": "sieraden en horloges"
+    "brancheId": "207-patat-snacks",
+    "description": "Patat & snacks",
+    "color": "#fd9bcb"
   },
   {
-    "brancheId": "stoffen",
-    "description": "stoffen"
+    "brancheId": "208-smoothies",
+    "description": "Smoothies"
   },
   {
-    "brancheId": "19",
-    "description": "bovenkleding"
+    "brancheId": "209-vis-gebakken",
+    "description": "Vis (gebakken)",
+    "color": "#fd9bcb"
   },
   {
-    "brancheId": "20",
-    "description": "ondergoed"
+    "brancheId": "301-antiek-kunst",
+    "description": "Antiek & kunst"
   },
   {
-    "brancheId": "21",
-    "description": "kinderkleding"
+    "brancheId": "302-bloemen-planten",
+    "description": "Bloemen & planten",
+    "color": "#6bb592"
   },
   {
-    "brancheId": "22",
-    "description": "tweedehands kleding"
+    "brancheId": "303-boeken",
+    "description": "Boeken"
   },
   {
-    "brancheId": "sokken",
-    "description": "sokken"
+    "brancheId": "304-dierenbijnodigdheden",
+    "description": "Dierenbenodigdheden"
   },
   {
-    "brancheId": "schoenen",
-    "description": "schoenen en lederwaren"
+    "brancheId": "305-horloges-brillen-sieraden",
+    "description": "Horloges, brillen & sieraden",
+    "color": "#c0c0c0"
   },
   {
-    "brancheId": "25",
-    "description": "boeken"
+    "brancheId": "306-huishoudelijke-artikelen-meubels-apparatuur",
+    "description": "Huishoudelijke artikelen, meubels & apparatuur ",
+    "color": "#c0c0c0"
   },
   {
-    "brancheId": "26",
-    "description": "antiek en kunst"
+    "brancheId": "307-kleding-baby-kinder",
+    "description": "Kleding - baby & kinder",
+    "color": "#c0c0c0"
   },
   {
-    "brancheId": "27",
-    "description": "speelgoed en spellen"
+    "brancheId": "308-kleding-onder-beenmode-sokken",
+    "description": "Kleding - onder, beenmode en sokken",
+    "color": "#c0c0c0"
   },
   {
-    "brancheId": "28",
-    "description": "huishoudelijke artikelen"
+    "brancheId": "309-kleding-volwassenen",
+    "description": "Kleding - volwassenen",
+    "color": "#c0c0c0"
   },
   {
-    "brancheId": "29",
-    "description": "elektronica, mobieltjes en accessoires"
+    "brancheId": "310-kleding-vintage",
+    "description": "Kleding - vintage",
+    "color": "#c0c0c0"
   },
   {
-    "brancheId": "30",
-    "description": "dierenbenodigdheden"
+    "brancheId": "311-lampen",
+    "description": "Lampen"
   },
   {
-    "brancheId": "31",
-    "description": "fietsen en auto-accessoires"
+    "brancheId": "312-o-k-kerstbomen",
+    "description": "O&K - Kerstbomen"
   },
   {
-    "brancheId": "32",
-    "description": "doe-het-zelf / gereedschap"
+    "brancheId": "313-parfumerie-drogisterij-persoonlijke-verzorging",
+    "description": "Parfumerie/ drogisterij & persoonlijke verzorging",
+    "color": "#c0c0c0"
   },
   {
-    "brancheId": "33",
-    "description": "lampen"
+    "brancheId": "314-partijhandel",
+    "description": "Partijhandel"
   },
   {
-    "brancheId": "34",
-    "description": "planten en bloemen"
+    "brancheId": "315-schoenen-tassen-lederwaren",
+    "description": "Schoenen, tassen & lederwaren",
+    "color": "#c0c0c0"
   },
   {
-    "brancheId": "35",
-    "description": "partijhandel"
+    "brancheId": "316-souvenirs",
+    "description": "Souvenirs"
   },
   {
-    "brancheId": "experimentele-zone",
-    "description": "experimentele zone"
+    "brancheId": "317-speelgoed-spellen",
+    "description": "Speelgoed & spellen"
   },
   {
-    "brancheId": "standwerker",
-    "description": "standwerker"
+    "brancheId": "318-doe-het-zelf-gereedschap-ijzerwaren",
+    "description": "Tech - Doe-het-zelf, gereedschap & ijzerwaren "
   },
   {
-    "brancheId": "promo",
-    "description": "promotie-plaats"
+    "brancheId": "319-elektronica-mobieltjes-accessoires",
+    "description": "Tech - Elektronica, mobieltjes en accessoires"
+  },
+  {
+    "brancheId": "320-fietsen-auto-accessoires",
+    "description": "Tech - Fietsen & auto accessoires "
+  },
+  {
+    "brancheId": "321-stoffen-textiel-fornituren",
+    "description": "Textiel - Stoffen, textiel & fournituren"
+  },
+  {
+    "brancheId": "322-tapijten-vloerkleden",
+    "description": "Textiel -  Tapijten en vloerkleden",
+    "color": "#c0c0c0"
+  },
+  {
+    "brancheId": "323-raamdecoratie",
+    "description": "Textiel - Raamdecodatie",
+    "color": "#c0c0c0"
+  },
+  {
+    "brancheId": "401-experimentele-zone",
+    "description": "Experimentele zone",
+    "color": "#9bcdfd"
+  },
+  {
+    "brancheId": "402-promotieplaats",
+    "description": "Promotieplaats",
+    "color": "#c0c0c0"
+  },
+  {
+    "brancheId": "403-standwerker",
+    "description": "Standwerker",
+    "color": "#c0c0c0"
   }
 ]

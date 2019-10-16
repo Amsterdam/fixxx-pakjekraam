@@ -127,7 +127,7 @@
       },
       {
         "class": "rechterzijde",
-        "title": "Rij 7 Foodrij",
+        "title": "Rij 7",
         "landmarkTop": "Jumbo",
         "landmarkBottom": "Marktkantoor Zij-rij",
         "plaatsList": [
@@ -184,7 +184,7 @@
     "indelingslijstGroup": [
       {
         "class": "rechterzijde",
-        "title": "Rij 8 Foodrij / langs het fietspad / Slotermeerlaan",
+        "title": "Rij 8 Langs het fietspad / Slotermeerlaan",
         "landmarkTop": "Jumbo",
         "landmarkBottom": "Marktkantoor Zij-rij",
         "plaatsList": ["136", "137", "138", "139", "140", "141", "142", "143", "144", "145", "146", "147"]

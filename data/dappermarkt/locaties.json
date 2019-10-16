@@ -1,7 +1,7 @@
 [
   {
     "plaatsId": "1",
-    "branches": ["exp"],
+    "branches": ["401-experimentele-zone"],
     "properties": ["boom"]
   },
   {
@@ -11,7 +11,7 @@
   },
   {
     "plaatsId": "3",
-    "branches": ["exp"],
+    "branches": ["401-experimentele-zone"],
     "properties": ["dubbel"]
   },
   {
@@ -45,7 +45,7 @@
   },
   {
     "plaatsId": "12",
-    "branches": ["exp"],
+    "branches": ["401-experimentele-zone"],
     "properties": ["dubbel"]
   },
   {
@@ -89,7 +89,7 @@
   },
   {
     "plaatsId": "24",
-    "branches": ["blm"]
+    "branches": ["302-bloemen-planten"]
   },
   {
     "plaatsId": "25"
@@ -166,7 +166,7 @@
   },
   {
     "plaatsId": "45",
-    "branches": ["exp"]
+    "branches": ["401-experimentele-zone"]
   },
   {
     "plaatsId": "46",
@@ -270,7 +270,7 @@
   },
   {
     "plaatsId": "74",
-    "branches": ["exp"],
+    "branches": ["401-experimentele-zone"],
     "properties": ["dubbel", "bankje", "boom"]
   },
   {
@@ -537,7 +537,7 @@
   },
   {
     "plaatsId": "148",
-    "branches": ["blm"]
+    "branches": ["302-bloemen-planten"]
   },
   {
     "plaatsId": "149",
@@ -549,7 +549,7 @@
   },
   {
     "plaatsId": "151",
-    "branches": ["exp"]
+    "branches": ["401-experimentele-zone"]
   },
   {
     "plaatsId": "152",
@@ -557,7 +557,7 @@
   },
   {
     "plaatsId": "153",
-    "branches": ["exp"]
+    "branches": ["401-experimentele-zone"]
   },
   {
     "plaatsId": "154",
@@ -565,7 +565,7 @@
   },
   {
     "plaatsId": "155",
-    "branches": ["exp"],
+    "branches": ["401-experimentele-zone"],
     "properties": ["electra"]
   },
   {
@@ -584,7 +584,7 @@
   },
   {
     "plaatsId": "160",
-    "branches": ["zui"]
+    "branches": ["105-noten-zuidvruchten"]
   },
   {
     "plaatsId": "161",
@@ -781,7 +781,7 @@
   },
   {
     "plaatsId": "215",
-    "branches": ["zui"]
+    "branches": ["105-noten-zuidvruchten"]
   },
   {
     "plaatsId": "216",
@@ -858,7 +858,7 @@
   },
   {
     "plaatsId": "236",
-    "branches": ["exp"]
+    "branches": ["401-experimentele-zone"]
   },
   {
     "plaatsId": "237",
@@ -866,7 +866,7 @@
   },
   {
     "plaatsId": "238",
-    "branches": ["exp"],
+    "branches": ["401-experimentele-zone"],
     "properties": ["dubbel"]
   },
   {
@@ -890,7 +890,7 @@
   },
   {
     "plaatsId": "244",
-    "branches": ["exp"]
+    "branches": ["401-experimentele-zone"]
   },
   {
     "plaatsId": "245",
@@ -901,7 +901,7 @@
   },
   {
     "plaatsId": "247",
-    "branches": ["exp"],
+    "branches": ["401-experimentele-zone"],
     "properties": ["electra"]
   },
   {
@@ -910,7 +910,7 @@
   },
   {
     "plaatsId": "249",
-    "branches": ["exp"]
+    "branches": ["401-experimentele-zone"]
   },
   {
     "plaatsId": "250"
