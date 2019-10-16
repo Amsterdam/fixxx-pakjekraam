@@ -139,12 +139,12 @@ module.exports = {
                 console.log(`Branche with id ${voorkeur.brancheId} not found`);
             }
 
-            console.log(voorkeur);
-            console.log(newBrancheId);
-
             let promise = queryInterface.bulkUpdate(tabel, {
-              brancheId: voorkeur.id
-            }, voorkeur.id, { transaction });
+              brancheId: newBrancheId
+            }, {
+              id: voorkeur.id
+            }, { transaction });
+            
             promises.push(promise);
 
           })
