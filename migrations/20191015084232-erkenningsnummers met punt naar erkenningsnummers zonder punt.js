@@ -14,15 +14,27 @@ module.exports = {
         return voorkeuren.map( voorkeur => {
           return queryInterface.bulkUpdate(tabel, {
             erkenningsNummer: voorkeur.erkenningsNummer.replace(".", "")
-          },voorkeur.id);
+          },voorkeur.id, { transaction });
         })
+      })
+      .catch(e => {
+        console.log(e);
       })
     }
     
     try {
-      
+
       let changes = await stripErkenningsNummerFromDots('voorkeur')
       console.log(`Changes done: ${changes.length}`);
+
+      let changesAllocation = await stripErkenningsNummerFromDots('allocation')
+      console.log(`Changes done: ${changesAllocation.length}`);
+
+      let changesPlaatsvoorkeur = await stripErkenningsNummerFromDots('plaatsvoorkeur')
+      console.log(`Changes done: ${changesPlaatsvoorkeur.length}`);
+
+      let changesRSVP = await stripErkenningsNummerFromDots('rsvp')
+      console.log(`Changes done: ${changesRSVP.length}`);
 
       await transaction.commit();
     } catch (err) {
