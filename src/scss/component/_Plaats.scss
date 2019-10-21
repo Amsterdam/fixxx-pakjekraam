@@ -21,10 +21,15 @@ $plaatsCellHeight: 16px;
         overflow: hidden;
         text-overflow: ellipsis;
 
-        .Icon{
+        &__icon{
             position: absolute;
             left: 2px;
-            top: 2px;
+            top: 1px;
+            
+            img{
+                width: 9px;
+                height: 9px;    
+            }
         }
 
     }
@@ -146,8 +151,7 @@ $plaatsCellHeight: 16px;
         border-right: none;
     }
     &--vph-attendance-not-attending {
-        .Plaats__prop-vph-description,
-        .Plaats__prop-vph {
+        .Plaats__prop-vph-description{
             &:after {
                 content: "";
                 position: absolute;

@@ -3,7 +3,7 @@ const Plaats = require('./Plaats.tsx').default;
 const PlaatsVPH = require('./PlaatsVPH');
 const PropTypes = require('prop-types');
 const React = require('react');
-const { ondernemerIsAfgemeld } = require('../../model/ondernemer.functions');
+const { ondernemerIsAfgemeld, ondernemerIsAfgemeldPeriode } = require('../../model/ondernemer.functions');
 
 const IndelingslijstGroup = ({
     page,
@@ -20,9 +20,10 @@ const IndelingslijstGroup = ({
 }) => {
     let first = true;
 
-    const renderPlaats = props => {
-        return type === 'vasteplaatshouders' ? <PlaatsVPH {...props} /> : <Plaats {...props} />;
-    };
+    // const renderPlaats = props => {
+    //     return type === 'vasteplaatshouders' ? <Plaats {...props} /> : <Plaats {...props} />;
+    // };
+
     const classes = page.class.split(' ').map(cl => {
         return 'IndelingslijstGroup--markt-' + markt.id + ' IndelingslijstGroup--' + cl.trim();
     });
@@ -76,6 +77,7 @@ const IndelingslijstGroup = ({
                             obstakels: obstakelList,
                             ondernemer,
                             isAfgemeld: toewijzing ? ondernemerIsAfgemeld(ondernemer, aanmeldingen, datum) : false,
+                            isAfgemeldPeriode: toewijzing ? ondernemerIsAfgemeldPeriode(ondernemer, aanmeldingen, datum) : false,
                             aanmelding,
                             markt,
                             datum,
@@ -88,7 +90,7 @@ const IndelingslijstGroup = ({
                             if (obstakelList[plaatsNr] && obstakelList[plaatsNr].length > 0) {
                                 return (
                                     <React.Fragment key={plaatsNr}>
-                                        {renderPlaats(plaatsProps)}
+                                        <Plaats {...plaatsProps} />
                                         <ObstakelList obstakelList={obstakelList[plaatsNr]} />
                                         {(first = true)}
                                     </React.Fragment>
@@ -96,7 +98,7 @@ const IndelingslijstGroup = ({
                             } else {
                                 return (
                                     <React.Fragment key={plaatsNr}>
-                                        {renderPlaats(plaatsProps)}
+                                        <Plaats {...plaatsProps} />
                                         {(first = false)}
                                     </React.Fragment>
                                 );

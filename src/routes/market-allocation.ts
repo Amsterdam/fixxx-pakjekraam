@@ -36,7 +36,6 @@ export const getIndelingslijstData = (marktId: string, marktDate: string) =>
             marktplaatsen,
             voorkeuren,
         ] = result;
-        console.log(toewijzingen);
         return {
             ondernemers,
             aanmeldingen,
@@ -76,7 +75,6 @@ export const indelingPage = (req: Request, res: Response) => {
     // getIndelingslijstData(req.params.marktId, marktDate)
     getIndelingslijstData(req.params.marktId, marktDate)
         .then(data => {
-            console.log(data);
             res.render('IndelingslijstPage.tsx', { ...data, datum: marktDate, type: 'indeling' });
         }, internalServerErrorPage(res));
 

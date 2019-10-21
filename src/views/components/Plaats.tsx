@@ -14,6 +14,7 @@ const Plaats = ({
     plaatsvoorkeuren,
     type,
     isAfgemeld,
+    isAfgemeldPeriode,
 }: {
     plaats: IMarktplaats;
     vph?: IMarktondernemer;
@@ -24,6 +25,7 @@ const Plaats = ({
     plaatsvoorkeuren?: any;
     type?: string;
     isAfgemeld?: boolean;
+    isAfgemeldPeriode?: boolean;
 }) => {
     const colorList: { [index: string]: string } = {
         'branche-vis': '#343797',
@@ -121,7 +123,8 @@ const Plaats = ({
                 {color && <PrintableBackground color={color} />}
             </td>
             <td className="Plaats__prop Plaats__prop-soll Plaats__prop-vph">
-                {isAfgemeld ? <span className="Icon Icon--wissel Icon--table"></span> : null}
+                {isAfgemeld ? <div className="Plaats__prop__icon"><img src="/images/unchecked.svg" alt="Unchecked"/></div> : null}
+                {/* {isAfgemeldPeriode ? <div className="Plaats__prop__icon"><img src="/images/Calendar.svg" alt="Unchecked"/></div> : null} */}
                 <span id={`soll-${vph && vph.sollicitatieNummer}`} />
                 {vph ? (
                     <a href={`/profile/${vph.erkenningsNummer}`}>

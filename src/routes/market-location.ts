@@ -52,7 +52,7 @@ export const marketLocationPage = (
         getIndelingVoorkeur(erkenningsNummer, currentMarktId),
     ]).then(
         ([ondernemer, markten, plaatsvoorkeuren, marktPaginas, marktProperties, marktPlaatsen, indelingVoorkeur]) => {
-            console.log(indelingVoorkeur);
+
             res.render('VoorkeurenPage', {
                 ondernemer,
                 markten,

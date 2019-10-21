@@ -31,6 +31,13 @@
         }
     }
 
+    &--lijst{
+        &:before{
+            content: "≡";
+            font-family: icomoon!important;
+        }
+    }
+
     &--table{
         height: 100%;
 

@@ -6,31 +6,33 @@ import {
 
 import { MMSollicitatieStandalone } from '../makkelijkemarkt.model';
 import { formatOndernemerName } from '../domain-knowledge.js';
+// import { dateToYYYYMMDD } from '../util';
 
 import Ondernemer from '../allocation/ondernemer';
 
 export const ondernemerIsAfgemeld = (ondernemer: IMarktondernemer,
     aanmeldingen: IRSVP[],
-    marktDate: Date): Boolean => {
+    currentMarktDate: String): Boolean => {
 
-    console.log(ondernemer.erkenningsNummer);
-    // console.log(aanmeldingen);
-
-
-    const rsvp = aanmeldingen.find(({ erkenningsNummer }) =>
-        erkenningsNummer === ondernemer.erkenningsNummer
+    const rsvp = aanmeldingen.find(({ erkenningsNummer, marktDate }) =>
+        erkenningsNummer === ondernemer.erkenningsNummer && marktDate === currentMarktDate
     );
-
 
     // Bij de indeling van VPHs worden alleen expliciete afmeldingen in beschouwing
     // genomen. Anders wordt een VPH automatisch als aangemeld beschouwd.
-    return Ondernemer.isVast(ondernemer) ?
-           !rsvp || !!rsvp.attending || rsvp.attending === null :
-           !!rsvp && !!rsvp.attending;
+    if (rsvp && !rsvp.attending) {
+        return true;
+    } else {
+        return false;
+    }
+
+    // return Ondernemer.isVast(ondernemer) ?
+    //        !rsvp || !!rsvp.attending || rsvp.attending === null :
+    //        !!rsvp && !!rsvp.attending;
 
 };
 
-export const ondernemerIsAfgemeldLangereTijd = (ondernemer: IMarktondernemer,
+export const ondernemerIsAfgemeldPeriode = (ondernemer: IMarktondernemer,
     aanmeldingen: IRSVP[],
     marktDate: Date): Boolean => {
 

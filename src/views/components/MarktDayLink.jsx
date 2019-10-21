@@ -24,8 +24,6 @@ const MarktDayLink = ({ type, markt, offsetDate, direction = 1 }) => {
         targetDate = dates[dates.length - 1];
     }
 
-    console.log(type);
-
     let typeLink = null;
     if (type == 'wenperiode') {
         typeLink = 'indelingslijst/?type=wenperiode';
