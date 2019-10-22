@@ -395,7 +395,6 @@ export const getIndelingslijstInput = (marktId: string, marktDate: string) => {
             aLijst,
         ] = args;
 
-
         return {
             naam: '?',
             marktId,

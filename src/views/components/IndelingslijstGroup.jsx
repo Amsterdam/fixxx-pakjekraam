@@ -3,7 +3,7 @@ const Plaats = require('./Plaats.tsx').default;
 const PlaatsVPH = require('./PlaatsVPH');
 const PropTypes = require('prop-types');
 const React = require('react');
-const { ondernemerIsAfgemeld, ondernemerIsAfgemeldPeriode } = require('../../model/ondernemer.functions');
+const { ondernemerIsAfgemeld, ondernemerIsAfgemeldPeriode, vphIsGewisseld } = require('../../model/ondernemer.functions');
 
 const IndelingslijstGroup = ({
     page,
@@ -57,11 +57,9 @@ const IndelingslijstGroup = ({
                 </thead>
                 <tbody className="IndelingslijstGroup__wrapper">
                     {page.plaatsList.map((plaatsNr, i) => {
-                        const vasteOndernemer = vphl[plaatsNr];
+                        const vph = vphl[plaatsNr];
 
-                        const aanmelding =
-                            vasteOndernemer &&
-                            aanmeldingen.find(rsvp => rsvp.erkenningsNummer === vasteOndernemer.erkenningsNummer);
+                        const aanmeldingVph = vph ? aanmeldingen.find(rsvp => rsvp.erkenningsNummer === vph.erkenningsNummer) : null;
 
                         const toewijzing = (toewijzingen || []).find(({ plaatsen }) => plaatsen.includes(plaatsNr));
 
@@ -69,16 +67,19 @@ const IndelingslijstGroup = ({
                             ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer,
                         ) : null;
 
+
                         const plaatsProps = {
                             first,
                             key: plaatsNr,
-                            vph: vphl[plaatsNr],
                             plaats: plaatsList[plaatsNr],
                             obstakels: obstakelList,
                             ondernemer,
-                            isAfgemeld: toewijzing ? ondernemerIsAfgemeld(ondernemer, aanmeldingen, datum) : false,
-                            isAfgemeldPeriode: toewijzing ? ondernemerIsAfgemeldPeriode(ondernemer, aanmeldingen, datum) : false,
-                            aanmelding,
+                            ondernemerIsGewisseld: ondernemer && ondernemer.status === 'vpl' ? vphIsGewisseld(ondernemer, toewijzingen) : false,
+                            vph,
+                            vphIsGewisseld: vph ? vphIsGewisseld(vph, toewijzingen) : false,
+                            vphIsAfgemeld: aanmeldingVph ? ondernemerIsAfgemeld(vph, [aanmeldingVph], datum) : false,
+                            vphIsAfgemeldPeriode: vph ? ondernemerIsAfgemeldPeriode(vph, datum) : false,
+                            aanmelding: aanmeldingVph,
                             markt,
                             datum,
                             type,
