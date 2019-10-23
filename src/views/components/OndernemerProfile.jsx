@@ -17,34 +17,21 @@ class OndernemerProfile extends React.Component {
             <div>
                 <h1>Ondernemer detail: {formatOndernemerName(ondernemer)}</h1>
                 <p>{ondernemer.erkenningsnummer}</p>
-
                 <h2>Markten</h2>
-                <ul>
-                    {ondernemer.sollicitaties
-                        .filter(sollicitatie => !sollicitatie.doorgehaald)
-                        .map(sollicitatie => (
-                            <li key={sollicitatie.markt.id}>
-                                <span>
-                                    <a href={`/markt/${sollicitatie.markt.id}/`}>
-                                        {sollicitatie.markt.naam} {sollicitatie.status}
-                                    </a>{' '}
-                                    {sollicitatie.sollicitatieNummer}
-                                </span>
-                                <br />
-                                <a href={`${vendorURL}afmelden/${sollicitatie.markt.id}/`}>
-                                    <strong>aanwezigheid</strong>
-                                </a>
-                                &nbsp;&nbsp;
-                                <a href={`${vendorURL}voorkeuren/${sollicitatie.markt.id}/`}>
-                                    <strong>plaatsvoorkeuren</strong>
-                                </a>
-                                &nbsp;&nbsp;
-                                <a href={`${vendorURL}algemene-voorkeuren/${sollicitatie.markt.id}/`}>
-                                    <strong>algemene voorkeuren</strong>
-                                </a>
-                            </li>
-                        ))}
-                </ul>
+                {ondernemer.sollicitaties
+                    .filter(sollicitatie => !sollicitatie.doorgehaald)
+                    .map(sollicitatie => (
+                        <div key={sollicitatie.markt.id} className="LinkSummary">
+                            <span>
+                                <a className="Link" href={`/markt/${sollicitatie.markt.id}/`}><strong>{sollicitatie.markt.naam}</strong></a>&nbsp;({sollicitatie.status} {sollicitatie.sollicitatieNummer})
+                            </span>
+                            <div className="LinkSummary__links">
+                                <a className="LinkSummary__first-link LinkInline" href={`${vendorURL}afmelden/${sollicitatie.markt.id}/`}>aanwezigheid</a>
+                                <a className="LinkInline" href={`${vendorURL}voorkeuren/${sollicitatie.markt.id}/`}>plaatsvoorkeuren</a>
+                                <a className="LinkInline" href={`${vendorURL}algemene-voorkeuren/${sollicitatie.markt.id}/`}>algemene voorkeuren</a>
+                            </div>
+                        </div>
+                    ))}
             </div>
         );
     }

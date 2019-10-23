@@ -1,0 +1,25 @@
+.LinkSummary{
+    margin-bottom: $gutter-sm;
+    display: flex;
+    flex-direction: column;
+
+    &__links{
+        margin-left: 15px;
+        display: flex;
+        flex-direction: column;
+
+        @media screen and (min-width: $screenMedium) {
+            flex-direction: row;
+        }   
+
+        > a {
+            margin-right: $gutter-xs;
+        }
+        
+        &__first-link{
+            
+        }
+
+    }
+    
+}
