@@ -6,5 +6,5 @@ export class Afwijzing extends Model<IAfwijzing> {
     public marktId!: string;
     public marktDate!: string;
     public reasonCode!: number;
-    public erkenningsNummer!: number;
+    public erkenningsNummer!: string;
 }

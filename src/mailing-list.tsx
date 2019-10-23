@@ -13,10 +13,13 @@ import {
     getPlaatsvoorkeuren,
     getToewijzingen,
 } from './pakjekraam-api';
+import { getAfwijzingen } from './model/afwijzing.functions';
 import { retry } from './rxjs-util';
 import { getAllUsers } from './keycloak-api';
 import { checkLogin } from './makkelijkemarkt-api';
 import { getMarktInfo } from './pakjekraam-api';
+import { IMarktplaats, IPlaatsvoorkeur, IRSVP, IBranche, IMarktInfo } from 'markt.model';
+import { MMMarkt } from 'makkelijkemarkt.model';
 
 
 requireEnv('MAILER_FROM');
@@ -28,6 +31,121 @@ const users$ = defer(() => getAllUsers()).pipe(
     retry(10, 5000),
     shareReplay(1),
 );
+
+const mailToewijzingen = (
+    toewijzingen: any[],
+    markt: MMMarkt,
+    marktplaatsen: IMarktplaats[],
+    plaatsvoorkeuren: IPlaatsvoorkeur[],
+    aanmeldingen: IRSVP[],
+    branches: IBranche[],
+    marktInfoJSON: IMarktInfo,
+    ) => {
+
+    let first = true;
+
+    toewijzingen
+        .map(({ ondernemer, user, toewijzing }) => {
+            const props = {
+                markt,
+                marktplaatsen,
+                marktDate,
+                ondernemer,
+                voorkeuren: plaatsvoorkeuren,
+                aanmeldingen,
+                branches,
+                toewijzing,
+                telefoonnummer: marktInfoJSON.telefoonnummer
+            };
+
+            // console.log(
+            //     `Stuur e-mail naar ${user.email}! Ondernemer is ingedeeld op plaats ${
+            //     toewijzing.plaatsen
+            //     }`,
+            // );
+
+            if (first) {
+
+                const formattedMarkDate = yyyyMmDdtoDDMMYYYY(marktDate);
+                const testEmail = {
+                    from: process.env.MAILER_FROM,
+                    // to: user.email,
+                    to: 'tomootes@gmail.com',
+                    subject: `Toewijzing ${formattedMarkDate} ${markt.naam}`,
+                    react: <EmailIndeling {...props} />,
+                };
+                mail(testEmail).then(
+                    () => {
+                        console.log(`E-mail is verstuurd naar ${user.email}.`);
+                        process.exit(0);
+                    },
+                    (err: Error) => {
+                        console.error('E-mail sturen mislukt.', err);
+                        process.exit(1);
+                    },
+                );
+
+            }
+
+            first = false;
+
+        });
+};
+
+const mailAfwijzingen = (
+    afwijzingen: any[],
+    markt: MMMarkt,
+    marktplaatsen: IMarktplaats[],
+    plaatsvoorkeuren: IPlaatsvoorkeur[],
+    aanmeldingen: IRSVP[],
+    branches: IBranche[],
+    marktInfoJSON: IMarktInfo,
+    ) => {
+
+    let first = true;
+
+    afwijzingen
+        .map(({ ondernemer, user, toewijzing }) => {
+            const props = {
+                markt,
+                marktplaatsen,
+                marktDate,
+                ondernemer,
+                voorkeuren: plaatsvoorkeuren,
+                aanmeldingen,
+                branches,
+                toewijzing,
+                telefoonnummer: marktInfoJSON.telefoonnummer
+            };
+
+            if (first) {
+
+                const formattedMarkDate = yyyyMmDdtoDDMMYYYY(marktDate);
+                const testEmail = {
+                    from: process.env.MAILER_FROM,
+                    // to: user.email,
+                    to: 'tomootes@gmail.com',
+                    subject: `Indeling ${process.env.NODE_ENV} ${formattedMarkDate} ${markt.naam}`,
+                    react: <EmailIndeling {...props} />,
+                };
+                mail(testEmail).then(
+                    () => {
+                        console.log(`E-mail is verstuurd naar ${user.email}.`);
+                        process.exit(0);
+                    },
+                    (err: Error) => {
+                        console.error('E-mail sturen mislukt.', err);
+                        process.exit(1);
+                    },
+                );
+
+            }
+
+            first = false;
+
+        });
+
+};
 
 const makkelijkeMarkt$ = defer(() => checkLogin()).pipe(
     tap(
@@ -46,6 +164,7 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                 Promise.all([
                     getMarktondernemersByMarkt(String(markt.id)),
                     getToewijzingen(String(markt.id), marktDate),
+                    getAfwijzingen(String(markt.id), marktDate),
                     getPlaatsvoorkeuren(String(markt.id)),
                     getAanmeldingen(String(markt.id), marktDate),
                     getMarktplaatsen(String(markt.id)),
@@ -54,6 +173,7 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                 ]).then(([
                     ondernemers,
                     toewijzingen,
+                    afwijzingen,
                     plaatsvoorkeuren,
                     aanmeldingen,
                     marktplaatsen,
@@ -65,19 +185,7 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                     console.log('Marktondernemers', ondernemers ? ondernemers.length : 0);
                     console.log('Toewijzingen', toewijzingen ? toewijzingen.length : 0);
 
-                    const registeredUsers = users
-                        .filter(({ username }) =>
-                            ondernemers.some(({ erkenningsNummer }) => erkenningsNummer.replace('.', '') === username.replace('.', '')),
-
-                        )
-                        .filter(user => !!user.email);
-
-                    console.log(
-                        'Geregistreerde marktondernemers met e-mail',
-                        registeredUsers ? registeredUsers.length : 0,
-                    );
-
-                    toewijzingen
+                    const toewijzingenFiltered = toewijzingen
                         .map(toewijzing => {
                             const ondernemer = ondernemers.find(
                                 ({ erkenningsNummer }) => erkenningsNummer.replace('.', '') === toewijzing.erkenningsNummer.replace('.', ''),
@@ -85,53 +193,48 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                             const user = users.find(
                                 ({ username }) => username.replace('.', '') === toewijzing.erkenningsNummer.replace('.', '')
                             );
-
                             return {
                                 toewijzing,
                                 ondernemer,
                                 user,
                             };
                         })
-                        .filter(({ user }) => !!user && !!user.email)
-                        .map(({ ondernemer, user, toewijzing }) => {
-                            const props = {
-                                markt,
-                                marktplaatsen,
-                                marktDate,
+                        .filter(({ user }) => !!user && !!user.email);
+
+                    const afwijzingenFiltered = afwijzingen
+                        .map(afwijzing => {
+                            const ondernemer = ondernemers.find(
+                                ({ erkenningsNummer }) => erkenningsNummer.replace('.', '') === afwijzing.erkenningsNummer.replace('.', ''),
+                            );
+                            const user = users.find(
+                                ({ username }) => username.replace('.', '') === afwijzing.erkenningsNummer.replace('.', '')
+                            );
+                            return {
+                                afwijzing,
                                 ondernemer,
-                                voorkeuren: plaatsvoorkeuren,
-                                aanmeldingen,
-                                branches,
-                                toewijzing,
-                                telefoonnummer: marktInfoJSON.telefoonnummer
+                                user,
                             };
+                        })
+                        .filter(({ user }) => !!user && !!user.email);
 
-                            console.log(
-                                `Stuur e-mail naar ${user.email}! Ondernemer is ingedeeld op plaats ${
-                                toewijzing.plaatsen
-                                }`,
-                            );
+                    mailToewijzingen(toewijzingenFiltered, markt, marktplaatsen, plaatsvoorkeuren, aanmeldingen, branches, marktInfoJSON);
+                    mailAfwijzingen(afwijzingenFiltered, markt, marktplaatsen, plaatsvoorkeuren, aanmeldingen, branches, marktInfoJSON);
 
-                            const formattedMarkDate = yyyyMmDdtoDDMMYYYY(marktDate);
-                            const testEmail = {
-                                from: process.env.MAILER_FROM,
-                                to: user.email,
-                                subject: `Toewijzing ${formattedMarkDate} ${markt.naam}`,
-                                react: <EmailIndeling {...props} />,
-                            };
-                            mail(testEmail).then(
-                                () => {
-                                    console.log('E-mail is verstuurd.');
-                                    process.exit(0);
-                                },
-                                (err: Error) => {
-                                    console.error('E-mail sturen mislukt.', err);
-                                    process.exit(1);
-                                },
-                            );
 
-                        });
+                    // const registeredUsers = users
+                    //     .filter(({ username }) =>
+                    //         ondernemers.some(({ erkenningsNummer }) => erkenningsNummer.replace('.', '') === username.replace('.', '')),
+
+                    //     )
+                    //     .filter(user => !!user.email);
+
+                    // console.log(
+                    //     'Geregistreerde marktondernemers met e-mail',
+                    //     registeredUsers ? registeredUsers.length : 0,
+                    // );
+
                 }),
             ),
     ),
 );
+
