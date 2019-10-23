@@ -67,7 +67,6 @@ const IndelingslijstGroup = ({
                             ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer,
                         ) : null;
 
-
                         const plaatsProps = {
                             first,
                             key: plaatsNr,

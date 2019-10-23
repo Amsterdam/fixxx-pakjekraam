@@ -55,7 +55,6 @@ export interface IMarktindelingSeed {
 export interface IMarktindeling extends IMarkt, IMarktindelingSeed {
     toewijzingQueue: IMarktondernemer[];
     openPlaatsen: IMarktplaats[];
-
     afwijzingen: IAfwijzing[];
     toewijzingen: IToewijzing[];
 }
