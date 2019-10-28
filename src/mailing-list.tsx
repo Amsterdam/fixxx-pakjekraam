@@ -172,10 +172,10 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                     const toewijzingenFiltered = toewijzingen
                         .map(toewijzing => {
                             const ondernemer = ondernemers.find(
-                                ({ erkenningsNummer }) => erkenningsNummer.replace('.', '') === toewijzing.erkenningsNummer.replace('.', ''),
+                                ({ erkenningsNummer }) => erkenningsNummer === toewijzing.erkenningsNummer,
                             );
                             const user = users.find(
-                                ({ username }) => username.replace('.', '') === toewijzing.erkenningsNummer.replace('.', '')
+                                ({ username }) => username === toewijzing.erkenningsNummer
                             );
                             return {
                                 toewijzing,
@@ -188,10 +188,10 @@ makkelijkeMarkt$.pipe(combineLatest(users$)).subscribe(([makkelijkeMarkt, users]
                     const afwijzingenFiltered = afwijzingen
                         .map(afwijzing => {
                             const ondernemer = ondernemers.find(
-                                ({ erkenningsNummer }) => erkenningsNummer.replace('.', '') === afwijzing.erkenningsNummer.replace('.', ''),
+                                ({ erkenningsNummer }) => erkenningsNummer === afwijzing.erkenningsNummer,
                             );
                             const user = users.find(
-                                ({ username }) => username.replace('.', '') === afwijzing.erkenningsNummer.replace('.', '')
+                                ({ username }) => username === afwijzing.erkenningsNummer
                             );
                             return {
                                 afwijzing,
