@@ -133,7 +133,6 @@ class AlgemeneVoorkeurenForm extends React.Component {
                     </div>
                     <div className="Fieldset">
                         <h2 className="Fieldset__header">Wilt u met eigen materiaal staan?</h2>
-
                         <p className="InputField InputField--checkbox">
                             <input
                                 id="inrichting"

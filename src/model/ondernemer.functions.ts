@@ -40,17 +40,20 @@ export const ondernemerIsAfgemeldPeriode = (ondernemer: IMarktondernemer, marktD
 
 };
 
-export const vphIsGewisseld = (ondernemer: IMarktondernemer, toewijzingen: IToewijzing[]): Boolean => {
+export const vphIsGewisseld = (vph: IMarktondernemer, toewijzingen: IToewijzing[]): Boolean => {
 
-    const toewijzingVph = toewijzingen.find( toewijzing => toewijzing.erkenningsNummer === ondernemer.erkenningsNummer );
+    const toewijzingVph = toewijzingen.find( toewijzing => toewijzing.erkenningsNummer === vph.erkenningsNummer );
 
     if (!toewijzingVph) {
         return false;
     }
 
-    const toewijzingOpVastePlekken = toewijzingVph.plaatsen.filter( plaats => ondernemer.plaatsen.includes(plaats) );
+    toewijzingVph.plaatsen.sort(( a: any, b: any ) => a - b);
+    vph.plaatsen.sort(( a: any, b: any ) => a - b);
 
-    if ( toewijzingOpVastePlekken.length === 0 ) {
+    // const toewijzingOpVastePlekken = toewijzingVph.plaatsen.filter( plaats => vph.plaatsen.includes(plaats) );
+
+    if ( JSON.stringify(toewijzingVph.plaatsen) !== JSON.stringify(vph.plaatsen) ) {
         return true;
     } else {
         return false;
