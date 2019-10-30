@@ -6,7 +6,8 @@ import { convertToewijzingForDB } from './model/allocation.functions';
 import { convertAfwijzingForDB } from './model/afwijzing.functions';
 import { MMMarkt } from './makkelijkemarkt.model';
 import { IMarkt } from './markt.model';
-import { Transaction } from 'sequelize/types';
+
+import { sequelize } from './model/index';
 
 const marktDate = tomorrow();
 
@@ -36,45 +37,14 @@ const mapMarktenToAfwijzingen = (markten: any) => {
     .reduce(flatten, []);
 };
 
-
-const createToewijzingen = (toewijzingen: any) => {
-    models.sequelize
-    .transaction((transaction: Transaction) =>
-        // TODO: In the future, never destroy existing allocations
-        Promise.all([models.allocation.destroy({ transaction, where: { marktDate } })]).then(() =>
-            models.allocation.bulkCreate(toewijzingen, { validate: true, transaction })
-        )
-    )
-    .then(
-        (affectedRowsL: any) => {
-            process.exit(0);
-        },
-        (err: Error) => {
-            console.log(err);
-            process.exit(1);
-        },
-    );
-};
-
-
-const createAfwijzingen = (afwijzingen: any) => {
-    models.sequelize
-    .transaction((transaction: Transaction) =>
-        // TODO: In the future, never destroy existing allocations
-        Promise.all([models.afwijzing.destroy({ transaction, where: { marktDate } })]).then(() =>
-            models.afwijzing.bulkCreate(afwijzingen, { validate: true, transaction })
-        )
-    )
-    .then(
-        (affectedRowsL: any) => {
-            process.exit(0);
-        },
-        (err: Error) => {
-            console.log(err);
-            process.exit(1);
-        },
-    );
-};
+async function destroyAndCreateToewijzingenAfwijzingen(result: any) {
+    const transaction = await sequelize.transaction();
+    await models.allocation.destroy({ where: { marktDate }, transaction });
+    await models.afwijzing.destroy({ where: { marktDate }, transaction });
+    await models.allocation.bulkCreate(result[0], { validate: true }, transaction);
+    await models.afwijzing.bulkCreate(result[1], { validate: true }, transaction);
+    await transaction.commit();
+}
 
 getMarkten()
     .then((markten: MMMarkt[]) => {
@@ -85,9 +55,8 @@ getMarkten()
         return Promise.all( [ mapMarktenToToewijzingen(marktenEnriched), mapMarktenToAfwijzingen(marktenEnriched) ] );
     })
     .then( (result: any) => {
-        return Promise.all([createToewijzingen(result[0]),createAfwijzingen(result[1])]);
+        return destroyAndCreateToewijzingenAfwijzingen(result);
     })
-    .catch((e: Error) => {
-        // console.log(e);
+    .catch( (e: any) => {
+        console.log(e);
     });
-

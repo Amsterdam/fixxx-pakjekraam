@@ -32,14 +32,18 @@ class AfmeldForm extends React.Component {
             soll => !soll.doorgehaald && String(soll.markt.id) === currentMarktId,
         );
         const markt = markten.find(m => String(m.id) === currentMarktId);
-        const OFFSET = 5; // from 24:00 to 21:00
+        const OFFSET = 4; // from 24:00 to 21:00
         const now = addMinutes(new Date(), MINUTES_IN_HOUR * OFFSET);
+
+        console.log(new Date());
 
         const rsvpEntries = filterRsvpList(
             aanmeldingen.filter(aanmelding => aanmelding.marktId === markt.id),
             markt,
-            role === 'marktmeester' ? now : addDays(now, 1),
+            now,
+            // role === 'marktmeester' ? now : addDays(now, 1),
         );
+
 
         const weekAanmeldingen = rsvpEntries.reduce(
             (t, { date, rsvp, index }, i) => {
