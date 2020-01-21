@@ -1,21 +1,35 @@
+#!groovy
+
+// Project Settings for Deployment
+String PROJECTNAME = "fixxx/pakjekraam"
+String CONTAINERDIR = "."
+String PRODUCTION_BRANCH = "production"
+String ACCEPTANCE_BRANCH = "acceptance"
+String INFRASTRUCTURE = 'thanos'
+String PLAYBOOK = 'deploy-pakjekraam.yml'
+
+// All other data uses variables, no changes needed for static
+String CONTAINERNAME = "repo.data.amsterdam.nl/static/${PROJECTNAME}:${env.BUILD_NUMBER}"
+String BRANCH = "${env.BRANCH_NAME}"
+
+image = 'initial value'
+
 def tryStep(String message, Closure block, Closure tearDown = null) {
     try {
-        block()
+        block();
     }
     catch (Throwable t) {
-//        slackSend message: "${env.JOB_NAME}: ${message} failure ${env.BUILD_URL}", channel: '#ci-channel-app', color: 'danger'
-
-        throw t
+        throw t;
     }
     finally {
         if (tearDown) {
-            tearDown()
+            tearDown();
         }
     }
 }
 
-
 node {
+    // Get a copy of the code
     stage("Checkout") {
         checkout scm
     }
@@ -49,7 +63,7 @@ node {
             sh 'echo SOURCE_COMMIT := $commit_id >> .build'
             println commit_id
             echo 'end git version'
-            def image = docker.build("build.app.amsterdam.nl:5000/fixxx/pakjekraam:${env.BUILD_NUMBER}")
+            def image = docker.build("build.app.amsterdam.nl:5000/${PROJECTNAME}:${env.BUILD_NUMBER}")
             image.push()
 
         }
@@ -57,60 +71,35 @@ node {
 }
 
 
-
 String BRANCH = "${env.BRANCH_NAME}"
 
-if (BRANCH == "acceptance" || BRANCH == "production") {
-
-    node {
-        stage('Push acceptance image') {
-            tryStep "image tagging", {
-                def image = docker.image("build.app.amsterdam.nl:5000/fixxx/pakjekraam:${env.BUILD_NUMBER}")
-                image.pull()
-                image.push("acceptance")
-            }
-        }
-    }
-
+// Acceptance branch, fetch the container, label with acceptance and deploy to acceptance.
+if (BRANCH == "${ACCEPTANCE_BRANCH}") {
     node {
         stage("Deploy to ACC") {
             tryStep "deployment", {
+                image.push("acceptance")
                 build job: 'Subtask_Openstack_Playbook',
                         parameters: [
                                 [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
-                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-pakjekraam.yml'],
+                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: "${PLAYBOOK}"],
                         ]
             }
         }
-    }
-
+  }
 }
 
-if (BRANCH == "production") {
-
-    stage('Waiting for approval') {
-        slackSend channel: '#ci-channel-app', color: 'warning', message: 'pakjekraam is waiting for Production Release - please confirm'
-        input "Deploy to Production?"
-    }
-
+// On production branch, fetch the container, tag with production and latest and deploy to production
+if (BRANCH == "${PRODUCTION_BRANCH}") {
     node {
-        stage('Push production image') {
-            tryStep "image tagging", {
-                def image = docker.image("build.app.amsterdam.nl:5000/fixxx/pakjekraam:${env.BUILD_NUMBER}")
-                image.pull()
+        stage("Deploy to PROD") {
+            tryStep "deployment", {
                 image.push("production")
                 image.push("latest")
-            }
-        }
-    }
-
-    node {
-        stage("Deploy") {
-            tryStep "deployment", {
                 build job: 'Subtask_Openstack_Playbook',
                         parameters: [
                                 [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
-                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-pakjekraam.yml'],
+                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: "${PLAYBOOK}"],
                         ]
             }
         }
