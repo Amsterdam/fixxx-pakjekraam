@@ -70,9 +70,6 @@ node {
     }
 }
 
-
-String BRANCH = "${env.BRANCH_NAME}"
-
 // Acceptance branch, fetch the container, label with acceptance and deploy to acceptance.
 if (BRANCH == "${ACCEPTANCE_BRANCH}") {
     node {
