@@ -13,7 +13,6 @@ const OndernemerMarktVoorkeuren = ({ plaatsvoorkeuren, markt, mededelingen, soll
         minimum: defaultPlaatsCount,
         maximum: defaultPlaatsCount,
         anwhere: true,
-        inactive: false,
     };
     const voorkeurDef = voorkeur || defaultVoorkeur;
 

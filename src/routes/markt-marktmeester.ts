@@ -16,6 +16,7 @@ import { GrantedRequest } from 'keycloak-connect';
 import { getKeycloakUser } from '../keycloak-api';
 
 import { getMarkt } from '../model/markt.functions';
+import { filterOndernemersAangemeld } from '../model/ondernemer.functions';
 import { getAanmeldingenByMarktAndDate } from '../model/rsvp.functions';
 import { getToewijzingenByMarktAndDate } from '../model/allocation.functions';
 import { getPlaatsvoorkeurenByMarkt } from '../model/plaatsvoorkeur.functions';
@@ -122,6 +123,37 @@ export const voorrangslijstPage = (req: GrantedRequest, res: Response, next: Nex
     ).catch(next);
 };
 
+export const ondernemersNietIngedeeldPage = (req: GrantedRequest, res: Response, next: NextFunction) => {
+
+    const datum = req.params.datum;
+    const marktId = req.params.marktId;
+
+    Promise.all([
+        getMarktondernemersByMarkt(marktId),
+        getAanmeldingenByMarktAndDate(marktId, datum),
+        getMarkt(marktId),
+        getToewijzingenByMarktAndDate(marktId, datum),
+        getIndelingVoorkeuren(marktId),
+    ]).then(([ondernemers, aanmeldingen, markt, toewijzingen, algemenevoorkeuren]) => {
+
+            const role = KeycloakRoles.MARKTMEESTER;
+
+            res.render('OndernemersNietIngedeeldPage', {
+                ondernemers,
+                aanmeldingen,
+                markt,
+                datum,
+                toewijzingen,
+                algemenevoorkeuren,
+                role,
+                user: getKeycloakUser(req)
+            });
+        },
+        internalServerErrorPage(res),
+    ).catch(next);
+};
+
+
 export const voorrangslijstVolledigPage = (req: GrantedRequest, res: Response, next: NextFunction) => {
 
     const datum = req.params.datum;
@@ -166,7 +198,6 @@ export const alleSollicitantenPage = (req: GrantedRequest, res: Response, next: 
         getToewijzingenByMarktAndDate(marktId, datum),
         getIndelingVoorkeuren(marktId),
     ]).then(([ondernemers, aanmeldingen, plaatsvoorkeuren, markt, toewijzingen, algemenevoorkeuren]) => {
-
             const role = KeycloakRoles.MARKTMEESTER;
             res.render('AanwezigheidLijst', {
                 ondernemers: ondernemers.filter(ondernemer => ondernemer.status !== 'vpl' ),
@@ -199,7 +230,7 @@ export const sollicitantentAanwezigheidLijst = (req: GrantedRequest, res: Respon
     ]).then(([ondernemers, aanmeldingen, plaatsvoorkeuren, markt, toewijzingen, algemenevoorkeuren]) => {
 
             const role = KeycloakRoles.MARKTMEESTER;
-            res.render('AanwezigheidLijst', {
+            res.render('AanwezigheidLijstPage', {
                 ondernemers: ondernemers.filter(ondernemer => ondernemer.status !== 'vpl' ),
                 aanmeldingen,
                 plaatsvoorkeuren,

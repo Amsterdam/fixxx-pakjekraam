@@ -43,8 +43,46 @@ export const ondernemerIsAfgemeldPeriode = (voorkeur: IMarktondernemerVoorkeur, 
 
 };
 
-export const vphIsGewisseld = (ondernemer: IMarktondernemer, toewijzingen: IToewijzing[]): Boolean => {
+export const filterOndernemersAangemeld = (ondernemers: IMarktondernemer[], algemenevoorkeuren: IMarktondernemerVoorkeur[], aanmeldingen: IRSVP[], marktDate: Date): IMarktondernemer[] => {
 
+    ondernemers.map(ondernemer => {
+        ondernemer.voorkeur = algemenevoorkeuren.find(voorkeur => voorkeur.erkenningsNummer === ondernemer.erkenningsNummer);
+        return ondernemer;
+    });
+
+    ondernemers = ondernemers.filter( ondernemer => {
+        if (ondernemer.voorkeur) {
+            return !ondernemerIsAfgemeldPeriode(ondernemer.voorkeur, marktDate);
+        } else {
+            return true;
+        }
+    });
+
+    let sollicanten = ondernemers.filter(ondernemer => ondernemer.status === 'soll');
+    let vphs = ondernemers.filter(ondernemer => ondernemer.status === 'vpl');
+
+    sollicanten = sollicanten.filter(ondernemer => {
+        const aanmelding = aanmeldingen.find(aanmelding => (aanmelding.erkenningsNummer === ondernemer.erkenningsNummer));
+        if (aanmelding) {
+            return aanmelding.attending;
+        } else {
+            return false;
+        }
+    });
+
+    vphs = vphs.filter(ondernemer => {
+        const aanmelding = aanmeldingen.find(aanmelding => (aanmelding.erkenningsNummer === ondernemer.erkenningsNummer));
+        if (aanmelding) {
+            return aanmelding.attending;
+        } else {
+            return true;
+        }
+    });
+
+    return [ ...sollicanten, ...vphs ];
+};
+
+export const vphIsGewisseld = (ondernemer: IMarktondernemer, toewijzingen: IToewijzing[]): Boolean => {
 
     const toewijzingVph = toewijzingen.find(toewijzing => toewijzing.erkenningsNummer === ondernemer.erkenningsNummer);
 

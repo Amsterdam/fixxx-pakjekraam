@@ -110,30 +110,10 @@ function splitByArray(orgArr, valueArr) {
   var handlers = {
     'remove-voorkeur': function (e) {
       e.stopPropagation();
-      var voorkeur = _closest(this, '.Draggable-list-item'),
-        form = _closest(this, 'form'),
-        // remove = voorkeur.classList.contains('remove'),
-        plaatsIdsInputs = voorkeur.querySelectorAll('input[type="hidden"]'),
-        container = _closest(this, '.PlaatsvoorkeurenForm__list'),
-        dataAttrs = ['name'];
-        // items = container.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
-        // prototype = _closest(this, '.PlaatsvoorkeurenForm__markt').querySelector('.PlaatsvoorkeurenForm__prototype'),
-        // prototypeHeading = _closest(this, '.PlaatsvoorkeurenForm__markt').querySelector('.PlaatsvoorkeurenForm__prototype .PlaatsvoorkeurenForm__list-item__heading');
-        // _resetCopy = function () {
-        //   var i,
-        //     plaatsSetsList = container.querySelectorAll('.PlaatsvoorkeurenForm__list-item'),
-        //     plaatsSetsListArray = Array.prototype.slice.call(plaatsSetsList).sort(function (a, b) { return b.style.order - a.style.order });
-        //   for (i = 0; i < plaatsSetsListArray.length; i++) {
-        //     plaatsSetsListArray[i].querySelector('.PlaatsvoorkeurenForm__list-item__heading').textContent = (i + 1) + 'e keuze';
-        //   }
-        //   prototypeHeading.textContent = (i + 1) + 'e keuze';
-        // };
+      var voorkeur = _closest(this, '.Draggable-list-item');
+      var form = _closest(this, 'form');
       e && e.preventDefault();
-      for (var i = 0; i < plaatsIdsInputs.length; i++) {
-        for (var j = 0; j < dataAttrs.length; j++) {
-            plaatsIdsInputs[i].setAttribute(dataAttrs[j], plaatsIdsInputs[i].getAttribute('data-' + dataAttrs[j]));
-        }
-      }
+      voorkeur.remove();
       helpers.trigger(form, 'submit');
     },
   };
@@ -241,7 +221,7 @@ function splitByArray(orgArr, valueArr) {
         },
         _getFormData = function () {
           var out = [],
-            items = form.querySelectorAll('#plaatsvoorkeuren-list-item'),
+          plaatsvoorkeuren = form.querySelectorAll('#plaatsvoorkeuren-list-item'),
             erkenningsNummer = form.querySelector('[name="erkenningsNummer"]').value,
             minimum = form.querySelector('[name="minimum"]:checked').value,
             extra = form.querySelector('[name="extra-count"]:checked').value,
@@ -252,14 +232,18 @@ function splitByArray(orgArr, valueArr) {
           anywhere && out.push(encodeURIComponent('anywhere') + '=' + encodeURIComponent(anywhere));
           out.push(encodeURIComponent('minimum') + '=' + encodeURIComponent(minimum));
           out.push(encodeURIComponent('maximum') + '=' + encodeURIComponent(maximum));
-          for (var i = 0; i < items.length; i++) {
+          plaatsvoorkeuren = Array.from(plaatsvoorkeuren).filter(item => {
+            let plaatsId = item.querySelector('[name*="plaatsId"]');
+            return plaatsId.value;
+          });
+          for (var i = 0; i < plaatsvoorkeuren.length; i++) {
             var
-              plaatsId = items[i].querySelector('[name*="plaatsId"]'),
-              priority = items[i].querySelector('[name*="priority"]'),
-              marktId = items[i].querySelector('[name*="marktId"]');
-            if (plaatsId && priority) {
+              plaatsId = plaatsvoorkeuren[i].querySelector('[name*="plaatsId"]'),
+              priority = plaatsvoorkeuren[i].querySelector('[name*="priority"]'),
+              marktId = plaatsvoorkeuren[i].querySelector('[name*="marktId"]');
+            if (priority) {
               out.push(encodeURIComponent(plaatsId.getAttribute('name')) + '=' + encodeURIComponent(plaatsId.value));
-              out.push(encodeURIComponent(priority.getAttribute('name')) + '=' + ( ( items.length - 1 ) - i));
+              out.push(encodeURIComponent(priority.getAttribute('name')) + '=' + (plaatsvoorkeuren.length - i));
               out.push(encodeURIComponent(marktId.getAttribute('name')) + '=' + encodeURIComponent(marktId.value));
             }
           }
@@ -299,13 +283,12 @@ function splitByArray(orgArr, valueArr) {
 
           if (plaatsvoorkeurenList) {
             Sortable.create(plaatsvoorkeurenList, {
-              animation: 150,  // ms, animation speed moving items when sorting, `0` — without animation
-              easing: "cubic-bezier(1, 0, 0, 1)", // Easing for animation. Defaults to null. See https://easings.net/ for examples.
+              animation: 150,
+              easing: "cubic-bezier(1, 0, 0, 1)",
               handle: ".Draggable-list-item__handle",
               onEnd,
             });
           }
-
 
           var minimumElements = form.querySelectorAll('[name="minimum"]');
           for (var i = 0; i < minimumElements.length; i++) {

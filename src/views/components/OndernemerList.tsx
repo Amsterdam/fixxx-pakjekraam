@@ -5,9 +5,7 @@ const { EXP_ZONE } = require('../../util.ts');
 
 const OndernemerList = ({
     ondernemers,
-    markt,
     aanmeldingen,
-    plaatsvoorkeuren,
     algemenevoorkeuren,
 }: {
     ondernemers: IMarktondernemer[];

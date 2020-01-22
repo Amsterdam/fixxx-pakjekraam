@@ -12,13 +12,12 @@ class SollicitantenPage extends React.Component {
         aanmeldingen: PropTypes.object,
         voorkeuren: PropTypes.object,
         datum: PropTypes.string,
-        type: PropTypes.string,
         user: PropTypes.object,
         role: PropTypes.string,
     };
 
     render() {
-        const { markt, ondernemers, aanmeldingen, datum, type, role } = this.props;
+        const { markt, ondernemers, aanmeldingen, datum, role } = this.props;
         const itemsOnPage = 40;
         const aanmeldingenOrdered = aanmeldingen.sort((a, b) => b.updatedAt - a.updatedAt);
 

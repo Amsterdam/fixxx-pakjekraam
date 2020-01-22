@@ -29,7 +29,7 @@ const Component = ({ markt, today, tomorrow, aanmeldingVandaag, aanmeldingMorgen
                 <UitslagTile
                     title={"Morgen"}
                     markt={markt}
-                    open={openTomorrow}
+                    open={false}
                     date={tomorrow}
                     sollicitatie={sollicitatie}
                     aanmelding={aanmeldingMorgen}

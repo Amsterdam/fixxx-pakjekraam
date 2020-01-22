@@ -40,9 +40,6 @@ class VoorrangslijstPage extends React.Component {
         let { ondernemers } = this.props;
         const aLijstErkenningsNummers = aLijst.map(ondernemer => ondernemer.erkenningsnummer);
 
-        console.log(new Date(datum).getDay());
-
-
         const aLijstDay = A_LIJST_DAYS.includes(new Date(datum).getDay());
 
         const itemsOnPage = 40;

@@ -1,7 +1,7 @@
 const models = require('./model/index.ts');
 import { getIndelingslijst, getDaysClosed } from './pakjekraam-api';
 
-import { flatten, tomorrow, getMaDiWoDo, toISODate } from './util';
+import { flatten, tomorrow, today, toISODate } from './util';
 import { convertToewijzingForDB, getToewijzingEnriched } from './model/allocation.functions';
 import { convertAfwijzingForDB, getAfwijzingEnriched } from './model/afwijzing.functions';
 // import { MMMarkt } from './makkelijkemarkt.model';
@@ -12,7 +12,7 @@ import { sequelize } from './model/index';
 import { IToewijzing, IAfwijzing } from 'markt.model';
 import { MMMarkt } from 'makkelijkemarkt.model';
 
-const marktDate = tomorrow();
+const marktDate = today();
 
 const mapMarktenToToewijzingen = (markten: any): Promise<IToewijzing[]> => {
     return markten

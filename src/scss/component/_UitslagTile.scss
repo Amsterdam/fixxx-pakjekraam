@@ -23,9 +23,11 @@
             &--aangemeld{
                 color: green;
             }
+            &--gesloten{
+                color: darken($supplement-orange, 5%);
+            }
         }
     }
-
     .AlertLine{
         margin: 8px 0 0;
     }

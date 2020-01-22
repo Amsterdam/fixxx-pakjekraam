@@ -99,7 +99,6 @@ export interface IMarktondernemerVoorkeurRow {
     krachtStroom?: boolean;
     kraaminrichting?: KraamInrichting;
     anywhere?: boolean;
-    inactive?: boolean;
     absentFrom?: Date;
     absentUntil?: Date;
     brancheId?: BrancheId;

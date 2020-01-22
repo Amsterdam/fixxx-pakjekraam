@@ -12,7 +12,6 @@ export const getDefaultVoorkeur = (sollicitatie: MMSollicitatie) => {
         minimum: isVast(sollicitatie.status) ? sollicitatie.vastePlaatsen.length : 1,
         maximum: isVast(sollicitatie.status) ? sollicitatie.vastePlaatsen.length : 1,
         anywhere: isVast(sollicitatie.status) ? false : true,
-        inactive: false,
     };
 };
 

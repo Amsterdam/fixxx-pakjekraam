@@ -42,10 +42,6 @@ export const initVoorkeur = (sequelize: Sequelize) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        inactive: {
-            type: DataTypes.BOOLEAN,
-            allowNull: true,
-        },
         absentFrom: {
             type: DataTypes.DATEONLY,
             allowNull: true,

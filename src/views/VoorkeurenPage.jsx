@@ -44,6 +44,8 @@ class VoorkeurenPage extends React.Component {
 
         const breadcrumbs = role === 'marktondernemer' ? getBreadcrumbsMarkt(markt, role) : getBreadcrumbsOndernemer(ondernemer, role);
 
+        console.log(plaatsvoorkeuren);
+
         return (
             <Page messages={this.props.messages}>
                 <Header

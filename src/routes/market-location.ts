@@ -107,7 +107,7 @@ export const updatePlaatsvoorkeuren = (req: Request, res: Response, next: NextFu
     const insertFormData = () => {
         if (req.body.plaatsvoorkeuren) {
             console.log(`${req.body.plaatsvoorkeuren.length} (nieuwe) voorkeuren opslaan...`);
-
+            console.log(req.body.plaatsvoorkeuren);
             const voorkeuren = req.body.plaatsvoorkeuren
                 .map(voorkeurenFormDataToObject)
                 .map(

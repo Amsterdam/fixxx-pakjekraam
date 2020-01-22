@@ -178,9 +178,6 @@ const indelingVoorkeurMerge = (
     if (b.anywhere !== null) {
         merged.anywhere = b.anywhere;
     }
-    if (b.inactive !== null) {
-        merged.inactive = b.inactive;
-    }
     if (b.brancheId !== null) {
         merged.brancheId = b.brancheId;
     }

@@ -45,7 +45,7 @@ import { langdurigAfgemeld, marktDetail } from './routes/markt';
 import {
     vasteplaatshoudersPage,
     voorrangslijstPage,
-    voorrangslijstVolledigPage,
+    ondernemersNietIngedeeldPage,
     afmeldingenVasteplaatshoudersPage,
     sollicitantentAanwezigheidLijst,
     alleOndernemersAanwezigheidLijst,
@@ -275,9 +275,10 @@ app.get(
     voorrangslijstPage
 );
 
-app.get('/markt/:marktId/:datum/alle-sollicitanten/',
+app.get(
+    '/markt/:marktId/:datum/ondernemers-niet-ingedeeld/',
     keycloak.protect(KeycloakRoles.MARKTMEESTER),
-    voorrangslijstVolledigPage
+    ondernemersNietIngedeeldPage
 );
 
 app.get('/markt/:marktId/:datum/alle-sollicitanten/',
