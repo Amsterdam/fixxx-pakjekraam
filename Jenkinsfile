@@ -63,7 +63,7 @@ node {
             sh 'echo SOURCE_COMMIT := $commit_id >> .build'
             println commit_id
             echo 'end git version'
-            def image = docker.build("build.app.amsterdam.nl:5000/${PROJECTNAME}:${env.BUILD_NUMBER}")
+            image = docker.build("build.app.amsterdam.nl:5000/${PROJECTNAME}:${env.BUILD_NUMBER}")
             image.push()
 
         }
@@ -91,6 +91,8 @@ if (BRANCH == "${ACCEPTANCE_BRANCH}") {
     node {
         stage("Deploy to ACC") {
             tryStep "deployment", {
+                def image = docker.image("build.app.amsterdam.nl:5000/${PROJECTNAME}:${env.BUILD_NUMBER}")
+                image.pull()
                 image.push("acceptance")
                 build job: 'Subtask_Openstack_Playbook',
                         parameters: [
@@ -107,6 +109,8 @@ if (BRANCH == "${PRODUCTION_BRANCH}") {
     node {
         stage("Deploy to PROD") {
             tryStep "deployment", {
+                def image = docker.image("build.app.amsterdam.nl:5000/${PROJECTNAME}:${env.BUILD_NUMBER}")
+                image.pull()
                 image.push("production")
                 image.push("latest")
                 build job: 'Subtask_Openstack_Playbook',
