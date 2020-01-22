@@ -71,6 +71,22 @@ node {
 }
 
 // Acceptance branch, fetch the container, label with acceptance and deploy to acceptance.
+if (BRANCH == "feature/TB2-34_jenkins_seperate_build") {
+    node {
+        stage("Deploy to ACC") {
+            tryStep "deployment", {
+                image.push("acceptance")
+                build job: 'Subtask_Openstack_Playbook',
+                        parameters: [
+                                [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
+                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: "${PLAYBOOK}"],
+                        ]
+            }
+        }
+  }
+}
+
+// Acceptance branch, fetch the container, label with acceptance and deploy to acceptance.
 if (BRANCH == "${ACCEPTANCE_BRANCH}") {
     node {
         stage("Deploy to ACC") {
