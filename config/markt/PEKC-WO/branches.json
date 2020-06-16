@@ -1,0 +1,82 @@
+[
+    {
+        "brancheId": "bak",
+        "verplicht": true
+    },
+    {
+        "brancheId": "101-agf",
+        "verplicht": true
+    },
+    {
+        "brancheId": "102-bio-health-fairtrade",
+        "verplicht": true
+    },
+    {
+        "brancheId": "103-brood-banket",
+        "verplicht": true
+    },
+    {
+        "brancheId": "105-noten-zuidvruchten",
+        "verplicht": true
+    },
+    {
+        "brancheId": "109-zuivel-eieren",
+        "verplicht": true
+    },
+    {
+        "brancheId": "110-poelier",
+        "verplicht": true
+    },
+    {
+        "brancheId": "207-grill-frituur",
+        "verplicht": true
+    },
+    {
+        "brancheId": "209-vis-gebakken",
+        "verplicht": true
+    },
+    {
+        "brancheId": "210-snoepwaren",
+        "verplicht": true    
+    },
+    {
+        "brancheId": "302-bloemen-planten",
+        "verplicht": true    
+    },
+    {
+        "brancheId": "303-boeken-stripboeken-muziek-film",
+        "verplicht": true
+    },
+    {
+        "brancheId": "305-horloges-brillen-sieraden",
+        "verplicht": true
+    },
+    {
+        "brancheId": "308-kleding-onder-beenmode-sokken",
+        "verplicht": true
+    },    
+    {
+        "brancheId": "309-kleding-volwassenen-hoofddeksels",
+        "verplicht": true
+    },
+    {
+        "brancheId": "311-lampen",
+        "verplicht": true
+    },
+    {
+        "brancheId": "313-parfumerie-drogisterij-persoonlijke-verzorging",
+        "verplicht": true
+    },
+    {
+        "brancheId": "314-partijhandel-inboedels",
+        "verplicht": true
+    },
+    {
+        "brancheId": "315-schoenen-tassen-lederwaren",
+        "verplicht": true
+    },
+    {
+        "brancheId": "321-stoffen-textiel-fornituren",
+        "verplicht": true
+    }
+]
