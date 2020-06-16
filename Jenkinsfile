@@ -51,7 +51,7 @@ node {
             sh 'echo SOURCE_COMMIT := $commit_id >> .build'
             println commit_id
             echo 'end git version'
-            image = docker.build("build.app.amsterdam.nl:5000/${PROJECTNAME}:${env.BUILD_NUMBER}")
+            image = docker.build("docker-registry.data.amsterdam.nl/${PROJECTNAME}:${env.BUILD_NUMBER}")
             image.push()
         }
     }
