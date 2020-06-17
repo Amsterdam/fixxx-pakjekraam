@@ -5,11 +5,9 @@ String PROJECTNAME = "fixxx/pakjekraam"
 String CONTAINERDIR = "."
 String PRODUCTION_BRANCH = "production"
 String ACCEPTANCE_BRANCH = "acceptance"
-String INFRASTRUCTURE = 'thanos'
-String PLAYBOOK = 'deploy-pakjekraam.yml'
+String PLAYBOOK = 'deploy.yml'
 
 // All other data uses variables, no changes needed for static
-String CONTAINERNAME = "repo.data.amsterdam.nl/static/${PROJECTNAME}:${env.BUILD_NUMBER}"
 String BRANCH = "${env.BRANCH_NAME}"
 
 image = 'initial value'
@@ -29,19 +27,9 @@ def tryStep(String message, Closure block, Closure tearDown = null) {
 }
 
 node {
-    // Get a copy of the code
     stage("Checkout") {
         checkout scm
     }
-
-//    stage("Test") {
-//        tryStep "testing", {
-//            sh "docker-compose -p pakjekraam -f .jenkins-test/docker-compose.yml down"
-//            sh "docker-compose -p pakjekraam -f .jenkins-test/docker-compose.yml build && " +
-//                    "docker-compose -p pakjekraam -f .jenkins-test/docker-compose.yml run -u root --rm tests"
-//        }
-//
-//    }
 
     stage("Install") {
         sh 'NODE_ENV=development npm ci'
@@ -63,43 +51,41 @@ node {
             sh 'echo SOURCE_COMMIT := $commit_id >> .build'
             println commit_id
             echo 'end git version'
-            image = docker.build("build.app.amsterdam.nl:5000/${PROJECTNAME}:${env.BUILD_NUMBER}")
+            image = docker.build("docker-registry.secure.amsterdam.nl/${PROJECTNAME}:${env.BUILD_NUMBER}")
             image.push()
-
         }
     }
-}
 
 
 // Acceptance branch, fetch the container, label with acceptance and deploy to acceptance.
 if (BRANCH == "${ACCEPTANCE_BRANCH}") {
-    node {
-        stage("Deploy to ACC") {
-            tryStep "deployment", {
-                image.push("acceptance")
-                build job: 'Subtask_Openstack_Playbook',
-                        parameters: [
-                                [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
-                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: "${PLAYBOOK}"],
-                        ]
-            }
+    stage("Deploy to ACC") {
+        tryStep "deployment", {
+            image.push("acceptance")
+            build job: 'Subtask_Openstack_Playbook',
+                parameters: [
+                    [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: "${PLAYBOOK}"],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOKPARAMS', value: "-e cmdb_id=app_pakjekraam"],
+                ]
         }
-  }
+    }
 }
 
 // On production branch, fetch the container, tag with production and latest and deploy to production
 if (BRANCH == "${PRODUCTION_BRANCH}") {
-    node {
-        stage("Deploy to PROD") {
-            tryStep "deployment", {
-                image.push("production")
-                image.push("latest")
-                build job: 'Subtask_Openstack_Playbook',
-                        parameters: [
-                                [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
-                                [$class: 'StringParameterValue', name: 'PLAYBOOK', value: "${PLAYBOOK}"],
-                        ]
-            }
+    stage("Deploy to PROD") {
+        tryStep "deployment", {
+            image.push("production")
+            image.push("latest")
+            build job: 'Subtask_Openstack_Playbook',
+                parameters: [
+                    [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: "${PLAYBOOK}"],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOKPARAMS', value: "-e cmdb_id=app_pakjekraam"],
+                ]
         }
     }
+}
+
 }
