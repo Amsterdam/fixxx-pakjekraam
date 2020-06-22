@@ -1,0 +1,79 @@
+[
+    {
+        "brancheId": "bak",
+        "verplicht": true
+    },
+    {
+        "brancheId": "101-agf",
+        "verplicht": true
+    },
+    {
+        "brancheId": "102-bio-health-fairtrade",
+        "verplicht": true
+    },   
+    {
+        "brancheId": "103-brood-banket",
+        "verplicht": true
+    },
+    {
+        "brancheId": "105-noten-zuidvruchten",
+        "verplicht": true
+    },
+    {
+        "brancheId": "109-zuivel-eieren",
+        "verplicht": true
+    },
+    {
+        "brancheId": "207-grill-frituur",
+        "verplicht": true
+    },
+    {
+        "brancheId": "208-smoothies",
+        "verplicht": true
+    },
+    {
+        "brancheId": "209-vis-gebakken",
+        "verplicht": true
+    },
+    {
+        "brancheId": "210-snoepwaren",
+        "verplicht": true
+    },
+    {
+        "brancheId": "302-bloemen-planten",
+        "verplicht": true
+    },
+    {
+        "brancheId": "305-horloges-brillen-sieraden",
+        "verplicht": true
+    },
+    {
+        "brancheId": "309-kleding-volwassenen-hoofddeksels",
+        "verplicht": true
+    },
+    {
+        "brancheId": "313-parfumerie-drogisterij-persoonlijke-verzorging",
+        "verplicht": true,
+        "maximumPlaatsen": 5
+    },
+    {
+        "brancheId": "314-partijhandel-inboedels",
+        "verplicht": true,
+        "maximumPlaatsen": 4
+    },
+    {
+        "brancheId": "315-schoenen-tassen-lederwaren",
+        "verplicht": true,
+        "maximumPlaatsen": 5
+    },
+    {
+        "brancheId": "316-souvenirs",
+        "verplicht": true,
+        "maximumPlaatsen": 1
+    },
+    {
+        "brancheId": "321-stoffen-textiel-fornituren",
+        "verplicht": true,
+        "maximumPlaatsen": 2
+    }
+]

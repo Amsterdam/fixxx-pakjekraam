@@ -1,0 +1,44 @@
+{
+  "obstakels": [
+    {
+      "kraamA": "21",
+      "kraamB": "23",
+      "obstakel": ["loopje"]
+    },
+    {
+      "kraamA": "43",
+      "kraamB": "45",
+      "obstakel": ["loopje"]
+    },
+    {
+      "kraamA": "61",
+      "kraamB": "63",
+      "obstakel": ["loopje"]
+    },
+    {
+      "kraamA": "67",
+      "kraamB": "69",
+      "obstakel": ["loopje"]
+    },
+    {
+      "kraamA": "81",
+      "kraamB": "83",
+      "obstakel": ["loopje"]
+    },
+    {
+      "kraamA": "107",
+      "kraamB": "109",
+      "obstakel": ["loopje"]
+    },
+    {
+      "kraamA": "115",
+      "kraamB": "117",
+      "obstakel": ["loopje"]
+    },
+    {
+      "kraamA": "121",
+      "kraamB": "123",
+      "obstakel": ["loopje"]
+    }
+  ]
+}
