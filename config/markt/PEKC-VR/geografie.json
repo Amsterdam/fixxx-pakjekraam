@@ -1,14 +1,34 @@
 {
   "obstakels": [
     {
+      "kraamA": "13",
+      "kraamB": "15",
+      "obstakel": ["electra"]
+    },
+    {
       "kraamA": "21",
       "kraamB": "23",
       "obstakel": ["loopje"]
     },
     {
+      "kraamA": "29",
+      "kraamB": "31",
+      "obstakel": ["water"]
+    },
+    {
+      "kraamA": "37",
+      "kraamB": "39",
+      "obstakel": ["electra"]
+    },
+    {
       "kraamA": "43",
       "kraamB": "45",
       "obstakel": ["loopje"]
+    },
+    {
+      "kraamA": "53",
+      "kraamB": "55",
+      "obstakel": ["electra"]
     },
     {
       "kraamA": "61",
@@ -21,9 +41,24 @@
       "obstakel": ["loopje"]
     },
     {
+      "kraamA": "75",
+      "kraamB": "77",
+      "obstakel": ["electra"]
+    },
+    {
       "kraamA": "81",
       "kraamB": "83",
       "obstakel": ["loopje"]
+    },
+    {
+      "kraamA": "93",
+      "kraamB": "35",
+      "obstakel": ["water"]
+    },
+    {
+      "kraamA": "101",
+      "kraamB": "103",
+      "obstakel": ["electra"]
     },
     {
       "kraamA": "107",
@@ -38,6 +73,16 @@
     {
       "kraamA": "121",
       "kraamB": "123",
+      "obstakel": ["loopje"]
+    },
+    {
+      "kraamA": "129",
+      "kraamB": "131",
+      "obstakel": ["electra"]
+    },  
+    {
+      "kraamA": "137",
+      "kraamB": "139",
       "obstakel": ["loopje"]
     }
   ]

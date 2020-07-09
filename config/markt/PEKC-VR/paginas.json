@@ -5,7 +5,7 @@
     [
       {
         "class": "block-right",
-        "title": "Hier een titel?",
+        "title": "deel 1",
         "landmarkTop": "Rotonde Mosplein",
         "landmarkBottom": "Lavendelstraat",
         "plaatsList": 
@@ -31,16 +31,20 @@
           "37", 
           "39", 
           "41", 
+          "43",
+          "45", 
           "47"
         ]
-      },
-      {
-        "type": "street",
-        "title": "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
-      },
-      {
+      }
+    ]
+  },
+  {
+    "title": "Markt Vrijdag",
+    "indelingslijstGroup": 
+    [
+        {
         "class": "rechterzijde",
-        "title": "Hier een titel?",
+        "title": "deel 2",
         "landmarkTop": "Lavendelstraat",
         "landmarkBottom": "Heimansweg",
         "plaatsList": 
@@ -76,7 +80,7 @@
     [
       {
         "class": "rechterzijde",
-        "title": "Hier een titel?",
+        "title": "deel 3",
         "landmarkTop": "Heimansweg",
         "landmarkBottom": "Jasmijnstraat",
         "plaatsList": 
@@ -100,7 +104,13 @@
           "123",
           "125",
           "127",
-          "129"
+          "129", 
+          "131",
+          "133",
+          "135",
+          "137",
+          "139",
+          "141"
         ]
       }
     ]

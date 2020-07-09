@@ -5,107 +5,82 @@
     },
     {
         "brancheId": "101-agf",
-        "verplicht": true,
-        "maximumPlaatsen": 8
+        "verplicht": false,
+        "maximumPlaatsen": 12
     },
     {
         "brancheId": "103-brood-banket",
-        "verplicht": true,
+        "verplicht": false,
         "maximumPlaatsen": 2
     },
     {
         "brancheId": "105-noten-zuidvruchten",
-        "verplicht": true,
+        "verplicht": false,
         "maximumPlaatsen": 2
     },
     {
         "brancheId": "109-zuivel-eieren",
-        "verplicht": true,
+        "verplicht": false,
         "maximumPlaatsen": 2
     },
     {
         "brancheId": "110-poelier",
-        "verplicht": true,
+        "verplicht": false,
         "maximumPlaatsen": 3
     },
     {
         "brancheId": "207-grill-frituur",
-        "verplicht": true,
+        "verplicht": false,
         "maximumPlaatsen": 2
     },
     {
-        "brancheId": "208-smoothies",
-        "verplicht": true,
-        "maximumPlaatsen": 1
-    },
-    {
         "brancheId": "209-vis-gebakken",
-        "verplicht": true,
+        "verplicht": false,
         "maximumPlaatsen": 8
     },
     {
         "brancheId": "210-snoepwaren",
-        "verplicht": true,
+        "verplicht": false,
         "maximumPlaatsen": 3
     },
     {
-        "brancheId": "302-bloemen-planten",
-        "verplicht": true,
-        "maximumPlaatsen": 4
-    },
+        "brancheId": "301-antiek-kunst",
+        "verplicht": false    },
     {
-        "brancheId": "303-boeken-stripboeken-muziek-film",
-        "verplicht": true,
-        "maximumPlaatsen": 1
+        "brancheId": "302-bloemen-planten",
+        "verplicht": false,
+        "maximumPlaatsen": 4
     },
     {
         "brancheId": "305-horloges-brillen-sieraden",
-        "verplicht": true,
-        "maximumPlaatsen": 1
+        "verplicht": false
     },
     {
         "brancheId": "309-kleding-volwassenen-hoofddeksels",
-        "verplicht": true,
-        "maximumPlaatsen": 6
-    },
-    {
-        "brancheId": "311-lampen",
-        "verplicht": true,
-        "maximumPlaatsen": 1
+        "verplicht": false
     },
     {
         "brancheId": "313-parfumerie-drogisterij-persoonlijke-verzorging",
-        "verplicht": true,
-        "maximumPlaatsen": 5
+        "verplicht": false
     },
     {
         "brancheId": "314-partijhandel-inboedels",
-        "verplicht": true,
-        "maximumPlaatsen": 4
+        "verplicht": false
     },
     {
         "brancheId": "315-schoenen-tassen-lederwaren",
-        "verplicht": true,
-        "maximumPlaatsen": 5
-    },
-    {
-        "brancheId": "316-souvenirs",
-        "verplicht": true,
-        "maximumPlaatsen": 1
+        "verplicht": false
     },
     {
         "brancheId": "317-speelgoed-spellen",
-        "verplicht": true,
-        "maximumPlaatsen": 2
+        "verplicht": false
     },
     {
         "brancheId": "321-stoffen-textiel-fornituren",
-        "verplicht": true,
-        "maximumPlaatsen": 2
+        "verplicht": false
     },
     {
-        "brancheId": "323-raam-muurdecoratie",
-        "verplicht": true,
-        "maximumPlaatsen": 2
+        "brancheId": "322-tapijten-vloerkleden",
+        "verplicht": false
     }
 ]
