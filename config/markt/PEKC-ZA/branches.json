@@ -5,75 +5,94 @@
     },
     {
         "brancheId": "101-agf",
-        "verplicht": true
+        "verplicht": false,
+        "maximumPlaatsen": 8
+
     },
     {
         "brancheId": "102-bio-health-fairtrade",
-        "verplicht": true
+        "verplicht": false,
+        "maximumPlaatsen": 3
     },   
     {
         "brancheId": "103-brood-banket",
-        "verplicht": true
-    },
-    {
-        "brancheId": "105-noten-zuidvruchten",
-        "verplicht": true
-    },
-    {
-        "brancheId": "109-zuivel-eieren",
-        "verplicht": true
-    },
-    {
-        "brancheId": "207-grill-frituur",
-        "verplicht": true
-    },
-    {
-        "brancheId": "208-smoothies",
-        "verplicht": true
-    },
-    {
-        "brancheId": "209-vis-gebakken",
-        "verplicht": true
-    },
-    {
-        "brancheId": "210-snoepwaren",
-        "verplicht": true
-    },
-    {
-        "brancheId": "302-bloemen-planten",
-        "verplicht": true
-    },
-    {
-        "brancheId": "305-horloges-brillen-sieraden",
-        "verplicht": true
-    },
-    {
-        "brancheId": "309-kleding-volwassenen-hoofddeksels",
-        "verplicht": true
-    },
-    {
-        "brancheId": "313-parfumerie-drogisterij-persoonlijke-verzorging",
-        "verplicht": true,
-        "maximumPlaatsen": 5
-    },
-    {
-        "brancheId": "314-partijhandel-inboedels",
-        "verplicht": true,
+        "verplicht": false,
         "maximumPlaatsen": 4
     },
     {
-        "brancheId": "315-schoenen-tassen-lederwaren",
-        "verplicht": true,
-        "maximumPlaatsen": 5
+        "brancheId": "105-noten-zuidvruchten",
+        "verplicht": false,
+        "maximumPlaatsen": 2
     },
     {
-        "brancheId": "316-souvenirs",
-        "verplicht": true,
+        "brancheId": "109-zuivel-eieren",
+        "verplicht": false,
+        "maximumPlaatsen": 2
+    },
+    {
+        "brancheId": "111-exotische-groenten",
+        "verplicht": false,
         "maximumPlaatsen": 1
     },
     {
-        "brancheId": "321-stoffen-textiel-fornituren",
-        "verplicht": true,
+        "brancheId": "206-oudhollands-gebak",
+        "verplicht": false,
+        "maximumPlaatsen": 1
+    },   
+    {
+        "brancheId": "207-grill-frituur",
+        "verplicht": false,
         "maximumPlaatsen": 2
+    },
+    {
+        "brancheId": "209-vis-gebakken",
+        "verplicht": false,
+        "maximumPlaatsen": 8
+    },
+    {
+        "brancheId": "210-snoepwaren",
+        "verplicht": false,
+        "maximumPlaatsen": 3
+    },
+    {
+        "brancheId": "301-antiek-kunst",
+        "verplicht": false
+    },
+    {
+        "brancheId": "302-bloemen-planten",
+        "verplicht": false,
+        "maximumPlaatsen": 4
+    },
+    {
+        "brancheId": "305-horloges-brillen-sieraden",
+        "verplicht": false
+    },
+    {
+        "brancheId": "308-kleding-onder-beenmode-sokken",
+        "verplicht": false
+    },
+    {
+        "brancheId": "309-kleding-volwassenen-hoofddeksels",
+        "verplicht": false
+    },
+    {
+        "brancheId": "313-parfumerie-drogisterij-persoonlijke-verzorging",
+        "verplicht": false    
+    },
+    {
+        "brancheId": "314-partijhandel-inboedels",
+        "verplicht": false
+        },
+    {
+        "brancheId": "315-schoenen-tassen-lederwaren",
+        "verplicht": false
+    },
+    {
+        "brancheId": "317-speelgoed-spellen",
+        "verplicht": false
+    },
+    {
+        "brancheId": "321-stoffen-textiel-fornituren",
+        "verplicht": false
     }
 ]

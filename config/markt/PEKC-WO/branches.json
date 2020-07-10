@@ -5,78 +5,82 @@
     },
     {
         "brancheId": "101-agf",
-        "verplicht": true
-    },
-    {
-        "brancheId": "102-bio-health-fairtrade",
-        "verplicht": true
+        "verplicht": false,
+        "maximumPlaatsen": 12
     },
     {
         "brancheId": "103-brood-banket",
-        "verplicht": true
+        "verplicht": false,
+        "maximumPlaatsen": 2
     },
     {
         "brancheId": "105-noten-zuidvruchten",
-        "verplicht": true
+        "verplicht": false,
+        "maximumPlaatsen": 2
     },
     {
         "brancheId": "109-zuivel-eieren",
-        "verplicht": true
-    },
-    {
-        "brancheId": "110-poelier",
-        "verplicht": true
+        "verplicht": false,
+        "maximumPlaatsen": 2
     },
     {
         "brancheId": "207-grill-frituur",
-        "verplicht": true
+        "verplicht": false,
+        "maximumPlaatsen": 2
     },
     {
         "brancheId": "209-vis-gebakken",
-        "verplicht": true
+        "verplicht": false,
+        "maximumPlaatsen": 8
     },
     {
         "brancheId": "210-snoepwaren",
-        "verplicht": true    
+        "verplicht": false ,
+        "maximumPlaatsen": 3  
     },
     {
         "brancheId": "302-bloemen-planten",
-        "verplicht": true    
-    },
-    {
-        "brancheId": "303-boeken-stripboeken-muziek-film",
-        "verplicht": true
+        "verplicht": false  ,
+        "maximumPlaatsen": 4  
     },
     {
         "brancheId": "305-horloges-brillen-sieraden",
-        "verplicht": true
+        "verplicht": false
     },
     {
         "brancheId": "308-kleding-onder-beenmode-sokken",
-        "verplicht": true
+        "verplicht": false
     },    
     {
         "brancheId": "309-kleding-volwassenen-hoofddeksels",
-        "verplicht": true
-    },
-    {
-        "brancheId": "311-lampen",
-        "verplicht": true
+        "verplicht": false
     },
     {
         "brancheId": "313-parfumerie-drogisterij-persoonlijke-verzorging",
-        "verplicht": true
+        "verplicht": false
     },
     {
         "brancheId": "314-partijhandel-inboedels",
-        "verplicht": true
+        "verplicht": false
     },
     {
         "brancheId": "315-schoenen-tassen-lederwaren",
-        "verplicht": true
+        "verplicht": false
+    },
+    {
+        "brancheId": "317-speelgoed-spellen",
+        "verplicht": false
     },
     {
         "brancheId": "321-stoffen-textiel-fornituren",
-        "verplicht": true
+        "verplicht": false
+    },
+    {
+        "brancheId": "322-tapijten-vloerkleden",
+        "verplicht": false
+    },
+    {
+        "brancheId": "323-raam-muurdecoratie",
+        "verplicht": false
     }
 ]
