@@ -77,14 +77,10 @@ export class MarktConfig extends Model {
 
         return this._get(marktAfkorting)
         .then(newestConfigModel => {
-            let marktConfig = {
-                ...configJSON,
-                branches: this._mergeBranches(allBranches, configJSON.branches)
-            };
             // Hier valideren, omdat `_homogenizeData` aannames doet t.a.v. de
             // data structuur van het config bestand. Als we dit een onderdeel
             // van de model validatie zouden maken, dan zijn we te laat.
-            validateMarktConfig(marktConfig);
+            let marktConfig = this.mergeAndValidateJSON(allBranches, configJSON);
             marktConfig = this._homogenizeData(marktConfig);
 
             if (newestConfigModel) {
@@ -103,6 +99,19 @@ export class MarktConfig extends Model {
                 data: marktConfig
             });
         });
+    }
+
+    public static mergeAndValidateJSON(allBranches, configJSON) {
+        const marktConfig = {
+            ...configJSON,
+            branches: this._mergeBranches(allBranches, configJSON.branches)
+        };
+        // Hier valideren, omdat `_homogenizeData` aannames doet t.a.v. de
+        // data structuur van het config bestand. Als we dit een onderdeel
+        // van de model validatie zouden maken, dan zijn we te laat.
+        validateMarktConfig(marktConfig);
+
+        return marktConfig;
     }
 
     private static _get(marktAfkorting) {
