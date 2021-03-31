@@ -1,9 +1,10 @@
+#!/usr/bin/env ts-node
 const fs     = require('fs');
 const path   = require('path');
 
 const AdmZip = require('adm-zip');
 
-const { MarktConfig } = require('./model/marktconfig.ts');
+const { MarktConfig } = require('../src/model/marktconfig.ts');
 
 function flatten( a, b ) {
     a = Array.isArray(a) ? a : [a];
@@ -30,7 +31,14 @@ function readJSON( filePath, emitError=true ) {
     }
 }
 
-const CONFIG_DIR = path.resolve(__dirname, '../config/markt');
+function readZipFileAsJSON( zipFile, filePath ) {
+    const data = zipFile.readAsText(filePath, 'utf8');
+    return data ?
+           JSON.parse(data) :
+           undefined;
+}
+
+const ZIP_PATH = path.resolve(process.argv[2]);
 const CONFIG_PROPERTIES = [
     'locaties',
     'markt',
@@ -38,15 +46,15 @@ const CONFIG_PROPERTIES = [
     'geografie',
     'paginas'
 ];
-const SCHEMAS = require('./markt-config.model.js');
+const SCHEMAS = require('../src/markt-config.model.js');
 
 function run() {
-    const marketSlugs = determineMarketsToValidate();
+    const zipFile     = new AdmZip(ZIP_PATH);
+    const marketSlugs = determineMarketsToValidate(zipFile);
     let errors        = '';
 
     errors = marketSlugs.reduce((_errors, marketSlug) => {
-        const marketPath = `${CONFIG_DIR}/${marketSlug}`;
-        return checkMarket(_errors, marketPath);
+        return _errors + checkMarket(zipFile, marketSlug);
     }, errors);
 
     if (!errors.length) {
@@ -57,39 +65,36 @@ function run() {
     }
 }
 
-function checkMarket( errors, marketPath ) {
+function checkMarket( zipFile, marketSlug ) {
     try {
-        const allBranches = readJSON(`${CONFIG_DIR}/branches.json`);
-        const configJSON  = buildMarketConfigJSON(marketPath);
+        const allBranches = readZipFileAsJSON(zipFile, 'config/markt/branches.json');
+        const configJSON  = buildMarketConfigJSON(zipFile, marketSlug);
         MarktConfig.mergeAndValidateJSON(allBranches, configJSON);
     } catch (e) {
         if (e.constructor === Error) {
-            errors += `${marketPath}\n${e}`;
+            return `Markt: ${marketSlug}\n${e}`;
         } else {
             throw e;
         }
     }
 
-    return errors;
+    return '';
 }
-function buildMarketConfigJSON( marketPath ) {
+function buildMarketConfigJSON( zipFile, marketSlug ) {
     const configJSON = {};
     for (const prop of CONFIG_PROPERTIES) {
-        configJSON[prop] = readJSON(`${marketPath}/${prop}.json`);
+        configJSON[prop] = readZipFileAsJSON(zipFile, `config/markt/${marketSlug}/${prop}.json`);
     }
     return configJSON;
 }
 
-function determineMarketsToValidate() {
-    // Lijst van alle markten waar een config voor gedefinieerd is.
-    const allMarketSlugs = fs.readdirSync(`${CONFIG_DIR}`, { withFileTypes: true })
-    .reduce((result, dirEnt) => {
-        return dirEnt.isDirectory() ?
-               result.concat(dirEnt.name) :
-               result;
-    }, []);
+function determineMarketsToValidate(zipFile) {
+    const zipEntries = zipFile.getEntries();
+    const marktDirs  = zipEntries.filter(entry =>
+        entry.isDirectory && entry.entryName.split('/').length == 4
+    );
 
-    return allMarketSlugs;
+    return marktDirs.map(entry => entry.entryName.split('/')[2]);
 }
 
 run();
