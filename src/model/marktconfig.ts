@@ -414,7 +414,12 @@ function validateData(
 ) {
     let propErrors;
 
-    if (required && !(property in configData)) {
+    if (
+        required && (
+            !(property in configData) ||
+            configData[property] == null
+        )
+    ) {
         propErrors = ['Property is missing'];
     } else {
         propErrors = schema(index, configData[property]).errors.map(error => {
