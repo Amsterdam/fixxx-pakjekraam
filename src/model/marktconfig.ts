@@ -26,7 +26,7 @@ const INDEX = {
 const SCHEMAS = require('../markt-config.model.js');
 
 const marktCache = new NodeCache({
-    stdTTL    : 3600, // in seconds
+    stdTTL    : 60, // in seconds
     useClones : false
 });
 
